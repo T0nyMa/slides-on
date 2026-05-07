@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>slides-on · 31 Layouts 小红书图鉴</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" href="../assets/animations/animations.css">
+<link rel="stylesheet" href="../templates/full-decks/xhs-post/style.css">
+<!-- Chart.js for chart layouts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<!-- highlight.js for code layout -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body class="tpl-xhs-post">
+<div class="deck">
+
+<!-- ═══ 0. Cover ═══ -->
+<section class="slide is-active" data-title="Cover">
+  <div class="page-dot">1 / 33</div>
+  <div class="sticker pink" style="top:14.81cqi;left:5.93cqi;transform:rotate(-6deg)">📐 全布局</div>
+  <div class="sticker yellow" style="top:17.28cqi;right:7.9cqi;transform:rotate(5deg)">31 layouts</div>
+  <div style="margin-top:24.69cqi">
+    <p class="lede" style="font-size:2.96cqi;color:var(--text-1);font-weight:600">slides-on · xhs-post 3:4</p>
+    <h1 class="h1 mt-s">31 种页面布局<br>一键<span class="cover-title">小红书</span>出图</h1>
+  </div>
+  <div class="bottom-bar"><div><span class="avatar">S</span> <b style="color:var(--text-1);margin-left:0.99cqi">slides-on</b></div><div>← 左滑 查看全部</div></div>
+</section>
+
+<!-- ═══ 1. arch-diagram ═══ -->
+<section class="slide" data-title="Architecture">
+  <div class="page-dot">2 / 33</div>
+  <p class="kicker">Architecture · 系统总览</p>
+  <h2 class="h2">一套三层栈</h2>
+  <div class="arch anim-stagger-list" data-anim-target>
+    <div class="tier"><div class="tname">UI Layer</div>
+      <div class="cells"><div class="cell"><div class="ic">🧱</div><h4>Layouts</h4><p>31 个单页</p></div>
+        <div class="cell"><div class="ic">🎨</div><h4>Themes</h4><p>36 个主题</p></div>
+        <div class="cell"><div class="ic">✨</div><h4>Animations</h4><p>27 个动效</p></div>
+        <div class="cell"><div class="ic">⌨️</div><h4>Runtime</h4><p>键盘导航</p></div>
+      </div>
+    </div>
+    <div class="tier hl"><div class="tname">Core · tokens</div>
+      <div class="cells three"><div class="cell"><div class="ic">🎯</div><h4>base.css</h4><p>排版 + 网格</p></div>
+        <div class="cell"><div class="ic">🔤</div><h4>fonts.css</h4><p>中英字体</p></div>
+        <div class="cell"><div class="ic">🪞</div><h4>:root vars</h4><p>语义颜色</p></div>
+      </div>
+    </div>
+    <div class="tier"><div class="tname">Tooling</div>
+      <div class="cells three"><div class="cell"><div class="ic">🧪</div><h4>render.sh</h4><p>headless Chrome</p></div>
+        <div class="cell"><div class="ic">🆕</div><h4>new-deck.sh</h4><p>脚手架</p></div>
+        <div class="cell"><div class="ic">📦</div><h4>AgentSkill</h4><p>Claude 接入点</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 2. big-quote ═══ -->
+<section class="slide center tc" data-title="Quote">
+  <div class="page-dot">3 / 33</div>
+  <div style="max-width:90%">
+    <div class="serif" style="font-size:17.28cqi;line-height:.9;color:var(--accent);opacity:.6">"</div>
+    <blockquote class="serif anim-fade-up" data-anim="fade-up" style="font-size:6.91cqi;line-height:1.25;margin:-4.94cqi 0 2.96cqi;font-style:italic;font-weight:600">
+      好的设计不是把东西加得更多，<br>而是把一切不需要的东西拿掉。
+    </blockquote>
+    <p class="dim" style="font-size:2.47cqi;letter-spacing:.08em">— Dieter Rams</p>
+  </div>
+</section>
+
+<!-- ═══ 3. bullets ═══ -->
+<section class="slide" data-title="Bullets">
+  <div class="page-dot">4 / 33</div>
+  <p class="kicker">Why · 为什么</p>
+  <h2 class="h2">好的演讲系统，帮你做三件事</h2>
+  <p class="lede mb-l">不是做不出漂亮的 slide，是每次都要重新做。</p>
+  <ul class="grid g1 anim-stagger-list" style="list-style:none;padding:0;margin:0;gap:14px" data-anim-target>
+    <li class="card card-accent"><h4>① 统一设计语言</h4><p class="dim">所有页共用同一套 tokens，字号、颜色、阴影不会跑偏。</p></li>
+    <li class="card card-accent"><h4>② 降低复用成本</h4><p class="dim">下一次讲同类话题，复制 deck、换数据、换主题即可。</p></li>
+    <li class="card card-accent"><h4>③ 可切换，可演示</h4><p class="dim">按 T 即可循环切主题、按 A 可切动效，汇报现场加分。</p></li>
+  </ul>
+</section>
+
+<!-- ═══ 4. chart-bar ═══ -->
+<section class="slide" data-title="Bar chart">
+  <div class="page-dot">5 / 33</div>
+  <p class="kicker">Chart · 柱状图</p>
+  <h2 class="h2">季度 MRR 趋势</h2>
+  <div class="card mt-l" style="height:54cqi;padding:3.46cqi"><canvas id="c1"></canvas></div>
+  <script>addEventListener('DOMContentLoaded',()=>{const css=getComputedStyle(document.documentElement);const accent=css.getPropertyValue('--accent').trim();const text2=css.getPropertyValue('--text-2').trim();const border=css.getPropertyValue('--border').trim();new Chart(document.getElementById('c1'),{type:'bar',data:{labels:['Q1','Q2','Q3','Q4','Q5','Q6','Q7','Q8'],datasets:[{label:'MRR (K)',data:[42,58,73,96,124,158,204,261],backgroundColor:accent,borderRadius:8,barThickness:36}]},options:{plugins:{legend:{labels:{color:text2}}},scales:{x:{ticks:{color:text2},grid:{color:border}},y:{ticks:{color:text2},grid:{color:border}}}}});});</script>
+</section>
+
+<!-- ═══ 5. chart-line ═══ -->
+<section class="slide" data-title="Line chart">
+  <div class="page-dot">6 / 33</div>
+  <p class="kicker">Chart · 折线图</p>
+  <h2 class="h2">日活与留存并排看</h2>
+  <div class="card mt-l" style="height:54cqi;padding:3.46cqi"><canvas id="c2"></canvas></div>
+  <script>addEventListener('DOMContentLoaded',()=>{const css=getComputedStyle(document.documentElement);const accent=css.getPropertyValue('--accent').trim();const acc2=css.getPropertyValue('--accent-2').trim();const text2=css.getPropertyValue('--text-2').trim();const border=css.getPropertyValue('--border').trim();new Chart(document.getElementById('c2'),{type:'line',data:{labels:['W1','W2','W3','W4','W5','W6','W7','W8','W9','W10','W11','W12'],datasets:[{label:'DAU (K)',data:[12,14,15,19,24,28,33,38,45,51,58,66],borderColor:accent,backgroundColor:accent+'22',fill:true,tension:.4,borderWidth:3,pointRadius:4},{label:'Retention %',data:[38,40,42,45,48,50,53,55,58,60,62,64],borderColor:acc2,backgroundColor:acc2+'22',fill:true,tension:.4,borderWidth:3,pointRadius:4}]},options:{plugins:{legend:{labels:{color:text2}}},scales:{x:{ticks:{color:text2},grid:{color:border}},y:{ticks:{color:text2},grid:{color:border}}}}});});</script>
+</section>
+
+<!-- ═══ 6. chart-pie ═══ -->
+<section class="slide" data-title="Pie chart">
+  <div class="page-dot">7 / 33</div>
+  <p class="kicker">Chart · 环形图</p>
+  <h2 class="h2">时间都花在了哪里</h2>
+  <div class="grid g2 mt-l" style="align-items:center">
+    <div class="card" style="height:50cqi;padding:3.46cqi"><canvas id="c3"></canvas></div>
+    <div class="card"><h4>Takeaways</h4><p class="dim">超过一半的时间都在写内容，动效只占 5%。说明值得把动效做成可复用模板。</p>
+      <ul class="mt-m dim"><li>✍️ 写内容 &nbsp; 55%</li><li>🧩 挑版式 &nbsp; 18%</li><li>🎨 调样式 &nbsp; 14%</li><li>📸 出图 &nbsp; 8%</li><li>✨ 动效 &nbsp; 5%</li></ul>
+    </div>
+  </div>
+  <script>addEventListener('DOMContentLoaded',()=>{const css=getComputedStyle(document.documentElement);const colors=['--accent','--accent-2','--accent-3','--good','--warn'].map(k=>css.getPropertyValue(k).trim());const text2=css.getPropertyValue('--text-2').trim();new Chart(document.getElementById('c3'),{type:'doughnut',data:{labels:['写内容','挑版式','调样式','出图','动效'],datasets:[{data:[55,18,14,8,5],backgroundColor:colors,borderWidth:0}]},options:{cutout:'62%',plugins:{legend:{position:'right',labels:{color:text2}}}}});});</script>
+</section>
+
+<!-- ═══ 7. chart-radar ═══ -->
+<section class="slide" data-title="Radar chart">
+  <div class="page-dot">8 / 33</div>
+  <p class="kicker">Chart · 雷达图</p>
+  <h2 class="h2">slides-on 和竞品对比</h2>
+  <div class="card mt-l" style="height:54cqi;padding:3.46cqi"><canvas id="c4"></canvas></div>
+  <script>addEventListener('DOMContentLoaded',()=>{const css=getComputedStyle(document.documentElement);const a1=css.getPropertyValue('--accent').trim();const a2=css.getPropertyValue('--accent-2').trim();const text2=css.getPropertyValue('--text-2').trim();new Chart(document.getElementById('c4'),{type:'radar',data:{labels:['上手','美观','自定义','性能','导出','生态'],datasets:[{label:'slides-on',data:[9,9,10,10,9,6],borderColor:a1,backgroundColor:a1+'33',borderWidth:3,pointRadius:5},{label:'reveal.js',data:[8,7,9,8,8,10],borderColor:a2,backgroundColor:a2+'22',borderWidth:3,pointRadius:5}]},options:{plugins:{legend:{labels:{color:text2}}},scales:{r:{suggestedMin:0,suggestedMax:10,ticks:{color:text2,backdropColor:'transparent'},pointLabels:{color:text2,font:{size:14}},grid:{color:'rgba(0,0,0,.08)'},angleLines:{color:'rgba(0,0,0,.08)'}}}}});});</script>
+</section>
+
+<!-- ═══ 8. code ═══ -->
+<section class="slide" data-title="Code">
+  <div class="page-dot">9 / 33</div>
+  <p class="kicker">Snippet · 运行时核心</p>
+  <h2 class="h2">按一下键盘就跑起来了</h2>
+  <pre class="card mt-m" style="padding:2.96cqi"><code class="language-javascript">// runtime.js — keyboard-driven deck
+function go(n) {
+  n = Math.max(0, Math.min(total - 1, n));
+  slides.forEach((s, i) => {
+    s.classList.toggle('is-active', i === n);
+  });
+  idx = n;
+  barFill.style.width = ((n+1)/total*100)+'%';
+  history.replaceState(null, '', '#/'+(n+1));
+}
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') go(idx+1);
+  if (e.key === 'ArrowLeft') go(idx-1);
+  if (e.key === 't') cycleTheme();
+});</code></pre>
+  <script>addEventListener('DOMContentLoaded',()=>{hljs.highlightAll();});</script>
+</section>
+
+<!-- ═══ 9. comparison ═══ -->
+<section class="slide" data-title="Comparison">
+  <div class="page-dot">10 / 33</div>
+  <p class="kicker">Before vs After · 对比</p>
+  <h2 class="h2">从「每次重做」到「一键起稿」</h2>
+  <div class="vs">
+    <div class="card bad-side side anim-fade-left" data-anim="fade-left"><h3>📉 过去</h3>
+      <ul><li>每次都要重新做封面、目录、结语</li><li>颜色、字号跨 slide 不一致</li><li>想换主题？手动改每一页</li><li>动效全靠 transition 硬写</li><li>截图导出还要一张一张截</li></ul>
+    </div>
+    <div class="mid">→</div>
+    <div class="card good-side side anim-fade-right" data-anim="fade-right"><h3>📈 现在</h3>
+      <ul><li>复制模板、换数据、完事</li><li>所有页共享 tokens</li><li>按 <b>T</b> 循环切主题</li><li>27 个命名动效直接挑</li><li>一条 render.sh 全部出图</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 10. cover (adapted as intro) ═══ -->
+<section class="slide" data-title="Cover showcase">
+  <div class="page-dot">11 / 33</div>
+  <div class="anim-stagger-list">
+    <p class="kicker">Cover layout · 封面</p>
+    <h1 class="h1 anim-fade-up" data-anim="fade-up">设计一套<span class="gradient-text">属于你</span>的<br>HTML 演讲系统</h1>
+    <p class="lede">从主题、版式到动效，全部由模板驱动。</p>
+    <div class="row wrap mt-l">
+      <span class="pill pill-accent">36 themes</span>
+      <span class="pill">31 layouts</span>
+      <span class="pill">27 animations</span>
+      <span class="pill">零构建</span>
+    </div>
+  </div>
+  <div class="notes">封面页口播：大家好，今天给大家带来一套开箱即用的 HTML 演讲系统。</div>
+</section>
+
+<!-- ═══ 11. cta ═══ -->
+<section class="slide center tc cta" data-title="CTA">
+  <div class="page-dot">12 / 33</div>
+  <div style="max-width:90%">
+    <p class="kicker">Call to action</p>
+    <h1 class="h1 anim-rise-in" data-anim="rise-in" style="font-size:11.85cqi"><span class="gradient-text">动手做你的</span><br>第一份 slides-on</h1>
+    <p class="lede" style="margin:1.98cqi auto 3.7cqi">复制模板、换上你的内容、挑一个最对味的主题。</p>
+    <div class="row" style="justify-content:center"><a class="btn" href="#">🚀 开始</a><a class="btn outline" href="#">查看指南</a></div>
+    <p class="dim mt-l" style="font-size:1.73cqi">键盘： ← → 翻页 · T 主题 · A 动效 · F 全屏 · O 概览</p>
+  </div>
+</section>
+
+<!-- ═══ 12. diff ═══ -->
+<section class="slide" data-title="Diff">
+  <div class="page-dot">13 / 33</div>
+  <p class="kicker">Before / After</p>
+  <h2 class="h2">一次迁移到 tokens 后</h2>
+  <div class="card diff mt-l" style="padding:0">
+    <div class="hd">assets/components/card.css</div>
+    <span class="ln ctx">.card {</span>
+    <span class="ln del">-  background: #ffffff;</span>
+    <span class="ln del">-  color: #0c0d10;</span>
+    <span class="ln del">-  border-radius: 18px;</span>
+    <span class="ln del">-  box-shadow: 0 10px 30px rgba(18,24,40,.08);</span>
+    <span class="ln add">+  background: var(--surface);</span>
+    <span class="ln add">+  color: var(--text-1);</span>
+    <span class="ln add">+  border-radius: var(--radius);</span>
+    <span class="ln add">+  box-shadow: var(--shadow);</span>
+    <span class="ln ctx">}</span>
+  </div>
+  <p class="dim mt-m">36 个主题从此只需改 variables——其他 0 改动。</p>
+</section>
+
+<!-- ═══ 13. flow-diagram ═══ -->
+<section class="slide" data-title="Flow">
+  <div class="page-dot">14 / 33</div>
+  <p class="kicker">Pipeline · 渲染管线</p>
+  <h2 class="h2">从文档到 PNG，共 4 步</h2>
+  <div class="flow anim-stagger-list" data-anim-target>
+    <div class="node"><div class="ic">📝</div><h4>文档</h4><p>你的内容源</p></div>
+    <div class="arr">→</div>
+    <div class="node"><div class="ic">🧩</div><h4>分析</h4><p>内容→结构</p></div>
+    <div class="arr">→</div>
+    <div class="node hl"><div class="ic">🎨</div><h4>风格</h4><p>选主题</p></div>
+    <div class="arr">→</div>
+    <div class="node"><div class="ic">📸</div><h4>PNG</h4><p>Playwright</p></div>
+  </div>
+</section>
+
+<!-- ═══ 14. gantt ═══ -->
+<section class="slide" data-title="Gantt">
+  <div class="page-dot">15 / 33</div>
+  <p class="kicker">Plan · Q2 甘特图</p>
+  <h2 class="h2">四个月，五条线并行</h2>
+  <div class="gantt">
+    <div class="hd"><div>任务</div><div>W1</div><div>W2</div><div>W3</div><div>W4</div><div>W5</div><div>W6</div><div>W7</div><div>W8</div><div>W9</div><div>W10</div><div>W11</div><div>W12</div></div>
+    <div class="row"><div class="lbl">主题系统</div><div class="cells"><div class="bar" style="left:0;width:25%">36 themes</div></div></div>
+    <div class="row"><div class="lbl">layouts 目录</div><div class="cells"><div class="bar" style="left:17%;width:33%">31 个单页</div></div></div>
+    <div class="row"><div class="lbl">动画系统</div><div class="cells"><div class="bar" style="left:42%;width:25%">27 个动效</div></div></div>
+    <div class="row"><div class="lbl">渲染管线</div><div class="cells"><div class="bar" style="left:58%;width:25%">render.ts</div></div></div>
+    <div class="row"><div class="lbl">发布文档</div><div class="cells"><div class="bar" style="left:75%;width:25%">v1.0</div></div></div>
+  </div>
+</section>
+
+<!-- ═══ 15. image-grid ═══ -->
+<section class="slide" data-title="Image Grid">
+  <div class="page-dot">16 / 33</div>
+  <p class="kicker">Gallery · 作品集</p>
+  <h2 class="h2">bento grid 色板</h2>
+  <div class="gg anim-stagger-list" data-anim-target>
+    <div class="cell c1"><span>主视觉 · 封面</span></div>
+    <div class="cell c2"><span>暖色 · Stat</span></div>
+    <div class="cell c3"><span>冷色 · Flow</span></div>
+    <div class="cell c4"><span>日落 · Code</span></div>
+    <div class="cell c5"><span>渐变 · Quote</span></div>
+    <div class="cell c6"><span>暗色 · Terminal</span></div>
+    <div class="cell c7"><span>极光 · CTA</span></div>
+  </div>
+</section>
+
+<!-- ═══ 16. image-hero ═══ -->
+<section class="slide" data-title="Image Hero" style="padding:6.91cqi">
+  <div class="page-dot">17 / 33</div>
+  <div class="hero">
+    <div class="bg kb"></div>
+    <div class="overlay"></div>
+    <div class="caption">
+      <span class="pill">Cover · 04</span>
+      <h1 class="mt-s anim-rise-in" data-anim="rise-in">像杂志一样的<br>封面画面感</h1>
+      <p>Ken Burns 缓慢推拉 + 径向渐变。无须真实图片，也能做出高级感。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 17. kpi-grid ═══ -->
+<section class="slide" data-title="KPIs">
+  <div class="page-dot">18 / 33</div>
+  <p class="kicker">Metrics · 关键数字</p>
+  <h2 class="h2">这一季度，我们做到了什么</h2>
+  <div class="grid g4 mt-l anim-stagger-list" data-anim-target>
+    <div class="card"><p class="eyebrow">Revenue</p><div style="font-size:6.91cqi;font-weight:800"><span class="counter" data-to="1248">0</span>K</div><p class="dim" style="color:var(--good)">↑ 38% YoY</p></div>
+    <div class="card"><p class="eyebrow">Active users</p><div style="font-size:6.91cqi;font-weight:800"><span class="counter" data-to="82">0</span>K</div><p class="dim" style="color:var(--good)">↑ 12% QoQ</p></div>
+    <div class="card"><p class="eyebrow">Retention</p><div style="font-size:6.91cqi;font-weight:800"><span class="counter" data-to="74">0</span>%</div><p class="dim" style="color:var(--good)">↑ 3 pts</p></div>
+    <div class="card"><p class="eyebrow">NPS</p><div style="font-size:6.91cqi;font-weight:800"><span class="counter" data-to="61">0</span></div><p class="dim" style="color:var(--warn)">→ 持平</p></div>
+  </div>
+</section>
+
+<!-- ═══ 18. mindmap ═══ -->
+<section class="slide" data-title="Mindmap">
+  <div class="page-dot">19 / 33</div>
+  <p class="kicker">Concept map · 心智图</p>
+  <h2 class="h2">slides-on 知识地图</h2>
+  <div class="mm">
+    <svg class="anim-path-draw" viewBox="0 0 1200 520" preserveAspectRatio="none">
+      <path d="M600,260 C400,140 280,100 160,90"/><path d="M600,260 C400,380 280,420 160,430"/>
+      <path d="M600,260 C800,140 920,100 1040,90"/><path d="M600,260 C800,380 920,420 1040,430"/>
+      <path d="M600,260 C600,140 600,100 600,60"/><path d="M600,260 C600,380 600,420 600,460"/>
+    </svg>
+    <div class="n root">slides-on</div>
+    <div class="n" style="top:60px;left:40px">Themes</div>
+    <div class="n sm" style="top:410px;left:40px">Layouts</div>
+    <div class="n sm" style="top:60px;right:40px">Animations</div>
+    <div class="n sm" style="top:410px;right:40px">Runtime</div>
+    <div class="n sm" style="top:30px;left:calc(50% - 50px)">Tokens</div>
+    <div class="n sm" style="top:450px;left:calc(50% - 60px)">Render</div>
+  </div>
+</section>
+
+<!-- ═══ 19. process-steps ═══ -->
+<section class="slide" data-title="Process">
+  <div class="page-dot">20 / 33</div>
+  <p class="kicker">How-to · 四步做 deck</p>
+  <h2 class="h2">从零到一，十分钟</h2>
+  <div class="steps anim-stagger-list" data-anim-target>
+    <div class="step"><div class="num">1</div><h4>起稿</h4><p>运行 new-deck.sh 创建脚手架。</p><span class="tag">~30s</span></div>
+    <div class="step"><div class="num">2</div><h4>选版式</h4><p>从 31 个 single-page 里挑页型。</p><span class="tag">~2min</span></div>
+    <div class="step"><div class="num">3</div><h4>写内容</h4><p>替换 demo 数据，保留结构。</p><span class="tag">~6min</span></div>
+    <div class="step"><div class="num">4</div><h4>换主题</h4><p>按 T 循环看主题，挑一个定稿。</p><span class="tag">~1min</span></div>
+  </div>
+</section>
+
+<!-- ═══ 20. pros-cons ═══ -->
+<section class="slide" data-title="Pros Cons">
+  <div class="page-dot">21 / 33</div>
+  <p class="kicker">Trade-offs · 诚实的取舍</p>
+  <h2 class="h2">纯 HTML 演讲：好在哪，痛在哪</h2>
+  <div class="pc">
+    <div class="card pro anim-fade-up" data-anim="fade-up"><h3><span class="b">✓</span> 好处</h3>
+      <ul><li>零构建：一个文件就能跑</li><li>可 diff：Git 友好</li><li>可编程：动效自由定制</li><li>可分发：URL/PDF/PNG</li></ul>
+    </div>
+    <div class="card con anim-fade-up" data-anim="fade-up"><h3><span class="b">✗</span> 痛点</h3>
+      <ul><li>协作不像 Keynote 实时</li><li>非程序员上手稍陡</li><li>复杂动效仍需写 JS</li><li>离线字体可能缺失</li></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 21. roadmap ═══ -->
+<section class="slide" data-title="Roadmap">
+  <div class="page-dot">22 / 33</div>
+  <p class="kicker">Roadmap · 2026</p>
+  <h2 class="h2">接下来四个季度</h2>
+  <div class="rm">
+    <div class="col now"><span class="tag">NOW · Q2</span><h4>主题系统</h4><ul><li>36 个官方主题</li><li>tokens 语义文档</li><li>T 键循环切换</li></ul></div>
+    <div class="col"><span class="tag">NEXT · Q3</span><h4>导出</h4><ul><li>PNG 批量</li><li>PDF 打包</li><li>小红书 3:4 切片</li></ul></div>
+    <div class="col"><span class="tag">LATER · Q4</span><h4>交互</h4><ul><li>Presenter 模式</li><li>Notes 同屏</li><li>遥控器配对</li></ul></div>
+    <div class="col"><span class="tag">VISION</span><h4>AI 写稿</h4><ul><li>md 自动分页</li><li>智能选版式</li><li>智能选主题</li></ul></div>
+  </div>
+</section>
+
+<!-- ═══ 22. section-divider ═══ -->
+<section class="slide tc center" data-title="Section divider">
+  <div class="page-dot">23 / 33</div>
+  <div style="max-width:90%;margin:0 auto">
+    <p class="kicker anim-fade-down" data-anim="fade-down">Section · 分页</p>
+    <h1 class="h1 anim-rise-in" data-anim="rise-in" style="font-size:13.83cqi">布局与<span class="gradient-text">排版</span></h1>
+    <div class="divider-accent" style="margin:2.96cqi auto"></div>
+    <p class="lede" style="margin:0 auto">31 种布局，一套约定。随心组合。</p>
+  </div>
+</section>
+
+<!-- ═══ 23. stat-highlight ═══ -->
+<section class="slide center tc" data-title="Stat">
+  <div class="page-dot">24 / 33</div>
+  <p class="kicker">Impact · 一个数字</p>
+  <div style="font-size:32cqi;line-height:1;font-weight:900;letter-spacing:-.05em">
+    <span class="counter gradient-text" data-to="92">0</span><span class="gradient-text">%</span>
+  </div>
+  <h3 class="mt-s">准备时间被你省下</h3>
+  <p class="lede" style="margin:1.98cqi auto 0">在 10 个真实项目中，使用 slides-on 平均制作时间从 4 小时降到了 20 分钟。</p>
+</section>
+
+<!-- ═══ 24. table ═══ -->
+<section class="slide" data-title="Table">
+  <div class="page-dot">25 / 33</div>
+  <p class="kicker">Comparison · 数据表</p>
+  <h2 class="h2">主流 HTML 演讲框架对比</h2>
+  <div class="card mt-l" style="padding:0.49cqi 1.48cqi">
+    <table class="t">
+      <thead><tr><th>框架</th><th>学习曲线</th><th>自定义</th><th class="num">体积</th><th class="num">GitHub ⭐</th></tr></thead>
+      <tbody>
+        <tr><td><b>slides-on</b></td><td>极低</td><td>★★★★★</td><td class="num">~80 KB</td><td class="num">—</td></tr>
+        <tr><td>reveal.js</td><td>低</td><td>★★★★</td><td class="num">~450 KB</td><td class="num">67k</td></tr>
+        <tr><td>Slidev</td><td>中</td><td>★★★★★</td><td class="num">需构建</td><td class="num">31k</td></tr>
+        <tr><td>Marp</td><td>极低</td><td>★★</td><td class="num">~10 MB</td><td class="num">13k</td></tr>
+        <tr><td>Impress.js</td><td>中</td><td>★★★</td><td class="num">~60 KB</td><td class="num">38k</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ 25. terminal ═══ -->
+<section class="slide" data-title="Terminal">
+  <div class="page-dot">26 / 33</div>
+  <p class="kicker">CLI · 一行命令起 deck</p>
+  <h2 class="h2" style="color:var(--text-1)">你需要的就是一个终端</h2>
+  <div class="term mt-l">
+    <div class="bar"><span></span><span></span><span></span></div>
+    <div><span class="p">$ </span><span class="c">./scripts/new-deck.sh my-talk</span></div>
+    <div class="o">  ✔ created decks/my-talk/index.html</div>
+    <div class="o">  ✔ linked theme → aurora</div>
+    <div class="o">  ✔ 12 slides scaffolded</div>
+    <div style="margin-top:1.48cqi"><span class="p">$ </span><span class="c">open decks/my-talk/index.html</span></div>
+    <div class="o">  ↗ launched in Chrome</div>
+    <div style="margin-top:1.48cqi"><span class="p">$ </span><span class="c">bun scripts/render-precise.ts my-talk</span></div>
+    <div class="o">  ✔ wrote 12 PNGs (1620×2160 @2x)</div>
+    <div style="margin-top:1.48cqi"><span class="p">$ </span><span class="caret"></span></div>
+  </div>
+</section>
+
+<!-- ═══ 26. thanks ═══ -->
+<section class="slide center tc" data-title="Thanks slide">
+  <div class="page-dot">27 / 33</div>
+  <div>
+    <div class="anim-confetti-burst" style="display:inline-block;padding:4.94cqi"></div>
+    <h1 class="h1 anim-fade-up" data-anim="fade-up" style="font-size:22.22cqi;line-height:1"><span class="gradient-text">Thanks</span></h1>
+    <p class="lede" style="margin:2.22cqi auto 0">愿你每一次上台，都少一点紧张，多一点从容。</p>
+    <div class="row mt-l" style="justify-content:center;gap:3.95cqi">
+      <div class="dim">slides-on · 2026</div>
+      <div class="dim">github.com/lewislulu/html-ppt-skill</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 27. three-column ═══ -->
+<section class="slide" data-title="Three column">
+  <div class="page-dot">28 / 33</div>
+  <p class="kicker">Pillars · 三根支柱</p>
+  <h2 class="h2">slides-on 三件装备</h2>
+  <div class="grid g3 mt-l anim-stagger-list" data-anim-target>
+    <div class="card"><div style="font-size:4.94cqi">🎨</div><h4 class="mt-s">Themes</h4><p class="dim">36 个主题，从克制到霓虹。</p></div>
+    <div class="card"><div style="font-size:4.94cqi">🧱</div><h4 class="mt-s">Layouts</h4><p class="dim">31 种页型，封面到结语一次给齐。</p></div>
+    <div class="card"><div style="font-size:4.94cqi">✨</div><h4 class="mt-s">Animations</h4><p class="dim">27 个命名动效，克制而上台。</p></div>
+  </div>
+</section>
+
+<!-- ═══ 28. timeline ═══ -->
+<section class="slide" data-title="Timeline">
+  <div class="page-dot">29 / 33</div>
+  <p class="kicker">Roadmap · 时间线</p>
+  <h2 class="h2">slides-on 是怎么长大的</h2>
+  <div class="tl">
+    <div class="row anim-stagger-list" data-anim-target>
+      <div class="item"><div class="year">2025 Q3</div><div class="dot"></div><h4>起源</h4><p>一套个人模板</p></div>
+      <div class="item"><div class="year">2025 Q4</div><div class="dot"></div><h4>tokens 化</h4><p>颜色收进 :root</p></div>
+      <div class="item"><div class="year">2026 Q1</div><div class="dot"></div><h4>Agent 接入</h4><p>开放为 Skill</p></div>
+      <div class="item"><div class="year">2026 Q2</div><div class="dot"></div><h4>36 themes</h4><p>主题一应俱全</p></div>
+      <div class="item"><div class="year">2026 Q3</div><div class="dot"></div><h4>渲染管线</h4><p>PNG 出稿</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 29. toc ═══ -->
+<section class="slide" data-title="Contents">
+  <div class="page-dot">30 / 33</div>
+  <p class="eyebrow">Contents · 目录</p>
+  <h2 class="h2">今天的五件事</h2>
+  <div class="grid g2 mt-l anim-stagger-list" data-anim-target>
+    <div class="card"><div class="row"><div class="h3 dim2" style="width:6.91cqi">01</div><div><h4>为什么需要设计系统</h4><p class="dim">从模板到 token，减少重复。</p></div></div></div>
+    <div class="card"><div class="row"><div class="h3 dim2" style="width:6.91cqi">02</div><div><h4>主题与 tokens</h4><p class="dim">36 个可切换的主题。</p></div></div></div>
+    <div class="card"><div class="row"><div class="h3 dim2" style="width:6.91cqi">03</div><div><h4>版式目录</h4><p class="dim">31 种单页类型。</p></div></div></div>
+    <div class="card"><div class="row"><div class="h3 dim2" style="width:6.91cqi">04</div><div><h4>入场动效</h4><p class="dim">27 种命名动画。</p></div></div></div>
+    <div class="card" style="grid-column:span 2"><div class="row"><div class="h3 dim2" style="width:6.91cqi">05</div><div><h4>现场演示 &amp; 问答</h4><p class="dim">打开模板就能讲。</p></div></div></div>
+  </div>
+</section>
+
+<!-- ═══ 30. todo-checklist ═══ -->
+<section class="slide" data-title="Checklist">
+  <div class="page-dot">31 / 33</div>
+  <p class="kicker">Launch · 上线前检查清单</p>
+  <h2 class="h2">发版前必过的 8 件事</h2>
+  <ul class="todo anim-stagger-list" data-anim-target>
+    <li class="done"><span class="b"></span><span class="t">所有 slide 在 Chrome 打开无控制台报错</span><span class="tag">#sanity</span></li>
+    <li class="done"><span class="b"></span><span class="t">字体回退链路正确（Noto Sans SC）</span><span class="tag">#fonts</span></li>
+    <li class="done"><span class="b"></span><span class="t">36 个主题各选一页截图比对</span><span class="tag">#themes</span></li>
+    <li class="done"><span class="b"></span><span class="t">键盘导航全键通</span><span class="tag">#runtime</span></li>
+    <li><span class="b"></span><span class="t">PDF 打印不跨页裁切</span><span class="tag">#print</span></li>
+    <li><span class="b"></span><span class="t">render-precise.ts 跑通</span><span class="tag">#ci</span></li>
+    <li><span class="b"></span><span class="t">references/*.md 通读一遍</span><span class="tag">#docs</span></li>
+    <li><span class="b"></span><span class="t">LICENSE / README 核对</span><span class="tag">#legal</span></li>
+  </ul>
+</section>
+
+<!-- ═══ 31. two-column ═══ -->
+<section class="slide" data-title="Two column">
+  <div class="page-dot">32 / 33</div>
+  <p class="kicker">Pattern · 双栏</p>
+  <h2 class="h2">概念 <span class="dim2">⟷</span> 示例</h2>
+  <div class="grid g2 mt-l" style="align-items:start">
+    <div class="card anim-fade-left" data-anim="fade-left">
+      <h3>左栏 · 概念</h3>
+      <p class="dim">一个主题 = 一组 CSS 变量。把颜色、字体、圆角、阴影全部收到 <code>:root</code> 里。</p>
+      <ul class="mt-m"><li>— tokens 定义语义</li><li>— base.css 用 tokens 排版</li><li>— 每个主题只改变量</li></ul>
+    </div>
+    <div class="card anim-fade-right" data-anim="fade-right">
+      <h3>右栏 · 示例</h3>
+      <pre class="mono" style="font-size:1.6cqi;background:var(--surface-2);padding:1.73cqi;border-radius:var(--radius-sm);overflow:auto">
+:root {
+  --bg: #fff;
+  --text-1: #0c0d10;
+  --accent: #3b6cff;
+  --radius: 18px;
+}
+.card {
+  background: var(--bg);
+  color: var(--text-1);
+  border-radius: var(--radius);
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 32. Final CTA ═══ -->
+<section class="slide center tc" data-title="That's all 31">
+  <div class="page-dot">33 / 33</div>
+  <div class="big-emoji" style="margin-top:7.41cqi">🎉</div>
+  <h2 class="h2 tc mt-l">31 种布局全部跑通</h2>
+  <h1 class="h1 tc mt-s" style="color:var(--accent)">收藏 + 关注 🧡</h1>
+  <p class="lede tc mt-l" style="padding:0 3.7cqi">xhs-post 3:4 画布<br>无缝承载全部 single-page 布局</p>
+  <div class="tag-row" style="justify-content:center;margin-top:4.44cqi">
+    <span class="ht">#slides-on</span><span class="ht">#xhs-post</span><span class="ht">#31layouts</span><span class="ht">#响应式</span>
+  </div>
+  <div class="bottom-bar"><div><span class="avatar">S</span> <b style="color:var(--text-1);margin-left:0.99cqi">slides-on</b></div><div>全布局验证 ✓</div></div>
+</section>
+
+</div>
+
+<!-- ═══ Layout-specific styles ═══ -->
+<style>
+/* arch-diagram */
+.arch{margin-top:2.96cqi;display:flex;flex-direction:column;gap:1.48cqi}
+.arch .tier{background:var(--surface);border:0.25cqi solid var(--border);border-radius:2.47cqi;padding:1.48cqi}
+.arch .tname{font-weight:700;font-size:2.22cqi;margin-bottom:0.99cqi;color:var(--text-2)}
+.arch .cells{display:grid;grid-template-columns:repeat(4,1fr);gap:1.23cqi}
+.arch .cells.three{grid-template-columns:repeat(3,1fr)}
+.arch .cell{text-align:center;padding:0.99cqi}
+.arch .cell .ic{font-size:3.46cqi;margin-bottom:0.25cqi}
+.arch .cell h4{font-size:2.22cqi;margin:0 0 0.25cqi}
+.arch .cell p{font-size:1.73cqi;color:var(--text-3);margin:0}
+.arch .tier.hl{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 6%,var(--surface))}
+
+/* comparison */
+.vs{display:grid;grid-template-columns:1fr 80px 1fr;gap:1.23cqi;align-items:start}
+.vs .side{padding:2.22cqi}
+.vs .mid{display:flex;align-items:center;justify-content:center;font-size:3.7cqi;font-weight:900;color:var(--accent)}
+.bad-side{border-top:0.37cqi solid var(--bad)}
+.good-side{border-top:0.37cqi solid var(--good)}
+.vs h3{font-size:2.96cqi;margin:0 0 0.99cqi}
+.vs ul{list-style:none;padding:0;margin:0;font-size:1.98cqi;color:var(--text-2)}
+.vs li{margin-bottom:0.49cqi}
+.bad-side ::marker{color:var(--bad)}
+.good-side ::marker{color:var(--good)}
+
+/* cta */
+.cta .btn{display:inline-block;padding:1.48cqi 3.46cqi;background:var(--accent);color:#fff;border-radius:999px;font-weight:700;font-size:2.22cqi;text-decoration:none;transition:transform .2s}
+.cta .btn:hover{transform:translateY(-0.25cqi)}
+.cta .btn.outline{background:transparent;border:0.25cqi solid var(--accent);color:var(--accent)}
+
+/* diff */
+.diff{font-family:var(--font-mono);border-radius:1.48cqi;overflow:hidden}
+.diff .ln{display:block;padding:0.37cqi 1.73cqi;white-space:pre;font-size:1.73cqi}
+.diff .add{background:rgba(26,175,108,.12);color:var(--good)}
+.diff .del{background:rgba(224,68,90,.10);color:var(--bad)}
+.diff .ctx{color:var(--text-3)}
+.diff .hd{padding:0.99cqi 1.73cqi;font-size:1.48cqi;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);border-bottom:0.25cqi solid var(--border)}
+
+/* flow-diagram */
+.flow{display:flex;align-items:center;gap:0.99cqi;margin-top:2.47cqi;flex-wrap:wrap}
+.flow .node{background:var(--surface);border:0.25cqi solid var(--border);border-radius:2.47cqi;padding:1.48cqi 2.22cqi;text-align:center;min-width:11.11cqi}
+.flow .node .ic{font-size:3.46cqi}
+.flow .node h4{font-size:2.22cqi;margin:0.49cqi 0 0.25cqi}
+.flow .node p{font-size:1.48cqi;color:var(--text-3);margin:0}
+.flow .arr{font-size:2.96cqi;color:var(--accent);font-weight:900}
+.flow .node.hl{border-color:var(--accent);box-shadow:0 0 2.47cqi color-mix(in srgb,var(--accent) 30%,transparent)}
+
+/* gantt */
+.gantt{font-size:1.48cqi}
+.gantt .hd{display:grid;grid-template-columns:130px repeat(12,1fr);gap:0.25cqi;color:var(--text-3);font-weight:600;margin-bottom:0.74cqi}
+.gantt .row{display:grid;grid-template-columns:130px 1fr;height:3.46cqi;margin-bottom:0.49cqi;align-items:center}
+.gantt .lbl{font-weight:600;font-size:1.48cqi}
+.gantt .cells{position:relative;height:100%;background:var(--surface-2);border-radius:0.74cqi;background-image:repeating-linear-gradient(to right,var(--border) 0 1px,transparent 1px calc(100%/12))}
+.gantt .bar{position:absolute;top:0.37cqi;bottom:0.37cqi;background:var(--grad);border-radius:0.49cqi;display:flex;align-items:center;padding:0 0.74cqi;font-weight:700;font-size:1.36cqi;color:#fff;white-space:nowrap}
+
+/* image-grid */
+.gg{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(6.91cqi,auto);gap:1.23cqi}
+.gg .cell{border-radius:2.47cqi;overflow:hidden;position:relative;box-shadow:var(--shadow)}
+.gg .cell span{position:absolute;bottom:0;left:0;right:0;padding:0.99cqi;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;font-weight:600;font-size:1.98cqi}
+.c1{grid-column:span 2;grid-row:span 2;background:var(--grad)}
+.c2{background:linear-gradient(135deg,#ff9a56,#ff6b6b)}
+.c3{background:linear-gradient(135deg,#6bc5ff,#3b6cff)}
+.c4{background:linear-gradient(135deg,#ff9a56,#7a5cff)}
+.c5{background:linear-gradient(135deg,#7a5cff,#ff5c8a)}
+.c6{background:linear-gradient(135deg,#1a1a2e,#16213e)}
+.c7{grid-column:span 2;background:linear-gradient(135deg,#3b6cff,#7a5cff,#ff5c8a)}
+
+/* image-hero */
+.hero{height:100%;border-radius:2.47cqi;overflow:hidden;box-shadow:var(--shadow);position:relative}
+.hero .bg{position:absolute;inset:0;background:radial-gradient(40% 30% at 30% 40%,#3b6cff,transparent 60%),radial-gradient(40% 35% at 70% 60%,#ff5c8a,transparent 60%),#0d1b2a}
+.hero .bg.kb{animation:kf-kenburns 18s ease alternate infinite}
+.hero .overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(13,27,42,.9),transparent 50%,rgba(13,27,42,.3))}
+.hero .caption{position:absolute;bottom:0;left:0;right:0;padding:3.7cqi 4.94cqi;color:#fff}
+.hero .caption h1{font-size:6.91cqi;line-height:1.1;font-weight:800;margin:0}
+.hero .caption p{font-size:2.22cqi;margin:0.99cqi 0 0;opacity:.8;color:#fff}
+.hero .pill{display:inline-block;padding:0.49cqi 1.48cqi;border-radius:999px;font-size:1.48cqi;font-weight:600;background:rgba(255,255,255,.15);color:#fff;backdrop-filter:blur(8px)}
+
+/* mindmap */
+.mm{position:relative;height:52cqi;max-width:100%;margin-top:1.48cqi}
+.mm .n{position:absolute;background:var(--surface);border:0.25cqi solid var(--border);border-radius:1.48cqi;padding:1.23cqi 2.22cqi;font-weight:700;font-size:2.22cqi;box-shadow:var(--shadow)}
+.mm .root{top:50%;left:50%;transform:translate(-50%,-50%);background:var(--accent);color:#fff;font-size:2.96cqi;border-color:var(--accent)}
+.mm .n.sm{font-size:1.73cqi;padding:0.74cqi 1.73cqi}
+.mm svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.mm svg path{fill:none;stroke:var(--border-strong);stroke-width:0.25cqi}
+
+/* process-steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.73cqi;margin-top:2.47cqi}
+.steps .step{background:var(--surface);border:0.25cqi solid var(--border);border-radius:2.47cqi;padding:2.22cqi 1.73cqi 1.73cqi;position:relative;box-shadow:var(--shadow)}
+.steps .step .num{position:absolute;top:-1.48cqi;left:1.73cqi;width:3.46cqi;height:3.46cqi;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:2.22cqi}
+.steps .step h4{font-size:2.22cqi;margin:0.49cqi 0 0.49cqi}
+.steps .step p{font-size:1.73cqi;color:var(--text-2);margin:0 0 0.49cqi}
+.steps .step .tag{font-size:1.36cqi;color:var(--text-3);font-family:var(--font-mono)}
+
+/* pros-cons */
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:2.22cqi;margin-top:2.47cqi}
+.pc .card h3{display:flex;align-items:center;gap:0.74cqi;font-size:2.96cqi;margin:0 0 0.99cqi}
+.pc .card h3 .b{width:3.46cqi;height:3.46cqi;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.22cqi}
+.pc .pro h3 .b{background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--good)}
+.pc .con h3 .b{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad)}
+.pc .pro{border-top:0.37cqi solid var(--good)}
+.pc .con{border-top:0.37cqi solid var(--bad)}
+.pc ul{list-style:none;padding:0;font-size:1.98cqi;color:var(--text-2)}
+.pc li{margin-bottom:0.49cqi}
+
+/* roadmap */
+.rm{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:0.25cqi solid var(--border);border-radius:2.47cqi;overflow:hidden;margin-top:2.47cqi}
+.rm .col{background:var(--surface);padding:2.22cqi 1.73cqi;border-right:0.25cqi solid var(--border)}
+.rm .col:last-child{border-right:none}
+.rm .col .tag{display:inline-block;padding:0.49cqi 1.23cqi;border-radius:999px;font-size:1.48cqi;font-weight:600;background:var(--surface-2);color:var(--text-2);margin-bottom:0.99cqi}
+.rm .col.now{background:color-mix(in srgb,var(--accent) 6%,var(--surface))}
+.rm .col.now .tag{background:var(--accent);color:#fff}
+.rm h4{font-size:2.22cqi;margin:0 0 0.74cqi}
+.rm ul{list-style:none;padding:0;font-size:1.73cqi;color:var(--text-2);margin:0}
+.rm li{margin-bottom:0.37cqi}
+
+/* table */
+.t{width:100%;border-collapse:collapse}
+.t th,.t td{text-align:left;padding:0.74cqi 1.48cqi;font-size:1.73cqi;border-bottom:0.12cqi solid var(--border)}
+.t th{font-size:1.48cqi;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);font-weight:600}
+.t tr:hover td{background:var(--surface-2)}
+.t td.num{font-variant-numeric:tabular-nums;text-align:right}
+
+/* terminal */
+.term{background:#0d1117;border:0.12cqi solid rgba(120,200,255,.15);border-radius:1.73cqi;padding:2.22cqi 2.47cqi;box-shadow:inset 0 0 3.7cqi rgba(0,0,0,.4);font-family:var(--font-mono);font-size:1.73cqi;color:#c9d1d9}
+.term .bar{display:flex;gap:0.62cqi;margin-bottom:1.48cqi}
+.term .bar span{width:1.11cqi;height:1.11cqi;border-radius:50%}
+.term .bar span:nth-child(1){background:#ff5f56}
+.term .bar span:nth-child(2){background:#ffbd2e}
+.term .bar span:nth-child(3){background:#27c93f}
+.term .p{color:var(--accent)}
+.term .c{color:var(--text-1)}
+.term .o{color:var(--text-2)}
+.term .caret{display:inline-block;width:0.99cqi;height:2.22cqi;background:var(--accent);animation:blink 1s step-end infinite;vertical-align:text-bottom}
+@keyframes blink{50%{opacity:0}}
+
+/* timeline */
+.tl{position:relative;margin-top:3.7cqi}
+.tl::before{content:"";position:absolute;top:4.94cqi;left:0;right:0;height:0.25cqi;background:var(--grad)}
+.tl .row{display:grid;grid-template-columns:repeat(5,1fr);gap:0}
+.tl .item{text-align:center;padding-top:7.41cqi;position:relative}
+.tl .item .year{font-size:1.48cqi;font-weight:600;color:var(--text-3);text-transform:uppercase}
+.tl .dot{position:absolute;top:4.57cqi;left:50%;transform:translateX(-50%);width:1.36cqi;height:1.36cqi;border-radius:50%;background:var(--accent);border:0.37cqi solid var(--bg)}
+.tl h4{font-size:2.22cqi;margin:0.74cqi 0 0.37cqi;font-weight:700}
+.tl p{font-size:1.73cqi;color:var(--text-2);margin:0}
+
+/* todo-checklist */
+.todo{max-width:90%;list-style:none;padding:0;margin:2.47cqi 0 0}
+.todo li{display:flex;align-items:center;gap:1.23cqi;padding:0.99cqi 0;border-bottom:0.12cqi solid var(--border)}
+.todo li .b{width:2.22cqi;height:2.22cqi;border:0.25cqi solid var(--border-strong);border-radius:0.49cqi;flex-shrink:0}
+.todo li.done .b{background:var(--good);border-color:var(--good);position:relative}
+.todo li.done .b::after{content:"✓";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.48cqi;font-weight:700}
+.todo li.done .t{text-decoration:line-through;color:var(--text-3)}
+.todo li .t{font-size:2.22cqi;flex:1}
+.todo li .tag{font-size:1.48cqi;color:var(--text-3);font-family:var(--font-mono);margin-left:auto}
+</style>
+
+<script src="../assets/runtime.js"></script>
+</body></html>

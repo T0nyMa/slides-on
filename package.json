@@ -1,0 +1,23 @@
+{
+  "name": "slides-on",
+  "version": "1.0.0",
+  "description": "Unified presentation skill: HTML slides + AI visuals + academic conventions, one pipeline",
+  "type": "module",
+  "scripts": {
+    "render": "bun scripts/render-precise.ts",
+    "merge-pptx": "bun scripts/merge-to-pptx.ts",
+    "merge-pdf": "bun scripts/merge-to-pdf.ts",
+    "svg-to-png": "bun scripts/svg-to-png.ts",
+    "imagine": "bun scripts/imagine/main.ts",
+    "imagine-batch": "bun scripts/imagine/build-batch.ts"
+  },
+  "dependencies": {
+    "playwright": "^1.59.0",
+    "pptxgenjs": "^4.0.0",
+    "sharp": "^0.34.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0"
+  }
+}

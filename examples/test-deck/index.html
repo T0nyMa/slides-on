@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="minimal-white">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Test Deck — slides-on</title>
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../../assets/base.css">
+<link rel="stylesheet" id="theme-link" href="../../assets/themes/minimal-white.css">
+<link rel="stylesheet" href="../../assets/animations/animations.css">
+</head>
+<body data-themes="minimal-white,blueprint,catppuccin-mocha,tokyo-night" data-theme-base="../../assets/themes/">
+<div class="deck">
+
+  <!-- 1. Cover -->
+  <section class="slide center tc" data-title="Cover">
+    <div>
+      <p class="kicker anim-fade-down" data-anim="fade-down">Pipeline Verification</p>
+      <h1 class="h1 anim-fade-up" data-anim="fade-up">slides-on <span class="gradient-text">Test Deck</span></h1>
+      <p class="lede">Verifying the full pipeline — HTML → PNG → PPTX</p>
+    </div>
+    <div class="notes">Welcome to the slides-on test deck. This verifies the complete pipeline works end-to-end.</div>
+  </section>
+
+  <!-- 2. TOC -->
+  <section class="slide" data-title="Agenda">
+    <p class="kicker">Agenda</p>
+    <h2 class="h2">What we verify</h2>
+    <div class="grid g3 mt-l anim-stagger-list" data-anim-target>
+      <div class="card"><h4>01 · Layouts</h4><p class="dim">CSS Grid system, cards, typography.</p></div>
+      <div class="card"><h4>02 · Animation</h4><p class="dim">Fade, rise, stagger, counter.</p></div>
+      <div class="card"><h4>03 · Export</h4><p class="dim">Playwright @2x screenshot per slide.</p></div>
+    </div>
+  </section>
+
+  <!-- 3. Two Column -->
+  <section class="slide" data-title="Two Column">
+    <p class="kicker">Pattern · 双栏</p>
+    <h2 class="h2">概念 <span class="dim2">⟷</span> 示例</h2>
+    <div class="grid g2 mt-l" style="align-items:start">
+      <div class="card anim-fade-left" data-anim="fade-left">
+        <h3>左栏 · 概念</h3>
+        <p class="dim">一个主题 = 一组 CSS 变量。把颜色、字体、圆角、阴影全部收到 <code>:root</code> 里。</p>
+        <ul class="mt-m">
+          <li>— tokens 定义语义，不写具体色值</li>
+          <li>— base.css 用 tokens 排版</li>
+          <li>— 每个主题只改变量</li>
+        </ul>
+      </div>
+      <div class="card anim-fade-right" data-anim="fade-right">
+        <h3>右栏 · 示例</h3>
+        <pre class="mono" style="font-size:13px;background:var(--surface-2);padding:14px;border-radius:var(--radius);overflow:auto">
+:root {
+  --bg: #fff;
+  --text-1: #0c0d10;
+  --accent: #3b6cff;
+  --radius: 18px;
+}
+.card {
+  background: var(--bg);
+  color: var(--text-1);
+  border-radius: var(--radius);
+}</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Stat -->
+  <section class="slide center tc" data-title="Stat">
+    <div>
+      <p class="kicker">Coverage</p>
+      <div style="font-size:220px;font-weight:900;line-height:1">
+        <span class="counter gradient-text" data-to="36">0</span>
+      </div>
+      <h3>themes ready to use</h3>
+    </div>
+  </section>
+
+  <!-- 5. Code -->
+  <section class="slide" data-title="Code">
+    <p class="kicker">Tooling</p>
+    <h2 class="h2">render-precise.ts</h2>
+    <pre class="mono anim-fade-up" data-anim="fade-up" style="margin-top:20px;font-size:14px;background:var(--surface-2);padding:18px;border-radius:var(--radius);overflow:auto">
+// Playwright @2x high-precision rendering
+const browser = await chromium.launch();
+const page = await browser.newPage({
+  viewport: { width: 1920, height: 1080 },
+  deviceScaleFactor: 2
+});
+
+await page.goto(fileUrl);
+await page.evaluate(() => document.fonts.ready);
+await page.evaluate(() =>
+  Promise.all(document.getAnimations().map(a => a.finished)));
+await page.screenshot({ path: outFile });</pre>
+  </section>
+
+  <!-- 6. CTA -->
+  <section class="slide center tc" data-title="CTA">
+    <div>
+      <p class="kicker">Your turn</p>
+      <h1 class="h1 anim-rise-in" data-anim="rise-in">开始做你的 deck</h1>
+      <p class="lede" style="margin:16px auto">按 ← → 翻页 · T 切主题 · A 切动效 · F 全屏 · O 概览 · S 备注</p>
+    </div>
+  </section>
+
+  <!-- 7. Thanks -->
+  <section class="slide center tc" data-title="Thanks">
+    <div>
+      <div class="anim-confetti-burst" style="display:inline-block;padding:40px"></div>
+      <h1 class="h1 anim-fade-up" data-anim="fade-up" style="font-size:180px;line-height:1"><span class="gradient-text">Thanks</span></h1>
+      <p class="lede" style="margin:18px auto 0">slides-on · Unified Presentation Skill</p>
+    </div>
+  </section>
+
+</div>
+<script src="../../assets/runtime.js"></script>
+</body>
+</html>

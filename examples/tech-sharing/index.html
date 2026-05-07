@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="blueprint">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Building Modern Web Applications</title>
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../../assets/base.css">
+<link rel="stylesheet" id="theme-link" href="../../assets/themes/blueprint.css">
+<link rel="stylesheet" href="../../assets/animations/animations.css">
+<style>
+  /* Arch diagram */
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+  }
+  .arch-node {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 28px;
+    text-align: center;
+    min-width: 120px;
+  }
+  .arch-node h3 { font-size: 18px; color: var(--text-1); margin: 0 0 4px; }
+  .arch-node p  { font-size: 13px; color: var(--text-3); margin: 0; }
+  .arch-arrow   { font-size: 28px; color: var(--accent); opacity: 0.6; }
+  .arch-node.client { border-left: 4px solid var(--accent); }
+
+  /* Bar chart */
+  .bar-chart { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 600px; }
+  .bar-row { display: flex; align-items: center; gap: 12px; }
+  .bar-label { width: 100px; text-align: right; font-size: 15px; color: var(--text-2); font-weight: 500; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 32px; background: var(--surface); border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 12px; font-size: 13px; font-weight: 600; color: #fff; }
+  .bar-val { width: 80px; font-size: 14px; color: var(--text-2); font-weight: 600; flex-shrink: 0; }
+  .bar-fill.fastify { background: var(--accent); }
+
+  /* Two-column comparison */
+  .vs-col {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+  .vs-col h3 { font-size: 20px; margin: 0 0 12px; color: var(--text-1); }
+  .vs-col li { padding: 6px 0; font-size: 15px; color: var(--text-2); border-bottom: 1px solid var(--border); }
+  .vs-col li:last-child { border-bottom: none; }
+  .vs-col li::before { content: '+ '; color: var(--accent); font-weight: 700; }
+
+  /* TOC */
+  .toc-num {
+    width: 42px; height: 42px; border-radius: var(--radius);
+    background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 18px; flex-shrink: 0;
+  }
+</style>
+</head>
+<body data-themes="blueprint,minimal-white,catppuccin-mocha,tokyo-night,aurora" data-theme-base="../../assets/themes/">
+<div class="deck">
+
+  <!-- 1. Cover -->
+  <section class="slide" data-title="Cover">
+    <div class="deck-header"><span class="eyebrow">Tech Talk · 2026</span><span class="eyebrow">slides-on</span></div>
+    <div class="anim-stagger-list">
+      <p class="kicker">Engineering Deep Dive</p>
+      <h1 class="h1 anim-fade-up" data-anim="fade-up">
+        Building <span class="gradient-text">Modern</span><br>Web Applications
+      </h1>
+      <p class="lede">A Practical Guide to the 2026 Stack</p>
+      <div class="row wrap mt-l">
+        <span class="pill pill-accent">TypeScript</span>
+        <span class="pill">React 19</span>
+        <span class="pill">Bun</span>
+        <span class="pill">Edge Computing</span>
+      </div>
+    </div>
+    <div class="deck-footer"><span class="dim2">Engineering Team</span><span class="slide-number" data-current="1" data-total="9"></span></div>
+    <div class="notes">Welcome everyone. Today we're talking about the modern web application stack in 2026.</div>
+  </section>
+
+  <!-- 2. TOC -->
+  <section class="slide" data-title="Agenda">
+    <p class="kicker">Agenda</p>
+    <h2 class="h2">What We'll Cover</h2>
+    <div class="grid g2 mt-l anim-stagger-list" data-anim-target>
+      <div class="card"><span class="toc-num" style="display:inline-flex;margin-bottom:8px">1</span><h4>The Modern Stack</h4><p class="dim">Choosing the right tools for frontend and backend.</p></div>
+      <div class="card"><span class="toc-num" style="display:inline-flex;margin-bottom:8px">2</span><h4>System Architecture</h4><p class="dim">Client to database — layered design.</p></div>
+      <div class="card"><span class="toc-num" style="display:inline-flex;margin-bottom:8px">3</span><h4>API Design Patterns</h4><p class="dim">Type-safe RPC with Hono + Zod.</p></div>
+      <div class="card"><span class="toc-num" style="display:inline-flex;margin-bottom:8px">4</span><h4>Performance Benchmarks</h4><p class="dim">Framework comparison on Bun runtime.</p></div>
+    </div>
+  </section>
+
+  <!-- 3. Two Column: Frontend vs Backend -->
+  <section class="slide" data-title="Modern Stack">
+    <p class="kicker">Stack · 技术选型</p>
+    <h2 class="h2">The Modern Stack</h2>
+    <div class="grid g2 mt-l" style="align-items:start">
+      <div class="vs-col anim-fade-left" data-anim="fade-left">
+        <h3>Frontend</h3>
+        <ul>
+          <li>React 19 with Server Components</li>
+          <li>TypeScript for type safety</li>
+          <li>Tailwind CSS v4 for styling</li>
+          <li>TanStack Router for SPA routing</li>
+          <li>Bun as package manager and bundler</li>
+        </ul>
+      </div>
+      <div class="vs-col anim-fade-right" data-anim="fade-right">
+        <h3>Backend</h3>
+        <ul>
+          <li>Bun runtime with native TypeScript</li>
+          <li>Hono framework for Edge &amp; Node</li>
+          <li>Drizzle ORM for type-safe SQL</li>
+          <li>PostgreSQL with pgvector</li>
+          <li>Redis for caching and pub/sub</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Architecture Diagram -->
+  <section class="slide" data-title="Architecture">
+    <p class="kicker">Architecture</p>
+    <h2 class="h2">System Architecture</h2>
+    <div class="arch-flow mt-l">
+      <div class="arch-node client"><h3>Client</h3><p>React SPA + PWA</p></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node"><h3>CDN</h3><p>Static Assets + Edge</p></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node"><h3>API Gateway</h3><p>Hono + RPC</p></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node"><h3>Database</h3><p>PostgreSQL + Redis</p></div>
+    </div>
+    <p class="dim" style="text-align:center;margin-top:16px;font-size:15px;">
+      Client-side rendering with React · Edge caching at CDN · Type-safe RPC · Dual-layer storage
+    </p>
+  </section>
+
+  <!-- 5. Code -->
+  <section class="slide" data-title="API Example">
+    <p class="kicker">Code · API</p>
+    <h2 class="h2">Type-safe RPC with Hono</h2>
+    <pre class="mono anim-fade-up" data-anim="fade-up" style="margin-top:20px;font-size:14px;background:var(--surface-2);padding:18px;border-radius:var(--radius);overflow:auto">
+// api/routes/users.ts — Hono RPC route
+import { Hono } from 'hono';
+import { zValidator } from '@hono/zod-validator';
+import { z } from 'zod';
+
+const app = new Hono()
+  .get('/:id', async (c) => {
+    const { id } = c.req.param();
+    const user = await db.query.users
+      .findFirst({ where: eq(users.id, id) });
+    return c.json({ data: user });
+  })
+  .post('/', zValidator('json', z.object({
+    name: z.string().min(2),
+    email: z.string().email(),
+  })), async (c) => {
+    const body = c.req.valid('json');
+    const user = await db.insert(users)
+      .values(body).returning();
+    return c.json({ data: user }, 201);
+  });
+
+export type UsersRoute = typeof app;
+export default app;</pre>
+    <p class="dim" style="margin-top:8px;font-size:13px;">Type-safe RPC with Zod validation · Drizzle ORM · Auto-generated client types</p>
+  </section>
+
+  <!-- 6. Bar Chart -->
+  <section class="slide" data-title="Benchmarks">
+    <p class="kicker">Benchmark</p>
+    <h2 class="h2">Performance Comparison</h2>
+    <div class="center mt-l">
+      <div class="bar-chart" style="margin:0 auto;">
+        <div class="bar-row">
+          <span class="bar-label">Fastify</span>
+          <div class="bar-track"><div class="bar-fill fastify" style="width:94%">94k</div></div>
+          <span class="bar-val">94k req/s</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Hono</span>
+          <div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--accent);opacity:0.8">88k</div></div>
+          <span class="bar-val">88k req/s</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">Express</span>
+          <div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--text-3)">45k</div></div>
+          <span class="bar-val">45k req/s</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">FastAPI</span>
+          <div class="bar-track"><div class="bar-fill" style="width:52%;background:var(--text-3);opacity:0.7">52k</div></div>
+          <span class="bar-val">52k req/s</span>
+        </div>
+      </div>
+      <p class="dim" style="margin-top:16px;font-size:14px;">
+        Bun 1.2 runtime · JSON serialization · Single-core, 100 concurrent connections
+      </p>
+    </div>
+  </section>
+
+  <!-- 7. Key Takeaways -->
+  <section class="slide" data-title="Takeaways">
+    <p class="kicker">Summary</p>
+    <h2 class="h2">Key Takeaways</h2>
+    <ul class="mt-l anim-stagger-list" data-anim-target style="font-size:18px">
+      <li><strong>Bun is production-ready</strong> — Native TypeScript, faster installs, built-in test runner make it the default choice for new projects.</li>
+      <li><strong>Type-safe RPC eliminates API drift</strong> — With Hono RPC and Zod, client and server stay in sync automatically.</li>
+      <li><strong>Edge computing reduces latency</strong> — Deploying API handlers at the CDN edge cuts TTFB by 40-60% for global users.</li>
+      <li><strong>ORM type-safety catches bugs at compile time</strong> — Drizzle ORM provides end-to-end type safety from schema to response.</li>
+    </ul>
+  </section>
+
+  <!-- 8. Section Divider — Q&A -->
+  <section class="slide tc center" data-title="Q&A">
+    <div style="max-width:780px;margin:0 auto">
+      <p class="kicker anim-fade-down" data-anim="fade-down">Discussion</p>
+      <h1 class="h1 anim-rise-in" data-anim="rise-in" style="font-size:112px">Q &amp; A</h1>
+      <div class="divider-accent" style="margin:24px auto"></div>
+      <p class="lede" style="margin:0 auto">Let's talk about how these patterns apply to our codebase.</p>
+    </div>
+  </section>
+
+  <!-- 9. Thanks -->
+  <section class="slide center tc" data-title="Thanks">
+    <div>
+      <div class="anim-confetti-burst" style="display:inline-block;padding:40px"></div>
+      <h1 class="h1 anim-fade-up" data-anim="fade-up" style="font-size:180px;line-height:1"><span class="gradient-text">Thanks</span></h1>
+      <p class="lede" style="margin:18px auto 0">Slides &amp; code at github.com/example/modern-web-stack</p>
+      <div class="row mt-l" style="justify-content:center;gap:32px">
+        <div class="dim">Built with slides-on</div>
+        <div class="dim">blueprint theme</div>
+        <div class="dim">2026</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+<script src="../../assets/runtime.js"></script>
+</body>
+</html>

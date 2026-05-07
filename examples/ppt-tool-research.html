@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PPT工具研究与整合方案 — Hermes Cyber Terminal</title>
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" href="../templates/full-decks/hermes-cyber-terminal/style.css">
+<style>
+/* 3:4 narrow-canvas adaptation for hermes-cyber-terminal */
+@media (max-width: 900px) {
+  .tpl-hermes-cyber-terminal .slide { padding: 40px 44px; }
+  .tpl-hermes-cyber-terminal .hc-h1 { font-size: 44px; text-shadow: 0 0 20px rgba(126,211,164,.3), 0 0 40px rgba(126,211,164,.08); margin: 8px 0; }
+  .tpl-hermes-cyber-terminal .hc-h2 { font-size: 28px; }
+  .tpl-hermes-cyber-terminal .hc-h3 { font-size: 18px; }
+  .tpl-hermes-cyber-terminal .hc-lede { font-size: 14px; max-width: 100%; }
+  .tpl-hermes-cyber-terminal .hc-big { font-size: 80px; text-shadow: 0 0 24px rgba(126,211,164,.3), 0 0 48px rgba(126,211,164,.1); }
+  .tpl-hermes-cyber-terminal .hc-card { padding: 14px 18px; }
+  .tpl-hermes-cyber-terminal .hc-card .val { font-size: 16px; }
+  .tpl-hermes-cyber-terminal .hc-card .desc { font-size: 11px; margin-top: 6px; }
+  .tpl-hermes-cyber-terminal .hc-card .lbl { font-size: 9px; margin-bottom: 6px; }
+  .tpl-hermes-cyber-terminal .hc-codebox { font-size: 12px; padding: 16px 20px; }
+  .tpl-hermes-cyber-terminal .hc-tag { font-size: 10px; padding: 2px 8px; }
+  .tpl-hermes-cyber-terminal .hc-footer { left: 44px; right: 44px; bottom: 24px; padding-top: 10px; }
+  .tpl-hermes-cyber-terminal .hc-grid-3 { gap: 10px; margin-top: 16px; }
+  .tpl-hermes-cyber-terminal .hc-grid-2 { gap: 14px; margin-top: 16px; }
+  .tpl-hermes-cyber-terminal .hc-chrome { margin-bottom: 12px; font-size: 10px; }
+  .tpl-hermes-cyber-terminal .hc-prompt { font-size: 14px; }
+}
+</style>
+</head>
+<body class="tpl-hermes-cyber-terminal">
+<div class="deck">
+
+<!-- ═══ 1. COVER ═══ -->
+<section class="slide is-active">
+  <div class="hc-grid"></div>
+  <div class="hc-vignette"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>~/research · zsh · 80x42</div></div>
+  <div style="margin:auto 0">
+    <p class="hc-prompt">cat PPT工具研究与整合方案.md</p>
+    <h1 class="hc-h1">PPT/演示工具<br>研究与整合方案<span class="hc-cursor"></span></h1>
+    <p class="hc-lede">四个项目深度分析 + 统一演示制作系统架构设计</p>
+    <div style="margin-top:22px">
+      <span class="hc-tag">html-ppt</span>
+      <span class="hc-tag">baoyu-skills</span>
+      <span class="hc-tag amber">academic-pptx</span>
+      <span class="hc-tag red">integration</span>
+    </div>
+  </div>
+  <div class="hc-footer"><span>research · slides-on</span><span>01 / 16</span></div>
+</section>
+
+<!-- ═══ 2. SECTION — 四个项目 ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>section · 01/04</div></div>
+  <div style="margin:auto 0">
+    <p class="hc-prompt">ls projects/</p>
+    <h1 class="hc-h1" style="font-size:80px">// 四个项目</h1>
+    <p class="hc-lede" style="margin-top:12px"><code style="color:var(--hc-amber)">html-ppt-skill</code> — 纯 HTML/CSS/JS 交互式演示系统</p>
+    <p class="hc-lede"><code style="color:var(--hc-amber)">baoyu-skills</code> — AI 驱动的视觉内容生成工具集</p>
+    <p class="hc-lede"><code style="color:var(--hc-amber)">academic-pptx-skill</code> — 学术演示内容策略与结构规范</p>
+    <p class="hc-lede"><code style="color:var(--hc-amber)">对比总结</code> — 三维度全面对比分析</p>
+  </div>
+  <div class="hc-footer"><span>section · overview</span><span>02 / 16</span></div>
+</section>
+
+<!-- ═══ 3. html-ppt-skill ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>project · 01</div></div>
+  <p class="hc-prompt">cat html-ppt-skill/README.md</p>
+  <h2 class="hc-h2">html-ppt-skill</h2>
+  <p class="hc-lede">定位：纯 HTML/CSS/JS 的演示文稿系统，生成可交互的网页演示。</p>
+  <div class="hc-grid-3" style="margin-top:14px">
+    <div class="hc-card"><div class="lbl">渲染引擎</div><div class="desc">纯静态 HTML + CSS Variables + 原生 JS，零框架依赖</div></div>
+    <div class="hc-card"><div class="lbl">主题系统</div><div class="desc">36 个内置主题，基于 CSS Variables 实现，切换主题只需替换 :root 变量</div></div>
+    <div class="hc-card"><div class="lbl">布局系统</div><div class="desc">31 种布局类型，每种对应 templates/single-page/*.html 模板</div></div>
+  </div>
+  <div class="hc-grid-3">
+    <div class="hc-card"><div class="lbl">动画系统</div><div class="desc">27 种 CSS 动画 + 20 种 Canvas 特效，通过 data-anim 属性声明</div></div>
+    <div class="hc-card"><div class="lbl">导航机制</div><div class="desc">runtime.js（~960行）管理幻灯片状态，URL #/N 深链接，键盘事件</div></div>
+    <div class="hc-card"><div class="lbl">Presenter 模式</div><div class="desc">window.open() 弹窗 + iframe 预览，BroadcastChannel 双向同步</div></div>
+  </div>
+  <div class="hc-grid-2">
+    <div class="hc-card"><div class="lbl">+ 优势</div><div class="desc">完全可交互的演示体验；主题切换即时生效；布局种类丰富；无需网络连接，纯本地运行</div></div>
+    <div class="hc-card"><div class="lbl">- 不足</div><div class="desc">PNG 导出使用粗糙的 headless Chrome 截图；不能直接生成 .pptx 文件；没有 AI 图片生成能力</div></div>
+  </div>
+  <div class="hc-footer"><span>html-ppt-skill</span><span>03 / 16</span></div>
+</section>
+
+<!-- ═══ 4. baoyu-skills ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>project · 02</div></div>
+  <p class="hc-prompt">cat baoyu-skills/README.md</p>
+  <h2 class="hc-h2">baoyu-skills</h2>
+  <p class="hc-lede">定位：AI 驱动的视觉内容生成工具集，包含四个核心 skill。</p>
+  <div class="hc-grid-2" style="margin-top:14px">
+    <div class="hc-card"><div class="lbl">baoyu-slide-deck</div><div class="desc">17 个预设风格 + 4 维自定义（Texture × Mood × Typography × Density），9 步流程将内容转化为 AI 生成的幻灯片图片</div></div>
+    <div class="hc-card"><div class="lbl">baoyu-infographic</div><div class="desc">21 种布局类型 × 22 种视觉风格，自由组合生成信息图。关键词快捷如"高密度信息大图"自动匹配布局</div></div>
+  </div>
+  <div class="hc-grid-2">
+    <div class="hc-card"><div class="lbl">baoyu-diagram</div><div class="desc">9 种 SVG 图类型（Architecture/Flowchart/Sequence/Structural 等），Dark 主题 8 种语义色彩，严格 z-order 分层规则</div></div>
+    <div class="hc-card"><div class="lbl">baoyu-imagine</div><div class="desc">统一的多 Provider 图片生成后端，支持 10 个 Provider（OpenAI/Google/DashScope/Z.AI/MiniMax 等），text-to-image + 参考图 + 批量</div></div>
+  </div>
+  <div class="hc-grid-2">
+    <div class="hc-card"><div class="lbl">+ 整体优势</div><div class="desc">AI 图片生成质量高，风格多样；多 Provider 灵活切换；prompt 文件机制保证可复现性；SVG 架构图质量专业</div></div>
+    <div class="hc-card"><div class="lbl">- 整体不足</div><div class="desc">AI 生成幻灯片是图片，不可编辑文本；无交互式演示能力；生成速度慢（每张 10-30s）；无法精确控制文字排版和数据图表</div></div>
+  </div>
+  <div class="hc-footer"><span>baoyu-skills</span><span>04 / 16</span></div>
+</section>
+
+<!-- ═══ 5. academic-pptx-skill ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>project · 03</div></div>
+  <p class="hc-prompt">cat academic-pptx-skill/README.md</p>
+  <h2 class="hc-h2">academic-pptx-skill</h2>
+  <p class="hc-lede">定位：学术演示文稿的内容策略和结构规范，与 Anthropic 内置 PPTX skill 配合使用。</p>
+  <div class="hc-grid-3" style="margin-top:14px">
+    <div class="hc-card"><div class="lbl">技术实现</div><div class="desc">依赖 pptxgenjs（Node.js PPTX 生成库），通过 JavaScript API 直接构建 .pptx</div></div>
+    <div class="hc-card"><div class="lbl">设计哲学</div><div class="desc">Communication-first（沟通优先），非 Design-forward（设计优先）</div></div>
+    <div class="hc-card"><div class="lbl">核心原则</div><div class="desc">Action Titles / Ghost Deck Test / 一页一观点 / 40 词上限 / 引用规范 / 以结论结束</div></div>
+  </div>
+  <div class="hc-grid-3">
+    <div class="hc-card"><div class="lbl">Deck 架构</div><div class="desc">Title → Motivation → Research Question → Methods → Results → Discussion → Conclusions → References → Appendix</div></div>
+    <div class="hc-card"><div class="lbl">设计标准</div><div class="desc">白色背景，单一无衬线字体，最多 3 种颜色；标题 24-28pt / 正文 20pt / 图表标注 16-18pt / 引用 12-14pt</div></div>
+    <div class="hc-card"><div class="lbl">Slide Patterns</div><div class="desc">11 种标准页面模式，每种都有完整的 pptxgenjs 代码示例</div></div>
+  </div>
+  <div class="hc-grid-2">
+    <div class="hc-card"><div class="lbl">+ 优势</div><div class="desc">学术演示最佳实践规范，方法论严谨；直接生成原生 .pptx 文件，文本和图表可编辑；内置 QA 流程保证质量</div></div>
+    <div class="hc-card"><div class="lbl">- 不足</div><div class="desc">仅限学术场景，风格单一（白底、无装饰）；无 AI 图片/插图生成能力；无交互演示能力</div></div>
+  </div>
+  <div class="hc-footer"><span>academic-pptx-skill</span><span>05 / 16</span></div>
+</section>
+
+<!-- ═══ 6. 对比总结 ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>compare · diff</div></div>
+  <p class="hc-prompt">diff projects/ --format table</p>
+  <h2 class="hc-h2">对比总结</h2>
+  <pre class="hc-codebox" style="font-size:11px;line-height:1.7;padding:14px 18px;margin-top:8px"><span class="cm">维度            html-ppt-skill        baoyu-skills          academic-pptx-skill</span>
+<span class="cm">──────────────────────────────────────────────────────────────────────────────────────</span>
+<span class="kw">输出格式</span>        HTML 网页             AI 图片+SVG+PPTX/PDF  原生 .pptx
+<span class="kw">渲染方式</span>        浏览器渲染            AI API + SVG 代码      pptxgenjs 代码生成
+<span class="kw">可编辑性</span>        源码可编辑            图片不可编辑/SVG可编辑  .pptx 完全可编辑
+<span class="kw">交互性</span>          完整交互（键盘/presenter）无                    无
+<span class="kw">视觉质量</span>        依赖CSS/截图质量       AI 图片质量高          标准 PPTX 质量
+<span class="kw">风格多样性</span>      36主题+31布局          17风格+21布局+22视觉    单一学术风格
+<span class="kw">架构图</span>          无（需手动）           SVG 架构图 9 种类型    无
+<span class="kw">插图/信息图</span>     无                     AI 生成                无
+<span class="kw">文字排版控制</span>    CSS 精确控制           AI 不可控              pptxgenjs 精确控制
+<span class="kw">数据图表</span>        需手动写 HTML          AI 近似绘制            pptxgenjs chart API
+<span class="kw">导出 PNG</span>        headless Chrome（粗糙） AI 原生输出           LibreOffice + pdftoppm
+<span class="kw">导出 PPTX</span>       无（需额外工具）        merge-to-pptx（拼合）  原生 pptxgenjs
+<span class="kw">生成速度</span>        即时                   慢（10-30s/张）        快（代码生成）
+<span class="kw">适用场景</span>        技术分享、在线演示      视觉型/社交媒体/宣传    学术会议、论文答辩</pre>
+  <div class="hc-footer"><span>comparison · 14 dimensions</span><span>06 / 16</span></div>
+</section>
+
+<!-- ═══ 7. SECTION — 整合方案 ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>section · 02/04</div></div>
+  <div style="margin:auto 0">
+    <p class="hc-prompt">cd integration/</p>
+    <h1 class="hc-h1" style="font-size:80px">// 整合方案</h1>
+    <p class="hc-lede" style="margin-top:14px">目标：构建一个统一的演示制作系统，能够：</p>
+    <p class="hc-lede"><span style="color:var(--hc-green)">01</span> 制作完整 PPT — 可交互网页版 + 可编辑 .pptx 文件</p>
+    <p class="hc-lede"><span style="color:var(--hc-green)">02</span> AI 插图 — 为幻灯片自动生成高质量插图、信息图</p>
+    <p class="hc-lede"><span style="color:var(--hc-green)">03</span> 架构图 — 专业的 SVG 架构图/流程图/序列图</p>
+    <p class="hc-lede"><span style="color:var(--hc-green)">04</span> 高质量渲染 — 用 CDP/Playwright 替代粗糙的 headless Chrome 截图</p>
+    <p class="hc-lede" style="margin-top:12px">架构：内容分析层 → 结构规划层 → 风格决策层 → 渲染引擎层 → 导出引擎层</p>
+  </div>
+  <div class="hc-footer"><span>section · integration</span><span>07 / 16</span></div>
+</section>
+
+<!-- ═══ 8. 模块1: 内容分析 + 渲染引擎选择 ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>module · 01-02</div></div>
+  <p class="hc-prompt">cat modules/content-analysis.md</p>
+  <h2 class="hc-h2">模块1-2：内容分析与渲染选择</h2>
+  <div class="hc-grid-2" style="margin-top:14px">
+    <div class="hc-card"><div class="lbl">// 模块1 — 内容分析与结构规划</div><div class="desc">采用 academic-pptx 的结构化论证框架（SCR/Funnel），扩展到非学术场景<br>采用 baoyu-slide-deck 的幻灯片计数启发式（基于文档长度）<br>保留信号自动检测（根据内容关键词匹配风格）<br>引入 Ghost Deck Test 作为大纲质量检查</div></div>
+    <div class="hc-card"><div class="lbl">// 模块2 — 渲染引擎选择器</div><div class="desc"><b>文字+排版</b> → HTML（CSS 精确控制）<br><b>数据图表</b> → HTML 或 pptxgenjs<br><b>架构图/流程图</b> → SVG（baoyu-diagram）<br><b>插图/概念图</b> → AI（baoyu-imagine）<br><b>信息图</b> → AI（baoyu-infographic）<br><b>代码展示</b> → HTML（语法高亮）<br><b>封面/分隔页</b> → HTML 或 AI</div></div>
+  </div>
+  <p class="hc-lede" style="margin-top:12px"><span style="color:var(--hc-cyan)">混合渲染策略：</span>单个 deck 内可混合使用多种引擎。例如封面 AI 背景 + HTML 文字覆盖，内容页 HTML 排版，架构图页嵌入 SVG。</p>
+  <div class="hc-footer"><span>module · analysis + selector</span><span>08 / 16</span></div>
+</section>
+
+<!-- ═══ 9. 模块3: 高精度渲染 ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>module · 03</div></div>
+  <p class="hc-prompt">diff render.sh render-precise.ts</p>
+  <h2 class="hc-h2">模块3：高精度渲染</h2>
+  <p class="hc-lede">用 Playwright/Puppeteer 替代当前的 render.sh</p>
+  <pre class="hc-codebox" style="margin-top:12px"><span class="cm">// render-precise.ts — 核心逻辑</span>
+<span class="kw">import</span> { chromium } <span class="kw">from</span> <span class="st">'playwright'</span>;
+
+<span class="kw">async function</span> <span class="fn">renderSlides</span>(htmlPath, outputDir) {
+  <span class="kw">const</span> browser = <span class="kw">await</span> chromium.launch();
+  <span class="kw">const</span> page = <span class="kw">await</span> browser.newPage({
+    viewport: { width: 1920, height: 1080 },
+    deviceScaleFactor: 2  <span class="cm">// @2x Retina</span>
+  });
+  <span class="kw">await</span> page.goto(<span class="st">`file://${htmlPath}`</span>);
+  <span class="kw">await</span> page.evaluate(() => document.fonts.ready);  <span class="cm">// 精确字体等待</span>
+  <span class="kw">const</span> slideCount = <span class="kw">await</span> page.evaluate(
+    () => document.querySelectorAll(<span class="st">'.slide'</span>).length);
+  <span class="cm">// ... 逐页导航 → 动画检测 → 精确截图</span>
+}</pre>
+  <div class="hc-grid-2" style="margin-top:10px">
+    <div class="hc-card"><div class="lbl">render.sh（原方案）</div><div class="desc">--virtual-time-budget 猜测时间<br>固定等待时间<br>1x 分辨率<br>整个视口截图<br>无错误处理</div></div>
+    <div class="hc-card"><div class="lbl">Playwright（新方案）</div><div class="desc" style="color:var(--hc-green)">document.fonts.ready 精确等待<br>getAnimations().finished 精确完成<br>@2x Retina (deviceScaleFactor:2)<br>仅活动幻灯片元素<br>完整错误捕获和重试</div></div>
+  </div>
+  <div class="hc-footer"><span>module · precise-render</span><span>09 / 16</span></div>
+</section>
+
+<!-- ═══ 10. 模块4: PPTX导出 ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>module · 04</div></div>
+  <p class="hc-prompt">cat modules/pptx-export.md</p>
+  <h2 class="hc-h2">模块4：PPTX 导出管线</h2>
+  <p class="hc-lede">两条路径并行，用户选择：</p>
+  <div class="hc-grid-3" style="margin-top:14px">
+    <div class="hc-card"><div class="lbl">路径 A · 图片拼合式</div><div class="desc">HTML 页面 → Playwright 截图 → 高质量 PNG → merge-to-pptx.ts → .pptx<br><br><span style="color:var(--hc-green)">+ 视觉保真度高</span><br><span style="color:var(--hc-red)">- 文本不可编辑</span></div></div>
+    <div class="hc-card"><div class="lbl">路径 B · 原生 PPTX</div><div class="desc">内容大纲 → pptxgenjs 代码生成 → 原生 .pptx<br><br><span style="color:var(--hc-green)">+ 文本/图表完全可编辑</span><br><span style="color:var(--hc-red)">- 视觉效果受 pptxgenjs 限制</span></div></div>
+    <div class="hc-card"><div class="lbl">路径 C · 混合式 ★</div><div class="desc" style="color:var(--hc-cyan)">文字内容页 → pptxgenjs 原生<br>架构图页 → SVG → PNG → 嵌入<br>插图页 → AI 生成 → 嵌入<br>复杂排版页 → HTML → Playwright → 嵌入</div></div>
+  </div>
+  <div class="hc-footer"><span>module · pptx-export</span><span>10 / 16</span></div>
+</section>
+
+<!-- ═══ 11. 模块5: 统一风格 ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>module · 05</div></div>
+  <p class="hc-prompt">cat modules/unified-style.md</p>
+  <h2 class="hc-h2">模块5：统一风格系统</h2>
+  <p class="hc-lede">整合三套风格体系的配置层：</p>
+  <pre class="hc-codebox" style="margin-top:12px"><span class="cm">统一风格配置</span>
+├── <span class="kw">场景预设</span>
+│   ├── <span class="st">academic</span>（来源 academic-pptx）→ 白底、单字体、3色、无装饰
+│   ├── <span class="st">technical</span>（来源 html-ppt blueprint + baoyu-diagram dark）→ 暗色系、等宽字体、网格背景
+│   ├── <span class="st">business</span>（来源 html-ppt corporate/minimal）→ 简洁专业、品牌色
+│   └── <span class="st">creative</span>（来源 baoyu-slide-deck sketch-notes/watercolor）→ 手绘风、水彩、暖色
+│
+├── <span class="kw">维度自定义</span>（来源 baoyu-slide-deck）
+│   ├── Texture: clean | grid | organic | pixel | paper
+│   ├── Mood: professional | warm | cool | vibrant | dark
+│   ├── Typography: geometric | humanist | handwritten | editorial
+│   └── Density: minimal | balanced | dense
+│
+└── <span class="kw">CSS Variables 映射</span>（来源 html-ppt）
+    ├── --bg, --surface, --text-1/2/3
+    ├── --accent, --grad
+    └── --font-sans, --font-mono</pre>
+  <div class="hc-footer"><span>module · unified-style</span><span>11 / 16</span></div>
+</section>
+
+<!-- ═══ 12. 实施路线图 ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>roadmap</div></div>
+  <p class="hc-prompt">cat ROADMAP.md</p>
+  <h2 class="hc-h2">整合实施路线图</h2>
+  <div class="hc-grid-3" style="margin-top:14px">
+    <div class="hc-card"><div class="lbl" style="color:var(--hc-cyan)">Phase 1 · 基础整合</div><div class="desc" style="margin-top:4px">1. <b>Playwright 渲染器</b>：替换 render.sh，新增 render-precise.ts（1-2天）<br>2. <b>SVG 架构图嵌入</b>：HTML 页面嵌入 baoyu-diagram SVG（0.5天）<br>3. <b>AI 插图嵌入</b>：使用 baoyu-imagine 生成图片（0.5天）</div></div>
+    <div class="hc-card"><div class="lbl" style="color:var(--hc-amber)">Phase 2 · PPTX 导出</div><div class="desc" style="margin-top:4px">4. <b>图片拼合导出</b>：Playwright 截图 → merge-to-pptx，复用 baoyu-slide-deck 脚本（1天）<br>5. <b>原生 PPTX 生成</b>：集成 pptxgenjs，复用 academic-pptx Slide Patterns，扩展到非学术风格（3-5天）</div></div>
+    <div class="hc-card"><div class="lbl" style="color:var(--hc-rose)">Phase 3 · 智能化</div><div class="desc" style="margin-top:4px">6. <b>内容自动分析</b>：自动判断场景、推荐风格、规划页数（2-3天）<br>7. <b>引擎自动选择</b>：根据每页内容类型自动选择最优渲染引擎（1-2天）<br>8. <b>统一 SKILL.md</b>：编写整合后的 skill 定义文件（1天）</div></div>
+  </div>
+  <div class="hc-footer"><span>roadmap · 3 phases</span><span>12 / 16</span></div>
+</section>
+
+<!-- ═══ 13. 目录结构 ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>tree</div></div>
+  <p class="hc-prompt">tree unified-presentation/ -L 2</p>
+  <h2 class="hc-h2">建议的目录结构</h2>
+  <pre class="hc-codebox" style="margin-top:12px;font-size:11px;line-height:1.65"><span class="cm">unified-presentation/</span>
+├── SKILL.md                    <span class="cm"># 统一 skill 定义</span>
+├── EXTEND.md                   <span class="cm"># 用户偏好配置</span>
+├── <span class="kw">engines/</span>                    <span class="cm"># 渲染引擎</span>
+│   ├── <span class="st">html/</span>                   <span class="cm"># HTML 渲染（来源 html-ppt-skill）</span>
+│   ├── <span class="st">diagram/</span>                <span class="cm"># SVG 架构图（来源 baoyu-diagram）</span>
+│   ├── <span class="st">ai-image/</span>                <span class="cm"># AI 图片生成（来源 baoyu-imagine）</span>
+│   └── <span class="st">pptxgen/</span>                 <span class="cm"># 原生 PPTX（来源 academic-pptx）</span>
+├── <span class="kw">export/</span>                     <span class="cm"># 导出工具</span>
+│   ├── render-precise.ts       <span class="cm"># Playwright 高精度截图</span>
+│   ├── merge-to-pptx.ts
+│   └── merge-to-pdf.ts
+├── <span class="kw">analysis/</span>                   <span class="cm"># 内容分析</span>
+│   ├── analysis-framework.md
+│   ├── signal-detection.md
+│   └── slide-count-heuristic.md
+└── <span class="kw">styles/</span>                     <span class="cm"># 统一风格系统</span>
+    ├── presets/                <span class="cm"># 场景预设</span>
+    └── dimensions/             <span class="cm"># 4 维自定义</span></pre>
+  <div class="hc-footer"><span>directory structure</span><span>13 / 16</span></div>
+</section>
+
+<!-- ═══ 14. 关键决策点 ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>decisions</div></div>
+  <p class="hc-prompt">cat DECISIONS.md</p>
+  <h2 class="hc-h2">关键决策点</h2>
+  <pre class="hc-codebox" style="margin-top:12px;font-size:11px;line-height:1.7"><span class="cm">决策              选项1            vs   选项2              建议</span>
+<span class="cm">──────────────────────────────────────────────────────────────────────────</span>
+<span class="kw">截图引擎</span>          Puppeteer       vs   <span class="hl">Playwright</span>          <span class="hl">Playwright</span>
+                                                      API 更现代、自动等待更好
+<span class="kw">PPTX 生成</span>         图片拼合         vs   pptxgenjs          <span class="hl">混合式</span>
+                                                      文字页pptxgenjs + 复杂页截图
+<span class="kw">AI 图片 Provider</span> 固定            vs   用户选择            <span class="hl">用户选择</span>
+                                                      复用 baoyu-imagine EXTEND.md
+<span class="kw">架构图方案</span>        SVG 代码         vs   Mermaid vs AI     <span class="hl">SVG 代码</span>
+                                                      精确可控、baoyu-diagram 已成熟
+<span class="kw">风格系统</span>          CSS Vars         vs   配置文件            <span class="hl">CSS Vars + 配置</span>
+                                                      HTML用CSS Vars, AI/PPTX用配置
+<span class="kw">运行时</span>            Node.js          vs   Bun                <span class="hl">Bun</span>
+                                                      baoyu-skills 已选用，性能更好</pre>
+  <div class="hc-footer"><span>decisions · 6 items</span><span>14 / 16</span></div>
+</section>
+
+<!-- ═══ 15. 整合模块总览 ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>summary · architecture</div></div>
+  <p class="hc-prompt">cat ARCHITECTURE.md</p>
+  <h2 class="hc-h2">架构总览</h2>
+  <pre class="hc-codebox" style="margin-top:10px;font-size:11px;line-height:1.65"><span class="cm">┌─────────────────────────────────────────────────────────────┐</span>
+<span class="cm">│                    unified-presentation-skill                │</span>
+<span class="cm">│                                                             │</span>
+<span class="cm">│  ┌───────────────┐  ┌──────────────┐  ┌──────────────────┐  │</span>
+<span class="cm">│  │  内容分析层    │  │  结构规划层   │  │  风格决策层       │  │</span>
+<span class="cm">│  └───────────────┘  └──────────────┘  └──────────────────┘  │</span>
+<span class="cm">│           │                │                   │            │</span>
+<span class="cm">│           ▼                ▼                   ▼            │</span>
+<span class="cm">│  ┌─────────────────────────────────────────────────────────┐│</span>
+<span class="cm">│  │                    渲染引擎层                           ││</span>
+<span class="cm">│  │  ┌─────────────┐ ┌──────────────┐ ┌──────────────────┐ ││</span>
+<span class="cm">│  │  │ HTML 渲染    │ │ SVG 架构图   │ │ AI 图片生成      │ ││</span>
+<span class="cm">│  │  │ 36主题31布局 │ │ 9种图类型    │ │ 10个Provider     │ ││</span>
+<span class="cm">│  │  └─────────────┘ └──────────────┘ └──────────────────┘ ││</span>
+<span class="cm">│  └─────────────────────────────────────────────────────────┘│</span>
+<span class="cm">│           │                │                   │            │</span>
+<span class="cm">│           ▼                ▼                   ▼            │</span>
+<span class="cm">│  ┌─────────────────────────────────────────────────────────┐│</span>
+<span class="cm">│  │                    导出引擎层                           ││</span>
+<span class="cm">│  │  ┌──────────────────┐ ┌──────────────┐ ┌────────────┐  ││</span>
+<span class="cm">│  │  │ CDP/Playwright   │ │ pptxgenjs    │ │ PDF 引擎   │  ││</span>
+<span class="cm">│  │  │ 高精度渲染       │ │ 原生 PPTX    │ │            │  ││</span>
+<span class="cm">│  │  └──────────────────┘ └──────────────┘ └────────────┘  ││</span>
+<span class="cm">│  └─────────────────────────────────────────────────────────┘│</span>
+<span class="cm">└─────────────────────────────────────────────────────────────┘</span></pre>
+  <div class="hc-footer"><span>architecture · overview</span><span>15 / 16</span></div>
+</section>
+
+<!-- ═══ 16. END ═══ -->
+<section class="slide">
+  <div class="hc-grid"></div>
+  <div class="hc-scanlines"></div>
+  <div class="hc-chrome"><div class="dots"><span></span><span></span><span></span></div><div>EOF</div></div>
+  <div style="margin:auto 0">
+    <p class="hc-prompt">exit 0</p>
+    <h1 class="hc-h1" style="font-size:80px">// end of research<span class="hc-cursor"></span></h1>
+    <p class="hc-lede" style="margin-top:16px">四个项目的分析整合为 <span style="color:var(--hc-amber)">slides-on</span> 统一演示制作系统</p>
+    <p class="hc-lede">html-ppt（交互引擎）+ baoyu-skills（视觉生成）+ academic-pptx（学术规范）</p>
+    <div style="margin-top:22px">
+      <span class="hc-tag">html-ppt</span>
+      <span class="hc-tag">baoyu-skills</span>
+      <span class="hc-tag amber">academic-pptx</span>
+      <span class="hc-tag">slides-on</span>
+    </div>
+  </div>
+  <div class="hc-footer"><span>session closed</span><span>16 / 16</span></div>
+</section>
+
+</div>
+<script src="../assets/runtime.js"></script>
+</body></html>
