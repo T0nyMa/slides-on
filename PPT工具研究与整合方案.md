@@ -452,7 +452,7 @@ unified-presentation/
 │   └── slide-count-heuristic.md      # 页数推算
 │
 ├── styles/                           # 统一风格系统
-│   ├── presets/                       # 场景预设
+│   ├── designs/                       # 场景预设
 │   │   ├── academic.md
 │   │   ├── technical.md
 │   │   ├── business.md

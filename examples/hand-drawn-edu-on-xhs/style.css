@@ -1,0 +1,341 @@
+/* hand-drawn-edu × xhs-pastel-card
+   Preset: hand-drawn-edu (paper texture + marker colors + handwritten fonts)
+   Layout system: xhs-pastel-card (blobs, chips, cards, grids)
+*/
+
+/* ---- CSS variable remap: hand-drawn-edu palette ---- */
+.tpl-xhs-pastel-card {
+  /* Base */
+  --hd-bg:       #faf5eb;
+  --hd-ink:      #3d2b1f;
+  --hd-ink2:     #6b5744;
+  --hd-muted:    #9b8976;
+
+  /* Marker pen accent colors */
+  --hd-orange:   #f4845f;
+  --hd-orange-d: #d9663e;
+  --hd-blue:     #577399;
+  --hd-blue-d:   #3d5575;
+  --hd-green:    #759f5c;
+  --hd-green-d:  #55783e;
+  --hd-purple:   #b5838d;
+  --hd-purple-d: #8b5c6b;
+  --hd-yellow:   #f2cc8f;
+  --hd-yellow-d: #c8913a;
+  --hd-rose:     #e5989b;
+  --hd-rose-d:   #c0606b;
+
+  /* Remap to xhs-pastel-card variable names */
+  --xp-bg:       var(--hd-bg);
+  --xp-ink:      var(--hd-ink);
+  --xp-ink2:     var(--hd-ink2);
+  --xp-muted:    var(--hd-muted);
+  --xp-peach:    #fde8d5;
+  --xp-peach-d:  var(--hd-orange-d);
+  --xp-mint:     #dce8d0;
+  --xp-mint-d:   var(--hd-green-d);
+  --xp-sky:      #d9e0ed;
+  --xp-sky-d:    var(--hd-blue-d);
+  --xp-lilac:    #e8dce0;
+  --xp-lilac-d:  var(--hd-purple-d);
+  --xp-lemon:    #faf0d7;
+  --xp-lemon-d:  var(--hd-yellow-d);
+  --xp-rose:     #fadddf;
+  --xp-rose-d:   var(--hd-rose-d);
+
+  /* Font stack: readable titles + hand-drawn accents */
+  font-family: 'Playfair Display', 'Noto Serif SC', Georgia, serif;
+  background: var(--hd-bg);
+  color: var(--hd-ink);
+
+  /* Subtle paper texture via layered gradients */
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139,119,90,.03) 2px, rgba(139,119,90,.03) 4px),
+    radial-gradient(ellipse at 20% 80%, rgba(210,180,140,.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(200,180,150,.08) 0%, transparent 50%);
+}
+
+/* ---- slide background ---- */
+.tpl-xhs-pastel-card .slide {
+  background: transparent;
+  color: var(--hd-ink);
+  padding: 76px 90px;
+}
+
+/* ---- hand-drawn blobs: organic, sketch-like ---- */
+.tpl-xhs-pastel-card .xp-blob {
+  position: absolute;
+  border-radius: 42% 58% 55% 45% / 48% 52% 50% 52%;
+  filter: blur(1.5px);
+  opacity: .78;
+  z-index: 0;
+}
+.tpl-xhs-pastel-card .xp-blob.b1 {
+  width: 420px; height: 420px;
+  background: radial-gradient(circle at 40% 40%, var(--hd-orange), transparent 72%);
+  top: -8%; right: -6%;
+  border-radius: 44% 56% 52% 48% / 46% 54% 48% 52%;
+}
+.tpl-xhs-pastel-card .xp-blob.b2 {
+  width: 360px; height: 360px;
+  background: radial-gradient(circle at 55% 45%, var(--hd-purple), transparent 74%);
+  bottom: -10%; left: -8%;
+  border-radius: 55% 45% 48% 52% / 52% 48% 50% 50%;
+}
+.tpl-xhs-pastel-card .xp-blob.b3 {
+  width: 260px; height: 260px;
+  background: radial-gradient(circle at 35% 60%, var(--hd-green), transparent 72%);
+  top: 40%; right: 20%;
+  border-radius: 50% 50% 46% 54% / 48% 52% 48% 52%;
+}
+
+.tpl-xhs-pastel-card .slide > * { position: relative; z-index: 2; }
+
+/* ---- topbar ---- */
+.tpl-xhs-pastel-card .xp-topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 22px;
+  font-family: 'Caveat', 'ZCOOL KuaiLe', sans-serif;
+}
+
+/* ---- chip: hand-drawn tags ---- */
+.tpl-xhs-pastel-card .xp-chip {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 10px 22px;
+  border-radius: 20px 28px 18px 24px;
+  background: #fff;
+  border: 2px dashed rgba(61,43,31,.22);
+  font-family: 'Caveat', 'Ma Shan Zheng', cursive;
+  font-size: 18px; font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--hd-ink2);
+  text-transform: none;
+}
+.tpl-xhs-pastel-card .xp-chip::before {
+  content: '•';
+  font-size: 24px; line-height: 0;
+  color: var(--hd-orange-d);
+}
+
+/* chip color variants */
+.tpl-xhs-pastel-card .xp-chip.mint::before  { color: var(--hd-green-d); }
+.tpl-xhs-pastel-card .xp-chip.sky::before   { color: var(--hd-blue-d); }
+.tpl-xhs-pastel-card .xp-chip.lilac::before { color: var(--hd-purple-d); }
+.tpl-xhs-pastel-card .xp-chip.rose::before  { color: var(--hd-rose-d); }
+.tpl-xhs-pastel-card .xp-chip.orange::before { color: var(--hd-orange-d); }
+
+/* ---- page number ---- */
+.tpl-xhs-pastel-card .xp-page {
+  font-family: 'Caveat', cursive;
+  font-size: 18px; color: var(--hd-muted);
+  letter-spacing: .06em; font-weight: 600;
+}
+
+/* ---- kicker ---- */
+.tpl-xhs-pastel-card .xp-kicker {
+  font-family: 'Caveat', 'Ma Shan Zheng', cursive;
+  font-size: 22px; font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: none;
+  color: var(--hd-orange-d);
+  margin-bottom: 14px;
+}
+
+/* ---- large heading ---- */
+.tpl-xhs-pastel-card .xp-h1 {
+  font-size: 88px; font-weight: 900;
+  line-height: 1.06; letter-spacing: -1.5px;
+  margin: 0 0 18px;
+  color: var(--hd-ink);
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+}
+.tpl-xhs-pastel-card .xp-h1 em {
+  font-style: italic;
+  color: var(--hd-orange-d);
+  font-family: 'Playfair Display', 'Caveat', serif;
+}
+.tpl-xhs-pastel-card .xp-h1 .rose  { color: var(--hd-rose-d); font-style: italic; }
+.tpl-xhs-pastel-card .xp-h1 .mint  { color: var(--hd-green-d); font-style: italic; }
+.tpl-xhs-pastel-card .xp-h1 .blue  { color: var(--hd-blue-d); font-style: italic; }
+.tpl-xhs-pastel-card .xp-h1 .orange { color: var(--hd-orange-d); font-style: italic; }
+
+/* ---- h2 heading ---- */
+.tpl-xhs-pastel-card .xp-h2 {
+  font-size: 52px; font-weight: 800;
+  line-height: 1.12; letter-spacing: -1px;
+  margin: 0 0 14px;
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+}
+.tpl-xhs-pastel-card .xp-h2 em { font-style: italic; color: var(--hd-orange-d); }
+
+/* ---- h3 heading ---- */
+.tpl-xhs-pastel-card .xp-h3 {
+  font-size: 32px; font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 10px;
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+}
+
+/* ---- subtitle / lede ---- */
+.tpl-xhs-pastel-card .xp-sub {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: 20px; line-height: 1.55;
+  color: var(--hd-ink2);
+  max-width: 800px; font-weight: 400;
+}
+
+/* ---- hand-drawn divider: marker stroke ---- */
+.tpl-xhs-pastel-card .xp-divider {
+  width: 110px; height: 5px;
+  background: linear-gradient(90deg, var(--hd-orange-d) 0%, var(--hd-orange-d) 40%, var(--hd-yellow-d) 40%, var(--hd-yellow-d) 65%, var(--hd-green-d) 65%, var(--hd-green-d) 100%);
+  border-radius: 3px;
+  margin: 20px 0;
+  position: relative;
+}
+.tpl-xhs-pastel-card .xp-divider::after {
+  content: '';
+  position: absolute; top: -2px; left: -4px; right: -4px; bottom: -2px;
+  border: 1.5px dashed rgba(61,43,31,.15);
+  border-radius: 5px;
+}
+
+/* ---- cards: slightly irregular, paper-like ---- */
+.tpl-xhs-pastel-card .xp-card {
+  border-radius: 18px 28px 22px 26px;
+  padding: 28px 32px;
+  background: #fffef9;
+  box-shadow:
+    3px 4px 0 rgba(61,43,31,.08),
+    0 8px 30px rgba(61,43,31,.06);
+  position: relative; overflow: hidden;
+  border: 1.5px dashed rgba(61,43,31,.12);
+}
+/* Marker-color top border for cards */
+.tpl-xhs-pastel-card .xp-card::before {
+  content: '';
+  position: absolute; top: 0; left: 12px; right: 12px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+}
+.tpl-xhs-pastel-card .xp-card.peach  { background: #fffaf4; }
+.tpl-xhs-pastel-card .xp-card.peach::before { background: var(--hd-orange); }
+.tpl-xhs-pastel-card .xp-card.mint   { background: #fafcf7; }
+.tpl-xhs-pastel-card .xp-card.mint::before  { background: var(--hd-green); }
+.tpl-xhs-pastel-card .xp-card.sky    { background: #f7f9fc; }
+.tpl-xhs-pastel-card .xp-card.sky::before   { background: var(--hd-blue); }
+.tpl-xhs-pastel-card .xp-card.lilac  { background: #fcf9fa; }
+.tpl-xhs-pastel-card .xp-card.lilac::before { background: var(--hd-purple); }
+.tpl-xhs-pastel-card .xp-card.lemon  { background: #fffef7; }
+.tpl-xhs-pastel-card .xp-card.lemon::before { background: var(--hd-yellow); }
+.tpl-xhs-pastel-card .xp-card.rose   { background: #fffaf9; }
+.tpl-xhs-pastel-card .xp-card.rose::before  { background: var(--hd-rose); }
+
+.tpl-xhs-pastel-card .xp-card .xp-num {
+  font-family: 'Caveat', 'Ma Shan Zheng', cursive;
+  font-size: 56px; font-weight: 700;
+  line-height: 1; opacity: .8;
+  color: var(--hd-muted);
+}
+.tpl-xhs-pastel-card .xp-card h4 {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: 20px; font-weight: 700;
+  margin: 6px 0; color: var(--hd-ink);
+}
+.tpl-xhs-pastel-card .xp-card p {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: 14px; line-height: 1.5;
+  color: var(--hd-ink2);
+}
+
+/* ---- grid layouts ---- */
+.tpl-xhs-pastel-card .xp-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
+.tpl-xhs-pastel-card .xp-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 22px; }
+.tpl-xhs-pastel-card .xp-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 20px; }
+
+/* ---- hero card (quote-style) ---- */
+.tpl-xhs-pastel-card .xp-hero-card {
+  background: #fffef8;
+  border-radius: 22px 32px 26px 30px;
+  padding: 36px 44px; margin-top: 24px;
+  box-shadow:
+    3px 3px 0 rgba(61,43,31,.06),
+    0 16px 44px rgba(61,43,31,.08);
+  border: 1.5px dashed rgba(61,43,31,.14);
+}
+
+/* ---- big number stat ---- */
+.tpl-xhs-pastel-card .xp-stat-num {
+  font-family: 'Caveat', 'Ma Shan Zheng', cursive;
+  font-size: 96px; font-weight: 700;
+  line-height: 1; color: var(--hd-orange-d);
+}
+
+/* ---- code block ---- */
+.tpl-xhs-pastel-card .xp-codebox {
+  background: #3d2b1f;
+  color: #faf5eb;
+  border-radius: 20px 28px 22px 26px;
+  padding: 24px 28px;
+  font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+  font-size: 13px; line-height: 1.8;
+  margin-top: 18px;
+  border: 2px dashed rgba(250,245,235,.15);
+}
+.tpl-xhs-pastel-card .xp-codebox .cm { color: #b8a894; }
+.tpl-xhs-pastel-card .xp-codebox .kw { color: #f4b88c; }
+.tpl-xhs-pastel-card .xp-codebox .st { color: #b8cf9e; }
+.tpl-xhs-pastel-card .xp-codebox .hl { color: #f0b0b5; font-weight: 700; }
+.tpl-xhs-pastel-card .xp-codebox .ac { color: #a6b4d6; }
+
+/* ---- footer ---- */
+.tpl-xhs-pastel-card .xp-footer {
+  position: absolute; left: 90px; right: 90px; bottom: 40px;
+  display: flex; justify-content: space-between;
+  font-family: 'Caveat', cursive;
+  font-size: 15px; color: var(--hd-muted);
+  letter-spacing: .06em;
+}
+
+/* ---- phase timeline ---- */
+.tpl-xhs-pastel-card .xp-phase {
+  display: flex; align-items: flex-start; gap: 14px;
+  margin-bottom: 14px;
+}
+.tpl-xhs-pastel-card .xp-phase-dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2.5px dashed var(--hd-muted);
+  flex-shrink: 0; margin-top: 4px;
+}
+.tpl-xhs-pastel-card .xp-phase-dot.done { background: var(--hd-green); border-style: solid; border-color: var(--hd-green-d); }
+.tpl-xhs-pastel-card .xp-phase-dot.active { background: var(--hd-orange); border-style: solid; border-color: var(--hd-orange-d); }
+.tpl-xhs-pastel-card .xp-phase-dot.next { background: transparent; border-style: dashed; }
+
+/* ---- flow arrow ---- */
+.tpl-xhs-pastel-card .xp-arrow {
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Caveat', cursive;
+  font-size: 32px; color: var(--hd-muted);
+}
+
+/* ---- comparison row ---- */
+.tpl-xhs-pastel-card .xp-compact-list {
+  display: flex; flex-direction: column; gap: 8px;
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  font-size: 15px;
+}
+.tpl-xhs-pastel-card .xp-compact-list .row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 16px; border-radius: 8px;
+  background: rgba(255,255,255,.5);
+}
+.tpl-xhs-pastel-card .xp-compact-list .label {
+  font-weight: 600; min-width: 80px; color: var(--hd-ink2);
+  font-size: 13px; font-family: 'Caveat', cursive, sans-serif; font-size: 17px;
+}
+
+/* ---- small caption ---- */
+.tpl-xhs-pastel-card .xp-note {
+  font-family: 'Caveat', 'Kalam', cursive;
+  font-size: 17px; color: var(--hd-muted);
+  font-style: italic;
+}

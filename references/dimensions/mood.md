@@ -30,7 +30,7 @@ Mood（氛围）描述幻灯片的情感基调和视觉氛围，决定配色方�
 - 背景: 米白 / 奶油 / 牛皮纸
 - 文字: 暖棕或深棕
 
-**使用 Preset**: hand-drawn-edu, sketch-notes, vintage, watercolor
+**使用 Design**: hand-drawn-edu, sketch-notes, vintage, watercolor
 
 **匹配场景**: 教学课件、团队内部分享、创意工作坊、个人博客
 

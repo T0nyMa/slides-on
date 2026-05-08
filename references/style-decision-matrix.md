@@ -2,9 +2,9 @@
 
 内容信号 → 主题/风格/布局的映射表。用于 Step 2 自动推荐。
 
-## 场景 → Preset 映射
+## 场景 → Design 映射
 
-| 场景 | 信号词 | 推荐 Preset | 特征 |
+| 场景 | 信号词 | 推荐 Design | 特征 |
 |------|--------|------------|------|
 | **技术分享** | 代码、架构、API、系统设计、开源、框架 | blueprint (蓝图纸) | 蓝图网格、等宽字体、蓝色系 |
 | | | dark-atmospheric (暗色氛围) | 深色背景、高对比、科技感 |
@@ -163,7 +163,7 @@ baoyu-infographic 提供 21 种布局 × 22 种视觉风格的组合矩阵。常
 检测到学术信号？（研究/实验/数据/论文）
     │
     ├── YES → scientific / minimal + academic-pptx 规范
-    │         ├── Action Titles（每页标题是完整句子）
+    │         ├── Action Titles
     │         ├── 一页一观点
     │         ├── 40 词上限
     │         └── Conclusions 结尾（非 Thank You）
@@ -177,10 +177,10 @@ baoyu-infographic 提供 21 种布局 × 22 种视觉风格的组合矩阵。常
     │         └── 概念/创意 → 创意提案 → sketch-notes / watercolor
     │
     ▼
-选择 theme（36 个）或 preset（17 个）
+选择 Theme（36 个）或 Design（17 个）
     │
     ▼
-每页匹配 layout（31 种）或 AI 引擎（diagram / imagine / infographic）
+每页匹配 Layout（31 种）或 AI 引擎（diagram / imagine / infographic）
     │
     ▼
 输出 style-decision.md

@@ -1,10 +1,10 @@
-# Preset 维度映射表
+# Design 维度映射表
 
-每个 Preset 在 Texture、Mood、Typography、Density 四个维度上的默认取值，以及绑定的默认主题。
+每个 Design 在 Texture、Mood、Typography、Density 四个维度上的默认取值，以及绑定的默认主题。
 
 ## 映射表
 
-| Preset | Texture | Mood | Typography | Density | Default Theme |
+| Design | Texture | Mood | Typography | Density | Default Theme |
 |--------|---------|------|------------|---------|---------------|
 | blueprint | grid | dark | technical | balanced | `blueprint.css` |
 | bold-editorial | clean | vibrant | editorial | dense | `magazine-bold.css` |
@@ -35,4 +35,4 @@
 
 ## Custom Theme 说明
 
-标记为 `— (custom)` 的 Preset 不绑定已有 CSS 文件，而是在运行时通过组合 CSS 变量实现其视觉风格。具体规则见各 Preset 文档的 Visual Identity 章节。
+标记为 `— (custom)` 的 Design 不绑定已有 CSS 文件，而是在运行时通过组合 CSS 变量实现其视觉风格。具体规则见各 Design 文档的 Visual Identity 章节。

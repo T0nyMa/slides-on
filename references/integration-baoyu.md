@@ -16,7 +16,7 @@ slides-on 集成四个 baoyu skill 提供 AI 视觉内容生成能力。
 
 ### 提供内容
 
-- **17 个 Preset**（场景化捆绑包）：blueprint, bold-editorial, chalkboard, corporate, dark-atmospheric, editorial-infographic, fantasy-animation, hand-drawn-edu, intuition-machine, minimal, notion, pixel-art, scientific, sketch-notes, vector-illustration, vintage, watercolor
+- **17 个 Design**（视觉皮肤）：blueprint, bold-editorial, chalkboard, corporate, dark-atmospheric, editorial-infographic, fantasy-animation, hand-drawn-edu, intuition-machine, minimal, notion, pixel-art, scientific, sketch-notes, vector-illustration, vintage, watercolor
 - **4 维自定义**：Texture × Mood × Typography × Density
 - **分析框架**：信号检测 → preset 推荐
 - **Merge 脚本**：`merge-to-pptx.ts` 和 `merge-to-pdf.ts`

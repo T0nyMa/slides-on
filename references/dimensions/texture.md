@@ -80,7 +80,7 @@ Texture（质感）描述幻灯片的画面纹理和视觉深度，是用户第�
 
 **匹配主题**: `academic-paper.css`, `editorial-serif.css`, `japanese-minimal.css`, `gruvbox-dark.css`
 
-**使用 Preset**: chalkboard, hand-drawn-edu, sketch-notes
+**使用 Design**: chalkboard, hand-drawn-edu, sketch-notes
 
 ---
 

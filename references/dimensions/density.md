@@ -50,7 +50,7 @@ Density（信息密度）控制每页幻灯片承载的信息量，影响字号�
 - 图表 + 说明文字
 - 步骤流程（3-5 步）
 
-**使用 Preset**: blueprint, chalkboard, corporate, hand-drawn-edu, notion, pixel-art, scientific, vector-illustration, vintage
+**使用 Design**: blueprint, chalkboard, corporate, hand-drawn-edu, notion, pixel-art, scientific, vector-illustration, vintage
 
 **优缺点**:
 - 优点: 最通用，覆盖大多数演示场景，信息量和可读性平衡

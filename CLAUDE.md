@@ -17,12 +17,12 @@ slides-on 是一个 Claude Code skill，提供统一的演示文稿制作能力�
 项目遵循 Claude Code skill 标准结构，安装后位于 `~/.claude/skills/slides-on/`：
 
 - **SKILL.md** — skill 入口（YAML frontmatter: name + description），包含 pipeline 工作流指令，< 500 行
-- **EXTEND.md** — 用户级扩展配置（自定义 theme/layout/component/preset/brand/导出偏好）
+- **EXTEND.md** — 用户级扩展配置（自定义 theme/layout/component/design/brand/导出偏好）
 - **references/** — 渐进式披露的详细参考文档，SKILL.md 按需引用
-- **templates/** — deck 模板（full-decks/）和单页布局模板（single-page/）
+- **templates/** — Template 文件（full-decks/）和单页布局模板（single-page/）
 - **assets/** — CSS（base.css + themes/）、JS（runtime.js）、静态资源
 - **scripts/** — 导出工具（render-precise.ts、merge-to-pptx.ts、merge-to-pdf.ts）
-- **examples/** — 示例 deck
+- **examples/** — 示例 slides
 - **package.json** — 发布元数据
 
 ```
@@ -41,8 +41,8 @@ slides-on/
 │   ├── presenter-mode.md           #   presenter 模式指南（← html-ppt references/presenter-mode.md）
 │   ├── authoring-guide.md          #   HTML 编写指南（← html-ppt references/authoring-guide.md）
 │   │
-│   ├── presets/                    #   preset 定义（← baoyu-slide-deck styles/）
-│   │   ├── blueprint.md            #     17 个 slide-deck preset
+│   ├── designs/                    #   design 定义（← baoyu-slide-deck styles/）
+│   │   ├── blueprint.md            #     17 个 design
 │   │   ├── bold-editorial.md
 │   │   ├── chalkboard.md
 │   │   ├── corporate.md
@@ -65,7 +65,7 @@ slides-on/
 │   │   ├── mood.md
 │   │   ├── texture.md
 │   │   ├── typography.md
-│   │   └── presets.md              #     preset → dimension 映射表
+│   │   └── designs.md              #     design → dimension 映射表
 │   │
 │   ├── infographic/                #   信息图（← baoyu-infographic）
 │   │   ├── layouts/                #     21 种信息图布局
@@ -185,7 +185,7 @@ slides-on/
 │   │   ├── todo-checklist.html
 │   │   └── two-column.html
 │   │
-│   ├── deck.html                   #   新建 deck 起始骨架（← html-ppt）
+│   ├── deck.html                   #   新建 slides 起始骨架（← html-ppt）
 │   └── showcases/                  #   展示页（← html-ppt）
 │       ├── theme-showcase.html
 │       ├── layout-showcase.html
@@ -238,41 +238,37 @@ slides-on/
 
 ## Glossary
 
-项目统一术语，按层级从 deck 到元素：
+项目统一术语。核心公式：**Slides = Template × Design × Content**。
 
 ```
-Deck（演示文稿）
-├── Template（模板）        — deck 级：整个 deck 的页面序列骨架
-├── Theme（主题）           — deck 级：一整套 CSS Variables 视觉变量（颜色、字体、间距）
-├── Preset（预设）          — deck 级：场景化捆绑包 = theme + layout 偏好 + 动画 + 密度
-│
-├── Section（章节）         — 逻辑上相关的一组页面
-│
-├── Slide（页面）
-│   ├── Layout（布局）      — page 级：单页的内容区域排列方式
-│   ├── Component（组件）   — page 级：布局内可复用的 HTML 内容块
-│   └── Animation（动画）   — page 级：元素的进入/过渡效果
-│
-└── Style（样式）           — 跨层级：最终作用于 HTML 元素的具体 CSS 属性值
+Slides（最终产物 = index.html）
+├── Section（章节 = 一组逻辑相关的 Slide）
+│   └── Slide（单页 = 一个 <section class="slide">）
+│       ├── Layout（单页内容排列方式）
+│       ├── Component（可复用 HTML 内容块）
+│       └── Animation（进入/过渡效果）
+├── Template（结构容器 = HTML骨架 + 组件体系 + 默认视觉 + 画布格式）
+├── Design（视觉皮肤 = CSS变量覆盖层：颜色/字体/纹理/密度/动画偏好）
+└── Style（最终计算出的 CSS 属性值）
 ```
 
-| 术语 | 定义 | 来源项目映射 |
-|------|------|-------------|
-| **Deck** | 一份完整的演示文稿，包含所有页面 | 各项目通用 |
-| **Slide** | deck 中的一页 | html-ppt: `.slide` 元素 |
-| **Section** | 逻辑相关的一组 slide，通常由 section-divider 页引导 | html-ppt: section-divider 模板 |
-| **Template** | deck 级的页面序列骨架，如 `cover → toc → [sections] → summary` | html-ppt: 15 个 deck 模板; academic-pptx: deck 架构规范 |
-| **Layout** | 单页级的内容区域排列方式（双栏、图文左右、全屏代码等） | html-ppt: 31 种 single-page 布局 |
-| **Theme** | 一整套 CSS Variables（`--bg`, `--text-1`, `--accent`, `--font-sans` 等），决定 deck 视觉外观 | html-ppt: 36 个 theme |
-| **Preset** | 场景化的配置捆绑包，包含推荐的 theme + layout 偏好 + 动画风格 + 排版密度 | baoyu-slide-deck: 17 个 style; academic-pptx: 学术规范 |
-| **Component** | 布局内可复用的 HTML 内容块（callout、metric-card、code-block 等） | 新增概念 |
-| **Animation** | 页面或元素的视觉过渡效果，通过 `data-anim` 属性声明 | html-ppt: 27 CSS 动画 + 20 Canvas 特效 |
-| **Style** | 最终作用于 HTML 元素的具体 CSS 属性值，是 theme 变量解析后的结果 | CSS 层面概念，不作为系统配置单元 |
+| 术语 | 定义 | 角色 |
+|------|------|------|
+| **Slides** | 最终产物 — Template × Design × Content 的结合体，一个 index.html | 产出 |
+| **Template** | 结构容器 — 定义页面上有什么、放哪里。自带默认视觉，可被 Design 覆盖 | 结构 |
+| **Design** | 视觉皮肤 — 可移植的 CSS 变量覆盖层。不碰 HTML 结构，只定义颜色/字体/纹理/密度/动画 | 视觉 |
+| **Slide** | Slides 中的一页，html-ppt: `.slide` 元素 | 页面 |
+| **Section** | 逻辑相关的一组 Slide，由 section-divider 引导 | 章节 |
+| **Layout** | 单页内容排列方式（双栏、代码、图表等），31 种内置 | 排版 |
+| **Theme** | 单一 CSS 变量文件（36 个）。Theme 是 Design 的子集——Design 还包含纹理、密度、动画等非颜色维度 | 配色 |
+| **Component** | 布局内可复用的 HTML 内容块（callout、metric-card 等） | 组件 |
+| **Animation** | 页面元素的视觉过渡效果，`data-anim` + `data-fx` 声明 | 动效 |
+| **Style** | 最终计算出的 CSS 属性值，是 Design + Template 共同作用的结果 | 结果 |
 
 **易混淆辨析**：
-- **Theme vs Preset**：Theme 只管视觉变量（颜色/字体），Preset 在 theme 之上还捆绑了 layout 偏好、动画、密度等行为决策
-- **Template vs Layout**：Template 是 deck 级页面序列，Layout 是单页级内容排列；一个 template 引用多个 layout
-- **Style vs Theme**：Style 是 CSS 属性的最终计算值，Theme 是变量定义；开发中说"样式"指 CSS 细节，说"主题"指可切换的变量集
+- **Template vs Layout**：Template = Slides 级结构容器（整套格式）。Layout = Slide 级内容排列（单页排版）
+- **Design vs Theme**：Design = 完整视觉皮肤（颜色 + 纹理 + 密度 + 动画）。Theme = 单一 CSS 变量文件（仅颜色字体）
+- **Style vs Design**：Design = 变量定义（"accent 是什么颜色"）。Style = 计算结果（屏幕上的实际像素）
 
 ## Pipeline
 
@@ -289,14 +285,14 @@ Deck（演示文稿）
 - **章节划分**：识别文档逻辑段落，拆分为 section（section-divider）
 - **内容框架**：每个 section 内的 slide 分配，确定每页的内容类型（文字、图表、代码、架构图、信息图、AI 插图等）
 - **页数推算**：基于文档长度的启发式（← baoyu-slide-deck: <1000 字 → 5-10 页, 1000-3000 → 10-18 页, ...）
-- **信号检测**：根据内容关键词自动匹配推荐的 preset（← baoyu-slide-deck 信号检测机制）
+- **信号检测**：根据内容关键词自动匹配推荐的 design（← baoyu-slide-deck 信号检测机制）
 - **Ghost Deck Test**：只读标题序列应能讲述完整论点（← academic-pptx QA 检查）
-- 输出：结构化的 deck 大纲（cover → sections → slides → content slots）
+- 输出：结构化的 slides 大纲（cover → sections → slides → content slots）
 
 ### Step 2: 风格决策
 
 两级决策（融合 html-ppt 主题系统 + baoyu-slide-deck 4 维风格 + baoyu-infographic 视觉风格）：
-- **Deck 级**：选择 preset（17 个 slide-deck preset 或自定义），确定 theme（36 个 HTML theme）+ layout 偏好 + animation + 密度，支持 4 维自定义（Texture × Mood × Typography × Density）
+- **Slides 级**：选择 design（17 个 design 或自定义），确定 theme（36 个 HTML theme）+ layout 偏好 + animation + 密度，支持 4 维自定义（Texture × Mood × Typography × Density）
 - **Slide 级**：根据每页内容类型匹配
   - HTML layout（31 种 single-page 布局）用于文字、代码、图表等
   - Infographic layout（21 种信息图布局）+ visual style（22 种视觉风格）用于信息图页
@@ -305,7 +301,7 @@ Deck（演示文稿）
 
 ### Step 3: HTML 渲染
 
-将 template + theme + layout + 内容组装为完整的 HTML deck（以 html-ppt 引擎为核心）：
+将 Template + Design + 内容组装为完整的 HTML slides（以 html-ppt 引擎为核心）：
 - 基于 CSS Variables 的 theme 系统（`--bg`, `--text-1`, `--accent`, `--font-sans` 等）
 - `.is-active` 类切换 slide，URL `#/N` 深链接，键盘导航
 - 27 种 CSS animation + 20 种 Canvas FX，通过 `data-anim` / `data-fx` 声明

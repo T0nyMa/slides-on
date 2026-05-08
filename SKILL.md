@@ -29,7 +29,7 @@ description: >
 
 ```
 {html-ppt}        = .agents/skills/html-ppt/          # 36 主题 + 31 布局 + 15 deck 模板
-{baoyu-slide}     = .claude/skills/baoyu-slide-deck/  # 17 preset + merge 脚本
+{baoyu-slide}     = .claude/skills/baoyu-slide-deck/  # 17 design + merge 脚本
 {baoyu-diagram}   = .claude/skills/baoyu-diagram/     # SVG 架构图（4 种类型）
 {baoyu-imagine}   = .claude/skills/baoyu-imagine/     # AI 图片生成（10 Provider）
 {baoyu-infographic}=.claude/skills/baoyu-infographic/ # 信息图（21 布局 × 22 风格）
@@ -50,12 +50,12 @@ description: >
    - < 1000 字 → 5-10 页
    - 1000-3000 字 → 10-18 页
    - > 3000 字 → 18-30 页
-5. **信号检测**：扫描关键词匹配推荐 preset（详见 `references/style-decision-matrix.md`）
+5. **信号检测**：扫描关键词匹配推荐 design（详见 `references/style-decision-matrix.md`）
 6. **Ghost Deck Test**：只读标题序列能否讲述完整论点？不能则重排
 
-**产出**：`outline.md`（deck 结构大纲），格式：
+**产出**：`outline.md`（slides 结构大纲），格式：
 ```markdown
-# Deck: <标题>
+# Slides: <标题>
 
 ## Cover
 - 标题: ...
@@ -77,7 +77,7 @@ description: >
 **参考文档**：
 - `{baoyu-slide}/references/analysis-framework.md` — 详细分析框架
 - `{baoyu-slide}/references/content-rules.md` — 内容规范
-- `references/style-decision-matrix.md` — 信号→preset 映射表
+- `references/style-decision-matrix.md` — 信号→design 映射表
 
 ### Step 2: 风格决策
 
@@ -85,9 +85,9 @@ description: >
 
 **两级决策**：
 
-**Deck 级 — 选择 Preset**：
-1. 从 17 个 slide-deck preset 中选择（或读取 EXTEND.md 默认值）
-2. Preset = theme + layout 偏好 + animation + 密度，是一个场景化捆绑包
+**Slides 级 — 选择 Design（视觉皮肤）**：
+1. 从 17 个 design 中选择（或读取 EXTEND.md 默认值）
+2. Design = 可移植的 CSS 变量覆盖层，决定颜色 / 字体 / 纹理 / 密度 / 动画偏好
 3. 支持 4 维自定义覆盖（Texture × Mood × Typography × Density）
 4. 也可直接选择 36 个 html-ppt theme 作为视觉基础
 
@@ -109,7 +109,7 @@ description: >
 **参考文档**：
 - `{html-ppt}/references/themes.md` — 36 个 theme 详情
 - `{html-ppt}/references/layouts.md` — 31 个 layout 详情
-- `{baoyu-slide}/references/styles/` — 17 个 preset
+- `{baoyu-slide}/references/styles/` — 17 个 design
 - `{baoyu-slide}/references/dimensions/` — 4 维自定义
 - `{baoyu-diagram}/references/` — 4 种架构图类型
 - `{baoyu-infographic}/references/` — 信息图 layout + style
@@ -119,7 +119,7 @@ description: >
 **输入**：`outline.md` + `style-decision.md`
 
 **处理**：
-1. 从 `{html-ppt}/templates/full-decks/` 选择匹配的 deck 模板（或从 `templates/deck.html` 骨架开始）
+1. 从 `{html-ppt}/templates/full-decks/` 选择匹配的 Template（或从 `templates/deck.html` 骨架开始）
 2. 从 `{html-ppt}/templates/single-page/` 选取每个 slide 的 layout HTML
 3. 应用 theme（`{html-ppt}/assets/themes/` 中选择 CSS 文件）
 4. 填写实际内容到 layout 中
@@ -215,9 +215,9 @@ bun {baoyu-slide}/scripts/merge-to-pdf.ts <png-dir> --output deck.pdf
 ## EXTEND.md 扩展
 
 用户可在 `EXTEND.md` 中自定义：
-- **defaults**：默认 preset、theme、字体、动画、导出偏好、AI 图片 provider
+- **defaults**：默认 design、theme、字体、动画、导出偏好、AI 图片 provider
 - **brand**：Logo、品牌色、页脚
-- **deck-structure**：自定义 deck 页面序列模式
+- **slides-structure**：自定义 slides 页面序列模式
 - **custom-themes/layouts/components**：扩展视觉和布局
 - **ai-image**：默认图片生成 provider 和参数
 

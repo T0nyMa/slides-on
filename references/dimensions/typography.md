@@ -65,7 +65,7 @@ Typography（字体风格）决定幻灯片中文字的视觉性格，通过 `--
 --font-mono: 'Courier Prime', monospace;
 ```
 
-**使用 Preset**: chalkboard, fantasy-animation, hand-drawn-edu, sketch-notes, watercolor
+**使用 Design**: chalkboard, fantasy-animation, hand-drawn-edu, sketch-notes, watercolor
 
 **匹配场景**: 教学课件、创意工作坊、儿童内容、个人博客
 
