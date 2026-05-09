@@ -21,7 +21,7 @@ slides-on 是一个 Claude Code skill，提供统一的演示文稿制作能力�
 - **references/** — 渐进式披露的详细参考文档，SKILL.md 按需引用
 - **templates/** — Template 文件（full-decks/）和单页布局模板（single-page/）
 - **assets/** — CSS（base.css + themes/）、JS（runtime.js）、静态资源
-- **scripts/** — 导出工具（render-precise.ts、merge-to-pptx.ts、merge-to-pdf.ts）
+- **scripts/** — 导出工具（render-precise.ts、html-to-pptx.ts、merge-to-pdf.ts）
 - **examples/** — 示例 slides
 - **package.json** — 发布元数据
 
@@ -213,7 +213,7 @@ slides-on/
 │
 ├── scripts/                        # 工具脚本
 │   ├── render-precise.ts           #   Playwright 高精度截图（新增，替代 render.sh）
-│   ├── merge-to-pptx.ts           #   PNG → PPTX（← baoyu-slide-deck）
+│   ├── html-to-pptx.ts            #   HTML → 可编辑 PPTX（dom-to-pptx）
 │   ├── merge-to-pdf.ts            #   PNG → PDF（← baoyu-slide-deck）
 │   ├── svg-to-png.ts              #   SVG → @2x PNG（← baoyu-diagram）
 │   ├── new-deck.sh                 #   新建 deck 脚手架（← html-ppt）
@@ -317,7 +317,7 @@ Slides（最终产物 = index.html）
 
 从 HTML 导出为目标格式：
 - **PNG**：Playwright 高精度逐页截图（`document.fonts.ready` + `getAnimations().finished`，@2x Retina）
-- **PPTX**：截图拼合式（← baoyu-slide-deck merge-to-pptx）或 pptxgenjs 原生生成或混合式
+- **PPTX**：dom-to-pptx 直接导出可编辑 PPTX（`html-to-pptx.ts`），原生文本/形状，非截图
 - **PDF**：Playwright 截图 → merge-to-pdf（← baoyu-slide-deck）
 
 ## Extension Points (EXTEND.md)
@@ -392,7 +392,7 @@ Slides（最终产物 = index.html）
   - `deviceScaleFactor: 2` @2x Retina 输出
   - 元素级截图（`.slide` 元素，不含 body 背景）
   - 自动检测页面类型（deck 多页 vs single 单页）和画布尺寸
-- **PPTX 生成**: PNG 截图 → `merge-to-pptx.ts`（pptxgenjs 拼合）
+- **PPTX 生成**: HTML → `html-to-pptx.ts`（dom-to-pptx 原生形状/文本）
 - **PDF 生成**: PNG 截图 → `merge-to-pdf.ts`（pdf-lib 拼合）
 - **SVG 转 PNG**: `svg-to-png.ts`（sharp 库）
 - **风格系统**: CSS Variables（36 个 theme），通过 `:root` 覆盖切换
@@ -407,8 +407,8 @@ npx tsx scripts/render-precise.ts <html-file> [all|N] [--output dir] [--scale 2]
 npx tsx scripts/render-precise.ts examples/tmux-cheatsheet/index.html all
 npx tsx scripts/render-precise.ts examples/tmux-cheatsheet/shortcuts.html
 
-# PNG → PPTX
-npx tsx scripts/merge-to-pptx.ts <png-dir> [--output filename.pptx]
+# HTML → 可编辑 PPTX
+npx tsx scripts/html-to-pptx.ts <html-file> [--output filename.pptx]
 
 # PNG → PDF
 npx tsx scripts/merge-to-pdf.ts <png-dir> [--output filename.pdf]
@@ -450,5 +450,5 @@ xhs-post (`.tpl-xhs-post`) 使用 CSS Container Queries (`cqi` 单位) 实现 3:
 | 来源 | 贡献内容 | 仓库 |
 |------|---------|------|
 | html-ppt-skill | 36 themes、31 layouts、15 deck 模板、27+20 动画、base.css、runtime.js | `github.com/lewislulu/html-ppt-skill` |
-| baoyu-skills | 17 presets、21 信息图布局、22 视觉风格、10 AI 图片 Provider、merge 脚本 | `github.com/JimLiu/baoyu-skills` |
+| baoyu-skills | 17 presets、21 信息图布局、22 视觉风格、10 AI 图片 Provider | `github.com/JimLiu/baoyu-skills` |
 | academic-pptx-skill | 学术演示规范（Action Titles、Ghost Deck Test、一页一观点） | — |

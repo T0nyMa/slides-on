@@ -151,9 +151,8 @@ description: >
 | 路径 | 命令 | 产出 | 适用场景 |
 |------|------|------|---------|
 | A. PNG 截图 | `bun scripts/render-precise.ts` | @2x PNG 序列 | 预览、社交媒体 |
-| B. PPTX（拼合） | `bun scripts/merge-to-pptx.ts` | .pptx（图片拼合） | 保真分发 |
+| B. PPTX（可编辑） | `bun scripts/html-to-pptx.ts` | .pptx（原生文本/形状） | 分发、协作编辑 |
 | C. PDF（拼合） | `bun scripts/merge-to-pdf.ts` | .pdf（图片拼合） | 打印、邮件 |
-| D. PPTX（原生） | pptxgenjs 直接生成 | .pptx（文本可编辑） | 需要编辑文字 |
 
 **路径 A — PNG 截图**（默认导出方式）：
 ```bash
@@ -166,9 +165,9 @@ bun scripts/render-precise.ts <index.html> \
   --output ./png-out/  # 输出目录
 ```
 
-**路径 B — PPTX 拼合**（调用 baoyu-slide-deck 脚本）：
+**路径 B — PPTX（可编辑）**：
 ```bash
-bun {baoyu-slide}/scripts/merge-to-pptx.ts <png-dir> --output deck.pptx
+bun scripts/html-to-pptx.ts <index.html> --output deck.pptx
 ```
 
 **路径 C — PDF 拼合**（调用 baoyu-slide-deck 脚本）：
@@ -176,7 +175,6 @@ bun {baoyu-slide}/scripts/merge-to-pptx.ts <png-dir> --output deck.pptx
 bun {baoyu-slide}/scripts/merge-to-pdf.ts <png-dir> --output deck.pdf
 ```
 
-**路径 D — 原生 PPTX**：根据 outline.md 直接用 pptxgenjs 生成，AI 图片作为插图嵌入。
 
 **画布尺寸参考**：
 

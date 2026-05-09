@@ -19,7 +19,7 @@ slides-on 集成四个 baoyu skill 提供 AI 视觉内容生成能力。
 - **17 个 Design**（视觉皮肤）：blueprint, bold-editorial, chalkboard, corporate, dark-atmospheric, editorial-infographic, fantasy-animation, hand-drawn-edu, intuition-machine, minimal, notion, pixel-art, scientific, sketch-notes, vector-illustration, vintage, watercolor
 - **4 维自定义**：Texture × Mood × Typography × Density
 - **分析框架**：信号检测 → preset 推荐
-- **Merge 脚本**：`merge-to-pptx.ts` 和 `merge-to-pdf.ts`
+- **合并脚本**：`merge-to-pdf.ts`
 
 ### 调用方式
 
@@ -31,11 +31,8 @@ slides-on 集成四个 baoyu skill 提供 AI 视觉内容生成能力。
 **4 维调整**：
 参考 `{baoyu-slide}/references/dimensions/` 中的 texture.md、mood.md、typography.md、density.md
 
-**Merge 脚本**：
+**合并脚本**：
 ```bash
-# PPTX
-bun {baoyu-slide}/scripts/merge-to-pptx.ts <png-dir> --output output.pptx
-
 # PDF
 bun {baoyu-slide}/scripts/merge-to-pdf.ts <png-dir> --output output.pdf
 ```
