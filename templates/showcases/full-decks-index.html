@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8"><title>Full-Deck Gallery — html-ppt v2</title>
-<link rel="stylesheet" href="../assets/fonts.css">
-<link rel="stylesheet" href="../assets/base.css">
+<link rel="stylesheet" href="../../assets/fonts.css">
+<link rel="stylesheet" href="../../assets/base.css">
 <style>
   html,body{background:#0b0c10;color:#e8ebf4;font-family:var(--font-sans)}
   .deck{background:#0b0c10}
@@ -73,10 +73,10 @@ TPLS.forEach((t,i)=>{
     <h1>${t[0]}</h1>
     <p class="sub">${t[1]} · <span class="tag">${t[2]}</span> ${t[3]}</p>
     <div class="frame-wrap">
-      <iframe class="tpl" src="full-decks/${t[0]}/index.html" loading="eager" title="${t[0]}"></iframe>
+      <iframe class="tpl" src="../full-decks/${t[0]}/index.html" loading="eager" title="${t[0]}"></iframe>
     </div>`;
   deck.appendChild(s);
 });
 </script>
-<script src="../assets/runtime.js"></script>
+<script src="../../assets/runtime.js"></script>
 </body></html>
