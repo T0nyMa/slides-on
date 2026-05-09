@@ -190,7 +190,7 @@ slides-on/
 │
 ├── assets/                         # 静态资源
 │   ├── base.css                    #   设计系统（150 行 30+ CSS vars）
-│   ├── fonts.css                   #   Google Fonts 引入
+│   ├── fonts.css                   #   系统字体栈
 │   ├── runtime.js                  #   交互引擎 960 行
 │   ├── themes/                     #   36 个 theme CSS
 │   │   ├── academic-paper.css
