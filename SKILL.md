@@ -22,7 +22,6 @@ description: >
 1. **不修改已有 skill 源码**，只通过路径引用和编排调用
 2. Pipeline 严格按序执行，不可跳步。每步产出写入工作目录
 3. AI 图片生成使用 prompt 文件机制，保证可复现
-4. 学术场景应用 Action Titles、Ghost Deck Test 等演示规范
 
 ## Pipeline 详细流程
 
@@ -127,12 +126,14 @@ description: >
 - `references/authoring-guide.md` — HTML 编写指南
 - `references/presenter-mode.md` — Presenter 模式
 - `references/animations.md` — 动画系统
+- `references/html-engine.md` — HTML 渲染引擎详解
+- `references/ai-visuals.md` — AI 视觉内容生成
 
 ### Step 4: 导出
 
 **输入**：`index.html`（+ AI 图片 + SVG 文件）
 
-**四条导出路径**：
+**三条导出路径**：
 
 | 路径 | 命令 | 产出 | 适用场景 |
 |------|------|------|---------|
@@ -142,7 +143,6 @@ description: >
 
 **路径 A — PNG 截图**（默认导出方式）：
 ```bash
-cd .claude/skills/slides-on
 bun scripts/render-precise.ts <index.html> \
   --canvas 16:9 \      # 或 3:4, 4:3, 9:16, 1:1, 2.35:1, a4-landscape, WxH
   --dsf 2 \            # 设备像素比（默认 @2x Retina）
@@ -195,6 +195,22 @@ bun scripts/merge-to-pdf.ts <png-dir> --output deck.pdf
 - 特定 layout 适配（arch、vs、gantt、flow、steps）
 
 生成 XHS 内容时使用 `--canvas 3:4` 自动触发窄画布模式。
+
+## 交互快捷键
+
+生成的 HTML deck 支持以下键盘操作：
+
+| 按键 | 功能 |
+|------|------|
+| `←` `→` | 前后翻页 |
+| `Home` / `End` | 跳转首页 / 末页 |
+| `Space` | 下一页 |
+| `T` | 循环切换 theme |
+| `A` | 循环切换 animation |
+| `F` | 全屏 |
+| `O` | 概览网格（所有 slide 缩略图） |
+| `P` | Presenter 模式（独立窗口 + 笔记） |
+| `S` | 显示/隐藏 speaker notes |
 
 ## EXTEND.md 扩展
 

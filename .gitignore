@@ -3,3 +3,4 @@ examples/
 *-png/
 *.png
 .DS_Store
+bun.lock

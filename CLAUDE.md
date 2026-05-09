@@ -8,7 +8,7 @@ slides-on 是一个 Claude Code skill，提供统一的演示文稿制作能力�
 
 ## Skill Structure
 
-项目遵循 Claude Code skill 标准结构，安装后位于 `~/.claude/skills/slides-on/`：
+项目遵循 Claude Code skill 标准结构：
 
 - **SKILL.md** — skill 入口（YAML frontmatter: name + description），包含 pipeline 工作流指令，< 500 行
 - **EXTEND.md** — 用户级扩展配置（自定义 theme/layout/component/design/brand/导出偏好）
@@ -126,7 +126,9 @@ slides-on/
 │   ├── base-prompt.md              #   AI 图片基础 prompt
 │   ├── content-rules.md            #   内容规范
 │   ├── design-guidelines.md        #   设计指南
-│   └── export.md                   #   导出选项
+│   ├── export.md                   #   导出选项
+│   ├── html-engine.md              #   HTML 渲染引擎详解
+│   └── ai-visuals.md               #   AI 视觉内容生成
 │
 ├── templates/                      # HTML 模板
 │   ├── full-decks/                 #   15 个 deck template
@@ -379,7 +381,7 @@ Slides（最终产物 = index.html）
 
 ## Technology Stack
 
-- **Runtime**: Node.js（npx tsx 执行 TypeScript）
+- **Runtime**: Bun（`bun scripts/...` 执行 TypeScript）
 - **截图/渲染**: Playwright `scripts/render-precise.ts`
   - `document.fonts.ready` 精确字体等待
   - `getAnimations().finished` 动画完成检测（自动跳过 infinite 动画）
@@ -387,28 +389,27 @@ Slides（最终产物 = index.html）
   - 元素级截图（`.slide` 元素，不含 body 背景）
   - 自动检测页面类型（deck 多页 vs single 单页）和画布尺寸
 - **PPTX 生成**: HTML → `html-to-pptx.ts`（dom-to-pptx 原生形状/文本）
-- **PDF 生成**: PNG 截图 → `merge-to-pdf.ts`（pdf-lib 拼合）
-- **SVG 转 PNG**: `svg-to-png.ts`（sharp 库）
+- **PDF 生成**: PNG 截图 → `merge-to-pdf.ts`（pdf-lib）
+- **SVG 转 PNG**: `svg-to-png.ts`（sharp）
+- **AI 图片生成**: `scripts/imagine/`（10 个 Provider，含 OpenAI / Google / DashScope 等）
+- **SVG 架构图**: `references/diagram/`（4 种类型：architecture / flowchart / sequence / structural）
+- **信息图**: `references/infographic/`（21 布局 × 22 视觉风格）
 - **风格系统**: CSS Variables（36 个 theme），通过 `:root` 覆盖切换
 
 ## Scripts 使用方式
 
 ```bash
 # 截图：HTML → PNG（@2x）
-npx tsx scripts/render-precise.ts <html-file> [all|N] [--output dir] [--scale 2]
-
-# 示例
-npx tsx scripts/render-precise.ts examples/tmux-cheatsheet/index.html all
-npx tsx scripts/render-precise.ts examples/tmux-cheatsheet/shortcuts.html
+bun scripts/render-precise.ts <html-file> --slides auto --output <dir>
 
 # HTML → 可编辑 PPTX
-npx tsx scripts/html-to-pptx.ts <html-file> [--output filename.pptx]
+bun scripts/html-to-pptx.ts <html-file> [--output filename.pptx]
 
 # PNG → PDF
-npx tsx scripts/merge-to-pdf.ts <png-dir> [--output filename.pdf]
+bun scripts/merge-to-pdf.ts <png-dir> [--output filename.pdf]
 
 # SVG → PNG
-npx tsx scripts/svg-to-png.ts <svg-file>
+bun scripts/svg-to-png.ts <svg-file>
 
 # 新建 deck 脚手架
 bash scripts/new-deck.sh <name>
