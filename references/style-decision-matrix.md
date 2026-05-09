@@ -57,8 +57,8 @@
 | 代码片段 | `code` | `terminal`（命令执行） |
 | 命令行操作 | `terminal` | `code` |
 | Diff/变更 | `diff` | — |
-| 架构说明 | `arch-diagram` | → baoyu-diagram |
-| 流程图 | `flow-diagram` | → baoyu-diagram (flowchart) |
+| 架构说明 | `arch-diagram` | → SVG diagram |
+| 流程图 | `flow-diagram` | → SVG diagram (flowchart) |
 | 时间线 | `timeline` | `roadmap` |
 | 步骤流程 | `process-steps` | `flow-diagram` |
 | 甘特图/排期 | `gantt` | `roadmap` |
@@ -70,16 +70,16 @@
 | A vs B 对比 | `comparison` | `two-column` |
 | 优劣分析 | `pros-cons` | `comparison` |
 | 数据表格 | `table` | — |
-| 思维导图 | `mindmap` | → baoyu-diagram (structural) |
+| 思维导图 | `mindmap` | → SVG diagram (structural) |
 
 ### 视觉内容
 
 | 内容特征 | 推荐方式 | 备选 |
 |---------|---------|------|
-| 概念插图 | → baoyu-imagine | — |
-| 信息图 | → baoyu-infographic | — |
-| 架构图 | → baoyu-diagram | `arch-diagram` (html-ppt) |
-| 封面图 | → baoyu-cover-image | `cover` (html-ppt) |
+| 概念插图 | → AI image | — |
+| 信息图 | → AI infographic | — |
+| 架构图 | → SVG diagram | `arch-diagram` (HTML layout) |
+| 封面图 | → AI cover | `cover` (HTML layout) |
 | 图片展示（多图） | `image-grid` | — |
 | 图片展示（单图） | `image-hero` | — |
 
@@ -87,7 +87,7 @@
 
 | 用途 | 推荐 Layout |
 |------|------------|
-| 封面 | `cover` 或 → baoyu-cover-image |
+| 封面 | `cover` 或 → AI cover |
 | 目录 | `toc` |
 | 章节分隔 | `section-divider` |
 | 行动号召 | `cta` |
@@ -95,7 +95,7 @@
 
 ## Theme → CSS 文件映射
 
-html-ppt 36 个 theme，位于 `{html-ppt}/assets/themes/`：
+html-ppt 36 个 theme，位于 `assets/themes/`：
 
 | 类别 | Theme | CSS 文件 | 色调 |
 |------|-------|---------|------|
@@ -139,7 +139,7 @@ html-ppt 36 个 theme，位于 `{html-ppt}/assets/themes/`：
 
 ## 信息图：Layout × Style 组合
 
-baoyu-infographic 提供 21 种布局 × 22 种视觉风格的组合矩阵。常用推荐：
+信息图提供 21 种布局 × 22 种视觉风格的组合矩阵。常用推荐：
 
 | 信息类型 | 推荐 Layout | 推荐 Style |
 |---------|------------|-----------|

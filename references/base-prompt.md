@@ -1,6 +1,6 @@
 # Base AI Image Generation Prompt
 
-Default prompt template for generating slide illustrations via AI image providers (baoyu-imagine).
+Default prompt template for generating slide illustrations via AI image providers.
 
 ## Prompt Template Structure
 

@@ -87,16 +87,16 @@ Each slide's content is classified into one type, which determines its rendering
 | Multi-dimension metrics | `chart-radar` | html-ppt layout |
 | Key metrics (3-4 KPIs) | `kpi-grid` | html-ppt layout |
 | Single standout number | `stat-highlight` | html-ppt layout |
-| Architecture / system design description | `arch-diagram` | baoyu-diagram → SVG |
-| Process / flow description | `flow-diagram` | html-ppt or baoyu-diagram |
-| Timeline / history | `timeline` | html-ppt layout |
-| Step-by-step process | `process-steps` | html-ppt layout |
-| A vs B comparison | `comparison` / `pros-cons` | html-ppt layout |
-| Concept / idea needing visual | `ai-image` | baoyu-imagine → PNG |
-| Data story / complex visual | `infographic` | baoyu-infographic → PNG |
-| Cover / title page | `cover` | html-ppt layout or baoyu-cover-image |
-| Section transition | `section-divider` | html-ppt layout |
-| Table of contents | `toc` | html-ppt layout |
+| Architecture / system design description | `arch-diagram` | SVG diagram |
+| Process / flow description | `flow-diagram` | HTML layout or SVG diagram |
+| Timeline / history | `timeline` | HTML layout |
+| Step-by-step process | `process-steps` | HTML layout |
+| A vs B comparison | `comparison` / `pros-cons` | HTML layout |
+| Concept / idea needing visual | `ai-image` | AI image → PNG |
+| Data story / complex visual | `infographic` | AI infographic → PNG |
+| Cover / title page | `cover` | HTML layout or AI cover |
+| Section transition | `section-divider` | HTML layout |
+| Table of contents | `toc` | HTML layout |
 | Call to action | `cta` | html-ppt layout |
 | Closing / thanks | `thanks` | html-ppt layout |
 

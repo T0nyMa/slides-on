@@ -1,13 +1,17 @@
 /**
- * merge-to-pdf.ts — PNG slides → PDF wrapper
+ * merge-to-pdf.ts — PNG slides → PDF
  *
- * Adapts render-precise output (page_NN.png) to baoyu-slide-deck naming
- * convention (NN-slide-*.png), then delegates to baoyu's merge-to-pdf.
+ * Reads render-precise output (page_NN.png) and combines them into a
+ * single PDF. Each PNG becomes one page, sized to match the image.
+ *
+ * Usage:
+ *   bun scripts/merge-to-pdf.ts <png-dir> [--output filename.pdf]
  */
 
-import { existsSync, readdirSync, symlinkSync, unlinkSync, mkdirSync, rmdirSync } from "fs";
+import { existsSync, readdirSync } from "fs";
 import { join, basename, resolve } from "path";
-import { execSync } from "child_process";
+import { PDFDocument } from "pdf-lib";
+import * as fs from "fs";
 
 function parseArgs(): { dir: string; output?: string } {
   const args = process.argv.slice(2);
@@ -35,57 +39,17 @@ function findImages(dir: string): string[] {
 
   // Try page_NN pattern (render-precise output)
   const pagePattern = /^page_\d+\.(png|jpg|jpeg)$/i;
-  const pageFiles = files.filter(f => pagePattern.test(f)).sort();
+  const pageFiles = files.filter((f) => pagePattern.test(f)).sort();
   if (pageFiles.length > 0) return pageFiles;
 
-  // Try NN-slide pattern (baoyu output)
-  const slidePattern = /^\d+-slide-.*\.(png|jpg|jpeg)$/i;
-  const slideFiles = files.filter(f => slidePattern.test(f)).sort();
-  if (slideFiles.length > 0) return slideFiles;
-
-  // Try any PNG
-  const anyPng = files.filter(f => /\.(png|jpg|jpeg)$/i.test(f)).sort();
-  return anyPng;
+  // Try any PNG/JPEG
+  const anyImg = files
+    .filter((f) => /\.(png|jpg|jpeg)$/i.test(f))
+    .sort();
+  return anyImg;
 }
 
-function adaptToSlideNaming(dir: string, files: string[]): { adaptedDir: string; isTemp: boolean } {
-  // Already in baoyu naming format
-  if (/^\d+-slide-/.test(files[0])) {
-    return { adaptedDir: dir, isTemp: false };
-  }
-
-  // Create temp directory with symlinks
-  const tmpDir = join(dir, ".merge-tmp");
-  mkdirSync(tmpDir, { recursive: true });
-
-  for (const f of files) {
-    const match = f.match(/page_(\d+)/);
-    if (match) {
-      const num = parseInt(match[1], 10);
-      const ext = f.split(".").pop();
-      const linkName = `${String(num).padStart(2, "0")}-slide-${f}`;
-      symlinkSync(join(dir, f), join(tmpDir, linkName));
-    } else {
-      symlinkSync(join(dir, f), join(tmpDir, f));
-    }
-  }
-
-  return { adaptedDir: tmpDir, isTemp: true };
-}
-
-function cleanup(tmpDir: string) {
-  try {
-    const files = readdirSync(tmpDir);
-    for (const f of files) {
-      unlinkSync(join(tmpDir, f));
-    }
-    rmdirSync(tmpDir);
-  } catch {
-    // Cleanup failure is non-fatal
-  }
-}
-
-function main() {
+async function main() {
   const { dir, output } = parseArgs();
   const absDir = resolve(dir);
 
@@ -100,27 +64,47 @@ function main() {
     process.exit(1);
   }
 
-  const { adaptedDir, isTemp } = adaptToSlideNaming(absDir, imageFiles);
   const dirName = basename(absDir);
-  const outputPath = output || join(absDir, `${dirName}.pdf`);
+  const outputPath = resolve(output || join(absDir, `${dirName}.pdf`));
 
   console.log(`Found ${imageFiles.length} images in: ${absDir}`);
 
-  // Delegate to baoyu-slide-deck script
-  const baoyuScript = resolve(
-    import.meta.dir,
-    "..", "..", "baoyu-slide-deck", "scripts", "merge-to-pdf.ts"
-  );
+  const pdfDoc = await PDFDocument.create();
 
-  try {
-    const cmd = `bun run ${baoyuScript} ${adaptedDir} --output ${outputPath}`;
-    execSync(cmd, { stdio: "inherit" });
-  } finally {
-    if (isTemp) cleanup(adaptedDir);
+  for (const file of imageFiles) {
+    const imgPath = join(absDir, file);
+    const imgBytes = fs.readFileSync(imgPath);
+
+    let image;
+    if (file.endsWith(".png")) {
+      image = await pdfDoc.embedPng(imgBytes);
+    } else {
+      image = await pdfDoc.embedJpg(imgBytes);
+    }
+
+    // Use image's intrinsic dimensions, scale to fit within a reasonable page size
+    const page = pdfDoc.addPage([image.width, image.height]);
+    page.drawImage(image, {
+      x: 0,
+      y: 0,
+      width: image.width,
+      height: image.height,
+    });
   }
+
+  const pdfBytes = await pdfDoc.save();
+  fs.writeFileSync(outputPath, pdfBytes);
+
+  const sizeKB = Math.round(pdfBytes.length / 1024);
+  console.log(`Done: ${outputPath} (${sizeKB} KB, ${imageFiles.length} pages)`);
 }
 
-const isMain = import.meta.url === `file://${process.argv[1]}` || process.argv[1]?.endsWith("merge-to-pdf.ts");
+const isMain =
+  import.meta.url === `file://${process.argv[1]}` ||
+  process.argv[1]?.endsWith("merge-to-pdf.ts");
 if (isMain) {
-  main();
+  main().catch((err) => {
+    console.error("Fatal:", err.message);
+    process.exit(1);
+  });
 }

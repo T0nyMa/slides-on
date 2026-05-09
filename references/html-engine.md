@@ -1,12 +1,6 @@
-# html-ppt 集成详解
+# HTML 渲染引擎
 
-html-ppt-skill 是 slides-on 的核心 HTML 渲染引擎，提供交互式演示能力。
-
-## 来源路径
-
-```
-{html-ppt} = .agents/skills/html-ppt/
-```
+slides-on 的 HTML 渲染引擎提供交互式演示能力。
 
 ## 资产清单
 
@@ -14,13 +8,13 @@ html-ppt-skill 是 slides-on 的核心 HTML 渲染引擎，提供交互式演示
 
 | 文件 | 路径 | 说明 |
 |------|------|------|
-| base.css | `{html-ppt}/assets/base.css` | 150 行，30+ CSS Variables，响应式 grid，窄画布适配 |
-| fonts.css | `{html-ppt}/assets/fonts.css` | Google Fonts 引入（Inter, JetBrains Mono, Noto Sans SC） |
-| runtime.js | `{html-ppt}/assets/runtime.js` | 960 行交互引擎 |
+| base.css | `assets/base.css` | 150 行，30+ CSS Variables，响应式 grid，窄画布适配 |
+| fonts.css | `assets/fonts.css` | Google Fonts 引入（Inter, JetBrains Mono, Noto Sans SC） |
+| runtime.js | `assets/runtime.js` | 960 行交互引擎 |
 
 ### 主题（36 个）
 
-全部位于 `{html-ppt}/assets/themes/`：
+全部位于 `assets/themes/`：
 
 ```
 academic-paper.css      arctic-cool.css         aurora.css
@@ -39,7 +33,7 @@ vaporwave.css           xiaohongshu-white.css   y2k-chrome.css
 
 ### Layout（31 个单页模板）
 
-全部位于 `{html-ppt}/templates/single-page/`：
+全部位于 `templates/single-page/`：
 
 ```
 arch-diagram.html    big-quote.html       bullets.html
@@ -57,7 +51,7 @@ two-column.html
 
 ### Deck 模板（15 个）
 
-全部位于 `{html-ppt}/templates/full-decks/`：
+全部位于 `templates/full-decks/`：
 
 ```
 course-module/              dir-key-nav-minimal/
@@ -74,7 +68,7 @@ xhs-white-editorial/
 
 ### Deck 骨架
 
-`{html-ppt}/templates/deck.html` — 新建 deck 的起始 HTML 骨架。
+`templates/deck.html` — 新建 deck 的起始 HTML 骨架。
 
 ## 使用方式
 
@@ -204,7 +198,7 @@ Canvas 特效通过 `data-fx` 属性声明：
 ## 新建 Deck 脚手架
 
 ```bash
-bash {html-ppt}/scripts/new-deck.sh <deck-name>
+bash scripts/new-deck.sh <deck-name>
 ```
 
 产出目录结构：

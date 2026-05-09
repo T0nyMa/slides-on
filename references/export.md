@@ -110,7 +110,7 @@ bun scripts/html-to-pptx.ts <index.html> [--output filename.pptx]
 ### 命令
 
 ```bash
-bun {baoyu-slide}/scripts/merge-to-pdf.ts <png-dir> [--output filename.pdf]
+bun scripts/merge-to-pdf.ts <png-dir> [--output filename.pdf]
 ```
 
 ### 适用场景
@@ -146,7 +146,7 @@ bun scripts/render-precise.ts "$DECK" --output "./out/$NAME-png"
 bun scripts/html-to-pptx.ts "$DECK" --output "./out/$NAME.pptx"
 
 # PDF
-bun .claude/skills/baoyu-slide-deck/scripts/merge-to-pdf.ts "./out/$NAME-png" --output "./out/$NAME.pdf"
+bun scripts/merge-to-pdf.ts "./out/$NAME-png" --output "./out/$NAME.pdf"
 
 echo "Exports: out/$NAME.{png,pptx,pdf}"
 ```

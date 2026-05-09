@@ -4,13 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-slides-on 是一个 Claude Code skill，提供统一的演示文稿制作能力。整合三个来源：
-
-1. **html-ppt-skill** — 纯 HTML/CSS/JS 交互式演示（36 主题、31 布局、27 动画、presenter 模式）
-2. **baoyu-skills** — AI 驱动的视觉内容生成（AI 幻灯片图片、信息图、SVG 架构图、多 Provider 图片生成）
-3. **academic-pptx-skill** — 学术演示规范 + pptxgenjs 原生 .pptx 生成
-
-系统目标：用户提供原始文档，自动生成可交互 HTML 演示 + 导出 PNG/PPTX/PDF。
+slides-on 是一个 Claude Code skill，提供统一的演示文稿制作能力。用户提供原始文档，自动生成可交互 HTML 演示 + 导出 PNG/PPTX/PDF。
 
 ## Skill Structure
 
@@ -214,7 +208,7 @@ slides-on/
 ├── scripts/                        # 工具脚本
 │   ├── render-precise.ts           #   Playwright 高精度截图（新增，替代 render.sh）
 │   ├── html-to-pptx.ts            #   HTML → 可编辑 PPTX（dom-to-pptx）
-│   ├── merge-to-pdf.ts            #   PNG → PDF（← baoyu-slide-deck）
+│   ├── merge-to-pdf.ts            #   PNG → PDF（pdf-lib 自包含）
 │   ├── svg-to-png.ts              #   SVG → @2x PNG（← baoyu-diagram）
 │   ├── new-deck.sh                 #   新建 deck 脚手架（← html-ppt）
 │   └── imagine/                    #   AI 图片生成（← baoyu-imagine）
@@ -318,7 +312,7 @@ Slides（最终产物 = index.html）
 从 HTML 导出为目标格式：
 - **PNG**：Playwright 高精度逐页截图（`document.fonts.ready` + `getAnimations().finished`，@2x Retina）
 - **PPTX**：dom-to-pptx 直接导出可编辑 PPTX（`html-to-pptx.ts`），原生文本/形状，非截图
-- **PDF**：Playwright 截图 → merge-to-pdf（← baoyu-slide-deck）
+- **PDF**：Playwright 截图 → merge-to-pdf（pdf-lib 自包含）
 
 ## Extension Points (EXTEND.md)
 

@@ -1,56 +1,39 @@
-# baoyu Skills 集成详解
+# AI 视觉内容生成
 
-slides-on 集成四个 baoyu skill 提供 AI 视觉内容生成能力。
+slides-on 内建 AI 视觉内容生成能力，涵盖设计系统、架构图、插图和信息图。
 
-## 来源路径
-
-```
-{baoyu-slide}     = .claude/skills/baoyu-slide-deck/
-{baoyu-diagram}   = .claude/skills/baoyu-diagram/
-{baoyu-imagine}   = .claude/skills/baoyu-imagine/
-{baoyu-infographic}=.claude/skills/baoyu-infographic/
-{baoyu-cover}     = .claude/skills/baoyu-cover-image/
-```
-
-## baoyu-slide-deck — AI 幻灯片风格系统
+## 设计系统（Design）
 
 ### 提供内容
 
 - **17 个 Design**（视觉皮肤）：blueprint, bold-editorial, chalkboard, corporate, dark-atmospheric, editorial-infographic, fantasy-animation, hand-drawn-edu, intuition-machine, minimal, notion, pixel-art, scientific, sketch-notes, vector-illustration, vintage, watercolor
 - **4 维自定义**：Texture × Mood × Typography × Density
-- **分析框架**：信号检测 → preset 推荐
-- **合并脚本**：`merge-to-pdf.ts`
+- **分析框架**：信号检测 → design 推荐
 
-### 调用方式
+### 使用方式
 
-**Preset 选择**：
-1. 读取 `{baoyu-slide}/references/styles/<preset>.md` 了解各 preset 特征
+**Design 选择**：
+1. 读取 `references/designs/<design>.md` 了解各 design 特征
 2. 根据内容信号匹配（参考 `references/style-decision-matrix.md`）
-3. 将 preset 推荐写入 `style-decision.md`
+3. 将 design 推荐写入 `style-decision.md`
 
 **4 维调整**：
-参考 `{baoyu-slide}/references/dimensions/` 中的 texture.md、mood.md、typography.md、density.md
+参考 `references/dimensions/` 中的 texture.md、mood.md、typography.md、density.md
 
-**合并脚本**：
-```bash
-# PDF
-bun {baoyu-slide}/scripts/merge-to-pdf.ts <png-dir> --output output.pdf
-```
-
-## baoyu-diagram — SVG 架构图
+## SVG 架构图
 
 ### 提供内容
 
 - **4 种图类型**：architecture、flowchart、sequence、structural
 - **设计系统**：Dark 主题，8 种语义色彩，严格 SVG z-order 分层
-- **输出**：SVG + @2x PNG（通过 `main.ts`）
+- **输出**：SVG + @2x PNG（通过 `scripts/svg-to-png.ts`）
 
-### 调用方式
+### 使用方式
 
 当 deck 中需要架构图/流程图时：
 
 1. 描述架构/流程的结构（节点、连接、层级）
-2. 参考 `{baoyu-diagram}/references/<type>.md` 选择合适的图类型
+2. 参考 `references/diagram/<type>.md` 选择合适的图类型
 3. 生成 SVG 代码（遵循 z-order 规则）
 
 **SVG z-order 规则**（必须严格遵守）：
@@ -79,7 +62,7 @@ Highlight:    #fbbf24 (黄)    — 高亮
 
 **SVG → PNG 转换**：
 ```bash
-bun {baoyu-diagram}/scripts/main.ts <input.svg> --output <output.png>
+bun scripts/svg-to-png.ts <input.svg>
 ```
 
 ### 嵌入 HTML
@@ -97,7 +80,7 @@ bun {baoyu-diagram}/scripts/main.ts <input.svg> --output <output.png>
 </div>
 ```
 
-## baoyu-imagine — AI 图片生成
+## AI 图片生成（Imagine）
 
 ### 提供内容
 
@@ -105,7 +88,7 @@ bun {baoyu-diagram}/scripts/main.ts <input.svg> --output <output.png>
 - **功能**：text-to-image、参考图、宽高比、批量生成
 - **质量预设**：normal（1K）、2k（默认）
 
-### 调用方式
+### 使用方式
 
 当 deck 中需要 AI 插图/概念图时：
 
@@ -130,17 +113,17 @@ deck-name/
 ### 批量生成
 
 ```bash
-bun {baoyu-imagine}/scripts/main.ts --batchfile prompts.txt --jobs 3
+bun scripts/imagine/main.ts --batchfile prompts.txt --jobs 3
 ```
 
-## baoyu-infographic — AI 信息图
+## 信息图（Infographic）
 
 ### 提供内容
 
 - **21 种布局**：linear-progression、binary-comparison、bento-grid、iceberg、funnel、dashboard、periodic-table、dense-modules 等
 - **22 种视觉风格**：craft-handmade、claymation、kawaii、cyberpunk-neon、pixel-art、origami、ikea-manual、morandi-journal 等
 
-### 调用方式
+### 使用方式
 
 当 deck 中需要信息图时：
 
@@ -158,36 +141,29 @@ bun {baoyu-imagine}/scripts/main.ts --batchfile prompts.txt --jobs 3
 | 流程漏斗 | funnel | corporate-memphis |
 | 数据仪表盘 | dashboard | technical-schematic |
 
-## baoyu-cover-image — 封面图
+## 封面图（Cover Image）
 
-### 提供内容
+AI 生成的演示文稿封面图，支持标题文字叠加。
 
-- AI 生成的演示文稿封面图
-- 支持标题文字叠加
-
-### 调用方式
-
-当 deck 封面需要更吸引人的视觉效果时，替代 html-ppt 的纯文字 cover layout：
+当 deck 封面需要更吸引人的视觉效果时使用：
 
 1. 提取 deck 标题和副标题
 2. 选择合适的视觉风格
 3. 生成封面图
 4. 在 HTML cover slide 中使用封面图作为背景
 
-## 集成流程示例
-
-一个典型的技术分享 deck 各页面的引擎选择：
+## 典型 Deck 各页面索引
 
 ```
-Slide 1: Cover          → baoyu-cover-image（AI 封面图）
-Slide 2: TOC            → html-ppt toc layout
-Slide 3: 架构图          → baoyu-diagram（SVG architecture）
-Slide 4: 核心流程        → baoyu-diagram（SVG flowchart）
-Slide 5: 代码示例        → html-ppt code layout
-Slide 6: 性能对比        → html-ppt chart-bar layout
-Slide 7: 概念插图        → baoyu-imagine（AI 插图）
-Slide 8: 信息图总结      → baoyu-infographic（dense-modules）
-Slide 9: CTA            → html-ppt cta layout
+Slide 1: Cover          → AI 封面图
+Slide 2: TOC            → toc layout
+Slide 3: 架构图          → SVG architecture
+Slide 4: 核心流程        → SVG flowchart
+Slide 5: 代码示例        → code layout
+Slide 6: 性能对比        → chart-bar layout
+Slide 7: 概念插图        → AI 插图
+Slide 8: 信息图总结      → infographic (dense-modules)
+Slide 9: CTA            → cta layout
 ```
 
 混合渲染的关键点：

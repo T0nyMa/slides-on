@@ -62,13 +62,13 @@ Step 4: 导出 ──────── 产出 PNG / PPTX / PDF
 | 标题+要点 | `bullets` / `big-quote` | html-ppt layout |
 | 代码块 | `code` / `terminal` | html-ppt layout |
 | 数据表格 | `table` / `chart-bar` | html-ppt layout |
-| 架构描述 | `arch-diagram` | baoyu-diagram |
-| 流程/步骤 | `process-steps` / `flow-diagram` | html-ppt 或 baoyu-diagram |
-| 对比分析 | `comparison` / `pros-cons` | html-ppt layout |
-| 概念插图 | `ai-image` | baoyu-imagine |
-| 数据故事 | `infographic` | baoyu-infographic |
-| 封面 | `cover` | html-ppt 或 baoyu-cover |
-| 结束页 | `cta` / `thanks` | html-ppt layout |
+| 架构描述 | `arch-diagram` | SVG diagram |
+| 流程/步骤 | `process-steps` / `flow-diagram` | HTML layout 或 SVG diagram |
+| 对比分析 | `comparison` / `pros-cons` | HTML layout |
+| 概念插图 | `ai-image` | AI image |
+| 数据故事 | `infographic` | AI infographic |
+| 封面 | `cover` | HTML layout 或 AI cover |
+| 结束页 | `cta` / `thanks` | HTML layout |
 
 ### 1.5 Ghost Deck Test
 
@@ -121,7 +121,7 @@ Step 4: 导出 ──────── 产出 PNG / PPTX / PDF
 
 ### 2.2 4 维自定义
 
-来自 baoyu-slide-deck 的维度系统：
+4 维自定义系统：
 
 | 维度 | 可选值 | 影响 |
 |------|--------|------|
@@ -134,7 +134,7 @@ Step 4: 导出 ──────── 产出 PNG / PPTX / PDF
 
 根据内容类型匹配 html-ppt layout（31 种）：
 
-详见 `{html-ppt}/references/layouts.md`
+详见 `references/layouts.md`
 
 ### 2.4 混合渲染策略
 
@@ -142,22 +142,22 @@ Step 4: 导出 ──────── 产出 PNG / PPTX / PDF
 
 ```
 Deck
-├── Slide 1 (Cover)    → baoyu-cover-image → PNG → <img> 嵌入 HTML
-├── Slide 2 (TOC)      → html-ppt layout (toc)
-├── Slide 3 (架构图)    → baoyu-diagram → SVG → 内联或 <img>
-├── Slide 4-6 (内容)    → html-ppt layout (bullets/code)
-├── Slide 7 (信息图)    → baoyu-infographic → PNG → <img>
-├── Slide 8 (概念插图)  → baoyu-imagine → PNG → <img>
-└── Slide 9 (结束)     → html-ppt layout (thanks)
+├── Slide 1 (Cover)    → AI cover → PNG → <img> 嵌入 HTML
+├── Slide 2 (TOC)      → HTML layout (toc)
+├── Slide 3 (架构图)    → SVG diagram → SVG → 内联或 <img>
+├── Slide 4-6 (内容)    → HTML layout (bullets/code)
+├── Slide 7 (信息图)    → AI infographic → PNG → <img>
+├── Slide 8 (概念插图)  → AI image → PNG → <img>
+└── Slide 9 (结束)     → HTML layout (thanks)
 ```
 
 ## Step 3: HTML 渲染
 
 ### 3.1 组装流程
 
-1. 选择 deck 模板骨架（从 `{html-ppt}/templates/full-decks/` 或 `templates/deck.html`）
-2. 选择 theme CSS（`{html-ppt}/assets/themes/<theme>.css`）
-3. 为每个 slide 选择 layout HTML（`{html-ppt}/templates/single-page/<layout>.html`）
+1. 选择 deck 模板骨架（从 `templates/full-decks/` 或 `templates/deck.html`）
+2. 选择 theme CSS（`assets/themes/<theme>.css`）
+3. 为每个 slide 选择 layout HTML（`templates/single-page/<layout>.html`）
 4. 将实际内容填入 layout 模板的占位区域
 5. 对于 AI 图片/SVG 页面：插入 `<img>` 标签引用生成的文件
 6. 添加 `data-anim` / `data-fx` 属性声明动画
@@ -212,7 +212,7 @@ Deck
 </section>
 ```
 
-详见 `{html-ppt}/references/animations.md`
+详见 `references/animations.md`
 
 ## Step 4: 导出
 
