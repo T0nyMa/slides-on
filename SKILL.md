@@ -22,7 +22,7 @@ description: >
 1. **不修改已有 skill 源码**，只通过路径引用和编排调用
 2. Pipeline 严格按序执行，不可跳步。每步产出写入工作目录
 3. AI 图片生成使用 prompt 文件机制，保证可复现
-4. 学术场景应用 academic-pptx 规范（Action Titles, Ghost Deck Test）
+4. 学术场景应用 Action Titles、Ghost Deck Test 等演示规范
 
 ## Pipeline 详细流程
 
@@ -77,7 +77,7 @@ description: >
 1. 从 17 个 design 中选择（或读取 EXTEND.md 默认值）
 2. Design = 可移植的 CSS 变量覆盖层，决定颜色 / 字体 / 纹理 / 密度 / 动画偏好
 3. 支持 4 维自定义覆盖（Texture × Mood × Typography × Density）
-4. 也可直接选择 36 个 html-ppt theme 作为视觉基础
+4. 也可直接选择 36 个 theme 作为视觉基础
 
 **Slide 级 — 选择渲染引擎**：
 

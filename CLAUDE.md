@@ -28,14 +28,14 @@ slides-on/
 │
 ├── references/                     # 渐进式披露参考文档
 │   ├── glossary.md                 #   术语表
-│   ├── themes.md                   #   theme 目录（← html-ppt references/themes.md）
-│   ├── layouts.md                  #   layout 目录（← html-ppt references/layouts.md）
-│   ├── animations.md               #   animation 目录（← html-ppt references/animations.md）
-│   ├── full-decks.md               #   full-deck template 目录（← html-ppt references/full-decks.md）
-│   ├── presenter-mode.md           #   presenter 模式指南（← html-ppt references/presenter-mode.md）
-│   ├── authoring-guide.md          #   HTML 编写指南（← html-ppt references/authoring-guide.md）
+│   ├── themes.md                   #   theme 目录
+│   ├── layouts.md                  #   layout 目录
+│   ├── animations.md               #   animation 目录
+│   ├── full-decks.md               #   full-deck template 目录
+│   ├── presenter-mode.md           #   presenter 模式指南
+│   ├── authoring-guide.md          #   HTML 编写指南
 │   │
-│   ├── designs/                    #   design 定义（← baoyu-slide-deck styles/）
+│   ├── designs/                    #   17 个 design 定义
 │   │   ├── blueprint.md            #     17 个 design
 │   │   ├── bold-editorial.md
 │   │   ├── chalkboard.md
@@ -54,14 +54,14 @@ slides-on/
 │   │   ├── vintage.md
 │   │   └── watercolor.md
 │   │
-│   ├── dimensions/                 #   4 维自定义（← baoyu-slide-deck dimensions/）
+│   ├── dimensions/                 #   4 维自定义（Texture × Mood × Typography × Density）
 │   │   ├── density.md
 │   │   ├── mood.md
 │   │   ├── texture.md
 │   │   ├── typography.md
 │   │   └── designs.md              #     design → dimension 映射表
 │   │
-│   ├── infographic/                #   信息图（← baoyu-infographic）
+│   ├── infographic/                #   信息图（21 布局 × 22 视觉风格）
 │   │   ├── layouts/                #     21 种信息图布局
 │   │   │   ├── bento-grid.md
 │   │   │   ├── binary-comparison.md
@@ -108,13 +108,13 @@ slides-on/
 │   │       ├── technical-schematic.md
 │   │       └── ui-wireframe.md
 │   │
-│   ├── diagram/                    #   SVG 架构图（← baoyu-diagram）
+│   ├── diagram/                    #   SVG 架构图（4 种类型）
 │   │   ├── architecture.md         #     4 个详细图类型参考
 │   │   ├── flowchart.md
 │   │   ├── sequence.md
 │   │   └── structural.md
 │   │
-│   ├── imagine/                    #   AI 图片生成（← baoyu-imagine）
+│   ├── imagine/                    #   AI 图片生成（10 个 Provider）
 │   │   └── providers/              #     Provider 参考文档
 │   │       ├── dashscope.md
 │   │       ├── minimax.md
@@ -122,14 +122,14 @@ slides-on/
 │   │       ├── replicate.md
 │   │       └── zai.md
 │   │
-│   ├── analysis-framework.md      #   内容分析框架（← baoyu-slide-deck）
-│   ├── base-prompt.md              #   AI 图片基础 prompt（← baoyu-slide-deck）
-│   ├── content-rules.md            #   内容规范（← baoyu-slide-deck）
-│   ├── design-guidelines.md        #   设计指南（← baoyu-slide-deck）
+│   ├── analysis-framework.md      #   内容分析框架
+│   ├── base-prompt.md              #   AI 图片基础 prompt
+│   ├── content-rules.md            #   内容规范
+│   ├── design-guidelines.md        #   设计指南
 │   └── export.md                   #   导出选项
 │
 ├── templates/                      # HTML 模板
-│   ├── full-decks/                 #   15 个 deck template（← html-ppt）
+│   ├── full-decks/                 #   15 个 deck template
 │   │   ├── course-module/          #     每个含 index.html + style.css + README.md
 │   │   ├── dir-key-nav-minimal/
 │   │   ├── graphify-dark-graph/
@@ -146,7 +146,7 @@ slides-on/
 │   │   ├── xhs-post/
 │   │   └── xhs-white-editorial/
 │   │
-│   ├── single-page/               #   31 个 slide layout（← html-ppt）
+│   ├── single-page/               #   31 个 slide layout
 │   │   ├── arch-diagram.html
 │   │   ├── big-quote.html
 │   │   ├── bullets.html
@@ -179,24 +179,24 @@ slides-on/
 │   │   ├── todo-checklist.html
 │   │   └── two-column.html
 │   │
-│   ├── deck.html                   #   新建 slides 起始骨架（← html-ppt）
-│   └── showcases/                  #   展示页（← html-ppt）
+│   ├── deck.html                   #   新建 slides 起始骨架
+│   └── showcases/                  #   theme/layout/animation 展示页
 │       ├── theme-showcase.html
 │       ├── layout-showcase.html
 │       ├── animation-showcase.html
 │       └── full-decks-index.html
 │
 ├── assets/                         # 静态资源
-│   ├── base.css                    #   设计系统（← html-ppt, 150 行 30+ CSS vars）
-│   ├── fonts.css                   #   Google Fonts 引入（← html-ppt）
-│   ├── runtime.js                  #   交互引擎 960 行（← html-ppt）
-│   ├── themes/                     #   36 个 theme CSS（← html-ppt）
+│   ├── base.css                    #   设计系统（150 行 30+ CSS vars）
+│   ├── fonts.css                   #   Google Fonts 引入
+│   ├── runtime.js                  #   交互引擎 960 行
+│   ├── themes/                     #   36 个 theme CSS
 │   │   ├── academic-paper.css
 │   │   ├── arctic-cool.css
 │   │   ├── aurora.css
 │   │   ├── ... (36 files total)
 │   │   └── y2k-chrome.css
-│   └── animations/                 #   动画系统（← html-ppt）
+│   └── animations/                 #   动画系统（27 CSS + 20 Canvas FX）
 │       ├── animations.css          #     27 个 CSS animation
 │       ├── fx-runtime.js           #     Canvas FX 运行时
 │       └── fx/                     #     20 个 Canvas FX 模块
@@ -209,9 +209,9 @@ slides-on/
 │   ├── render-precise.ts           #   Playwright 高精度截图（新增，替代 render.sh）
 │   ├── html-to-pptx.ts            #   HTML → 可编辑 PPTX（dom-to-pptx）
 │   ├── merge-to-pdf.ts            #   PNG → PDF（pdf-lib 自包含）
-│   ├── svg-to-png.ts              #   SVG → @2x PNG（← baoyu-diagram）
-│   ├── new-deck.sh                 #   新建 deck 脚手架（← html-ppt）
-│   └── imagine/                    #   AI 图片生成（← baoyu-imagine）
+│   ├── svg-to-png.ts              #   SVG → @2x PNG
+│   ├── new-deck.sh                 #   新建 deck 脚手架
+│   └── imagine/                    #   AI 图片生成
 │       ├── main.ts                 #     图片生成入口
 │       ├── build-batch.ts          #     批量生成
 │       ├── types.ts                #     类型定义
@@ -251,7 +251,7 @@ Slides（最终产物 = index.html）
 | **Slides** | 最终产物 — Template × Design × Content 的结合体，一个 index.html | 产出 |
 | **Template** | 结构容器 — 定义页面上有什么、放哪里。自带默认视觉，可被 Design 覆盖 | 结构 |
 | **Design** | 视觉皮肤 — 可移植的 CSS 变量覆盖层。不碰 HTML 结构，只定义颜色/字体/纹理/密度/动画 | 视觉 |
-| **Slide** | Slides 中的一页，html-ppt: `.slide` 元素 | 页面 |
+| **Slide** | Slides 中的一页，`.slide` 元素 | 页面 |
 | **Section** | 逻辑相关的一组 Slide，由 section-divider 引导 | 章节 |
 | **Layout** | 单页内容排列方式（双栏、代码、图表等），31 种内置 | 排版 |
 | **Theme** | 单一 CSS 变量文件（36 个）。Theme 是 Design 的子集——Design 还包含纹理、密度、动画等非颜色维度 | 配色 |
@@ -274,18 +274,18 @@ Slides（最终产物 = index.html）
 
 ### Step 1: 内容分析
 
-解析原始文档，生成演示结构（融合 baoyu-slide-deck 分析框架 + academic-pptx 结构规范）：
+解析原始文档，生成演示结构：
 - **Cover 页**：提取标题、副标题、作者等元信息
 - **章节划分**：识别文档逻辑段落，拆分为 section（section-divider）
 - **内容框架**：每个 section 内的 slide 分配，确定每页的内容类型（文字、图表、代码、架构图、信息图、AI 插图等）
-- **页数推算**：基于文档长度的启发式（← baoyu-slide-deck: <1000 字 → 5-10 页, 1000-3000 → 10-18 页, ...）
-- **信号检测**：根据内容关键词自动匹配推荐的 design（← baoyu-slide-deck 信号检测机制）
-- **Ghost Deck Test**：只读标题序列应能讲述完整论点（← academic-pptx QA 检查）
+- **页数推算**：基于文档长度的启发式（<1000 字 → 5-10 页, 1000-3000 → 10-18 页, >3000 → 18-30 页）
+- **信号检测**：根据内容关键词自动匹配推荐的 design
+- **Ghost Deck Test**：只读标题序列应能讲述完整论点
 - 输出：结构化的 slides 大纲（cover → sections → slides → content slots）
 
 ### Step 2: 风格决策
 
-两级决策（融合 html-ppt 主题系统 + baoyu-slide-deck 4 维风格 + baoyu-infographic 视觉风格）：
+两级决策（36 主题系统 + 4 维风格 + 信息图视觉风格）：
 - **Slides 级**：选择 design（17 个 design 或自定义），确定 theme（36 个 HTML theme）+ layout 偏好 + animation + 密度，支持 4 维自定义（Texture × Mood × Typography × Density）
 - **Slide 级**：根据每页内容类型匹配
   - HTML layout（31 种 single-page 布局）用于文字、代码、图表等
@@ -295,16 +295,16 @@ Slides（最终产物 = index.html）
 
 ### Step 3: HTML 渲染
 
-将 Template + Design + 内容组装为完整的 HTML slides（以 html-ppt 引擎为核心）：
+将 Template + Design + 内容组装为完整的 HTML slides：
 - 基于 CSS Variables 的 theme 系统（`--bg`, `--text-1`, `--accent`, `--font-sans` 等）
 - `.is-active` 类切换 slide，URL `#/N` 深链接，键盘导航
 - 27 种 CSS animation + 20 种 Canvas FX，通过 `data-anim` / `data-fx` 声明
 - Presenter 模式：`BroadcastChannel` 双向同步，拖拽笔记卡片
 - **混合渲染**：单个 deck 内可混合多种内容来源
   - HTML 排版（文字、代码、图表）→ 直接使用 layout 模板
-  - SVG 架构图（← baoyu-diagram）→ `<svg>` 内联或 `<img>` 引用
-  - AI 生成插图（← baoyu-imagine, 10 个 Provider）→ `<img>` 引用
-  - AI 信息图（← baoyu-infographic, 21 layout × 22 style）→ `<img>` 引用
+  - SVG 架构图 → `<svg>` 内联或 `<img>` 引用
+  - AI 生成插图（10 个 Provider）→ `<img>` 引用
+  - AI 信息图（21 layout × 22 style）→ `<img>` 引用
 - 产出：可在浏览器中直接交互演示的 HTML 文件
 
 ### Step 4: 导出
