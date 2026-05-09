@@ -9,7 +9,7 @@
   --accent:#4A90D9;--accent-2:#D4952A;--accent-3:#5B9A5B;
   --accent-red:#C94040;--accent-teal:#3A8A8A;
   --radius:1.23cqi;--radius-sm:0.74cqi;--radius-lg:1.48cqi;
-  font-family:'PingFang SC','Microsoft YaHei','Noto Sans SC','Helvetica Neue',sans-serif;
+  font-family:var(--font-sans);
 }
 
 /* ── 画布容器 3:4 ── */
