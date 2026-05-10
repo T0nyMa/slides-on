@@ -13,6 +13,39 @@
 <link rel="stylesheet" href="assets/components.css">
 ```
 
+3:4 画布推荐使用 Design CSS 替代 theme，提供完整视觉皮肤：
+
+```html
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/components.css">
+<link rel="stylesheet" href="assets/designs/pastel-card.css">
+<body class="d-pastel-card portrait">
+```
+
+## Chrome 片段（chr-*）
+
+Chrome 是页面的"壳"——topbar、footer、页码、装饰性背景元素等。它们与 c-* 内容组件正交：Chrome 提供页面框架，c-* 填充内容。
+
+Chrome 元素的类名统一使用 `chr-*` 前缀，由 Design CSS 赋予视觉样式：
+
+| Chrome 元素 | 类名 | 说明 |
+|------------|------|------|
+| 顶部栏 | `.chr-topbar` | 标签 + 页码的顶部栏 |
+| 胶囊标签 | `.chr-chip` | 顶部栏中的圆角标签（含 `::before` 色点） |
+| 页码 | `.chr-page` | 页码指示器（"01 / 08"） |
+| 分类标签 | `.chr-kicker` | 标题上方的全大写标签 |
+| 底部栏 | `.chr-footer` | 底部状态栏（章节名 + 页码） |
+| 装饰分隔线 | `.chr-divider` | 渐变短分隔线（如 pastel-card 的桃色渐变线） |
+| 顶部渐变线 | `.chr-topline` | 页面顶部的彩虹渐变线（如 white-editorial） |
+| 装饰贴纸 | `.chr-sticker` | 旋转的虚线边框贴纸（如 xhs-post） |
+| 背景模糊圆 | `.chr-blob` | 绝对定位的径向渐变圆形（如 pastel-card） |
+| 圆形编号 | `.chr-num-circle` | 大号步骤编号圆圈（如 xhs-post） |
+
+Chrome 元素不是通用组件——每个 Design CSS 可以选择性地定义它们。如果某个 Design CSS 未定义 `.chr-blob`，HTML 中放置的 blob div 将不可见（无尺寸、无背景）。
+
+见 `assets/designs/*.css` 中的完整 Chrome 样式实现。
+
 ## 核心理念
 
 **Slide = 组件自由组合，而非固定布局填空。**

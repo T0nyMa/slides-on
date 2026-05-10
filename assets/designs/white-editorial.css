@@ -1,0 +1,212 @@
+/* white-editorial — 白底杂志风 Design CSS */
+/* Usage: <body class="d-white-editorial portrait"> */
+
+.d-white-editorial {
+  /* ── Token overrides ── */
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #fcfcff;
+  --border: #eaecf3;
+  --border-strong: #d0d2d8;
+  --text-1: #111318;
+  --text-2: #475467;
+  --text-3: #98a2b3;
+  --accent: #7b61ff;
+  --accent-2: #4e8cff;
+  --accent-3: #17b26a;
+  --radius: 24px;
+  --radius-sm: 16px;
+  --radius-lg: 28px;
+  --shadow: 0 10px 24px rgba(17, 19, 24, 0.04);
+  --shadow-lg: 0 18px 48px rgba(17, 19, 24, 0.08);
+  --letter-tight: -0.03em;
+  --font-display: 'Inter', 'Noto Sans SC', sans-serif;
+  --font-serif: 'Inter', 'Noto Sans SC', sans-serif;
+  --font-sans: 'Inter', 'Noto Sans SC', 'PingFang SC', -apple-system, sans-serif;
+  --grad: linear-gradient(90deg, #7b61ff 0%, #4e8cff 25%, #17b26a 48%, #ff9d42 72%, #ff5fa2 100%);
+
+  /* Design-specific tokens */
+  --we-purple: #7b61ff;
+  --we-pink: #ff5fa2;
+  --we-blue: #4e8cff;
+  --we-green: #17b26a;
+  --we-orange: #ff9d42;
+  --we-soft-purple: #f4efff;
+  --we-soft-pink: #fff0f6;
+  --we-soft-blue: #eef4ff;
+  --we-soft-green: #edfdf3;
+  --we-soft-orange: #fff5ea;
+  --we-code-bg: #0f1117;
+
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-sans);
+}
+
+.d-white-editorial .slide { background: #fff; }
+
+/* ══════════════════════════════════════════════════════
+   CHROME
+   ══════════════════════════════════════════════════════ */
+
+/* Topline — rainbow gradient line at top */
+.d-white-editorial .chr-topline {
+  position: absolute; top: 0; left: 0; right: 0; height: .62cqi;
+  background: var(--grad);
+}
+
+/* Topbar — tag + page number */
+.d-white-editorial .chr-topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 2.22cqi;
+}
+.d-white-editorial .chr-chip {
+  display: inline-flex; align-items: center; gap: 1.23cqi;
+  padding: 1.23cqi 2.22cqi; border-radius: 999px;
+  background: #fff; border: 1px solid var(--border);
+  font-size: 1.85cqi; color: var(--text-2);
+}
+.d-white-editorial .chr-chip::before {
+  content: ''; width: 1.23cqi; height: 1.23cqi; border-radius: 50%;
+  background: var(--grad);
+}
+.d-white-editorial .chr-page {
+  font-size: 1.73cqi; color: var(--text-3); letter-spacing: .1em;
+}
+
+/* Kicker */
+.d-white-editorial .chr-kicker {
+  font-size: 2.22cqi; color: var(--text-2); margin-top: .74cqi; font-weight: 500;
+}
+
+/* Footer */
+.d-white-editorial .chr-footer {
+  position: absolute; left: 10.86cqi; right: 10.86cqi; bottom: 5.43cqi;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  font-size: 1.6cqi; color: var(--text-3);
+}
+
+/* Pill tag (thanks page) */
+.d-white-editorial .chr-pill {
+  display: inline-block; padding: .99cqi 1.98cqi; border-radius: 999px;
+  font-size: 1.73cqi; font-weight: 700; margin: 0 .99cqi .99cqi 0;
+  background: #fff; border: 1px solid var(--border); color: #394150;
+}
+
+/* ══════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ══════════════════════════════════════════════════════ */
+
+.d-white-editorial .chr-title {
+  font-size: 10.37cqi; line-height: 1.02; letter-spacing: -.25cqi;
+  font-weight: 850; margin: 2.22cqi 0 0; color: var(--text-1);
+}
+.d-white-editorial .chr-heading {
+  font-size: 7.41cqi; line-height: 1.05; letter-spacing: -.19cqi;
+  font-weight: 800; margin: 1.73cqi 0 0;
+}
+.d-white-editorial .chr-sub {
+  font-size: 2.96cqi; line-height: 1.45; color: #1f2937;
+  margin-top: 2.72cqi; max-width: 111.11cqi;
+}
+
+/* Gradient text */
+.d-white-editorial .chr-grad {
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+
+/* Focus highlight — inline tag-like emphasis */
+.d-white-editorial .chr-focus {
+  display: inline-block; padding: .74cqi 1.73cqi; border-radius: 1.73cqi;
+  background: var(--text-1); color: #fff; font-weight: 700;
+}
+.d-white-editorial .chr-focus.blue   { background: var(--we-soft-blue);   color: #174ea6; }
+.d-white-editorial .chr-focus.pink   { background: var(--we-soft-pink);   color: #c11574; }
+.d-white-editorial .chr-focus.orange { background: var(--we-soft-orange); color: #b54708; }
+.d-white-editorial .chr-focus.green  { background: var(--we-soft-green);  color: #067647; }
+
+/* Big stat — huge number for thanks page */
+.d-white-editorial .chr-stat {
+  font-size: 11.85cqi; font-weight: 900; letter-spacing: -.49cqi; line-height: 1;
+}
+.d-white-editorial .chr-stat small {
+  font-size: 2.72cqi; color: var(--text-3); font-weight: 700;
+  letter-spacing: 0; margin-left: .74cqi;
+}
+
+/* ══════════════════════════════════════════════════════
+   c-* EXTENSIONS
+   ══════════════════════════════════════════════════════ */
+
+/* Card — match original xw-card */
+.d-white-editorial .c-card {
+  padding: 2.96cqi 3.21cqi;
+}
+
+/* Grid gaps match original */
+.d-white-editorial .c-grid-2 { gap: 2.22cqi; margin-top: 2.72cqi; }
+.d-white-editorial .c-grid-3 { gap: 1.98cqi; margin-top: 2.72cqi; }
+
+/* Card color variants */
+.d-white-editorial .c-card.purple { background: var(--we-soft-purple); }
+.d-white-editorial .c-card.pink   { background: var(--we-soft-pink); }
+.d-white-editorial .c-card.blue   { background: var(--we-soft-blue); }
+.d-white-editorial .c-card.green  { background: var(--we-soft-green); }
+.d-white-editorial .c-card.orange { background: var(--we-soft-orange); }
+
+/* Card sub-elements — design-specific internal structure */
+.d-white-editorial .chr-card-label {
+  font-size: 1.73cqi; font-weight: 800; opacity: .7;
+  margin-bottom: 1.23cqi; letter-spacing: .08em; text-transform: uppercase;
+}
+.d-white-editorial .chr-card-main {
+  font-size: 3.46cqi; line-height: 1.22; font-weight: 850; letter-spacing: -.5px;
+}
+.d-white-editorial .chr-card-desc {
+  font-size: 1.98cqi; line-height: 1.5; color: var(--text-2); margin-top: 1.48cqi;
+}
+
+/* Hero card — gradient background, stronger shadow */
+.d-white-editorial .chr-hero {
+  background: linear-gradient(180deg, #fff 0%, #fcfcff 100%);
+  box-shadow: var(--shadow-lg); margin-top: 3.46cqi;
+}
+
+/* Steps — match original xw-steps sizing */
+.d-white-editorial .c-steps { gap: 1.98cqi; margin-top: 2.22cqi; }
+.d-white-editorial .c-step-num {
+  width: 5.93cqi; height: 5.93cqi; background: var(--text-1);
+  font-size: 2.47cqi; font-weight: 900;
+}
+.d-white-editorial .c-step-title { font-size: 2.72cqi; font-weight: 700; }
+
+/* Quote — match original xw-quote */
+.d-white-editorial .c-quote {
+  font-size: 4.69cqi; line-height: 1.3; font-weight: 800;
+  letter-spacing: -.5px; padding-left: 0; font-family: var(--font-sans);
+  font-style: normal;
+}
+.d-white-editorial .c-quote::before { display: none; }
+
+/* ══════════════════════════════════════════════════════
+   CODE BLOCK
+   ══════════════════════════════════════════════════════ */
+
+.d-white-editorial .chr-codebox {
+  background: var(--we-code-bg); color: #e4e2d8;
+  border-radius: 2.22cqi; padding: 2.72cqi 3.21cqi;
+  font-family: 'JetBrains Mono', monospace; font-size: 1.85cqi;
+  line-height: 1.75; margin-top: 2.47cqi; border: 1px solid #1f222c;
+}
+.d-white-editorial .chr-codebox .cm { color: #6b6a62; }
+.d-white-editorial .chr-codebox .kw { color: #c88f64; }
+.d-white-editorial .chr-codebox .st { color: #a8c292; }
+.d-white-editorial .chr-codebox .hl { color: #e9c58a; font-weight: 600; }
+
+/* ── Container query overrides ── */
+@container (max-width: 1000px) {
+  .d-white-editorial .c-grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .d-white-editorial .c-grid-3 { grid-template-columns: repeat(3, 1fr); }
+}

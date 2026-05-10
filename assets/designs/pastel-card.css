@@ -1,0 +1,221 @@
+/* pastel-card — 柔和马卡龙大色块封面风 Design CSS */
+/* Usage: <body class="d-pastel-card portrait"> */
+
+.d-pastel-card {
+  /* ── Token overrides ── */
+  --bg: #fef8f1;
+  --surface: #ffffff;
+  --surface-2: #fef8f1;
+  --border: rgba(42, 35, 64, 0.08);
+  --border-strong: rgba(42, 35, 64, 0.16);
+  --text-1: #2a2340;
+  --text-2: #5b5470;
+  --text-3: #9089a8;
+  --accent: #f48b5c;
+  --accent-2: #c94673;
+  --accent-3: #2e9d70;
+  --radius: 28px;
+  --radius-sm: 16px;
+  --radius-lg: 36px;
+  --shadow: 0 14px 40px rgba(42, 35, 64, 0.08);
+  --shadow-lg: 0 20px 50px rgba(42, 35, 64, 0.1);
+  --letter-tight: -0.03em;
+  --font-display: 'Playfair Display', 'Noto Serif SC', serif;
+  --font-serif: 'Playfair Display', 'Noto Serif SC', serif;
+  --font-sans: 'Inter', 'Noto Sans SC', sans-serif;
+  --grad: linear-gradient(90deg, #f48b5c, #c94673);
+
+  /* Design-specific tokens */
+  --pc-peach: #ffd8c2;
+  --pc-peach-d: #f48b5c;
+  --pc-mint: #c8ecd8;
+  --pc-mint-d: #2e9d70;
+  --pc-sky: #c9dcfb;
+  --pc-sky-d: #4e7ed6;
+  --pc-lilac: #ddd0f5;
+  --pc-lilac-d: #7b5dc4;
+  --pc-lemon: #fdf0b2;
+  --pc-lemon-d: #c8910a;
+  --pc-rose: #fcd0dd;
+  --pc-rose-d: #c94673;
+  --pc-code-bg: #2a2340;
+
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-display);
+}
+
+/* ══════════════════════════════════════════════════════
+   CHROME — shared page shell elements
+   ══════════════════════════════════════════════════════ */
+
+/* Blobs — decorative gradient circles behind content */
+.d-pastel-card .chr-blob {
+  position: absolute; border-radius: 50%; filter: blur(2px);
+  opacity: .85; z-index: 0;
+}
+.d-pastel-card .chr-blob.b1 {
+  width: 51.85cqi; height: 51.85cqi;
+  background: radial-gradient(circle, var(--pc-peach), transparent 70%);
+  top: -8%; right: -6%;
+}
+.d-pastel-card .chr-blob.b2 {
+  width: 44.44cqi; height: 44.44cqi;
+  background: radial-gradient(circle, var(--pc-lilac), transparent 72%);
+  bottom: -10%; left: -8%;
+}
+.d-pastel-card .chr-blob.b3 {
+  width: 32.1cqi; height: 32.1cqi;
+  background: radial-gradient(circle, var(--pc-mint), transparent 72%);
+  top: 40%; right: 20%;
+}
+.d-pastel-card .slide > * { position: relative; z-index: 2; }
+
+/* Topbar — chip tag + page number */
+.d-pastel-card .chr-topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 2.72cqi; font-family: var(--font-sans);
+}
+.d-pastel-card .chr-chip {
+  display: inline-flex; align-items: center; gap: 1.23cqi;
+  padding: .99cqi 2.22cqi; border-radius: 999px;
+  background: #fff; border: 1.5px solid var(--border);
+  font-size: 1.6cqi; font-weight: 600; letter-spacing: .08em;
+  color: var(--text-2); text-transform: uppercase;
+}
+.d-pastel-card .chr-chip::before {
+  content: ''; width: 1.11cqi; height: 1.11cqi; border-radius: 50%;
+  background: var(--pc-peach-d);
+}
+.d-pastel-card .chr-chip.mint::before  { background: var(--pc-mint-d); }
+.d-pastel-card .chr-chip.sky::before   { background: var(--pc-sky-d); }
+.d-pastel-card .chr-chip.lilac::before { background: var(--pc-lilac-d); }
+.d-pastel-card .chr-chip.rose::before  { background: var(--pc-rose-d); }
+
+.d-pastel-card .chr-page {
+  font-family: 'Inter', sans-serif; font-size: 1.6cqi;
+  color: var(--text-3); letter-spacing: .12em; font-weight: 600;
+}
+
+/* Kicker — small uppercase label above title */
+.d-pastel-card .chr-kicker {
+  font-family: var(--font-sans); font-size: 1.73cqi; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 1.73cqi;
+}
+
+/* Footer — bottom status bar */
+.d-pastel-card .chr-footer {
+  position: absolute; left: 11.11cqi; right: 11.11cqi; bottom: 4.94cqi;
+  display: flex; justify-content: space-between;
+  font-family: 'Inter', sans-serif; font-size: 1.48cqi;
+  color: var(--text-3); letter-spacing: .1em;
+}
+
+/* Divider — short gradient accent line */
+.d-pastel-card .chr-divider {
+  width: 11.11cqi; height: .49cqi;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: .25cqi; margin: 2.47cqi 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ══════════════════════════════════════════════════════ */
+
+.d-pastel-card .chr-title {
+  font-size: 11.85cqi; font-weight: 900; line-height: 1.05;
+  letter-spacing: -.25cqi; margin: 0 0 2.22cqi; color: var(--text-1);
+  font-family: var(--font-display);
+}
+.d-pastel-card .chr-title em { font-style: italic; color: var(--accent); }
+.d-pastel-card .chr-title .rose { color: var(--accent-2); font-style: italic; }
+.d-pastel-card .chr-title .mint { color: var(--accent-3); font-style: italic; }
+
+.d-pastel-card .chr-heading {
+  font-size: 7.41cqi; font-weight: 800; line-height: 1.1;
+  letter-spacing: -.12cqi; margin: 0 0 1.73cqi;
+  font-family: var(--font-display);
+}
+.d-pastel-card .chr-heading em { font-style: italic; color: var(--accent); }
+.d-pastel-card .chr-heading .rose { color: var(--accent-2); }
+.d-pastel-card .chr-heading .mint { color: var(--accent-3); }
+
+.d-pastel-card .chr-sub {
+  font-family: var(--font-sans); font-size: 2.59cqi; line-height: 1.6;
+  color: var(--text-2); max-width: 98.77cqi; font-weight: 400;
+}
+
+/* ══════════════════════════════════════════════════════
+   c-* EXTENSIONS — match original xp-* spacing & card styling
+   ══════════════════════════════════════════════════════ */
+
+/* Match original xp-card: no border, larger padding */
+.d-pastel-card .c-card {
+  border: none;
+  padding: 3.7cqi 4.2cqi;
+}
+
+/* Grid gaps match original xp-grid-2 / xp-grid-3 */
+.d-pastel-card .c-grid-2 { gap: 2.47cqi; margin-top: 3.21cqi; }
+.d-pastel-card .c-grid-3 { gap: 2.22cqi; margin-top: 3.21cqi; }
+
+/* Card color variants */
+.d-pastel-card .c-card.peach { background: var(--pc-peach); }
+.d-pastel-card .c-card.mint  { background: var(--pc-mint); }
+.d-pastel-card .c-card.sky   { background: var(--pc-sky); }
+.d-pastel-card .c-card.lilac { background: var(--pc-lilac); }
+.d-pastel-card .c-card.lemon { background: var(--pc-lemon); }
+.d-pastel-card .c-card.rose  { background: var(--pc-rose); }
+
+.d-pastel-card .c-card h4 {
+  font-size: 2.72cqi; font-weight: 800; margin: .99cqi 0;
+  font-family: var(--font-sans);
+}
+.d-pastel-card .c-card p {
+  font-family: var(--font-sans); font-size: 1.85cqi;
+  line-height: 1.55; color: var(--text-2);
+}
+
+/* Card accent number — big italic number/emoji on colored cards */
+.d-pastel-card .chr-card-num {
+  font-family: var(--font-display); font-size: 8.4cqi; font-weight: 900;
+  font-style: italic; line-height: 1; opacity: .85;
+}
+
+/* ══════════════════════════════════════════════════════
+   CODE BLOCK
+   ══════════════════════════════════════════════════════ */
+
+.d-pastel-card .chr-codebox {
+  background: var(--pc-code-bg); color: #fef8f1;
+  border-radius: 2.96cqi; padding: 3.21cqi 3.7cqi;
+  font-family: 'JetBrains Mono', monospace; font-size: 1.73cqi;
+  line-height: 1.85; margin-top: 2.72cqi;
+}
+.d-pastel-card .chr-codebox .cm { color: #9089a8; }
+.d-pastel-card .chr-codebox .kw { color: #ffc6a0; }
+.d-pastel-card .chr-codebox .st { color: #c8ecd8; }
+.d-pastel-card .chr-codebox .hl { color: #fcd0dd; font-weight: 700; }
+
+/* ── Container query overrides: preserve multi-column grids on 3:4 ── */
+@container (max-width: 1000px) {
+  .d-pastel-card .c-grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .d-pastel-card .c-grid-3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Quote — match original xp-quote: block-level mark, larger text */
+.d-pastel-card .c-quote {
+  font-size: 4.94cqi;
+  padding-left: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+.d-pastel-card .c-quote::before {
+  position: static;
+  display: block;
+  font-size: 12.35cqi;
+  line-height: .8;
+  color: var(--accent);
+  opacity: .7;
+}

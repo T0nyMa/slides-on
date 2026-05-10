@@ -208,6 +208,10 @@ slides-on/
 │   ├── fonts.css                   #   系统字体栈
 │   ├── components.css              #   共享组件库（cqi + CSS vars, 3:4 自适应）
 │   ├── runtime.js                  #   交互引擎 960 行
+│   ├── designs/                    #   3 个 Design CSS（可移植视觉皮肤）
+│   │   ├── pastel-card.css         #     马卡龙色块风
+│   │   ├── white-editorial.css     #     白底杂志风
+│   │   └── xhs-post.css            #     手绘涂鸦风
 │   ├── themes/                     #   36 个 theme CSS
 │   │   ├── academic-paper.css
 │   │   ├── arctic-cool.css
@@ -480,6 +484,8 @@ Container Query 自动启用，`cqi` 单位等比缩放。所有 3:4 模板（xh
 - Pipeline 流程严格遵循：原始文档 → outline.md → HTML → 渲染导出，不可跳步
 - AI 图片使用 prompt 文件机制保证可复现性
 - SVG 架构图严格 z-order 分层：背景 → 区域边界 → 连接箭头 → 遮罩矩形 → 组件框 → 文本 → 图例 → 标题
+- **Design CSS 架构**：`Slides = Template × Design × Content`。Template 决定页面上有什么（chrome HTML + c-* 组件），Design 决定长什么样（CSS 变量 + chrome 样式 + c-* 扩展），Content 用 c-* 通用组件填充。Design CSS 可在不同 Template 间移植
+- Chrome 元素（`chr-*`）：页面壳层 HTML 片段（topbar, footer, blobs, stickers 等），由 Design CSS 赋予视觉样式。与 c-* 内容组件正交
 
 ## 来源项目
 

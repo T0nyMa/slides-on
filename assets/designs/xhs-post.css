@@ -1,0 +1,158 @@
+/* xhs-post — 小红书手绘涂鸦风 Design CSS */
+/* Usage: <body class="d-xhs-post portrait"> */
+
+.d-xhs-post {
+  /* ── Token overrides ── */
+  --bg: #fef7f3;
+  --bg-soft: #fff1ea;
+  --surface: #ffffff;
+  --surface-2: #fff5ef;
+  --border: rgba(90, 40, 30, 0.12);
+  --border-strong: rgba(90, 40, 30, 0.24);
+  --text-1: #3a1f18;
+  --text-2: #6f4a3e;
+  --text-3: #a68676;
+  --accent: #ff6b8b;
+  --accent-2: #ffa94d;
+  --accent-3: #ffd166;
+  --grad: linear-gradient(135deg, #ffd3e0, #ffe5c7 50%, #d6f0ff);
+  --good: #7bc67b;
+  --warn: #ffb547;
+  --bad: #ff6b6b;
+  --radius: 24px;
+  --radius-lg: 32px;
+  --shadow: 0 14px 36px rgba(90, 40, 30, 0.08);
+  --font-display: 'Inter', 'Noto Sans SC', 'PingFang SC', sans-serif;
+  --font-sans: 'Inter', 'Noto Sans SC', 'PingFang SC', sans-serif;
+  --font-serif: 'Inter', 'Noto Sans SC', serif;
+
+  background: #f0eae2;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh;
+  color: var(--text-1);
+  font-family: var(--font-sans);
+}
+
+.d-xhs-post .deck { background: transparent; }
+
+/* Slide override — warm paper card with corner glow */
+.d-xhs-post .slide {
+  padding: 8.64cqi 7.9cqi;
+  border-radius: 3.46cqi;
+  overflow: hidden;
+  background: var(--bg);
+}
+.d-xhs-post .slide::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(45% 30% at 80% 10%, rgba(255, 209, 102, .35), transparent 70%),
+    radial-gradient(50% 35% at 10% 95%, rgba(255, 107, 139, .22), transparent 70%),
+    radial-gradient(40% 30% at 90% 85%, rgba(122, 200, 255, .18), transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+.d-xhs-post .slide > * { position: relative; z-index: 1; }
+
+/* ══════════════════════════════════════════════════════
+   TYPOGRAPHY — override base.css sizes for this design
+   ══════════════════════════════════════════════════════ */
+
+.d-xhs-post .h1 { font-size: 8.89cqi; line-height: 1.1; font-weight: 900; letter-spacing: -.02em; }
+.d-xhs-post .h2 { font-size: 6.67cqi; line-height: 1.15; font-weight: 800; letter-spacing: -.015em; }
+.d-xhs-post .h3 { font-size: 4.44cqi; font-weight: 800; }
+.d-xhs-post .lede { font-size: 3.21cqi; line-height: 1.55; }
+
+/* ══════════════════════════════════════════════════════
+   CHROME
+   ══════════════════════════════════════════════════════ */
+
+/* Page dot — N/9 badge top-right */
+.d-xhs-post .chr-page-dot {
+  position: absolute; top: 4.94cqi; right: 5.93cqi;
+  background: var(--text-1); color: #fff; border-radius: 999px;
+  padding: .74cqi 1.73cqi;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.73cqi; font-weight: 700; z-index: 2;
+}
+
+/* Sticker — decorative position-absolute tag */
+.d-xhs-post .chr-sticker {
+  position: absolute;
+  padding: 1.23cqi 2.22cqi; background: #fff;
+  border: .31cqi dashed var(--text-1); border-radius: 2.22cqi;
+  font-weight: 800; font-size: 2.22cqi; color: var(--text-1);
+  box-shadow: .49cqi .49cqi 0 var(--text-1);
+}
+.d-xhs-post .chr-sticker.pink   { background: #ffd3e0; }
+.d-xhs-post .chr-sticker.yellow { background: #ffe788; }
+.d-xhs-post .chr-sticker.blue   { background: #cfeaff; }
+.d-xhs-post .chr-sticker.green  { background: #d4f2c8; }
+
+/* Footer — bottom status bar */
+.d-xhs-post .chr-footer {
+  position: absolute; bottom: 4.94cqi; left: 7.9cqi; right: 7.9cqi;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 1.85cqi; color: var(--text-3);
+  font-family: 'JetBrains Mono', monospace; z-index: 2;
+}
+
+/* Avatar — round gradient portrait */
+.d-xhs-post .chr-avatar {
+  width: 6.67cqi; height: 6.67cqi; border-radius: 50%;
+  background: var(--grad);
+  border: .31cqi solid var(--text-1);
+  box-shadow: .37cqi .37cqi 0 var(--text-1);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 2.47cqi; color: var(--text-1);
+}
+
+/* Big emoji */
+.d-xhs-post .chr-big-emoji { font-size: 22.22cqi; line-height: 1; text-align: center; }
+
+/* Cover title highlight — yellow marker effect */
+.d-xhs-post .chr-cover-highlight {
+  background: linear-gradient(180deg, transparent 60%, var(--accent-3) 60%, var(--accent-3) 92%, transparent 92%);
+  padding: 0 1.23cqi;
+}
+
+/* Numbered circle — big step number */
+.d-xhs-post .chr-num-circle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 8.89cqi; height: 8.89cqi; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-weight: 900; font-size: 4.44cqi;
+  border: .37cqi solid var(--text-1);
+  box-shadow: .49cqi .49cqi 0 var(--text-1);
+}
+
+/* Heart */
+.d-xhs-post .chr-heart { color: var(--accent); font-size: 3.46cqi; }
+
+/* ══════════════════════════════════════════════════════
+   c-* EXTENSIONS — hand-drawn aesthetic
+   ══════════════════════════════════════════════════════ */
+
+/* c-card → hand-drawn box: thick border + offset solid shadow */
+.d-xhs-post .c-card {
+  border: .31cqi solid var(--text-1);
+  box-shadow: .62cqi .62cqi 0 var(--text-1);
+  padding: 2.96cqi 3.46cqi;
+  border-radius: 2.72cqi;
+  background: #fff;
+}
+
+/* Warm variant card (uses surface-2) */
+.d-xhs-post .c-card-soft {
+  border: .31cqi solid var(--text-1);
+  box-shadow: .62cqi .62cqi 0 var(--text-1);
+  padding: 2.96cqi 3.46cqi;
+  border-radius: 2.72cqi;
+  background: var(--surface-2);
+}
+
+/* Hashtag badges */
+.d-xhs-post .c-badge {
+  background: #fff; color: var(--accent);
+  border: .25cqi solid var(--text-1);
+  padding: .74cqi 1.73cqi; border-radius: 999px;
+  font-weight: 700; font-size: 1.98cqi;
+}

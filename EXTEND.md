@@ -96,6 +96,47 @@ Theme CSS 格式：
 }
 ```
 
+## custom_designs
+
+自定义 Design CSS（完整视觉皮肤），放入 `assets/designs/` 目录后在此声明。
+
+```yaml
+custom_designs:
+  my-brand: "assets/designs/my-brand.css"
+  dark-editorial: "assets/designs/dark-editorial.css"
+```
+
+Design CSS 与 Theme CSS 的区别：Theme 只覆盖 CSS 变量（颜色/字体），Design CSS 还包含 Chrome 元素样式（`chr-*`：topbar, footer, blobs 等）和 c-* 组件扩展（颜色变体、间距覆盖）。Design CSS 用 body class（`.d-{name}`）作用域，不污染 `:root`。
+
+Design CSS 结构：
+```css
+.d-my-brand {
+  --bg: #fff; --surface: #fff; --text-1: #111; --accent: #333;
+  --mb-peach: #ffd8c2; --mb-code-bg: #222;
+  background: var(--bg); color: var(--text-1);
+}
+
+/* Chrome elements */
+.d-my-brand .chr-topbar { ... }
+.d-my-brand .chr-chip { ... }
+.d-my-brand .chr-footer { ... }
+
+/* Typography */
+.d-my-brand .chr-title { font-size: 10cqi; }
+.d-my-brand .chr-heading { font-size: 7cqi; }
+
+/* c-* extensions */
+.d-my-brand .c-card { padding: 3cqi; border: none; }
+.d-my-brand .c-card.peach { background: var(--mb-peach); }
+.d-my-brand .c-grid-2 { gap: 2.5cqi; }
+
+@container (max-width: 1000px) {
+  .d-my-brand .c-grid-2 { grid-template-columns: repeat(2, 1fr); }
+}
+```
+
+详见 `assets/designs/` 中的三个实现（pastel-card.css, white-editorial.css, xhs-post.css）和 `references/content-rules-portrait.md`。
+
 ## custom_layouts
 
 自定义单页 layout（覆盖或新增 31 种内置 layout）。

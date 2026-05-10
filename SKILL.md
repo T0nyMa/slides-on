@@ -79,6 +79,7 @@ description: >
 2. Design = 可移植的 CSS 变量覆盖层，决定颜色 / 字体 / 纹理 / 密度 / 动画偏好
 3. 支持 4 维自定义覆盖（Texture × Mood × Typography × Density）
 4. 也可直接选择 36 个 theme 作为视觉基础
+5. **3:4 画布**：Design 可以是一个完整的 Design CSS 文件（`assets/designs/{name}.css`），同时提供 CSS 变量、Chrome 样式（`chr-*`）和 c-* 组件扩展。详见 `references/content-rules-portrait.md`
 
 **Slide 级 — 选择渲染引擎**：
 
@@ -101,9 +102,10 @@ description: >
 **参考文档**：
 - `references/themes.md` — 36 个 theme 详情
 - `references/layouts.md` — 31 个 layout 详情
-- `references/content-rules-portrait.md` — 3:4 画布内容规范（组件大小、字数、密度）
-- `references/components.md` — 共享组件库（card、step、KPI、quote 等）
-- `references/designs/` — 17 个 design
+- `references/content-rules-portrait.md` — 3:4 画布内容规范（组件大小、字数、密度、Design CSS 用法）
+- `references/components.md` — 共享组件库（card、step、KPI、quote、Chrome 片段等）
+- `references/designs/` — 17 个 design 概念文档
+- `assets/designs/` — Design CSS 实现（可移植视觉皮肤，3 个）
 - `references/style-definitions/` — Design 的结构化生图数据（hex 色值、视觉元素、排版指令）
 - `references/prompt-construction.md` — AI 图片结构化 prompt 组装指南
 - `references/diagram/` — 4 种架构图类型
@@ -115,9 +117,8 @@ description: >
 
 **处理**：
 1. 从 `templates/full-decks/` 选择匹配的 Template（或从 `templates/deck.html` 骨架开始）
-2. 从 `templates/single-page/` 选取每个 slide 的 layout HTML；**3:4 画布则从 `assets/components.css` 选择组件自由拼装**
-3. 应用 theme（`assets/themes/` 中选择 CSS 文件）
-4. 填写实际内容到 layout 中
+2. **16:9 画布**：从 `templates/single-page/` 选取 layout HTML。**3:4 画布**：使用 Chrome 片段（`chr-*` 元素：topbar, footer, blobs 等）+ c-* 组件自由拼装。加载顺序：`fonts.css → base.css → components.css → design.css`
+3. 应用 theme（`assets/themes/` 中选择 CSS 文件）或 Design CSS（`assets/designs/` 中选择，提供完整视觉皮肤含 chrome 样式 + c-* 扩展）
 5. **AI 图片生成**：使用 `references/prompt-construction.md` 的结构化三层 prompt 组装方式（Image Specs → Style Definition → Content），从 `references/style-definitions/{design}.md` 加载设计数据。生成后以 `<img>` 引用
 6. **SVG 图生成**：直接内联或 `<img>` 引用
 7. 添加 `data-anim` 属性声明动画
@@ -126,8 +127,10 @@ description: >
 
 **关键文件**：
 - `assets/base.css` — 设计系统（150行，30+ CSS Variables）
+- `assets/components.css` — 共享组件库（cqi + CSS vars，c-* 组件）
+- `assets/designs/` — Design CSS 文件（可移植视觉皮肤，含 chrome 样式 + c-* 扩展）
 - `assets/runtime.js` — 交互引擎（960行，slide 切换、键盘导航、presenter 模式）
-- `assets/fonts.css` — Google Fonts 引入
+- `assets/fonts.css` — 系统字体栈
 - `assets/animations/` — 27 CSS 动画 + 20 Canvas FX
 - `templates/deck.html` — 新建 deck 起始骨架
 

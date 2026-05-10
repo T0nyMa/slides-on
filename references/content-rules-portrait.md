@@ -11,6 +11,29 @@
 - **组件即页**：每页 3-5 个纵向组件块，超过拆页
 - **字更少、更大**：手机屏幕阅读距离更近，但画布更窄，标题和正文都需要更大字号占比
 
+## Design CSS 体系
+
+3:4 画布的推荐架构是 `Slides = Template × Design × Content`：
+
+```
+Template    = .portrait + chrome HTML（chr-* 页面壳） + c-* 组件实例
+Design      = assets/designs/{name}.css（CSS 变量 + chrome 样式 + c-* 扩展）
+Content     = c-* 组件（assets/components.css），通过 var(--accent) 等自动染上 Design 色
+```
+
+**加载顺序**（不可颠倒）：
+```html
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/components.css">
+<link rel="stylesheet" href="assets/designs/pastel-card.css">
+<body class="d-pastel-card portrait">
+```
+
+**Template 提供 Chrome HTML + c-* 组件实例，Design CSS 决定它们长什么样。** 同一个 Chrome 结构（`chr-topbar` + `chr-blob`）在不同 Design CSS 下可以呈现完全不同的视觉效果。
+
+**已有 Design CSS**：`pastel-card`（马卡龙色块）、`white-editorial`（白底杂志）、`xhs-post`（手绘涂鸦）。完整实现见 `templates/full-decks/xhs-*/`。
+
 ## 一页一观点（同 16:9，但更严格）
 
 每个 slide 传达一个观点。3:4 下信息密度须更低——窄画布没有横向空间分散注意力，每块内容必然被顺序阅读。
@@ -160,5 +183,5 @@
 | 一页 6+ 个组件块 | 拆成两页 |
 | 卡片正文超过 4 行 | 精简到 ≤ 60 字，多余内容拆到新卡片 |
 | 用 h1 当 slide 标题 | h1 仅用于封面和分隔页；slide 标题用 h2 |
-| 3:4 下使用 g3/g4 网格 | 3:4 下 c-grid-3 降为 2 列，c-grid-2 降为 1 列；避免直接使用 g3/g4 |
+| 3:4 下使用 g3/g4 网格 | 3:4 下 c-grid-3 降为 2 列，c-grid-2 降为 1 列；如需保留多列，在 Design CSS 中添加 `@container (max-width: 1000px) { .d-xxx .c-grid-2 { grid-template-columns: repeat(2, 1fr); } }` |
 | 组件太小看不清 | 检查 cqi 值是否低于上表下限；3:4 下正文不 < 1.5cqi |

@@ -1,67 +1,17 @@
-/* xhs-pastel-card — 柔和马卡龙大色块封面风 · 3:4 cqi */
-/* Reference canvas: 810px, 1cqi = 8.1px */
-.tpl-xhs-pastel-card{
-  --xp-bg:#fef8f1;
-  --xp-ink:#2a2340;
-  --xp-ink2:#5b5470;
-  --xp-muted:#9089a8;
-  --xp-peach:#ffd8c2;
-  --xp-peach-d:#f48b5c;
-  --xp-mint:#c8ecd8;
-  --xp-mint-d:#2e9d70;
-  --xp-sky:#c9dcfb;
-  --xp-sky-d:#4e7ed6;
-  --xp-lilac:#ddd0f5;
-  --xp-lilac-d:#7b5dc4;
-  --xp-lemon:#fdf0b2;
-  --xp-lemon-d:#c8910a;
-  --xp-rose:#fcd0dd;
-  --xp-rose-d:#c94673;
-  background:var(--xp-bg);
-  color:var(--xp-ink);
-  font-family:'Playfair Display','Noto Serif SC','Inter','Noto Sans SC',Georgia,serif;
-}
-.tpl-xhs-pastel-card .slide{background:var(--xp-bg);color:var(--xp-ink)} /* padding via .portrait */
-.tpl-xhs-pastel-card .xp-blob{position:absolute;border-radius:50%;filter:blur(2px);opacity:.85;z-index:0}
-.tpl-xhs-pastel-card .xp-blob.b1{width:51.85cqi;height:51.85cqi;background:radial-gradient(circle,var(--xp-peach),transparent 70%);top:-8%;right:-6%}
-.tpl-xhs-pastel-card .xp-blob.b2{width:44.44cqi;height:44.44cqi;background:radial-gradient(circle,var(--xp-lilac),transparent 72%);bottom:-10%;left:-8%}
-.tpl-xhs-pastel-card .xp-blob.b3{width:32.1cqi;height:32.1cqi;background:radial-gradient(circle,var(--xp-mint),transparent 72%);top:40%;right:20%}
-.tpl-xhs-pastel-card .slide > *{position:relative;z-index:2}
-.tpl-xhs-pastel-card .xp-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:2.72cqi;font-family:'Inter','Noto Sans SC',sans-serif}
-.tpl-xhs-pastel-card .xp-chip{display:inline-flex;align-items:center;gap:1.23cqi;padding:0.99cqi 2.22cqi;border-radius:999px;background:#fff;border:1.5px solid rgba(42,35,64,.1);font-size:1.6cqi;font-weight:600;letter-spacing:.08em;color:var(--xp-ink2);text-transform:uppercase}
-.tpl-xhs-pastel-card .xp-chip::before{content:'';width:1.11cqi;height:1.11cqi;border-radius:50%;background:var(--xp-peach-d)}
-.tpl-xhs-pastel-card .xp-chip.mint::before{background:var(--xp-mint-d)}
-.tpl-xhs-pastel-card .xp-chip.sky::before{background:var(--xp-sky-d)}
-.tpl-xhs-pastel-card .xp-chip.lilac::before{background:var(--xp-lilac-d)}
-.tpl-xhs-pastel-card .xp-chip.rose::before{background:var(--xp-rose-d)}
-.tpl-xhs-pastel-card .xp-page{font-family:'Inter',sans-serif;font-size:1.6cqi;color:var(--xp-muted);letter-spacing:.12em;font-weight:600}
-.tpl-xhs-pastel-card .xp-kicker{font-family:'Inter',sans-serif;font-size:1.73cqi;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--xp-peach-d);margin-bottom:1.73cqi}
-.tpl-xhs-pastel-card .xp-h1{font-size:11.85cqi;font-weight:900;line-height:1.05;letter-spacing:-0.25cqi;margin:0 0 2.22cqi;color:var(--xp-ink);font-family:'Playfair Display','Noto Serif SC',serif}
-.tpl-xhs-pastel-card .xp-h1 em{font-style:italic;color:var(--xp-peach-d);font-family:'Playfair Display',serif}
-.tpl-xhs-pastel-card .xp-h1 .rose{color:var(--xp-rose-d);font-style:italic}
-.tpl-xhs-pastel-card .xp-h1 .mint{color:var(--xp-mint-d);font-style:italic}
-.tpl-xhs-pastel-card .xp-h2{font-size:7.41cqi;font-weight:800;line-height:1.1;letter-spacing:-0.12cqi;margin:0 0 1.73cqi;font-family:'Playfair Display','Noto Serif SC',serif}
-.tpl-xhs-pastel-card .xp-sub{font-family:'Inter','Noto Sans SC',sans-serif;font-size:2.59cqi;line-height:1.6;color:var(--xp-ink2);max-width:98.77cqi;font-weight:400}
-.tpl-xhs-pastel-card .xp-card{border-radius:3.46cqi;padding:3.7cqi 4.2cqi;background:#fff;box-shadow:0 14px 40px rgba(42,35,64,.08);position:relative;overflow:hidden}
-.tpl-xhs-pastel-card .xp-card.peach{background:var(--xp-peach)}
-.tpl-xhs-pastel-card .xp-card.mint{background:var(--xp-mint)}
-.tpl-xhs-pastel-card .xp-card.sky{background:var(--xp-sky)}
-.tpl-xhs-pastel-card .xp-card.lilac{background:var(--xp-lilac)}
-.tpl-xhs-pastel-card .xp-card.lemon{background:var(--xp-lemon)}
-.tpl-xhs-pastel-card .xp-card.rose{background:var(--xp-rose)}
-.tpl-xhs-pastel-card .xp-card .xp-num{font-family:'Playfair Display',serif;font-size:8.4cqi;font-weight:900;font-style:italic;line-height:1;opacity:.85}
-.tpl-xhs-pastel-card .xp-card h4{font-size:2.72cqi;font-weight:800;margin:0.99cqi 0;font-family:'Inter','Noto Sans SC',sans-serif}
-.tpl-xhs-pastel-card .xp-card p{font-family:'Inter','Noto Sans SC',sans-serif;font-size:1.85cqi;line-height:1.55;color:var(--xp-ink2)}
-.tpl-xhs-pastel-card .xp-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:2.47cqi;margin-top:3.21cqi}
-.tpl-xhs-pastel-card .xp-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2.22cqi;margin-top:3.21cqi}
-.tpl-xhs-pastel-card .xp-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.98cqi;margin-top:2.96cqi}
-.tpl-xhs-pastel-card .xp-hero-card{background:#fff;border-radius:4.44cqi;padding:4.94cqi 5.68cqi;margin-top:3.46cqi;box-shadow:0 20px 50px rgba(42,35,64,.1)}
-.tpl-xhs-pastel-card .xp-quote{font-family:'Playfair Display','Noto Serif SC',serif;font-size:4.94cqi;font-weight:800;font-style:italic;line-height:1.3;color:var(--xp-ink)}
-.tpl-xhs-pastel-card .xp-quote::before{content:'"';font-size:12.35cqi;line-height:.8;display:block;color:var(--xp-peach-d);opacity:.7}
-.tpl-xhs-pastel-card .xp-footer{position:absolute;left:11.11cqi;right:11.11cqi;bottom:4.94cqi;display:flex;justify-content:space-between;font-family:'Inter',sans-serif;font-size:1.48cqi;color:var(--xp-muted);letter-spacing:.1em}
-.tpl-xhs-pastel-card .xp-divider{width:11.11cqi;height:0.49cqi;background:linear-gradient(90deg,var(--xp-peach-d),var(--xp-rose-d));border-radius:0.25cqi;margin:2.47cqi 0}
-.tpl-xhs-pastel-card .xp-codebox{background:#2a2340;color:#fef8f1;border-radius:2.96cqi;padding:3.21cqi 3.7cqi;font-family:'JetBrains Mono',monospace;font-size:1.73cqi;line-height:1.85;margin-top:2.72cqi}
-.tpl-xhs-pastel-card .xp-codebox .cm{color:#9089a8}
-.tpl-xhs-pastel-card .xp-codebox .kw{color:#ffc6a0}
-.tpl-xhs-pastel-card .xp-codebox .st{color:#c8ecd8}
-.tpl-xhs-pastel-card .xp-codebox .hl{color:#fcd0dd;font-weight:700}
+/* xhs-pastel-card — 3:4 portrait template */
+/*
+ * Architecture: Template × Design × Content
+ *
+ *   Template  = this index.html (chrome HTML + c-* components)
+ *   Design    = assets/designs/pastel-card.css (CSS variables + chrome styles)
+ *   Content   = c-* components (assets/components.css)
+ *
+ * The design CSS (pastel-card.css) sets all visual tokens on .d-pastel-card,
+ * styles chrome elements (chr-*), and extends c-* with color variants.
+ * Chrome elements: chr-blob, chr-topbar, chr-chip, chr-page, chr-kicker,
+ *   chr-footer, chr-divider, chr-title, chr-heading, chr-sub, chr-codebox.
+ *
+ * To create a new design, copy assets/designs/pastel-card.css, change the
+ * tokens, and adjust chrome styles. The same index.html chrome + c-* content
+ * works across designs — just swap the design CSS link.
+ */
