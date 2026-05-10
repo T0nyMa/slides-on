@@ -119,7 +119,7 @@ description: >
 1. 从 `templates/full-decks/` 选择匹配的 Template（或从 `templates/deck.html` 骨架开始）
 2. **16:9 画布**：从 `templates/single-page/` 选取 layout HTML。**3:4 画布**：使用 Chrome 片段（`chr-*` 元素：topbar, footer, blobs 等）+ c-* 组件自由拼装。加载顺序：`fonts.css → base.css → components.css → design.css`
 3. 应用 theme（`assets/themes/` 中选择 CSS 文件）或 Design CSS（`assets/designs/` 中选择，提供完整视觉皮肤含 chrome 样式 + c-* 扩展）
-5. **AI 图片生成**：使用 `references/prompt-construction.md` 的结构化三层 prompt 组装方式（Image Specs → Style Definition → Content），从 `references/style-definitions/{design}.md` 加载设计数据。生成后以 `<img>` 引用
+5. **AI 图片生成**：使用 `references/prompt-construction.md` 的结构化三层 prompt 组装方式（Image Specs → Style Definition → Content），从 `references/style-definitions/{design}.md` 加载设计数据。通过 `bun scripts/imagine/main.ts`（单张）或 `build-batch.ts`（批量）调用。Provider、Model 等默认配置通过 `IMAGINE_*` 环境变量或 EXTEND.md 的 `ai_image` 节设置，CLI 参数可覆盖。生成后以 `<img>` 引用
 6. **SVG 图生成**：直接内联或 `<img>` 引用
 7. 添加 `data-anim` 属性声明动画
 

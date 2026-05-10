@@ -1,15 +1,13 @@
 /**
  * build-batch.ts — Batch AI image generation from prompt files
  *
- * Reads prompts from a batch file or directory of .md files,
- * generates images with configurable concurrency.
+ * Uses config.ts for provider registry, defaults, and common CLI parsing.
  *
  * Batch file format (one path per line, # comments):
  *   slide-03-architecture.md
  *   slide-07-illustration.md
  *   # optional: pipe-separated archetype
  *   slide-01-cover.md | cover-metaphor
- *   prompts/concept-art.md | horizontal-process
  *
  * Structured prompt mode (with --design):
  *   Uses prompt-assembler to build 3-layer structured prompts.
@@ -28,12 +26,21 @@ import * as path from "path";
 import * as fs from "fs";
 import type { ImagineOptions, BatchJob } from "./types";
 import { assemblePrompt } from "./prompt-assembler";
+import {
+  PROVIDERS,
+  getDefaultConfig,
+  selectProvider,
+  supportsReferenceImage,
+  parseCommonCliArgs,
+  resolveConfig,
+  printProviders,
+  printCommonHelp,
+} from "./config";
 
 // ─── CLI Parsing ─────────────────────────────────────────────────────
 
 interface BatchCliArgs {
-  batchfile?: string;
-  dir?: string;
+  // Common (parsed by config.ts)
   provider?: string;
   model?: string;
   quality?: "normal" | "2k";
@@ -41,102 +48,44 @@ interface BatchCliArgs {
   reference?: string;
   negative?: string;
   style?: string;
-  jobs: number;
-  // Structured prompt mode
   design?: string;
   role?: "illustration" | "content-page";
-  // Anchor chain
-  anchor: boolean;
-  textSafe: boolean;
+  textSafe?: boolean;
+  jobs?: number;
+  // Batch-specific
+  batchfile?: string;
+  dir?: string;
+  anchor?: boolean;
 }
 
 function parseArgs(args: string[]): BatchCliArgs {
-  const opts: BatchCliArgs = { jobs: 3, anchor: false, textSafe: false };
-  for (let i = 0; i < args.length; i++) {
-    switch (args[i]) {
+  const { opts: common, remaining } = parseCommonCliArgs(args);
+
+  const cli: BatchCliArgs = { ...common, anchor: false };
+  for (let i = 0; i < remaining.length; i++) {
+    switch (remaining[i]) {
       case "--batchfile":
-        opts.batchfile = args[++i];
-        break;
+        cli.batchfile = remaining[++i]; break;
       case "--dir":
-        opts.dir = args[++i];
-        break;
-      case "--provider":
-        opts.provider = args[++i];
-        break;
-      case "--model":
-      case "-m":
-        opts.model = args[++i];
-        break;
-      case "--quality":
-      case "-q": {
-        const v = args[++i];
-        opts.quality = v === "2k" ? "2k" : "normal";
-        break;
-      }
-      case "--aspect":
-      case "-a":
-        opts.aspect = args[++i];
-        break;
-      case "--reference":
-      case "-r":
-        opts.reference = args[++i];
-        break;
-      case "--negative":
-      case "-n":
-        opts.negative = args[++i];
-        break;
-      case "--style":
-      case "-s":
-        opts.style = args[++i];
-        break;
-      case "--design":
-      case "-d":
-        opts.design = args[++i];
-        break;
-      case "--role":
-        opts.role = args[++i] as "illustration" | "content-page";
-        break;
+        cli.dir = remaining[++i]; break;
       case "--anchor":
-        opts.anchor = true;
-        break;
-      case "--text-safe":
-        opts.textSafe = true;
-        break;
-      case "--jobs":
-      case "-j":
-        opts.jobs = parseInt(args[++i], 10);
-        if (isNaN(opts.jobs) || opts.jobs < 1) opts.jobs = 3;
-        break;
-      case "--help":
-      case "-h":
-        printUsage();
-        process.exit(0);
+        cli.anchor = true; break;
     }
   }
-  return opts;
+  return cli;
 }
 
 function printUsage(): void {
   console.log(`Usage: bun scripts/imagine/build-batch.ts --batchfile <file> [options]
        bun scripts/imagine/build-batch.ts --dir <dir> [options]
 
-Options:
+Batch-specific options:
   --batchfile       Path to batch file (one .md prompt file per line)
   --dir             Directory of .md prompt files (processed alphabetically)
-  --provider        Provider name for all jobs
-  --model,    -m    Model name for all jobs
-  --quality,  -q    Quality: "normal" or "2k"
-  --aspect,   -a    Aspect ratio for all jobs
-  --reference, -r   Reference image for all jobs
-  --negative,  -n   Negative prompt for all jobs
-  --style,    -s    Style preset for all jobs
-  --design,   -d    Structured prompt mode: style-definition name
-  --role            Image role: "illustration" (default) or "content-page"
   --anchor          Enable Image-1 Anchor Chain (serial first, then chained)
-  --text-safe       Text fidelity fallback: blank label spaces
-  --jobs,     -j    Max parallel jobs (default: 3)
-  --help,     -h    Show this help
-`);
+  --design,   -d    Structured prompt mode: style-definition name (shared across all)
+  --role            Image role: "illustration" (default) or "content-page"`);
+  printCommonHelp();
 }
 
 // ─── Prompt File Discovery ───────────────────────────────────────────
@@ -169,9 +118,8 @@ function findPromptFiles(cliArgs: BatchCliArgs): PromptFileEntry[] {
     const content = fs.readFileSync(filePath, "utf-8");
     for (const line of content.split("\n").map((l) => l.trim())) {
       if (!line || line.startsWith("#")) continue;
-      // Support: "prompt.md | archetype-name" syntax
       const parts = line.split("|").map((s) => s.trim());
-      const resolved = path.resolve(batchDir, parts[0]);
+      const resolved = path.resolve(batchDir, parts[0]!);
       if (!fs.existsSync(resolved)) {
         console.warn(`Warning: referenced file not found, skipping: ${line}`);
         continue;
@@ -190,13 +138,12 @@ function findPromptFiles(cliArgs: BatchCliArgs): PromptFileEntry[] {
 function loadPromptFromFile(
   filePath: string,
   archetype?: string,
-  cliArgs?: BatchCliArgs
+  config?: { design?: string; role?: "illustration" | "content-page"; aspect?: string; textSafe?: boolean; quality?: "normal" | "2k" }
 ): { prompt: string; negative?: string } {
   let content = fs.readFileSync(filePath, "utf-8");
 
-  // If structured prompt mode (--design), use prompt assembler
-  if (cliArgs?.design) {
-    // Extract content description from the .md file body (skip frontmatter headers)
+  // Structured prompt mode
+  if (config?.design) {
     const bodyText = content
       .replace(/^#.*$/gm, "")
       .replace(/^##.*$/gm, "")
@@ -208,13 +155,13 @@ function loadPromptFromFile(
 
     const resolvedArchetype = archetype || inferArchetypeFromFile(filePath);
     const result = assemblePrompt({
-      design: cliArgs.design,
+      design: config.design,
       archetype: resolvedArchetype,
-      role: cliArgs.role || "illustration",
-      aspect: cliArgs.aspect || "3:4",
+      role: config.role || "illustration",
+      aspect: config.aspect || "3:4",
       content: bodyText.slice(0, 500),
-      textSafe: cliArgs.textSafe,
-      quality: cliArgs.quality || "normal",
+      textSafe: config.textSafe,
+      quality: config.quality || "normal",
     });
 
     return { prompt: result.fullPrompt, negative: result.negativePrompt };
@@ -245,7 +192,7 @@ function inferArchetypeFromFile(filePath: string): string | undefined {
   if (name.includes("table") || name.includes("matrix")) return "matrix-table";
   if (name.includes("metaphor") || name.includes("main")) return "main-metaphor-diagram";
   if (name.includes("takeaway") || name.includes("summary") || name.includes("end")) return "takeaway";
-  if (name.includes("toc") || name.includes("toc")) return "cover-metaphor";
+  if (name.includes("toc")) return "cover-metaphor";
   return undefined;
 }
 
@@ -271,29 +218,15 @@ async function runWithPool<T>(
   await Promise.all(workers);
 }
 
-// ─── Provider Map ─────────────────────────────────────────────────────
-
-const PROVIDER_MAP: Record<string, string> = {
-  azure: "./providers/azure",
-  dashscope: "./providers/dashscope",
-  google: "./providers/google",
-  jimeng: "./providers/jimeng",
-  minimax: "./providers/minimax",
-  openai: "./providers/openai",
-  openrouter: "./providers/openrouter",
-  replicate: "./providers/replicate",
-  seedream: "./providers/seedream",
-  zai: "./providers/zai",
-};
-
-function supportsReferenceImage(provider: string): boolean {
-  return ["seedream", "replicate", "google"].includes(provider);
-}
-
 // ─── Main ────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
   const cliArgs = parseArgs(process.argv.slice(2));
+
+  if (cliArgs.help) {
+    printUsage();
+    return;
+  }
 
   try {
     const promptFileEntries = findPromptFiles(cliArgs);
@@ -302,18 +235,20 @@ async function main(): Promise<void> {
       return;
     }
 
-    const providerName = cliArgs.provider || "openai";
-    const modulePath = PROVIDER_MAP[providerName];
-    if (!modulePath) {
-      throw new Error(`Unknown provider: ${providerName}`);
-    }
+    // Resolve config: env defaults → CLI overrides
+    const defaults = getDefaultConfig();
+    const config = resolveConfig(defaults, cliArgs);
 
-    console.log(`Found ${promptFileEntries.length} prompt file(s), concurrency ${cliArgs.anchor ? 1 : cliArgs.jobs}`);
-    if (cliArgs.design) console.log(`Design: ${cliArgs.design} | Role: ${cliArgs.role || "illustration"}`);
+    const providerName = selectProvider(config.provider);
+    const providerInfo = PROVIDERS[providerName]!;
+
+    console.log(`Found ${promptFileEntries.length} prompt file(s), concurrency ${cliArgs.anchor ? 1 : (config.jobs ? cliArgs.jobs || 3 : 3)}`);
+    if (config.design) console.log(`Design: ${config.design} | Role: ${config.role || "illustration"}`);
+    if (config.model) console.log(`Model: ${config.model}`);
     if (cliArgs.anchor) console.log(`Anchor Chain: enabled (image 1 → anchor → remaining)`);
     console.log();
 
-    const providerModule = await import(modulePath);
+    const providerModule = await import(providerInfo.module);
 
     // Build jobs
     const jobs: BatchJob[] = promptFileEntries.map((entry) => ({
@@ -326,14 +261,20 @@ async function main(): Promise<void> {
     // Load prompts
     for (let i = 0; i < jobs.length; i++) {
       const entry = promptFileEntries[i];
-      const { prompt, negative } = loadPromptFromFile(entry.path, entry.archetype, cliArgs);
-      jobs[i].prompt = prompt;
-      if (negative && !cliArgs.negative) {
-        cliArgs.negative = negative;
+      const { prompt, negative } = loadPromptFromFile(entry.path, entry.archetype, {
+        design: config.design,
+        role: config.role || "illustration",
+        aspect: config.aspect,
+        textSafe: config.textSafe,
+        quality: config.quality || "normal",
+      });
+      jobs[i]!.prompt = prompt;
+      if (negative && !config.negative) {
+        config.negative = negative;
       }
-      const preview = jobs[i].prompt.slice(0, 60);
+      const preview = jobs[i]!.prompt.slice(0, 60);
       const archetypeLabel = entry.archetype ? ` [${entry.archetype}]` : "";
-      console.log(`  ${path.basename(jobs[i].promptFile)}${archetypeLabel}: "${preview}${jobs[i].prompt.length > 60 ? "..." : ""}"`);
+      console.log(`  ${path.basename(jobs[i]!.promptFile)}${archetypeLabel}: "${preview}${jobs[i]!.prompt.length > 60 ? "..." : ""}"`);
     }
 
     if (jobs.some((j) => !j.prompt)) {
@@ -347,7 +288,7 @@ async function main(): Promise<void> {
 
     // ─── Anchor Chain Mode ──────────────────────────────────────────
     if (cliArgs.anchor && jobs.length > 1) {
-      const anchorJob = jobs[0];
+      const anchorJob = jobs[0]!;
       anchorJob.status = "running";
 
       console.log(`  [1/${jobs.length}] ${path.basename(anchorJob.promptFile)}  (ANCHOR — establishing visual reference)...`);
@@ -355,13 +296,13 @@ async function main(): Promise<void> {
       const anchorOptions: ImagineOptions = {
         prompt: anchorJob.prompt,
         provider: providerName,
-        model: cliArgs.model,
-        quality: cliArgs.quality || "normal",
-        aspect: cliArgs.aspect,
-        reference: cliArgs.reference, // external ref only, no anchor ref yet
-        negative: cliArgs.negative,
+        model: config.model,
+        quality: config.quality || "normal",
+        aspect: config.aspect,
+        reference: config.reference,
+        negative: config.negative,
         output: anchorJob.output,
-        style: cliArgs.style,
+        style: config.style,
       };
 
       const anchorResult = await providerModule.generate(anchorJob.prompt, anchorOptions);
@@ -378,15 +319,12 @@ async function main(): Promise<void> {
       console.log(`  → Using as visual anchor for remaining ${jobs.length - 1} images\n`);
 
       // Remaining jobs: chain with anchor reference
-      const remaining = jobs.slice(1);
+      const remainingJobs = jobs.slice(1);
       const anchorPath = anchorResult.path;
-      const chainConcurrency = Math.min(cliArgs.jobs, 1); // chain is serial by default for consistency
-
-      // For providers that don't support ref images, add text anchor clause
       const needsTextAnchor = !supportsReferenceImage(providerName);
 
-      await runWithPool(remaining, chainConcurrency, async (job, poolIdx) => {
-        const globalIdx = poolIdx + 1; // job index 0-based in remaining, 1-based globally
+      await runWithPool(remainingJobs, 1, async (job, poolIdx) => {
+        const globalIdx = poolIdx + 1;
         job.status = "running";
         const label = `[${globalIdx + 1}/${jobs.length}]`;
 
@@ -399,13 +337,13 @@ async function main(): Promise<void> {
           const options: ImagineOptions = {
             prompt,
             provider: providerName,
-            model: cliArgs.model,
-            quality: cliArgs.quality || "normal",
-            aspect: cliArgs.aspect,
+            model: config.model,
+            quality: config.quality || "normal",
+            aspect: config.aspect,
             reference: needsTextAnchor ? undefined : anchorPath,
-            negative: cliArgs.negative,
+            negative: config.negative,
             output: job.output,
-            style: cliArgs.style,
+            style: config.style,
           };
 
           const result = await providerModule.generate(prompt, options);
@@ -425,8 +363,9 @@ async function main(): Promise<void> {
       });
 
     } else {
-      // Normal parallel mode (no anchor chain)
-      await runWithPool(jobs, cliArgs.jobs, async (job, index) => {
+      // Normal parallel mode
+      const concurrency = cliArgs.jobs || 3;
+      await runWithPool(jobs, concurrency, async (job, index) => {
         job.status = "running";
         const label = `[${index + 1}/${jobs.length}]`;
 
@@ -434,13 +373,13 @@ async function main(): Promise<void> {
           const options: ImagineOptions = {
             prompt: job.prompt,
             provider: providerName,
-            model: cliArgs.model,
-            quality: cliArgs.quality || "normal",
-            aspect: cliArgs.aspect,
-            reference: cliArgs.reference,
-            negative: cliArgs.negative,
+            model: config.model,
+            quality: config.quality || "normal",
+            aspect: config.aspect,
+            reference: config.reference,
+            negative: config.negative,
             output: job.output,
-            style: cliArgs.style,
+            style: config.style,
           };
 
           const result = await providerModule.generate(job.prompt, options);

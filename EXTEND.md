@@ -176,22 +176,36 @@ custom_animations:
 
 ## ai_image
 
-AI 图片生成的默认配置。
+AI 图片生成的默认配置。这些配置通过两种方式生效：
 
+**持久化默认值（环境变量）**：在 shell 配置中设置，所有脚本自动读取，无需每次传参：
+```bash
+export IMAGINE_PROVIDER="dashscope"
+export IMAGINE_MODEL="qwen-image-2.0-pro-2026-04-22"
+export IMAGINE_QUALITY="2k"
+export IMAGINE_ASPECT="3:4"
+export IMAGINE_DESIGN="sketch-notes"
+```
+
+**EXTEND.md 声明（Claude 读取）**：Claude 在调用脚本时自动追加这些 CLI 参数：
 ```yaml
 ai_image:
   default_provider: dashscope     # 默认 Provider（10 个可选）
+  default_model: "qwen-image-2.0-pro-2026-04-22"  # 默认模型
   default_quality: "2k"           # 默认质量：normal | 2k
-  default_aspect: "16:9"          # 默认宽高比
+  default_aspect: "3:4"           # 默认宽高比
+  default_design: sketch-notes    # 默认 Design（结构化 prompt 模式）
   provider_order:                 # Provider 优先级（覆盖默认）
     - google
     - openai
     - dashscope
-  prompt_prefix: ""               # 全局 prompt 前缀（如 "Chinese ink style, "）
-  prompt_suffix: ""               # 全局 prompt 后缀（如 ", clean composition"）
+  prompt_prefix: ""               # 全局 prompt 前缀
+  prompt_suffix: ""               # 全局 prompt 后缀
 ```
 
 可选 Provider：`openai`、`azure`、`google`、`openrouter`、`dashscope`、`zai`、`minimax`、`jimeng`、`seedream`、`replicate`
+
+**优先级**：CLI 参数 > 环境变量 > 脚本内置默认值。详见 `scripts/imagine/config.ts`。
 
 ## export
 
@@ -274,8 +288,10 @@ presets:
 
 ## ai_image
 - default_provider: dashscope
+- default_model: "qwen-image-2.0-pro-2026-04-22"
 - default_quality: 2k
-- provider_order: google, openai, dashscope
+- default_aspect: "3:4"
+- default_design: sketch-notes
 
 ## export
 - default_format: all
