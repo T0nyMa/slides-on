@@ -103,6 +103,7 @@ description: >
 - `references/themes.md` — 36 个 theme 详情
 - `references/layouts.md` — 31 个 layout 详情
 - `references/content-rules-portrait.md` — 3:4 画布内容规范（组件大小、字数、密度、Design CSS 用法）
+- `references/portrait-user-guide.md` — 3:4 竖版制作指南（轻装/品牌双路线，组件搭配模式）
 - `references/components.md` — 共享组件库（card、step、KPI、quote、Chrome 片段等）
 - `references/designs/` — 17 个 design 概念文档
 - `assets/designs/` — Design CSS 实现（可移植视觉皮肤，3 个）
