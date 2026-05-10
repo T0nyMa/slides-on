@@ -113,24 +113,24 @@ description: >
 **输入**：`outline.md` + `style-decision.md`
 
 **处理**：
-1. 从 `templates/full-decks/` 选择匹配的 Template（或从 `templates/deck.html` 骨架开始）
-2. **16:9 画布**：从 `templates/single-page/` 选取 layout HTML。**3:4 画布**：使用 Chrome 片段（`chr-*` 元素：topbar, footer, blobs 等）+ c-* 组件自由拼装。加载顺序：`fonts.css → base.css → components.css → design.css`
-3. 应用 theme（`assets/themes/` 中选择 CSS 文件）或 Design CSS（`assets/designs/` 中选择，提供完整视觉皮肤含 chrome 样式 + c-* 扩展）
-4. 填写实际内容到 layout 中
-5. **AI 图片生成**：使用 `references/prompt-construction.md` 的结构化三层 prompt 组装方式（Image Specs → Style Definition → Content），从 `references/style-definitions/{design}.md` 加载设计数据。通过 `bun scripts/imagine/main.ts`（单张）或 `build-batch.ts`（批量）调用。Provider、Model 等默认配置通过 `IMAGINE_*` 环境变量或 EXTEND.md 的 `ai_image` 节设置，CLI 参数可覆盖。生成后以 `<img>` 引用
-6. **SVG 图生成**：直接内联或 `<img>` 引用
-7. 添加 `data-anim` 属性声明动画
+1. 根据 outline.md 和 style-decision.md，整理为结构化 JSON（`slides.json`），包含每页的 type、title、cards、steps 等数据
+2. **AI 图片生成**（如有）：使用 `references/prompt-construction.md` 的结构化三层 prompt 组装方式。通过 `bun scripts/imagine/main.ts`（单张）或 `build-batch.ts`（批量）调用。Provider、Model 等默认配置通过 `IMAGINE_*` 环境变量或 EXTEND.md 的 `ai_image` 节设置，CLI 参数可覆盖
+3. **HTML 组装**：`bun scripts/assemble-deck.ts --input slides.json --output index.html`。脚本自动完成 CSS 加载、Chrome 片段、c-* 组件拼装。`--asset-depth 2` 用于 `examples/` 输出路径
+4. **SVG 图**（如有）：直接内联到 slides.json 的 `html` 字段，或 `<img>` 引用
+5. 添加 `data-anim` 属性声明动画
 
 **产出**：一个完整的 `index.html`（可浏览器打开交互演示）
 
 **关键文件**：
+- `scripts/assemble-deck.ts` — HTML 组装入口（JSON → index.html）
+- `scripts/assemble/types.ts` — SlideData、DeckConfig 类型定义
+- `scripts/assemble/designs.ts` — Design 模板注册表（per-design 渲染函数）
+- `scripts/assemble/slides.ts` — 10 种 slide 类型渲染器
+- `scripts/assemble/skeleton.ts` — Deck HTML 骨架生成
 - `assets/base.css` — 设计系统（150行，30+ CSS Variables）
 - `assets/components.css` — 共享组件库（cqi + CSS vars，c-* 组件）
 - `assets/designs/` — Design CSS 文件（可移植视觉皮肤，含 chrome 样式 + c-* 扩展）
 - `assets/runtime.js` — 交互引擎（960行，slide 切换、键盘导航、presenter 模式）
-- `assets/fonts.css` — 系统字体栈
-- `assets/animations/` — 27 CSS 动画 + 20 Canvas FX
-- `templates/deck.html` — 新建 deck 起始骨架
 
 **参考文档**：
 - `references/authoring-guide.md` — HTML 编写指南

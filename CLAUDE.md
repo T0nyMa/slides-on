@@ -237,7 +237,13 @@ slides-on/
 │   ├── html-to-pptx.ts            #   HTML → 可编辑 PPTX（dom-to-pptx）
 │   ├── merge-to-pdf.ts            #   PNG → PDF（pdf-lib 自包含）
 │   ├── svg-to-png.ts              #   SVG → @2x PNG
+│   ├── assemble-deck.ts           #   HTML 组装入口（JSON → index.html）
 │   ├── new-deck.sh                 #   新建 deck 脚手架
+│   ├── assemble/                   #   HTML 组装引擎
+│   │   ├── types.ts                #     SlideData、DeckConfig 类型
+│   │   ├── designs.ts              #     Design 模板注册表
+│   │   ├── slides.ts               #     10 种 slide 渲染器
+│   │   └── skeleton.ts             #     Deck HTML 骨架
 │   └── imagine/                    #   AI 图片生成
 │       ├── main.ts                 #     图片生成入口
 │       ├── build-batch.ts          #     批量生成
