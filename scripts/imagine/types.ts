@@ -7,6 +7,7 @@
 export interface ImagineOptions {
   prompt: string;
   provider?: string;
+  model?: string;
   quality?: "normal" | "2k";
   aspect?: string; // "16:9", "1:1", "9:16", "4:3", "3:4"
   reference?: string; // path to reference image

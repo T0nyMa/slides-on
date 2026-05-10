@@ -21,6 +21,7 @@ interface CliArgs {
   prompt?: string;
   file?: string;
   provider?: string;
+  model?: string;
   quality?: "normal" | "2k";
   aspect?: string;
   reference?: string;
@@ -66,6 +67,10 @@ function parseArgs(args: string[]): CliArgs {
       case "--output":
       case "-o":
         opts.output = args[++i];
+        break;
+      case "--model":
+      case "-m":
+        opts.model = args[++i];
         break;
       case "--style":
       case "-s":
@@ -268,6 +273,7 @@ async function main(): Promise<void> {
     const options: ImagineOptions = {
       prompt,
       provider: providerName,
+      model: cliArgs.model,
       quality: cliArgs.quality || "normal",
       aspect: cliArgs.aspect,
       reference: cliArgs.reference,

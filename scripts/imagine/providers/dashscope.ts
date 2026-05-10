@@ -1,22 +1,38 @@
 /**
- * dashscope.ts — Alibaba DashScope / Tongyi Wanxiang (通义万象) provider
+ * dashscope.ts — Alibaba DashScope provider
  *
- * Uses DashScope text-to-image API with wanx-v1 model.
- * Best for Chinese-language prompts and cultural context.
+ * Supports two API modes depending on model:
+ *   - Qwen-Image models: multimodal-generation (sync, messages format)
+ *   - Wanx models: text2image/image-synthesis (async, task polling)
  *
  * Environment: DASHSCOPE_API_KEY — Alibaba Cloud DashScope API key
  *
- * API Reference: https://help.aliyun.com/document_detail/dashscope.html
+ * API Reference:
+ *   Qwen-Image: https://www.alibabacloud.com/help/en/model-studio/qwen-image-api
+ *   Wanx:       https://help.aliyun.com/document_detail/dashscope.html
  */
 
 import type { ImagineOptions, GenerateResult } from "../types";
-import { ASPECT_DIMENSIONS } from "../types";
 
 const ENV_KEY = "DASHSCOPE_API_KEY";
-const ENDPOINT = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text2image/image-synthesis";
+const WANX_ENDPOINT = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text2image/image-synthesis";
+const QWEN_ENDPOINT = "https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation";
+
+// Qwen-Image recommended resolutions (total pixels 512² – 2048²)
+const QWEN_SIZES: Record<string, string> = {
+  "1:1": "2048*2048",
+  "16:9": "2688*1536",
+  "9:16": "1536*2688",
+  "4:3": "2368*1728",
+  "3:4": "1728*2368",
+};
 
 export const name = "dashscope";
 export const envKey = ENV_KEY;
+
+function isQwenModel(model?: string): boolean {
+  return !!(model && model.startsWith("qwen-"));
+}
 
 export async function generate(
   prompt: string,
@@ -34,13 +50,127 @@ export async function generate(
     };
   }
 
+  const model = options.model || "wanx-v1";
+
+  if (isQwenModel(model)) {
+    return generateQwen(prompt, options, apiKey, model, start);
+  }
+  return generateWanx(prompt, options, apiKey, model, start);
+}
+
+// ─── Qwen-Image (multimodal-generation, sync) ──────────────────────────
+
+async function generateQwen(
+  prompt: string,
+  options: ImagineOptions,
+  apiKey: string,
+  model: string,
+  start: number
+): Promise<GenerateResult> {
   try {
+    const size = QWEN_SIZES[options.aspect || "1:1"] || QWEN_SIZES["1:1"];
+
+    const body: Record<string, any> = {
+      model,
+      input: {
+        messages: [
+          {
+            role: "user",
+            content: [{ text: prompt }],
+          },
+        ],
+      },
+      parameters: {
+        n: 1,
+        watermark: false,
+        size,
+        prompt_extend: false, // don't rewrite our carefully crafted prompt
+      },
+    };
+
+    if (options.negative) {
+      body.parameters.negative_prompt = options.negative;
+    }
+    if (options.seed !== undefined) {
+      body.parameters.seed = options.seed;
+    }
+
+    const response = await fetch(QWEN_ENDPOINT, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message || data.code || `Qwen-Image API error: ${response.status}`
+      );
+    }
+
+    // Qwen-Image returns sync: output.choices[0].message.content[]
+    const contents = data.output?.choices?.[0]?.message?.content;
+    if (!contents?.length) {
+      throw new Error(`No content in Qwen-Image response: ${JSON.stringify(data).slice(0, 200)}`);
+    }
+
+    // Find the first image URL in the response
+    let resultUrl: string | null = null;
+    for (const item of contents) {
+      if (item.image) {
+        resultUrl = item.image;
+        break;
+      }
+    }
+    if (!resultUrl) {
+      throw new Error(`No image URL in Qwen-Image response`);
+    }
+
+    // Download image
+    const imgResponse = await fetch(resultUrl);
+    if (!imgResponse.ok) throw new Error(`Failed to download image: ${imgResponse.status}`);
+    const buffer = await imgResponse.arrayBuffer();
+
+    const outputPath = options.output || `dashscope_${Date.now()}.png`;
+    await Bun.write(outputPath, new Uint8Array(buffer));
+
+    return {
+      success: true,
+      path: outputPath,
+      url: resultUrl,
+      provider: "dashscope",
+      duration: Date.now() - start,
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      provider: "dashscope",
+      error: err.message,
+      duration: Date.now() - start,
+    };
+  }
+}
+
+// ─── Wanx (text2image/image-synthesis, async) ──────────────────────────
+
+async function generateWanx(
+  prompt: string,
+  options: ImagineOptions,
+  apiKey: string,
+  model: string,
+  start: number
+): Promise<GenerateResult> {
+  try {
+    const { ASPECT_DIMENSIONS } = await import("../types");
     const dims = ASPECT_DIMENSIONS[options.aspect || "1:1"] || ASPECT_DIMENSIONS["1:1"];
-    // DashScope wanx-v1 supports: 1:1 (1024x1024), 16:9 (1280x720), 9:16 (720x1280)
     const size = `${dims.width}x${dims.height}`;
 
     const body: Record<string, any> = {
-      model: "wanx-v1",
+      model,
       input: {
         prompt,
       },
@@ -57,12 +187,11 @@ export async function generate(
       body.parameters.style = options.style;
     }
     if (options.quality === "2k") {
-      // wanx-v1 does not have explicit "hd" mode; note this for the user
-      console.warn("Note: DashScope wanx-v1 does not support 2k/hd quality mode; using standard.");
+      console.warn("Note: wanx-v1 does not support 2k/hd quality mode; using standard.");
     }
 
-    // Step 1: Submit task (async API)
-    const response = await fetch(ENDPOINT, {
+    // Step 1: Submit task (async)
+    const response = await fetch(WANX_ENDPOINT, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -75,15 +204,15 @@ export async function generate(
     const data = await response.json();
     if (!response.ok) {
       throw new Error(
-        data.message || data.code || `DashScope API error: ${response.status}`
+        data.message || data.code || `Wanx API error: ${response.status}`
       );
     }
 
     // Step 2: Poll for task completion
     const taskId = data.output?.task_id;
-    if (!taskId) throw new Error("No task_id in DashScope response");
+    if (!taskId) throw new Error("No task_id in Wanx response");
 
-    const resultUrl = await pollTask(taskId, apiKey);
+    const resultUrl = await pollWanxTask(taskId, apiKey);
 
     // Step 3: Download image
     const imgResponse = await fetch(resultUrl);
@@ -110,7 +239,7 @@ export async function generate(
   }
 }
 
-async function pollTask(taskId: string, apiKey: string): Promise<string> {
+async function pollWanxTask(taskId: string, apiKey: string): Promise<string> {
   const pollEndpoint = `https://dashscope.aliyuncs.com/api/v1/tasks/${taskId}`;
   const maxAttempts = 60;
   for (let i = 0; i < maxAttempts; i++) {
@@ -122,12 +251,12 @@ async function pollTask(taskId: string, apiKey: string): Promise<string> {
     if (data.output?.task_status === "SUCCEEDED") {
       const results = data.output?.results;
       if (results?.length) return results[0].url;
-      throw new Error("No results in completed DashScope task");
+      throw new Error("No results in completed Wanx task");
     }
     if (data.output?.task_status === "FAILED") {
-      throw new Error(`DashScope task failed: ${data.output?.message || data.message}`);
+      throw new Error(`Wanx task failed: ${data.output?.message || data.message}`);
     }
     await new Promise((r) => setTimeout(r, 1000));
   }
-  throw new Error("DashScope task polling timed out");
+  throw new Error("Wanx task polling timed out");
 }

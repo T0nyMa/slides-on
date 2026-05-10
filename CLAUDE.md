@@ -123,14 +123,24 @@ slides-on/
 │   │       └── zai.md
 │   │
 │   ├── analysis-framework.md      #   内容分析框架
-│   ├── base-prompt.md              #   AI 图片基础 prompt
+│   ├── base-prompt.md              #   AI 图片基础 prompt（遗留 style token）
+│   ├── prompt-construction.md       #   AI 图片结构化 prompt 组装（三层结构）
 │   ├── content-rules.md            #   16:9 内容规范
 │   ├── content-rules-portrait.md   #   3:4 内容规范（组件大小、密度）
 │   ├── design-guidelines.md        #   设计指南
 │   ├── export.md                   #   导出选项
 │   ├── html-engine.md              #   HTML 渲染引擎详解
 │   ├── ai-visuals.md               #   AI 视觉内容生成
-│   └── components.md               #   共享组件库（card/step/KPI/quote 等）
+│   ├── components.md               #   共享组件库（card/step/KPI/quote 等）
+│   │
+│   ├── style-definitions/          #   Design 的结构化生图定义（7 个，逐 hex 色值+视觉元素）
+│   │   ├── sketch-notes.md
+│   │   ├── hand-drawn-edu.md
+│   │   ├── chalkboard.md
+│   │   ├── notion.md
+│   │   ├── watercolor.md
+│   │   ├── pixel-art.md
+│   │   └── blueprint.md
 │
 ├── templates/                      # HTML 模板
 │   ├── full-decks/                 #   15 个 deck template

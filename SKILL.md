@@ -86,9 +86,9 @@ description: >
 | 数据图表 | HTML layout（chart-*）| HTML 片段 |
 | 代码展示 | HTML layout（code, terminal）| HTML 片段 |
 | 架构图/流程图 | SVG diagram | SVG 文件 |
-| AI 插图/概念图 | AI image | PNG 图片 |
-| 信息图 | AI infographic | PNG 图片 |
-| 封面图 | AI cover image | PNG 图片 |
+| AI 插图/概念图 | AI image（结构化 prompt 组装） | PNG 图片 |
+| 信息图 | AI infographic（结构化 prompt 组装） | PNG 图片 |
+| 封面图 | AI cover image（结构化 prompt 组装） | PNG 图片 |
 | 分隔页 | HTML layout | HTML 片段 |
 | 3:4 手机画布 | Component palette | 组件自由组合（`c-*` classes） |
 
@@ -102,7 +102,8 @@ description: >
 - `references/content-rules-portrait.md` — 3:4 画布内容规范（组件大小、字数、密度）
 - `references/components.md` — 共享组件库（card、step、KPI、quote 等）
 - `references/designs/` — 17 个 design
-- `references/dimensions/` — 4 维自定义
+- `references/style-definitions/` — Design 的结构化生图数据（hex 色值、视觉元素、排版指令）
+- `references/prompt-construction.md` — AI 图片结构化 prompt 组装指南
 - `references/diagram/` — 4 种架构图类型
 - `references/infographic/` — 信息图 layout + style
 
@@ -115,8 +116,9 @@ description: >
 2. 从 `templates/single-page/` 选取每个 slide 的 layout HTML；**3:4 画布则从 `assets/components.css` 选择组件自由拼装**
 3. 应用 theme（`assets/themes/` 中选择 CSS 文件）
 4. 填写实际内容到 layout 中
-5. **混合渲染**：对于 AI 图片/SVG 图页面，在 HTML 中以 `<img>` 引用生成的文件
-6. 添加 `data-anim` 属性声明动画
+5. **AI 图片生成**：使用 `references/prompt-construction.md` 的结构化三层 prompt 组装方式（Image Specs → Style Definition → Content），从 `references/style-definitions/{design}.md` 加载设计数据。生成后以 `<img>` 引用
+6. **SVG 图生成**：直接内联或 `<img>` 引用
+7. 添加 `data-anim` 属性声明动画
 
 **产出**：一个完整的 `index.html`（可浏览器打开交互演示）
 
@@ -133,6 +135,7 @@ description: >
 - `references/animations.md` — 动画系统
 - `references/html-engine.md` — HTML 渲染引擎详解
 - `references/ai-visuals.md` — AI 视觉内容生成
+- `references/prompt-construction.md` — AI 图片结构化 prompt 组装（三层结构 + Image-1 Anchor Chain）
 - `references/components.md` — 组件调色板（3:4 自由拼装）
 
 ### Step 4: 导出

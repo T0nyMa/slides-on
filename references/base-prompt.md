@@ -2,6 +2,10 @@
 
 Default prompt template for generating slide illustrations via AI image providers.
 
+> **推荐使用结构化 Prompt 组装**：本文档的 style token 为遗留方案。对于有 style-definition 文件的 design，使用 `references/prompt-construction.md` 中定义的结构化三层 prompt 组装方式，可获得更好的图片质量。详见 `references/style-definitions/`。
+>
+> **Style token 使用场景**：当 design 尚未有 style-definition 文件时，使用下文的 style token 表作为降级方案。
+
 ## Prompt Template Structure
 
 Every AI image prompt is assembled from four parts:
@@ -23,7 +27,9 @@ high quality, 2k, detailed, professional, clean composition
 - `professional` -- avoids amateurish, clip-art look
 - `clean composition` -- favors balanced, uncluttered layouts
 
-## Style Tokens (Mapped to Presets)
+## Style Tokens (Legacy — 推荐使用 style-definitions/ 替代)
+
+简短的风格描述。对于精确视觉控制，使用 `references/style-definitions/` 中的结构化定义和 `references/prompt-construction.md` 的组装流程。
 
 | Preset | Style Token | Character |
 |--------|------------|-----------|
