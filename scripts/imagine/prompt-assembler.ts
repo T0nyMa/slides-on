@@ -153,7 +153,7 @@ function loadArchetype(name: string): ArchetypeTemplate | null {
   for (const section of sections) {
     const titleMatch = section.match(/^([^\n]+)/);
     if (!titleMatch) continue;
-    const sectionTitle = titleMatch[1].trim().toLowerCase().replace(/\s*\([^)]*\)\s*/, "");
+    const sectionTitle = titleMatch[1].trim().toLowerCase().replace(/\s*[（(][^)）]*[)）]\s*/g, "").replace(/[\s-]+/g, " ");
 
     if (sectionTitle.includes(lookupName) || lookupName.includes(sectionTitle)) {
       const structureMatch = section.match(/\*\*通用结构\*\*：\n([\s\S]*?)(?=\*\*节点|$)/);
