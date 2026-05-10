@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Component Palette · 3:4 Showcase</title>
+<link rel="stylesheet" href="../../../assets/base.css">
+<link rel="stylesheet" href="../../../assets/fonts.css">
+<link rel="stylesheet" href="../../../assets/components.css">
+<link rel="stylesheet" href="../../../assets/themes/tokyo-night.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="c-showcase">
+<div class="deck">
+
+  <!-- 1. Cover: gradient text + badges -->
+  <section class="slide" data-title="Cover">
+    <p class="kicker">slides-on component system</p>
+    <h1 class="h1">Component<br><span class="c-grad">Palette</span></h1>
+    <p class="lede">在 3:4 画布上使用共享组件自由拼装演示文稿</p>
+    <div class="c-badge-row mt-l">
+      <span class="c-badge accent">cqi 自适应</span>
+      <span class="c-badge good">Theme 兼容</span>
+      <span class="c-badge">3:4 Ready</span>
+    </div>
+  </section>
+
+  <!-- 2. KPI dashboard: c-row with c-kpi -->
+  <section class="slide" data-title="KPI">
+    <h2 class="h2">Metrics Dashboard</h2>
+    <p class="lede">c-row 横排 KPI，3:4 下自动纵排</p>
+    <div class="c-row mt-l">
+      <div class="c-kpi">
+        <div class="c-kpi-value">99.9%</div>
+        <div class="c-kpi-label">Uptime SLA</div>
+        <div class="c-kpi-delta up">+0.5%</div>
+      </div>
+      <div class="c-kpi">
+        <div class="c-kpi-value">12ms</div>
+        <div class="c-kpi-label">P99 Latency</div>
+        <div class="c-kpi-delta down">-3ms</div>
+      </div>
+      <div class="c-kpi">
+        <div class="c-kpi-value">2.4x</div>
+        <div class="c-kpi-label">Throughput</div>
+        <div class="c-kpi-delta up">+140%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Steps with connectors -->
+  <section class="slide" data-title="Steps">
+    <h2 class="h2">Build Your First Agent</h2>
+    <div class="c-steps mt-l">
+      <div class="c-step">
+        <div class="c-step-num">1</div>
+        <div class="c-step-content">
+          <div class="c-step-title">Write a one-sentence description</div>
+          <div class="c-step-body">Be specific about what your agent should do</div>
+        </div>
+      </div>
+      <div class="c-connector">
+        <span class="c-connector-arrow">↓</span>
+        <span class="c-connector-text">Feed to AI</span>
+      </div>
+      <div class="c-step">
+        <div class="c-step-num">2</div>
+        <div class="c-step-content">
+          <div class="c-step-title">Let AI design your agent</div>
+          <div class="c-step-body">Generate system prompt + tool list + test cases</div>
+        </div>
+      </div>
+      <div class="c-connector">
+        <span class="c-connector-arrow">↓</span>
+        <span class="c-connector-text">Get the blueprint</span>
+      </div>
+      <div class="c-step">
+        <div class="c-step-num">3</div>
+        <div class="c-step-content">
+          <div class="c-step-title">Build the MVP</div>
+          <div class="c-step-body">One agent + one prompt + max two tools</div>
+        </div>
+      </div>
+      <div class="c-connector">
+        <span class="c-connector-arrow">↓</span>
+        <span class="c-connector-text">Test immediately</span>
+      </div>
+      <div class="c-step">
+        <div class="c-step-num">4</div>
+        <div class="c-step-content">
+          <div class="c-step-title">Test with 10 real cases</div>
+          <div class="c-step-body">Use messy, real-world input — not clean test data</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Icon rows -->
+  <section class="slide" data-title="Icon Rows">
+    <h2 class="h2">Five Agent Types</h2>
+    <div class="c-stack mt-l">
+      <div class="c-icon-row">
+        <div class="c-icon-row-icon">🔍</div>
+        <div class="c-icon-row-text">
+          <div class="c-icon-row-title">Research Agent</div>
+          <div class="c-icon-row-body">Gather info + summarize. Web search + structured output</div>
+        </div>
+      </div>
+      <div class="c-icon-row">
+        <div class="c-icon-row-icon">✏️</div>
+        <div class="c-icon-row-text">
+          <div class="c-icon-row-title">Content Agent</div>
+          <div class="c-icon-row-body">Write, rewrite, transform. Strong system prompt + style examples</div>
+        </div>
+      </div>
+      <div class="c-icon-row">
+        <div class="c-icon-row-icon">⚙️</div>
+        <div class="c-icon-row-text">
+          <div class="c-icon-row-title">Workflow Agent</div>
+          <div class="c-icon-row-body">Execute fixed business processes. Clear rules + API integration</div>
+        </div>
+      </div>
+      <div class="c-icon-row">
+        <div class="c-icon-row-icon">📋</div>
+        <div class="c-icon-row-text">
+          <div class="c-icon-row-title">Knowledge Agent</div>
+          <div class="c-icon-row-body">Answer from your docs. File search or RAG</div>
+        </div>
+      </div>
+      <div class="c-icon-row">
+        <div class="c-icon-row-icon">🔧</div>
+        <div class="c-icon-row-text">
+          <div class="c-icon-row-title">Operator Agent</div>
+          <div class="c-icon-row-body">Execute actions in environment. Tools + permissions + safety</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Cards with grid -->
+  <section class="slide" data-title="Cards">
+    <h2 class="h2">Core Concepts</h2>
+    <div class="c-grid-2 mt-l">
+      <div class="c-card-accent">
+        <div class="c-title">LLM = Brain</div>
+        <div class="c-body">Handles reasoning and decision-making in the agent loop</div>
+      </div>
+      <div class="c-card-accent">
+        <div class="c-title">Tools = Hands</div>
+        <div class="c-body">Execute search, compute, file I/O, API calls</div>
+      </div>
+      <div class="c-card">
+        <div class="c-title">Memory = Notebook</div>
+        <div class="c-body">Conversation history and persistent context</div>
+      </div>
+      <div class="c-card">
+        <div class="c-title">Guardrails = Safety</div>
+        <div class="c-body">Rules and boundaries the agent must respect</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Formula + example + warn -->
+  <section class="slide" data-title="Formula & Warn">
+    <h2 class="h2">Agent Formula</h2>
+    <div class="c-formula mt-l">Agent = Role + Goal + Tools + Rules + Output</div>
+
+    <div class="c-example mt-l">
+      <div class="c-example-label">Example</div>
+      <strong>Role:</strong> Crypto Research Assistant<br>
+      <strong>Goal:</strong> Find accurate info and summarize clearly<br>
+      <strong>Tools:</strong> Web Search, File Search, Calculator<br>
+      <strong>Rules:</strong> Cite sources, mark uncertainty<br>
+      <strong>Output:</strong> Summary + Risk + Opportunity + Verdict
+    </div>
+
+    <div class="c-warn mt-l">
+      <div class="c-warn-icon">⚠️</div>
+      <div class="c-warn-content">
+        <div class="c-warn-title">Over-engineering Warning</div>
+        <div class="c-warn-body">
+          Don't add vector DB before confirming you need memory.<br>
+          Don't use multi-agent before a single agent works.<br>
+          <strong>Golden rule: if it runs without it, don't add it.</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Quote + glass -->
+  <section class="slide center" data-title="Quote">
+    <div class="c-glass" style="max-width:80%">
+      <blockquote class="c-quote">
+        The best agent is the simplest one that gets the job done. Start with a single prompt, add complexity only when the task demands it.
+      </blockquote>
+      <span class="c-quote-attr">— Anthropic Agent Design Guide, 2025</span>
+    </div>
+    <div class="c-spacer-md"></div>
+    <div class="c-badge-row" style="justify-content:center">
+      <span class="c-badge accent">Simplicity First</span>
+    </div>
+  </section>
+
+  <!-- 8. Section containers -->
+  <section class="slide" data-title="Sections">
+    <h2 class="h2">Architecture Layers</h2>
+    <div class="c-stack mt-l">
+      <div class="c-section">
+        <div class="c-section-label">Application Layer</div>
+        <div class="c-row">
+          <div class="c-card-soft">
+            <div class="c-title">Chat UI</div>
+            <div class="c-body">User-facing interface for agent interaction</div>
+          </div>
+          <div class="c-card-soft">
+            <div class="c-title">API Gateway</div>
+            <div class="c-body">Rate limiting, auth, routing</div>
+          </div>
+        </div>
+      </div>
+      <div class="c-section">
+        <div class="c-section-label">Agent Runtime</div>
+        <div class="c-row">
+          <div class="c-card-soft">
+            <div class="c-title">Orchestrator</div>
+            <div class="c-body">Task planning + tool dispatch</div>
+          </div>
+          <div class="c-card-soft">
+            <div class="c-title">Memory Store</div>
+            <div class="c-body">Short-term + long-term context</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. Divider + summary -->
+  <section class="slide" data-title="Summary">
+    <h2 class="h2">Component Palette</h2>
+    <p class="lede">一套代码，两种画布。自由组合，零学习成本。</p>
+
+    <div class="c-divider mt-l"></div>
+
+    <div class="c-row mt-l">
+      <div class="c-card">
+        <div class="c-subtitle">布局容器</div>
+        <div class="c-body">
+          <code>c-stack</code> · <code>c-row</code> · <code>c-grid-2</code> · <code>c-grid-3</code>
+        </div>
+      </div>
+      <div class="c-card">
+        <div class="c-subtitle">内容组件</div>
+        <div class="c-body">
+          <code>c-card</code> · <code>c-steps</code> · <code>c-icon-row</code> · <code>c-kpi</code>
+        </div>
+      </div>
+    </div>
+    <div class="c-row mt-m">
+      <div class="c-card">
+        <div class="c-subtitle">特殊框</div>
+        <div class="c-body">
+          <code>c-formula</code> · <code>c-warn</code> · <code>c-example</code> · <code>c-quote</code>
+        </div>
+      </div>
+      <div class="c-card">
+        <div class="c-subtitle">排版</div>
+        <div class="c-body">
+          <code>c-badge</code> · <code>c-grad</code> · <code>c-glass</code> · <code>c-section</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="c-divider mt-l"></div>
+    <div class="c-badge-row mt-l" style="justify-content:center">
+      <span class="c-badge good">16:9 ✓</span>
+      <span class="c-badge accent">3:4 ✓</span>
+      <span class="c-badge">any theme ✓</span>
+    </div>
+  </section>
+
+</div>
+<script src="../../../assets/runtime.js"></script>
+</body></html>

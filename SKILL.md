@@ -90,12 +90,16 @@ description: >
 | 信息图 | AI infographic | PNG 图片 |
 | 封面图 | AI cover image | PNG 图片 |
 | 分隔页 | HTML layout | HTML 片段 |
+| 3:4 手机画布 | Component palette | 组件自由组合（`c-*` classes） |
+
+> **3:4 画布特殊处理**：当目标画布为 3:4（手机端），不推荐使用单一 layout，而是使用 **Component Palette**（`assets/components.css`）自由拼装组件（卡片、步骤、KPI、图标行、警告框等），纵向堆叠填满屏幕。详见 `references/components.md`。
 
 **产出**：`style-decision.md`，记录每个 slide 的 theme、layout、渲染引擎选择。
 
 **参考文档**：
 - `references/themes.md` — 36 个 theme 详情
 - `references/layouts.md` — 31 个 layout 详情
+- `references/components.md` — 共享组件库（card、step、KPI、quote 等）
 - `references/designs/` — 17 个 design
 - `references/dimensions/` — 4 维自定义
 - `references/diagram/` — 4 种架构图类型
@@ -107,7 +111,7 @@ description: >
 
 **处理**：
 1. 从 `templates/full-decks/` 选择匹配的 Template（或从 `templates/deck.html` 骨架开始）
-2. 从 `templates/single-page/` 选取每个 slide 的 layout HTML
+2. 从 `templates/single-page/` 选取每个 slide 的 layout HTML；**3:4 画布则从 `assets/components.css` 选择组件自由拼装**
 3. 应用 theme（`assets/themes/` 中选择 CSS 文件）
 4. 填写实际内容到 layout 中
 5. **混合渲染**：对于 AI 图片/SVG 图页面，在 HTML 中以 `<img>` 引用生成的文件
@@ -128,6 +132,7 @@ description: >
 - `references/animations.md` — 动画系统
 - `references/html-engine.md` — HTML 渲染引擎详解
 - `references/ai-visuals.md` — AI 视觉内容生成
+- `references/components.md` — 组件调色板（3:4 自由拼装）
 
 ### Step 4: 导出
 

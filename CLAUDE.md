@@ -128,7 +128,8 @@ slides-on/
 │   ├── design-guidelines.md        #   设计指南
 │   ├── export.md                   #   导出选项
 │   ├── html-engine.md              #   HTML 渲染引擎详解
-│   └── ai-visuals.md               #   AI 视觉内容生成
+│   ├── ai-visuals.md               #   AI 视觉内容生成
+│   └── components.md               #   共享组件库（card/step/KPI/quote 等）
 │
 ├── templates/                      # HTML 模板
 │   ├── full-decks/                 #   15 个 deck template
@@ -191,6 +192,7 @@ slides-on/
 ├── assets/                         # 静态资源
 │   ├── base.css                    #   设计系统（150 行 30+ CSS vars）
 │   ├── fonts.css                   #   系统字体栈
+│   ├── components.css              #   共享组件库（cqi + CSS vars, 3:4 自适应）
 │   ├── runtime.js                  #   交互引擎 960 行
 │   ├── themes/                     #   36 个 theme CSS
 │   │   ├── academic-paper.css
@@ -395,6 +397,7 @@ Slides（最终产物 = index.html）
 - **SVG 架构图**: `references/diagram/`（4 种类型：architecture / flowchart / sequence / structural）
 - **信息图**: `references/infographic/`（21 布局 × 22 视觉风格）
 - **风格系统**: CSS Variables（36 个 theme），通过 `:root` 覆盖切换
+- **组件系统**: `assets/components.css`（cqi 单位 + CSS vars），3:4 自适应。卡片、步骤、KPI、引用、图标行等组件自由组合，`c-row` / `c-grid` 在窄画布自动纵排
 
 ## Scripts 使用方式
 

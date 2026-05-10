@@ -1,0 +1,259 @@
+/* slides-on :: components.css — shared responsive component library */
+/* All components use cqi units + CSS variables. Theme-agnostic. Zero layout assumptions. */
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT CONTAINERS
+   ══════════════════════════════════════════════════════ */
+
+/* Vertical stack: auto-spacing between children */
+.c-stack { display: flex; flex-direction: column; }
+.c-stack > * + * { margin-top: 1.5cqi; }
+
+/* Horizontal row → auto-stacks vertically in 3:4 */
+.c-row { display: flex; gap: 1.5cqi; align-items: flex-start; }
+.c-row > * { flex: 1; min-width: 0; }
+
+/* Grid 2/3 columns → auto-reduces in 3:4 */
+.c-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5cqi; }
+.c-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5cqi; }
+
+/* Divider */
+.c-divider { height: 1px; background: var(--border); width: 100%; }
+.c-divider-accent { height: 2px; width: 5cqi; background: var(--accent); border-radius: 1px; }
+
+/* Spacers */
+.c-spacer-sm { height: 1cqi; }
+.c-spacer-md { height: 2cqi; }
+.c-spacer-lg { height: 3.5cqi; }
+
+/* ══════════════════════════════════════════════════════
+   TYPOGRAPHY COMPONENTS
+   ══════════════════════════════════════════════════════ */
+
+/* Component title — use inside c-card, c-section etc. */
+.c-title { font-size: 2.2cqi; font-weight: 800; line-height: 1.2; color: var(--text-1); margin: 0; }
+.c-subtitle { font-size: 1.5cqi; font-weight: 600; line-height: 1.3; color: var(--text-2); margin: 0; }
+.c-body { font-size: 1.2cqi; line-height: 1.55; color: var(--text-2); }
+.c-small { font-size: 0.95cqi; line-height: 1.45; color: var(--text-3); }
+
+/* Gradient text */
+.c-grad {
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+
+/* ══════════════════════════════════════════════════════
+   CONTENT CONTAINERS
+   ══════════════════════════════════════════════════════ */
+
+/* Basic card */
+.c-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.5cqi 1.8cqi;
+  box-shadow: var(--shadow); position: relative; overflow: hidden;
+}
+
+/* Card with top accent line */
+.c-card-accent {
+  background: var(--surface); border: 1px solid var(--border);
+  border-top: 3px solid var(--accent); border-radius: var(--radius);
+  padding: 1.5cqi 1.8cqi; box-shadow: var(--shadow);
+}
+
+/* Card with left warning line */
+.c-card-warn {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 4px solid var(--warn); border-radius: var(--radius);
+  padding: 1.5cqi 1.8cqi; box-shadow: var(--shadow);
+}
+
+/* Soft-surface card (less contrast) */
+.c-card-soft {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.5cqi 1.8cqi;
+}
+
+/* Section container — for grouping related content */
+.c-section {
+  border: 1.5px solid var(--border-strong); border-radius: var(--radius-lg);
+  padding: 1.8cqi; position: relative;
+}
+.c-section-label {
+  font-size: 1.3cqi; font-weight: 800; color: var(--text-1);
+  margin-bottom: 1cqi;
+}
+
+/* Glassmorphism card */
+.c-glass {
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--radius-lg); padding: 1.8cqi;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ══════════════════════════════════════════════════════
+   BADGE / PILL
+   ══════════════════════════════════════════════════════ */
+
+.c-badge {
+  display: inline-block; padding: 0.3cqi 0.9cqi; border-radius: 999px;
+  font-size: 0.85cqi; font-weight: 600; line-height: 1.4;
+  background: var(--surface-2); color: var(--text-2);
+  border: 1px solid var(--border);
+}
+.c-badge.accent { background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent); border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
+.c-badge.good   { background: color-mix(in srgb, var(--good) 15%, transparent); color: var(--good); border-color: color-mix(in srgb, var(--good) 30%, transparent); }
+.c-badge.warn   { background: color-mix(in srgb, var(--warn) 15%, transparent); color: var(--warn); border-color: color-mix(in srgb, var(--warn) 30%, transparent); }
+.c-badge.bad    { background: color-mix(in srgb, var(--bad) 15%, transparent); color: var(--bad); border-color: color-mix(in srgb, var(--bad) 30%, transparent); }
+
+/* Badge row: horizontal list of badges */
+.c-badge-row { display: flex; flex-wrap: wrap; gap: 0.6cqi; align-items: center; }
+
+/* ══════════════════════════════════════════════════════
+   KPI / BIG NUMBER
+   ══════════════════════════════════════════════════════ */
+
+.c-kpi { text-align: center; }
+.c-kpi-value { font-size: 4.5cqi; font-weight: 900; line-height: 1; color: var(--text-1); letter-spacing: var(--letter-tight); }
+.c-kpi-label { font-size: 1.1cqi; color: var(--text-2); margin-top: 0.4cqi; }
+.c-kpi-delta { font-size: 1cqi; font-weight: 700; margin-top: 0.2cqi; }
+.c-kpi-delta.up   { color: var(--good); }
+.c-kpi-delta.down { color: var(--bad); }
+.c-kpi-delta.flat { color: var(--text-3); }
+
+/* ══════════════════════════════════════════════════════
+   QUOTE
+   ══════════════════════════════════════════════════════ */
+
+.c-quote { font-family: var(--font-serif); font-size: 2.2cqi; line-height: 1.4; font-style: italic; color: var(--text-1); position: relative; padding: 0 0 0 3cqi; }
+.c-quote::before { content: "\201C"; position: absolute; left: 0; top: -1cqi; font-size: 5cqi; color: var(--accent); font-style: normal; font-family: var(--font-serif); line-height: 1; opacity: .35; }
+.c-quote-attr { font-size: 1cqi; color: var(--text-3); font-style: normal; margin-top: 0.8cqi; display: block; }
+
+/* ══════════════════════════════════════════════════════
+   STEPS / PROCESS
+   ══════════════════════════════════════════════════════ */
+
+.c-steps { display: flex; flex-direction: column; gap: 0; }
+.c-step { display: flex; gap: 1.5cqi; align-items: flex-start; }
+.c-step-num {
+  flex: none; width: 3cqi; height: 3cqi; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3cqi; font-weight: 800;
+}
+.c-step-content { flex: 1; min-width: 0; }
+.c-step-title { font-size: 1.6cqi; font-weight: 800; color: var(--text-1); line-height: 1.3; margin-bottom: 0.3cqi; }
+.c-step-body { font-size: 1.1cqi; line-height: 1.5; color: var(--text-2); }
+
+/* Connector between steps */
+.c-connector { display: flex; align-items: center; gap: 0.8cqi; padding: 0.4cqi 0 0.4cqi 1.5cqi; }
+.c-connector-arrow { color: var(--accent); font-size: 1.5cqi; font-weight: 800; line-height: 1; }
+.c-connector-text { font-size: 0.95cqi; color: var(--accent); font-weight: 600; }
+
+/* ══════════════════════════════════════════════════════
+   ICON ROW
+   ══════════════════════════════════════════════════════ */
+
+.c-icon-row { display: flex; gap: 1.5cqi; align-items: flex-start; }
+.c-icon-row-icon {
+  flex: none; width: 3cqi; height: 3cqi; border-radius: var(--radius-sm);
+  background: var(--surface-2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4cqi;
+}
+.c-icon-row-text { flex: 1; min-width: 0; }
+.c-icon-row-title { font-size: 1.5cqi; font-weight: 800; color: var(--text-1); line-height: 1.3; margin-bottom: 0.3cqi; }
+.c-icon-row-body { font-size: 1.05cqi; line-height: 1.5; color: var(--text-2); }
+
+/* ══════════════════════════════════════════════════════
+   SPECIAL BOXES
+   ══════════════════════════════════════════════════════ */
+
+/* Formula / concept highlight */
+.c-formula {
+  border: 2px solid var(--border-strong); border-radius: var(--radius);
+  padding: 1.2cqi 1.8cqi; text-align: center;
+  font-size: 1.8cqi; font-weight: 800; color: var(--text-1);
+  background: var(--surface-2);
+}
+
+/* Warning box */
+.c-warn {
+  border: 2px solid var(--bad); border-radius: var(--radius);
+  padding: 1.2cqi 1.5cqi; display: flex; gap: 1.2cqi; align-items: flex-start;
+  background: color-mix(in srgb, var(--bad) 4%, transparent);
+}
+.c-warn-icon { flex: none; font-size: 2cqi; line-height: 1; }
+.c-warn-title { font-size: 1.3cqi; font-weight: 800; color: var(--bad); margin-bottom: 0.3cqi; }
+.c-warn-body { font-size: 1cqi; line-height: 1.5; color: var(--text-2); }
+
+/* Example box */
+.c-example {
+  border: 1.5px solid var(--border-strong); border-radius: var(--radius);
+  padding: 1.2cqi 1.5cqi; background: var(--surface-2);
+  font-size: 1.05cqi; line-height: 1.55; color: var(--text-2);
+}
+.c-example-label { font-size: 0.85cqi; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 0.5cqi; }
+
+/* ══════════════════════════════════════════════════════
+   3:4 CANVAS — container query overrides
+   Larger cqi multipliers so elements fill the narrow screen proportionally
+   ══════════════════════════════════════════════════════ */
+
+@container (max-width: 1000px) {
+  /* Layout containers: switch to vertical stacking */
+  .c-row { flex-direction: column; }
+  .c-row > * { flex: none; width: 100%; }
+  .c-grid-2 { grid-template-columns: 1fr; }
+  .c-grid-3 { grid-template-columns: repeat(2, 1fr); }
+
+  /* Boost cqi multipliers for proportional sizing on narrow canvas */
+  .c-title { font-size: 3.5cqi; }
+  .c-subtitle { font-size: 2.5cqi; }
+  .c-body { font-size: 2cqi; }
+  .c-small { font-size: 1.6cqi; }
+
+  .c-card, .c-card-accent, .c-card-warn, .c-card-soft { padding: 2.5cqi 3cqi; }
+  .c-section { padding: 3cqi; }
+  .c-section-label { font-size: 2.3cqi; }
+  .c-glass { padding: 3cqi; }
+
+  .c-badge { font-size: 1.5cqi; padding: 0.5cqi 1.2cqi; }
+  .c-badge-row { gap: 1cqi; }
+
+  .c-kpi-value { font-size: 8cqi; }
+  .c-kpi-label { font-size: 2cqi; margin-top: 0.6cqi; }
+  .c-kpi-delta { font-size: 1.8cqi; }
+
+  .c-quote { font-size: 3.5cqi; padding-left: 5cqi; }
+  .c-quote::before { font-size: 8cqi; top: -1.5cqi; }
+  .c-quote-attr { font-size: 1.8cqi; }
+
+  .c-step-num { width: 5cqi; height: 5cqi; font-size: 2.2cqi; }
+  .c-step { gap: 2.5cqi; }
+  .c-step-title { font-size: 2.8cqi; }
+  .c-step-body { font-size: 1.9cqi; }
+  .c-connector { padding-left: 2.5cqi; gap: 1.5cqi; }
+  .c-connector-arrow { font-size: 2.5cqi; }
+  .c-connector-text { font-size: 1.6cqi; }
+
+  .c-icon-row { gap: 2.5cqi; }
+  .c-icon-row-icon { width: 5cqi; height: 5cqi; font-size: 2.5cqi; border-radius: var(--radius); }
+  .c-icon-row-title { font-size: 2.5cqi; }
+  .c-icon-row-body { font-size: 1.8cqi; }
+
+  .c-formula { font-size: 3cqi; padding: 2cqi 2.5cqi; }
+  .c-warn { padding: 2cqi 2.5cqi; gap: 2cqi; }
+  .c-warn-icon { font-size: 3.5cqi; }
+  .c-warn-title { font-size: 2.3cqi; }
+  .c-warn-body { font-size: 1.8cqi; }
+  .c-example { padding: 2cqi 2.5cqi; font-size: 1.8cqi; }
+  .c-example-label { font-size: 1.5cqi; }
+
+  .c-stack > * + * { margin-top: 2.5cqi; }
+  .c-spacer-sm { height: 1.5cqi; }
+  .c-spacer-md { height: 3cqi; }
+  .c-spacer-lg { height: 5cqi; }
+}
