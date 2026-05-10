@@ -1,13 +1,13 @@
 ---
 name: slides-on
 description: >
-  Build presentation slides, PPT, slide decks, 演示文稿, or 小红书图文 from any document.
-  Use this skill whenever the user wants to create slides, make a deck, generate a PPT,
-  turn a doc into slides, or produce social media image cards — even if they don't say
-  "slides" explicitly (e.g. "帮我整理成图文", "做成小红书"). One pipeline: content analysis
-  → style decision → HTML rendering → export (PNG/PPTX/PDF). Supports 16:9 landscape and
-  3:4 portrait canvas, Design CSS architecture, c-* component system, AI image generation
-  with structured prompts, SVG diagrams, and infographics.
+  Build presentation slides, PPT, slide decks, 演示文稿, keynotes, 小红书图文, or
+  image cards from any document. Use this whenever the user asks to create slides,
+  做PPT, 做演示文稿, 做slides, 帮我做个汇报, 整理成图文, 做成小红书, 生成图文,
+  make a deck, generate a PPT, weekly report, pitch deck, 周报, 提案, 分享,
+  or any document-to-slides task — even if they don't say "slides" explicitly
+  (e.g. "帮我整理一下这个文档", "把这篇做成卡片"). One pipeline: content analysis
+  → style decision → HTML rendering → export (PNG/PPTX/PDF).
 ---
 
 # slides-on — 统一演示文稿制作
@@ -121,11 +121,52 @@ description: >
 
 **产出**：一个完整的 `index.html`（可浏览器打开交互演示）
 
+**`slides.json` 格式示例**（完整类型定义见 `scripts/assemble/types.ts`）：
+```json
+{
+  "config": {
+    "title": "My Deck",
+    "design": "pastel-card",
+    "canvas": "3:4",
+    "author": "Author Name"
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "title": "演示文稿标题",
+      "subtitle": "副标题或一句话摘要",
+      "kicker": "标签文字",
+      "chip": "01",
+      "chipColor": "mint",
+      "blobs": ["b1", "b2"]
+    },
+    {
+      "type": "cards-2x2",
+      "title": "核心观点",
+      "cards": [
+        { "num": "01", "title": "卡片标题", "body": "卡片内容说明", "color": "peach" },
+        { "num": "02", "title": "卡片标题", "body": "卡片内容说明", "color": "mint" }
+      ]
+    },
+    {
+      "type": "steps",
+      "title": "实施路径",
+      "steps": [
+        { "num": "1", "title": "第一步", "body": "具体描述" },
+        { "num": "2", "title": "第二步", "body": "具体描述" }
+      ]
+    },
+    { "type": "html", "html": "<section class=\"slide is-active\"><!-- 自定义 HTML --></section>" }
+  ]
+}
+```
+Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps` | `code` | `thanks` | `bullets` | `kpi` | `html`
+
 **关键文件**：
 - `scripts/assemble-deck.ts` — HTML 组装入口（JSON → index.html）
 - `scripts/assemble/types.ts` — SlideData、DeckConfig 类型定义
 - `scripts/assemble/designs.ts` — Design 模板注册表（per-design 渲染函数）
-- `scripts/assemble/slides.ts` — 10 种 slide 类型渲染器
+- `scripts/assemble/slides.ts` — 10 个渲染函数（覆盖 11 种 slide 类型）
 - `scripts/assemble/skeleton.ts` — Deck HTML 骨架生成
 - `scripts/imagine/prompt-assembler.ts` — 三层结构化 prompt 组装引擎
 - `scripts/imagine/main.ts` — AI 图片生成入口
@@ -201,6 +242,8 @@ bun scripts/merge-to-pdf.ts <png-dir> --output deck.pdf
 | 图形 | arch-diagram, mindmap, image-grid, image-hero | 架构图、思维导图、图片 |
 | 结尾 | cta, thanks, todo-checklist | 行动号召、致谢、清单 |
 
+> 上表为 16:9 画布的 31 个 single-page layout。3:4 画布使用 assemble-deck 的 11 种 slide 类型（cover, section, cards-2x2, cards-3, quote, steps, code, thanks, bullets, kpi, html），见 Step 3 的 slides.json 格式。
+
 ## 画布适配：16:9 与 3:4
 
 Pipeline 一开始就确定画布比例，两种画布采用不同策略：
@@ -215,7 +258,7 @@ Pipeline 一开始就确定画布比例，两种画布采用不同策略：
 **一步切换**：在 `<body>` 上加 `class="portrait"` 即可。
 
 ```html
-<body class="portrait">
+<body class="d-pastel-card portrait">
 ```
 
 `.portrait` 自动完成：
