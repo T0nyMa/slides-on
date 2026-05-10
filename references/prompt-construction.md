@@ -250,23 +250,31 @@ crowded composition, many people, childish cartoons, thick outlines, saturated c
 
 ### 工具调用示例
 
+设置环境变量后可省略重复参数（详见 `scripts/imagine/config.ts`）：
 ```bash
-# 首图 — 无 ref，建立锚点
+export IMAGINE_PROVIDER="dashscope"
+export IMAGINE_MODEL="qwen-image-2.0-pro-2026-04-22"
+export IMAGINE_QUALITY="2k"
+export IMAGINE_ASPECT="16:9"
+```
+
+```bash
+# 首图 — 无 ref，建立锚点（provider/quality/aspect 从 env 读取）
 bun scripts/imagine/main.ts \
   --file prompts/01-cover-sketch-notes.md \
-  --provider dashscope \
-  --aspect 16:9 \
-  --quality 2k \
   --output out/01-cover.png
 
 # 后续图 — 带 ref，锚定视觉
 bun scripts/imagine/main.ts \
   --file prompts/02-content-process.md \
-  --provider dashscope \
-  --aspect 16:9 \
-  --quality 2k \
   --reference out/01-cover.png \
   --output out/02-content.png
+
+# 结构化 prompt 模式（--design 触发三层组装）
+bun scripts/imagine/main.ts \
+  --design sketch-notes --archetype "horizontal process" \
+  --content "推荐系统三阶段：召回→精排→重排" \
+  --output out/03-process.png
 ```
 
 ## Style Definition 选择规则
@@ -294,7 +302,7 @@ design → references/style-definitions/{design}.md
 
 ## Provider-Specific 适配
 
-从 `base-prompt.md` 迁移的 Provider 特定调整，在组装 prompt 时应用：
+Provider 注册表和自动选择逻辑在 `scripts/imagine/config.ts`。以下为各 Provider 的 prompt 适配建议：
 
 ### DashScope (wanx-v1)
 

@@ -105,3 +105,13 @@ Or enable `T`-cycling by listing themes on the body:
 Copy an existing theme, rename it, and override only the variables you want to
 change. Keep each theme under ~200 lines. Prefer adjusting tokens to adding
 new selectors.
+
+## Themes vs Design CSS
+
+Themes are for **16:9 landscape** decks — they override `:root` CSS variables
+and the T key cycles between them. For **3:4 portrait** decks (小红书图文,
+social media cards), use Design CSS instead. Design CSS files
+(`assets/designs/{name}.css`) additionally define Chrome element styles
+(`chr-*`) and c-* component extensions, scoped to a body class (`.d-{name}`).
+
+See `references/portrait-user-guide.md` for the full 3:4 Design CSS workflow.

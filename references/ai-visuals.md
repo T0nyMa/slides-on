@@ -97,9 +97,9 @@ bun scripts/svg-to-png.ts <input.svg>
 3. 生成图片
 4. 将生成的 PNG 引用到 HTML 中
 
-**Provider 选择策略**：
-- 有参考图时：Google → OpenAI → Azure
-- 无参考图时：Google → OpenAI → Azure → OpenRouter → DashScope → Z.AI → MiniMax → Replicate → Jimeng → Seedream
+**Provider 选择策略**（在 `config.ts` 中定义，`IMAGINE_PROVIDER` 环境变量可覆盖）：
+- 无参考图时：DashScope → OpenAI → MiniMax → Replicate → Z.AI → OpenRouter → Azure → Google → Jimeng → Seedream
+- 有参考图时：Google → OpenAI → Azure（仅这三家支持原生参考图）
 
 **Prompt 文件机制**（保证可复现）：
 ```
@@ -110,11 +110,36 @@ deck-name/
 │   └── ...
 ```
 
+### 单张生成
+
+```bash
+# 结构化 prompt 模式（推荐）
+bun scripts/imagine/main.ts --design sketch-notes --archetype "horizontal process" --aspect 3:4 --content "推荐系统三阶段"
+
+# 直接 prompt 模式
+bun scripts/imagine/main.ts --prompt "a futuristic city skyline" --aspect 16:9
+```
+
 ### 批量生成
 
 ```bash
-bun scripts/imagine/main.ts --batchfile prompts.txt --jobs 3
+bun scripts/imagine/build-batch.ts --dir prompts/ --design sketch-notes --jobs 3
+bun scripts/imagine/build-batch.ts --batchfile prompts.txt --anchor --jobs 1
 ```
+
+### 默认配置
+
+Provider、Model、Quality、Aspect 等默认值通过环境变量设置，CLI 参数覆盖：
+
+```bash
+export IMAGINE_PROVIDER="dashscope"
+export IMAGINE_MODEL="qwen-image-2.0-pro-2026-04-22"
+export IMAGINE_QUALITY="2k"
+export IMAGINE_ASPECT="3:4"
+export IMAGINE_DESIGN="sketch-notes"
+```
+
+设置后，CLI 调用可省略对应 flag。详见 `scripts/imagine/config.ts` 和 `EXTEND.md` 的 `ai_image` 节。
 
 ## 信息图（Infographic）
 

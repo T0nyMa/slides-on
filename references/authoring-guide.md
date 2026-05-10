@@ -17,9 +17,9 @@ The audience + tone map to a theme; the length maps to slide count; the
 format maps to runtime features (live → notes + T-cycle; PDF → page-break
 CSS, already handled in `base.css`).
 
-## 2. Pick a theme
+## 2. Pick a visual skin
 
-Use `references/themes.md`. When in doubt:
+**16:9 landscape**: Pick a theme from `references/themes.md`. When in doubt:
 
 - **Engineers** → `catppuccin-mocha` / `tokyo-night` / `dracula`.
 - **Designers / product** → `editorial-serif` / `aurora` / `soft-pastel`.
@@ -29,8 +29,18 @@ Use `references/themes.md`. When in doubt:
 - **Pitch / bold** → `neo-brutalism` / `sharp-mono` / `bauhaus`.
 - **Launch / product reveal** → `glassmorphism` / `aurora`.
 
-Wire the theme as `<link id="theme-link" href="../assets/themes/NAME.css">`
-and list 3-5 alternatives in `data-themes` so the user can press T to audition.
+Wire the theme as `<link rel="stylesheet" href="assets/themes/NAME.css">`
+and list alternatives in `data-themes` so the user can press T to audition.
+
+**3:4 portrait**: Use a Design CSS file from `assets/designs/`. Load order:
+```html
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/components.css">
+<link rel="stylesheet" href="assets/designs/{name}.css">
+<body class="d-{name} portrait">
+```
+Available designs: `pastel-card` (马卡龙色块), `white-editorial` (白底杂志), `xhs-post` (手绘涂鸦). See `references/portrait-user-guide.md`.
 
 ## 3. Outline the deck
 
@@ -57,14 +67,17 @@ outline.
 
 ## 5. Author each slide
 
-For each outline item:
-
+**16:9 landscape**: For each outline item:
 1. Open the matching single-page layout, e.g. `templates/single-page/kpi-grid.html`.
-2. Copy the `<section class="slide">…</section>` block.
-3. Paste into your deck.
-4. Replace demo data with real data. Keep the class structure intact.
-5. Set `data-title="..."` (used by the Overview grid).
-6. Add `<div class="notes">…</div>` with speaker notes.
+2. Copy the `<section class="slide">…</section>` block, paste into your deck.
+3. Replace demo data with real data. Keep the class structure intact.
+4. Set `data-title="..."` (used by the Overview grid).
+5. Add `<div class="notes">…</div>` with speaker notes.
+
+**3:4 portrait**: Use Chrome fragments (`chr-*`) + `c-*` components to build each slide:
+1. Add chrome shell: `chr-topbar`, `chr-blob`, `chr-footer` etc. (see the Design's template for which chrome elements to include).
+2. Fill with `c-*` components: `c-card`, `c-grid-2/3`, `c-quote`, `c-steps`, `c-kpi`, `c-badge` etc.
+3. Follow the component patterns in `references/portrait-user-guide.md` for each page type (cover, pain page, concept page, steps, CTA, thanks).
 
 ## 6. Add animations sparingly
 
@@ -101,18 +114,17 @@ Walk through every slide with ← →. Press:
 ## 9. Export to PNG
 
 ```bash
-# single slide
-./scripts/render.sh examples/my-talk/index.html
+# All slides, auto-detect count, @2x Retina
+bun scripts/render-precise.ts examples/my-talk/index.html --slides auto --output out/
 
-# all slides (autodetect count by looking for .slide sections)
-./scripts/render.sh examples/my-talk/index.html all
+# 3:4 portrait canvas for 小红书
+bun scripts/render-precise.ts examples/my-talk/index.html --canvas 3:4 --slides auto
 
-# explicit slide count + output dir
-./scripts/render.sh examples/my-talk/index.html 12 out/my-talk-png
+# Explicit slide count + custom DSF
+bun scripts/render-precise.ts examples/my-talk/index.html --slides 12 --dsf 2 --output out/
 ```
 
-Output is 1920×1080 by default. Change in `render.sh` if the user wants 3:4
-for 小红书图文 (1242×1660).
+See `references/export.md` for PPTX and PDF export options.
 
 ## 10. What to NOT do
 
@@ -133,9 +145,13 @@ for 小红书图文 (1242×1660).
 ## Troubleshooting
 
 - **Theme doesn't switch with T**: check `data-themes` on `<body>` and
-  `data-theme-base` pointing to the themes directory relative to the HTML
-  file.
-- **Fonts fall back**: make sure `fonts.css` is linked before the theme.
-- **Chart.js colors wrong**: charts read CSS vars in JS; make sure they run
-  after the DOM is ready (`addEventListener('DOMContentLoaded', …)`).
-- **PNG too small**: bump `--window-size` in `scripts/render.sh`.
+  `data-theme-base` pointing to the themes directory.
+- **Design CSS not applying**: check that `<body>` has `class="d-{name}"`, the
+  design CSS is loaded after `components.css`, and the body class matches the
+  CSS selector (e.g. `.d-pastel-card`).
+- **c-* components look wrong on 3:4**: make sure `<body class="portrait">` is
+  set — this activates Container Query and `cqi` unit scaling.
+- **Chrome elements invisible**: check that the Design CSS defines the
+  corresponding `chr-*` styles. Not all Designs define all chrome elements.
+- **Fonts fall back**: make sure `fonts.css` is linked before the theme/design.
+- **PNG too small**: use `--dsf 2` for @2x Retina output in `render-precise.ts`.

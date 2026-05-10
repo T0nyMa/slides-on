@@ -9,8 +9,10 @@ slides-on 的 HTML 渲染引擎提供交互式演示能力。
 | 文件 | 路径 | 说明 |
 |------|------|------|
 | base.css | `assets/base.css` | 150 行，30+ CSS Variables，响应式 grid，窄画布适配 |
-| fonts.css | `assets/fonts.css` | Google Fonts 引入（Inter, JetBrains Mono, Noto Sans SC） |
+| fonts.css | `assets/fonts.css` | 系统字体栈（Inter, JetBrains Mono, Noto Sans SC） |
+| components.css | `assets/components.css` | 共享组件库（cqi + CSS vars，c-* 组件） |
 | runtime.js | `assets/runtime.js` | 960 行交互引擎 |
+| designs/ | `assets/designs/` | Design CSS 文件（可移植视觉皮肤：pastel-card, white-editorial, xhs-post） |
 
 ### 主题（36 个）
 
@@ -85,6 +87,7 @@ xhs-white-editorial/
 
 ### 2. HTML 结构
 
+**16:9 landscape**（使用 theme）：
 ```html
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -97,23 +100,34 @@ xhs-white-editorial/
   <link rel="stylesheet" href="assets/animations/animations.css">
 </head>
 <body>
-  <!-- Slide 1: Cover -->
   <div class="slide is-active" data-anim="fade-in">
     <!-- 使用 single-page/cover.html 的内容结构 -->
   </div>
-
-  <!-- Slide 2: TOC -->
-  <div class="slide">
-    <!-- 使用 single-page/toc.html 的内容结构 -->
-  </div>
-
-  <!-- Slide 3: Content -->
-  <div class="slide">
-    <!-- 使用 single-page/bullets.html 的内容结构 -->
-  </div>
-
   <!-- ... more slides ... -->
+  <script src="assets/runtime.js"></script>
+</body>
+</html>
+```
 
+**3:4 portrait**（使用 Design CSS）：
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="assets/fonts.css">
+  <link rel="stylesheet" href="assets/base.css">
+  <link rel="stylesheet" href="assets/components.css">
+  <link rel="stylesheet" href="assets/designs/pastel-card.css">
+</head>
+<body class="d-pastel-card portrait">
+  <div class="slide is-active">
+    <div class="chr-blob b1"></div>
+    <div class="chr-topbar">...</div>
+    <!-- c-* 组件填充内容 -->
+    <div class="chr-footer">...</div>
+  </div>
+  <!-- ... more slides ... -->
   <script src="assets/runtime.js"></script>
 </body>
 </html>
@@ -169,7 +183,7 @@ xhs-white-editorial/
 | `.narrow` | 手动窄画布模式（JS 触发，保留兼容） |
 | `.title` | 页面标题区 |
 | `.body` | 页面内容区 |
-| `.footer` | 页面底部（XHS 底部栏） |
+| `chr-*` | Chrome 页面壳元素（topbar, footer, blob, sticker 等），由 Design CSS 定义样式 |
 
 ### 5. 导航系统
 
@@ -213,9 +227,7 @@ bash scripts/new-deck.sh <deck-name>
 
 ### 3:4 Portrait
 
-通过 `<body class="portrait">` 一键切换。详见 `references/design-guidelines.md`。
-
-内容策略：使用 `assets/components.css` 的 `c-*` 组件拼装，不推荐 16:9 的 single-page layout。
+通过 `<body class="portrait">` 一键切换。采用 Design CSS 架构：加载 `assets/components.css` + `assets/designs/{name}.css`，页面用 Chrome 片段（`chr-*`）+ `c-*` 组件拼装。详见 `references/portrait-user-guide.md` 和 `references/content-rules-portrait.md`。
 
 ### 窄视口兜底
 
