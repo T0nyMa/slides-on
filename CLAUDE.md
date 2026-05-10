@@ -124,7 +124,8 @@ slides-on/
 │   │
 │   ├── analysis-framework.md      #   内容分析框架
 │   ├── base-prompt.md              #   AI 图片基础 prompt
-│   ├── content-rules.md            #   内容规范
+│   ├── content-rules.md            #   16:9 内容规范
+│   ├── content-rules-portrait.md   #   3:4 内容规范（组件大小、密度）
 │   ├── design-guidelines.md        #   设计指南
 │   ├── export.md                   #   导出选项
 │   ├── html-engine.md              #   HTML 渲染引擎详解

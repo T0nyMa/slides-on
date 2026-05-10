@@ -92,13 +92,14 @@ description: >
 | 分隔页 | HTML layout | HTML 片段 |
 | 3:4 手机画布 | Component palette | 组件自由组合（`c-*` classes） |
 
-> **3:4 画布特殊处理**：当目标画布为 3:4（手机端），不推荐使用单一 layout，而是使用 **Component Palette**（`assets/components.css`）自由拼装组件（卡片、步骤、KPI、图标行、警告框等），纵向堆叠填满屏幕。详见 `references/components.md`。
+> **3:4 画布特殊处理**：当目标画布为 3:4（手机端），不推荐使用单一 layout，而是使用 **Component Palette**（`assets/components.css`）自由拼装组件（卡片、步骤、KPI、图标行、警告框等），纵向堆叠填满屏幕。组件大小、字数上限、页面密度等规范见 `references/content-rules-portrait.md`。组合示例见 `references/components.md`。
 
 **产出**：`style-decision.md`，记录每个 slide 的 theme、layout、渲染引擎选择。
 
 **参考文档**：
 - `references/themes.md` — 36 个 theme 详情
 - `references/layouts.md` — 31 个 layout 详情
+- `references/content-rules-portrait.md` — 3:4 画布内容规范（组件大小、字数、密度）
 - `references/components.md` — 共享组件库（card、step、KPI、quote 等）
 - `references/designs/` — 17 个 design
 - `references/dimensions/` — 4 维自定义
