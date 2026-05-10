@@ -189,6 +189,16 @@
 .c-warn-title { font-size: 1.3cqi; font-weight: 800; color: var(--bad); margin-bottom: 0.3cqi; }
 .c-warn-body { font-size: 1cqi; line-height: 1.5; color: var(--text-2); }
 
+/* Note / tip box — positive/neutral callout */
+.c-note {
+  border: 2px solid color-mix(in srgb, var(--accent) 30%, transparent); border-radius: var(--radius);
+  padding: 1.2cqi 1.5cqi; display: flex; gap: 1.2cqi; align-items: flex-start;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+.c-note-icon { flex: none; font-size: 2cqi; line-height: 1; }
+.c-note-title { font-size: 1.3cqi; font-weight: 800; color: var(--accent); margin-bottom: 0.3cqi; }
+.c-note-body { font-size: 1cqi; line-height: 1.5; color: var(--text-2); }
+
 /* Example box */
 .c-example {
   border: 1.5px solid var(--border-strong); border-radius: var(--radius);
@@ -249,6 +259,10 @@
   .c-warn-icon { font-size: 3.5cqi; }
   .c-warn-title { font-size: 2.3cqi; }
   .c-warn-body { font-size: 1.8cqi; }
+  .c-note { padding: 2cqi 2.5cqi; gap: 2cqi; }
+  .c-note-icon { font-size: 3.5cqi; }
+  .c-note-title { font-size: 2.3cqi; }
+  .c-note-body { font-size: 1.8cqi; }
   .c-example { padding: 2cqi 2.5cqi; font-size: 1.8cqi; }
   .c-example-label { font-size: 1.5cqi; }
 

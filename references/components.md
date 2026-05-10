@@ -92,7 +92,8 @@
 | 组件 | 类名 | 说明 |
 |------|------|------|
 | Formula | `.c-formula` | 居中高亮概念/公式框 |
-| Warn box | `.c-warn` | 红色边框 + 红色背景警告框 |
+| Warn box | `.c-warn` | 红色边框警告框（危险/注意事项） |
+| Note box | `.c-note` | 蓝色提示框（建议/技巧/最佳实践） |
 | Example | `.c-example` | 示例/案例框 |
 
 ## HTML 结构参考
@@ -182,14 +183,24 @@
 </div>
 ```
 
-### Warn / Example
+### Warn / Note / Example
 
 ```html
+<!-- 警告框：负面/危险信息，红色 -->
 <div class="c-warn">
   <div class="c-warn-icon">⚠️</div>
   <div class="c-warn-content">
     <div class="c-warn-title">Over-engineering Warning</div>
     <div class="c-warn-body">Don't add vector DB before confirming you need memory.</div>
+  </div>
+</div>
+
+<!-- 提示框：正面/中性建议，accent 色 -->
+<div class="c-note">
+  <div class="c-note-icon">💡</div>
+  <div class="c-note-content">
+    <div class="c-note-title">Pro Tip</div>
+    <div class="c-note-body">Start simple. Most agents work fine with just a clear prompt.</div>
   </div>
 </div>
 
