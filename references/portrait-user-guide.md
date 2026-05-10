@@ -12,6 +12,14 @@ Design      = assets/designs/{name}.css（CSS 变量 + chrome 样式 + c-* 扩�
 Content     = c-* 组件（assets/components.css），通过 var(--accent) 等自动染上 Design 色
 ```
 
+**脚本化组装**：Claude 产出 `slides.json`，脚本机械拼装 HTML：
+
+```bash
+bun scripts/assemble-deck.ts --input slides.json --output index.html
+```
+
+详见 `scripts/assemble/` 目录和 `SKILL.md` Step 3。
+
 **加载顺序**（不可颠倒）：
 
 ```html

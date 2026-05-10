@@ -207,6 +207,18 @@ ai_image:
 
 **优先级**：CLI 参数 > 环境变量 > 脚本内置默认值。详见 `scripts/imagine/config.ts`。
 
+## assemble
+
+HTML 组装脚本默认配置。
+
+```yaml
+assemble:
+  default_design: pastel-card       # 默认 Design CSS
+  default_canvas: "3:4"             # 默认画布
+  default_asset_depth: 3            # asset 路径深度（templates/ 为 3，examples/ 为 2）
+  output_dir: ""                    # 默认输出目录
+```
+
 ## export
 
 导出偏好设置。
