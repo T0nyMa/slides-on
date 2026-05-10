@@ -1,27 +1,24 @@
 ---
 name: slides-on
 description: >
-  Unified presentation skill. Builds interactive HTML slide decks with AI visuals,
-  then exports to PNG/PPTX/PDF. One pipeline: content analysis → style decision →
-  HTML rendering → export. 36 themes, 31 layouts, AI visuals, SVG diagrams, infographics.
+  Build presentation slides, PPT, slide decks, 演示文稿, or 小红书图文 from any document.
+  Use this skill whenever the user wants to create slides, make a deck, generate a PPT,
+  turn a doc into slides, or produce social media image cards — even if they don't say
+  "slides" explicitly (e.g. "帮我整理成图文", "做成小红书"). One pipeline: content analysis
+  → style decision → HTML rendering → export (PNG/PPTX/PDF). Supports 16:9 landscape and
+  3:4 portrait canvas, Design CSS architecture, c-* component system, AI image generation
+  with structured prompts, SVG diagrams, and infographics.
 ---
 
 # slides-on — 统一演示文稿制作
 
 四步流水线：**内容分析 → 风格决策 → HTML 渲染 → 导出**。
 
-## 触发条件
-
-用户请求包含以下任一意图时激活此 skill：
-- "做一个 PPT"、"生成演示文稿"、"帮我做 slides"、"做个 deck"
-- "把这个文档转成幻灯片"、"生成 presentation"
-- "渲染截图"、"导出 PNG/PPTX/PDF"（仅导出阶段）
-
 ## 核心约束
 
-1. **不修改已有 skill 源码**，只通过路径引用和编排调用
-2. Pipeline 严格按序执行，不可跳步。每步产出写入工作目录
-3. AI 图片生成使用 prompt 文件机制，保证可复现
+1. Pipeline 严格按序执行，不可跳步。每步产出写入工作目录
+2. AI 图片生成使用 prompt 文件机制，保证可复现
+3. 所有视觉样式收归 Design CSS，页面 HTML 只负责结构和内容
 
 ## Pipeline 详细流程
 
@@ -119,6 +116,7 @@ description: >
 1. 从 `templates/full-decks/` 选择匹配的 Template（或从 `templates/deck.html` 骨架开始）
 2. **16:9 画布**：从 `templates/single-page/` 选取 layout HTML。**3:4 画布**：使用 Chrome 片段（`chr-*` 元素：topbar, footer, blobs 等）+ c-* 组件自由拼装。加载顺序：`fonts.css → base.css → components.css → design.css`
 3. 应用 theme（`assets/themes/` 中选择 CSS 文件）或 Design CSS（`assets/designs/` 中选择，提供完整视觉皮肤含 chrome 样式 + c-* 扩展）
+4. 填写实际内容到 layout 中
 5. **AI 图片生成**：使用 `references/prompt-construction.md` 的结构化三层 prompt 组装方式（Image Specs → Style Definition → Content），从 `references/style-definitions/{design}.md` 加载设计数据。通过 `bun scripts/imagine/main.ts`（单张）或 `build-batch.ts`（批量）调用。Provider、Model 等默认配置通过 `IMAGINE_*` 环境变量或 EXTEND.md 的 `ai_image` 节设置，CLI 参数可覆盖。生成后以 `<img>` 引用
 6. **SVG 图生成**：直接内联或 `<img>` 引用
 7. 添加 `data-anim` 属性声明动画
@@ -234,19 +232,7 @@ Pipeline 一开始就确定画布比例，两种画布采用不同策略：
 
 ## 交互快捷键
 
-生成的 HTML deck 支持以下键盘操作：
-
-| 按键 | 功能 |
-|------|------|
-| `←` `→` | 前后翻页 |
-| `Home` / `End` | 跳转首页 / 末页 |
-| `Space` | 下一页 |
-| `T` | 循环切换 theme |
-| `A` | 循环切换 animation |
-| `F` | 全屏 |
-| `O` | 概览网格（所有 slide 缩略图） |
-| `P` | Presenter 模式（独立窗口 + 笔记） |
-| `S` | 显示/隐藏 speaker notes |
+生成的 HTML deck 支持键盘翻页、theme/animation 切换、全屏、概览网格、Presenter 模式。详见 `references/keyboard-shortcuts.md`。
 
 ## EXTEND.md 扩展
 

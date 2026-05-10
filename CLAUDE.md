@@ -131,6 +131,7 @@ slides-on/
 │   ├── content-rules.md            #   16:9 内容规范
 │   ├── content-rules-portrait.md   #   3:4 内容规范（组件大小、密度）
 │   ├── portrait-user-guide.md      #   3:4 竖版制作指南（Design CSS + 组件搭配）
+│   ├── keyboard-shortcuts.md       #   交互快捷键参考
 │   ├── design-guidelines.md        #   设计指南
 │   ├── export.md                   #   导出选项
 │   ├── html-engine.md              #   HTML 渲染引擎详解
