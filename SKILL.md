@@ -191,15 +191,37 @@ bun scripts/merge-to-pdf.ts <png-dir> --output deck.pdf
 | 图形 | arch-diagram, mindmap, image-grid, image-hero | 架构图、思维导图、图片 |
 | 结尾 | cta, thanks, todo-checklist | 行动号召、致谢、清单 |
 
-## 窄画布适配
+## 画布适配：16:9 与 3:4
 
-`base.css` 内置窄画布规则（`.narrow` / `.tpl-xhs-post`），当画布 ≤ 900px 时自动：
-- 列数降级（g4 → 2 列，g3 → 2 列）
-- 字号缩小（h1 56px、h2 40px、h3 26px）
-- 间距收紧
-- 特定 layout 适配（arch、vs、gantt、flow、steps）
+Pipeline 一开始就确定画布比例，两种画布采用不同策略：
 
-生成 XHS 内容时使用 `--canvas 3:4` 自动触发窄画布模式。
+### 16:9 画布（默认）
+
+使用 `templates/deck.html` 骨架 + `templates/single-page/` 中的 layout。
+默认 `.slide{ padding:72px 96px; justify-content:center }`，适合横向宽屏。
+
+### 3:4 画布（手机端）
+
+**一步切换**：在 `<body>` 上加 `class="portrait"` 即可。
+
+```html
+<body class="portrait">
+```
+
+`.portrait` 自动完成：
+- Deck 约束为 3:4 比例（`min(100vw, 100vh * 3/4)`）
+- 启用 Container Query（`container-type: inline-size`），`cqi` 单位等比缩放
+- Slide 默认 `padding: 4.5cqi; justify-content: flex-start`（内容从上排列）
+
+**内容策略**：3:4 不推荐使用单一 layout 模板。改用 **Component Palette**（`assets/components.css`），通过 `c-stack`、`c-row`、`c-card`、`c-steps` 等组件自由拼装，纵向堆叠填满屏幕。详见 `references/components.md`。
+
+**导出**：`bun scripts/render-precise.ts --canvas 3:4` 渲染为 810×1080 @2x。
+
+### 窄视口兜底
+
+`base.css` 内置两层兜底，当 deck 在窄视口下自动触发（无需手动加 class）：
+1. `@container (max-width: 1000px)` — 容器查询，cqi 字号/间距缩放（主要路径）
+2. `@media (max-width: 900px)` — 视口查询，px 字号缩小 + grid 降级（旧浏览器兜底）
 
 ## 交互快捷键
 

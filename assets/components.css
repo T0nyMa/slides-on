@@ -186,6 +186,7 @@
   background: color-mix(in srgb, var(--bad) 4%, transparent);
 }
 .c-warn-icon { flex: none; font-size: 2cqi; line-height: 1; }
+.c-warn-content { flex: 1; min-width: 0; }
 .c-warn-title { font-size: 1.3cqi; font-weight: 800; color: var(--bad); margin-bottom: 0.3cqi; }
 .c-warn-body { font-size: 1cqi; line-height: 1.5; color: var(--text-2); }
 
@@ -196,6 +197,7 @@
   background: color-mix(in srgb, var(--accent) 6%, transparent);
 }
 .c-note-icon { flex: none; font-size: 2cqi; line-height: 1; }
+.c-note-content { flex: 1; min-width: 0; }
 .c-note-title { font-size: 1.3cqi; font-weight: 800; color: var(--accent); margin-bottom: 0.3cqi; }
 .c-note-body { font-size: 1cqi; line-height: 1.5; color: var(--text-2); }
 

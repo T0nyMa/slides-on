@@ -12,23 +12,8 @@
   font-family:var(--font-sans);
 }
 
-/* ── 画布容器 3:4 ── */
-.tpl-xhs-tt .deck{
-  position:relative;
-  width:min(100vw, calc(100vh * 3 / 4));
-  height:min(100vh, calc(100vw * 4 / 3));
-  margin:auto;overflow:hidden;
-  background:var(--bg);
-  container-type:inline-size;
-}
-
-/* ── Slide 基础 ── */
-.tpl-xhs-tt .slide{
-  padding:4.94cqi 4.94cqi 3.7cqi;
-  background:var(--bg);
-  display:flex;flex-direction:column;
-  justify-content:flex-start;
-}
+/* ── Slide padding override (canvas handled by .portrait class) ── */
+.tpl-xhs-tt .slide{ padding:4.94cqi 4.94cqi 3.7cqi; }
 
 /* ── 标题层级 ── */
 .tpl-xhs-tt .tt-title{

@@ -165,8 +165,8 @@ xhs-white-editorial/
 | Class | 说明 |
 |-------|------|
 | `.g2` - `.g6` | Grid 2-6 列 |
-| `.narrow` | 窄画布模式（≤900px 自动激活） |
-| `.tpl-xhs-post` | XHS 帖子模板专用 |
+| `.portrait` | 3:4 画布模式（body class，激活 Container Query + cqi 缩放） |
+| `.narrow` | 手动窄画布模式（JS 触发，保留兼容） |
 | `.title` | 页面标题区 |
 | `.body` | 页面内容区 |
 | `.footer` | 页面底部（XHS 底部栏） |
@@ -209,13 +209,22 @@ bash scripts/new-deck.sh <deck-name>
 └── README.md        # deck 说明
 ```
 
-## 窄画布适配规则
+## 画布适配
 
-当 slide 在 ≤ 900px 宽画布中时（如 XHS 3:4 模式），`base.css` 自动应用窄画布规则：
-- **列数降级**：`.g4` → 2 列，`.g3` → 2 列
-- **字号缩小**：`h1` 56px、`h2` 40px、`h3` 26px
-- **间距收紧**：`--col-gap` 和 `--row-gap` 减小
-- **特定 layout 适配**：arch-diagram、comparison、gantt、flow、steps 等有专门窄画布规则
+### 3:4 Portrait
+
+通过 `<body class="portrait">` 一键切换。详见 `references/design-guidelines.md`。
+
+内容策略：使用 `assets/components.css` 的 `c-*` 组件拼装，不推荐 16:9 的 single-page layout。
+
+### 窄视口兜底
+
+`base.css` 两层自动兜底（无需手动加 class）：
+
+1. **`@container (max-width: 1000px)`** — 容器查询，`cqi` 缩放 + grid 降级（主要路径）
+2. **`@media (max-width: 900px)`** — 视口查询，`px` 字号缩小 + grid 降级（旧浏览器兜底）
+
+触发效果：列数降级（`.g4`/`.g3`→2列）、字号缩小、间距收紧。
 
 ## 开发调试
 

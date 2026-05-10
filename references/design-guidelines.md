@@ -112,27 +112,28 @@ Use the grid classes (`g2` through `g6`) for multi-column content. Never manuall
 | Font size too small | Trying to fit more content | Split the slide. Minimum readable size on a projector: 18px body (standard) or 14px (code). |
 | Title too long | Wrapping to 2+ lines at `.h2` (54px) | Shorten the title. `.h1` (72px) and `.h2` (54px) titles should fit on one line. |
 
-## Narrow Canvas Adaptation
+## Canvas Adaptation: 16:9 vs 3:4
 
-Implemented in `assets/base.css` via two mechanisms:
+### 3:4 Portrait (primary)
 
-**1. `@media (max-width: 900px)`** — automatic viewport-based detection:
-- **Grid columns reduce**: `.g4` and `.g3` become 2 columns; `.g5` and `.g6` become 3 columns
-- **Font sizes shrink**: `.h1` 72px → 48px, `.h2` 54px → 38px, `.h3` 32px → 26px
-- **Padding tightens**: `72px 96px` → `48px 40px`
-- **`.lede`**: 22px → 18px
+通过 `<body class="portrait">` 激活。`.portrait` 定义在 `base.css`：
 
-**2. `.narrow` class** — manual trigger for the same rules (useful for non-viewport triggers, JS-driven contexts, or combined with `.tpl-xhs-post` in preview mode).
+- Deck 约束为 3:4 比例（`min(100vw, 100vh * 3/4)`）
+- 启用 Container Query（`container-type: inline-size`），`cqi` 单位等比缩放
+- Slide 默认 `padding: 4.5cqi; justify-content: flex-start`
 
-**Content note**: A bullet list that works at 16:9 may still need splitting at 3:4 — the grid and type reductions help, but they don't replace editorial judgment.
+内容策略：使用 Component Palette（`assets/components.css`）自由拼装，不推荐 16:9 的 single-page layout。详见 `references/components.md`。
 
-### XHS Post Mode (3:4, `.tpl-xhs-post`)
+导出：`bun scripts/render-precise.ts --canvas 3:4` → 810×1080 @2x。
 
-xhs-post uses CSS Container Queries (`cqi` units) for proportional scaling. The deck maintains a 3:4 aspect ratio via `width: min(100vw, calc(100vh * 3/4))` — it fills available viewport space while respecting the ratio. All internal dimensions (fonts, spacing, borders) scale proportionally against the 810px reference width.
+### 窄视口兜底（自动）
 
-For export: `bun scripts/render-precise.ts <deck> --canvas 3:4` renders at 810×1080 (native 小红书 dimensions).
+`base.css` 两层自动兜底，窄视口下自动触发（无需手动加 class）：
 
-When using single-page layouts inside xhs-post: the narrow canvas `@media` rules in base.css apply automatically, reducing grid columns and type sizes. Prefer single-column or two-column layouts; avoid `.g4` and `.g5`.
+1. **`@container (max-width: 1000px)`** — 容器查询，`cqi` 字号/间距缩放 + grid 降级（主要路径）
+2. **`@media (max-width: 900px)`** — 视口查询，`px` 字号缩小 + grid 降级（旧浏览器兜底）
+
+`.narrow` class 保留用于 JS 手动触发场景。
 
 ## Accessibility
 

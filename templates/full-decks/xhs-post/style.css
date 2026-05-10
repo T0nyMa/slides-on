@@ -16,23 +16,16 @@
   font-family:'Inter','Noto Sans SC','PingFang SC',sans-serif;
 }
 
-/* ── Responsive deck container (3:4 aspect, fill viewport) ── */
+/* ── Body background (deck canvas handled by .portrait class) ── */
 .tpl-xhs-post{
   background:#f0eae2;
   display:flex;align-items:center;justify-content:center;
   min-height:100vh;
 }
-.tpl-xhs-post .deck{
-  container-type:inline-size;
-  width:min(100vw, calc(100vh * 3/4));
-  height:min(100vh, calc(100vw * 4/3));
-  position:relative;overflow:hidden;
-  background:transparent;
-}
+.tpl-xhs-post .deck{ background:transparent; }
 
-/* ── Slide (inset fills deck, no fixed size) ── */
+/* ── Slide override (canvas handled by .portrait class) ── */
 .tpl-xhs-post .slide{
-  position:absolute;inset:0;
   padding:8.64cqi 7.9cqi;       /* 70px 64px / 810 */
   border-radius:3.46cqi;         /* 28px / 810 */
   overflow:hidden;

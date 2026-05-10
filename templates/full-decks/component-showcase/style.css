@@ -1,19 +1,6 @@
 /* component-showcase · 3:4 demo deck */
 /* Uses only c-* shared components + base.css classes */
-
-/* ── 3:4 canvas container ── */
-.c-showcase .deck {
-  width: min(100vw, calc(100vh * 3 / 4));
-  height: min(100vh, calc(100vw * 4 / 3));
-  margin: auto; overflow: hidden;
-  container-type: inline-size;
-}
-
-/* ── Slide padding tweak for 3:4 ── */
-.c-showcase .slide {
-  padding: 4.5cqi 4.5cqi 3cqi;
-  justify-content: flex-start;
-}
+/* Canvas handled by .portrait class in base.css */
 
 /* ── Theme-aware code tags inside cards ── */
 .c-showcase code {

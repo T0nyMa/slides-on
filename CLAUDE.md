@@ -428,14 +428,38 @@ bash scripts/new-deck.sh <name>
 
 `render-precise.ts` 自动处理所有尺寸，无需手动配置。
 
-## 窄画布适配
+## 画布适配：16:9 与 3:4
 
-`base.css` 包含两种窄画布适配机制：
+项目支持两种画布比例，在 pipeline 开始时确定。
 
-1. **`@media (max-width: 900px)`** — 自动检测视口宽度，触发 grid 降级（g4/g3→2列, g5/g6→3列）、字号缩小（h1 72→48px, h2 54→38px, h3 32→26px）、padding 收紧（72px→48px）
-2. **`.narrow` class** — 手动触发相同规则，用于非视口场景
+### 16:9（默认）
 
-xhs-post (`.tpl-xhs-post`) 使用 CSS Container Queries (`cqi` 单位) 实现 3:4 比例响应式缩放，deck 通过 `min(100vw, 100vh * 3/4)` 填充视口并保持比例。导出时 `render-precise.ts --canvas 3:4` 渲染为 810×1080。
+标准 landscape 画布，`.slide` 默认 `padding: 72px 96px; justify-content: center`。
+
+### 3:4 portrait（手机端）
+
+通过 `<body class="portrait">` 一键切换。`.portrait` 类定义在 `base.css`：
+
+```css
+.portrait .deck {
+  width: min(100vw, calc(100vh * 3 / 4));
+  height: min(100vh, calc(100vw * 4 / 3));
+  margin: auto; overflow: hidden;
+  container-type: inline-size;
+}
+```
+
+Container Query 自动启用，`cqi` 单位等比缩放。所有 3:4 模板（xhs-*、component-showcase）均使用 `.portrait`，不再各自复制 canvas CSS。
+
+内容策略：3:4 使用 `assets/components.css` 的 `c-*` 组件自由拼装，而非 16:9 的 single-page layout。详见 `references/components.md`。
+
+### 窄视口兜底
+
+`base.css` 两层自动兜底（无需手动加 class）：
+1. **`@container (max-width: 1000px)`** — 容器查询，`cqi` 字号/间距缩放 + `grid` 降级（主要路径）
+2. **`@media (max-width: 900px)`** — 视口查询，`px` 字号缩小 + `grid` 降级（旧浏览器兜底）
+
+`.narrow` class 保留用于 JS 手动触发场景（如 runtime.js 在窄视口激活）。
 
 ## Key Design Principles
 
