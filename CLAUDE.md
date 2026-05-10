@@ -128,6 +128,7 @@ slides-on/
 │   ├── text-fidelity.md            #   文字兜底策略
 │   ├── base-prompt.md              #   AI 图片基础 prompt（遗留 style token）
 │   ├── prompt-construction.md       #   AI 图片结构化 prompt 组装（三层结构）
+│   ├── component-recipes.md        #   内容语义→组件配方（10 种页面原型 + 密度预算）
 │   ├── content-rules.md            #   16:9 内容规范
 │   ├── content-rules-portrait.md   #   3:4 内容规范（组件大小、密度）
 │   ├── portrait-user-guide.md      #   3:4 竖版制作指南（Design CSS + 组件搭配）
@@ -301,10 +302,10 @@ Slides（最终产物 = index.html）
 
 ## Pipeline
 
-用户提供原始文档后，系统按四步流水线处理：
+用户提供原始文档后，系统按五步流水线处理：
 
 ```
-原始文档 → Step 1: 内容分析 → Step 2: 风格决策 → Step 3: HTML 渲染 → Step 4: 导出
+原始文档 → Step 1: 内容分析 → Step 2: 风格决策 → Step 3: Review 验证 → Step 4: HTML 渲染 → Step 5: 导出
 ```
 
 ### Step 1: 内容分析
@@ -328,7 +329,15 @@ Slides（最终产物 = index.html）
   - Diagram type（9 种 SVG 图类型）用于架构图页
   - AI 图片风格用于需要 AI 生成插图的页面
 
-### Step 3: HTML 渲染
+### Step 3: Review 验证
+
+逐页检查内容溢出、留白过大、风格匹配三项，不通过则回到 Step 1/2 调整:
+- **内容溢出**：组件字数超限、步数/项数超限、组件总数 > 6 → 精简或拆页
+- **留白过大**：组件 < 3 个 → 加配套组件（c-badge-row, c-note, c-card-soft）或合并
+- **风格匹配**：Design mood/texture 与内容调性冲突 → 换 Design
+- 产出：`review.md`，记录每页 pass/adjust 判定和调整决策
+
+### Step 4: HTML 渲染
 
 将 Template + Design + 内容组装为完整的 HTML slides：
 - 基于 CSS Variables 的 theme 系统（`--bg`, `--text-1`, `--accent`, `--font-sans` 等）
@@ -342,7 +351,7 @@ Slides（最终产物 = index.html）
   - AI 信息图（21 layout × 22 style）→ `<img>` 引用
 - 产出：可在浏览器中直接交互演示的 HTML 文件
 
-### Step 4: 导出
+### Step 5: 导出
 
 从 HTML 导出为目标格式：
 - **PNG**：Playwright 高精度逐页截图（`document.fonts.ready` + `getAnimations().finished`，@2x Retina）
@@ -366,13 +375,13 @@ Slides（最终产物 = index.html）
 - **默认 preset**：设定默认的 preset、字体、配色方案、animation 等，避免每次重复指定
 - **品牌配置**：公司 logo、品牌色、固定页脚等跨 deck 复用的视觉元素
 
-### Step 3 扩展：渲染
+### Step 4 扩展：渲染
 
 - **自定义 component**：可复用的 HTML 片段（如 callout box、timeline、metric card），在 layout 中通过约定方式引用
 - **自定义 animation**：新增 CSS 动画，通过 `data-anim="my-animation"` 使用
 - **AI 图片 Provider**：配置默认的图片生成 Provider 及 API 参数
 
-### Step 4 扩展：导出
+### Step 5 扩展：导出
 
 - **导出预设**：PNG 分辨率/DPI、PPTX 导出路径选择（拼合/原生/混合）、PDF 页面尺寸等默认配置
 

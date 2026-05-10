@@ -27,8 +27,8 @@ function chromeTop(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
   if (s.hideChrome) return "";
   const parts: string[] = [];
   if (s.blobs) parts.push(d.blobHTML(s.blobs));
-  if (s.chip) parts.push(d.topbarHTML(s.chip, s.chipColor || "", ctx.page, ctx.total));
-  return parts.join("\n    ");
+  parts.push(d.topbarHTML(s.chip || "", s.chipColor || "", ctx.page, ctx.total));
+  return parts.filter(Boolean).join("\n    ");
 }
 
 function chromeBottom(d: DesignTemplate, s: SlideData, ctx: PageContext, right: string): string {

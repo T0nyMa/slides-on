@@ -7,12 +7,12 @@ description: >
   make a deck, generate a PPT, weekly report, pitch deck, 周报, 提案, 分享,
   or any document-to-slides task — even if they don't say "slides" explicitly
   (e.g. "帮我整理一下这个文档", "把这篇做成卡片"). One pipeline: content analysis
-  → style decision → HTML rendering → export (PNG/PPTX/PDF).
+  → style decision → review → HTML rendering → export (PNG/PPTX/PDF).
 ---
 
 # slides-on — 统一演示文稿制作
 
-四步流水线：**内容分析 → 风格决策 → HTML 渲染 → 导出**。
+五步流水线：**内容分析 → 风格决策 → Review 验证 → HTML 渲染 → 导出**。
 
 ## 核心约束
 
@@ -49,19 +49,19 @@ description: >
 
 ## Section 1: <章节名>
 ### Slide 1.1: <页面标题>
-- 类型: bullets | code | chart | diagram | ai-image | infographic
+- 原型: 痛点页 | 核心概念页 | 流程页 | 对比页 | 金句页 | 数据页 | 分类页 | 速查页 | 行动页 | Thanks页
+- 锚点: c-card-warn | c-kpi | c-steps | c-glass | c-formula | ...
+- 组件: c-stack(c-card-warn × 2 + c-card-accent × 1) + c-formula
+- 字数: ~120 字
 - 内容: ...
-- 推荐布局: ...
-
-### Slide 1.2: ...
-...
-
-## Section 2: ...
 ```
+
+> **页面原型和组件配方**：详见 `references/component-recipes.md`，覆盖 10 种页面原型 + 组件组合 + 密度预算。Step 1 使用此文档决定每页的页面原型和组件组合。
 
 **参考文档**：
 - `references/analysis-framework.md` — 详细分析框架
 - `references/engagement-analysis.md` — Engagement 驱动分析框架（小红书/社交媒体场景）
+- `references/component-recipes.md` — 内容语义 → 页面原型 → 组件配方（含密度预算、溢出处理）
 - `references/content-rules.md` — 内容规范
 - `references/style-decision-matrix.md` — 信号→design 映射表
 
@@ -108,9 +108,52 @@ description: >
 - `references/diagram/` — 4 种架构图类型
 - `references/infographic/` — 信息图 layout + style
 
-### Step 3: HTML 渲染
+### Step 3: Review 验证
 
 **输入**：`outline.md` + `style-decision.md`
+
+**处理**：在进入 HTML 渲染前，逐页检查三项，不通过则回 Step 1/2 调整：
+
+1. **内容溢出检查** — 组件容量 < 内容量？
+   - c-card 正文 > 60 字 → 精简或拆为 2 卡片
+   - c-steps > 7 步 → 拆为两页
+   - c-icon-row > 10 项 → 拆页或分组
+   - c-quote > 40 字 → 只保留核心句
+   - 组件总数 > 6 → 拆页
+2. **留白过大检查** — 组件 < 3 个？
+   - 加 c-badge-row（3-4 标签）、c-note（关键提示）、c-card-soft（补充说明）
+   - 或合并到相邻页
+3. **风格匹配检查** — Design 的 mood/texture 与内容调性是否冲突？
+   - 严肃/学术内容 + 马卡龙/手绘风 → 换 Design 或降 mood
+   - 年轻/社交内容 + corporate → 换 Design
+   - 数据密集内容 + 极简 Design → 检查组件颜色变体是否够区分信息层级
+
+**产出**：`review.md`，记录每页判定（pass / adjust）和调整决策。
+
+```
+# Review
+
+## Slide 1.1: 封面
+- 溢出: pass
+- 留白: adjust — 加 c-section(c-icon-row × 3) 做目录预告
+- 风格: pass
+
+## Slide 1.2: 核心痛点
+- 溢出: pass
+- 留白: pass
+- 风格: pass
+
+## Slide 2.3: 实施路径
+- 溢出: adjust — 7 步拆为两页（步骤 1-4 / 5-7）
+- 留白: pass
+- 风格: pass
+```
+
+> Review 不通过则回到对应步骤调整，直到全部 pass 才进入 Step 4。
+
+### Step 4: HTML 渲染
+
+**输入**：`outline.md` + `style-decision.md` + `review.md`
 
 **处理**：
 1. 根据 outline.md 和 style-decision.md，整理为结构化 JSON（`slides.json`），包含每页的 type、title、cards、steps 等数据
@@ -185,7 +228,7 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
 - `references/prompt-construction.md` — AI 图片结构化 prompt 组装（三层结构 + Image-1 Anchor Chain）
 - `references/components.md` — 组件调色板（3:4 自由拼装）
 
-### Step 4: 导出
+### Step 5: 导出
 
 **输入**：`index.html`（+ AI 图片 + SVG 文件）
 
@@ -242,7 +285,7 @@ bun scripts/merge-to-pdf.ts <png-dir> --output deck.pdf
 | 图形 | arch-diagram, mindmap, image-grid, image-hero | 架构图、思维导图、图片 |
 | 结尾 | cta, thanks, todo-checklist | 行动号召、致谢、清单 |
 
-> 上表为 16:9 画布的 31 个 single-page layout。3:4 画布使用 assemble-deck 的 11 种 slide 类型（cover, section, cards-2x2, cards-3, quote, steps, code, thanks, bullets, kpi, html），见 Step 3 的 slides.json 格式。
+> 上表为 16:9 画布的 31 个 single-page layout。3:4 画布使用 assemble-deck 的 11 种 slide 类型（cover, section, cards-2x2, cards-3, quote, steps, code, thanks, bullets, kpi, html），见 Step 4 的 slides.json 格式。
 
 ## 画布适配：16:9 与 3:4
 

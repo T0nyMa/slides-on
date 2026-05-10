@@ -204,6 +204,19 @@
   .d-pastel-card .c-grid-3 { grid-template-columns: repeat(3, 1fr); }
 }
 
+/* Pill tag — used in thanks page badges */
+.d-pastel-card .chr-pill {
+  display: inline-block; padding: .99cqi 2.22cqi; border-radius: 999px;
+  font-size: 1.73cqi; font-weight: 600; margin: 0 .74cqi .74cqi 0;
+  background: #fff; border: 1.5px solid var(--border); color: var(--text-2);
+}
+
+/* Hero card — emphasized card variant (used in quote page) */
+.d-pastel-card .chr-hero {
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+}
+
 /* Quote — match original xp-quote: block-level mark, larger text */
 .d-pastel-card .c-quote {
   font-size: 4.94cqi;

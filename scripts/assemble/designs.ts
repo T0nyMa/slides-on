@@ -27,7 +27,8 @@ const pastelCard: DesignTemplate = {
 
   topbarHTML(chip, chipColor, page, total) {
     const cc = chipColor ? ` ${chipColor}` : "";
-    return `<div class="chr-topbar"><div class="chr-chip${cc}">${chip}</div><div class="chr-page">${p(page, total)}</div></div>`;
+    const chipHTML = chip ? `<div class="chr-chip${cc}">${chip}</div>` : "";
+    return `<div class="chr-topbar">${chipHTML}<div class="chr-page">${p(page, total)}</div></div>`;
   },
 
   footerHTML(left, right) {
@@ -84,7 +85,8 @@ const whiteEditorial: DesignTemplate = {
   bodyClass: "chr-sub",
 
   topbarHTML(chip, _chipColor, page, total) {
-    return `<div class="chr-topbar"><div class="chr-chip">${chip}</div><div class="chr-page">${pageDiv(page, total)}</div></div>`;
+    const chipHTML = chip ? `<div class="chr-chip">${chip}</div>` : "";
+    return `<div class="chr-topbar">${chipHTML}<div class="chr-page">${pageDiv(page, total)}</div></div>`;
   },
 
   footerHTML(left, right) {
@@ -92,7 +94,7 @@ const whiteEditorial: DesignTemplate = {
   },
 
   blobHTML(_blobs) {
-    return ""; // white-editorial uses chr-topline instead of blobs
+    return `<div class="chr-topline"></div>`;
   },
 
   dividerHTML() {
@@ -140,8 +142,7 @@ const xhsPost: DesignTemplate = {
   bodyClass: "lede",
 
   topbarHTML(_chip, _chipColor, page, total) {
-    // xhs-post uses chr-page-dot, not chr-topbar
-    return "";
+    return `<div class="chr-page-dot">${p(page, total)}</div>`;
   },
 
   footerHTML(left, right) {

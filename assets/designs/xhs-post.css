@@ -156,3 +156,16 @@
   padding: .74cqi 1.73cqi; border-radius: 999px;
   font-weight: 700; font-size: 1.98cqi;
 }
+
+/* Pill tag — used in thanks page badges */
+.d-xhs-post .chr-pill {
+  display: inline-block; padding: .74cqi 1.98cqi; border-radius: 999px;
+  font-size: 1.73cqi; font-weight: 700; margin: 0 .74cqi .74cqi 0;
+  background: #fff; border: .25cqi solid var(--text-1);
+  box-shadow: .37cqi .37cqi 0 var(--text-1); color: var(--text-1);
+}
+
+/* Hero card — emphasized card variant (used in quote page) */
+.d-xhs-post .chr-hero {
+  box-shadow: .74cqi .74cqi 0 var(--text-1);
+}
