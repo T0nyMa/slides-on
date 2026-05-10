@@ -8,6 +8,21 @@ text_baking: true
 
 Crisp 8-bit/16-bit pixel art style with visible pixel grid, high-saturation colors, and sharp aliased edges. Retro game aesthetic, highly distinctive.
 
+## Style Lock (跨页复用)
+
+```text
+Crisp pixel art with visible square pixel grid — all shapes composed of distinct pixels, no anti-aliasing.
+Dark retro game background: deep space blue #1A1C2C or dark purple #2D1B4E.
+Sharp aliased edges on everything — no smooth curves, no bezier curves, no gradients.
+High-saturation accent colors: cyber yellow #FFD700, neon cyan #00F5FF, hot magenta #FF00FF, electric green #39FF14, pixel orange #FF6B35.
+Dithering for all shading: checkerboard patterns, ordered dither, no smooth gradients.
+8-bit sprite-style elements at consistent pixel resolution. Scanline overlay optional for CRT monitor feel.
+Pixel-perfect alignment — everything snaps to invisible pixel grid.
+Central pixel art scene with dark border margins (25–30% canvas edge). Retro game HUD elements as decoration.
+No anti-aliasing, no smooth curves, no photorealistic, no 3D, no mixed resolutions.
+No fonts that aren't pixel-bitmap. Pure pixel art consistency across all elements.
+```
+
 ## Color Palette
 
 | Role | Color | Hex |

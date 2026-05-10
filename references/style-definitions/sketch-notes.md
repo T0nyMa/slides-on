@@ -9,6 +9,21 @@ default_palette: macaron
 
 Hand-drawn educational infographic with wobble lines, pastel marker fills, paper texture. Warm, approachable, like a well-crafted teaching notebook.
 
+## Style Lock (跨页复用)
+
+```text
+Refined Chinese handdrawn educational illustration on warm cream paper (near #F5F0E8) with extremely subtle grain.
+No full-page border. Fine brown-black ink (#3D2B1F) linework — stable but slightly irregular, hand-drawn wobble on all lines.
+Thin ink pen weight (0.3–0.5mm visual). Pencil hatching on diagrams for depth.
+Muted pastel marker fills: macaron blue #A8D8EA, lavender #D5C6E0, mint #B5E5CF, peach #F8D5C4.
+Small coral red #E8655A star marks for emphasis. Sparse corner construction marks: faint grey dots and ruler ticks.
+Generous negative space (40–50%). Central diagram compact: 50–60% page width, 35–45% page height.
+Rounded-rect content blocks with single-weight ink outlines and light pastel fills.
+Curved hand-drawn arrows between nodes — slim, quiet, with small arrowheads.
+At most one tiny stick-figure character, far corner. Props blank or with simple line marks only.
+No full-page border, no yellow/beige paper, no photorealistic, no 3D, no gradients, no shadows, no neon, no thick marker strokes, no crowded composition.
+```
+
 ## Color Palette
 
 | Role | Color | Hex |

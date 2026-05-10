@@ -8,6 +8,20 @@ text_baking: true
 
 Classroom blackboard aesthetic with chalk drawing texture. Dark green-black board background, white and colored chalk marks, chalk dust texture. Conveys teaching authority with approachable warmth.
 
+## Style Lock (跨页复用)
+
+```text
+Dark green-black chalkboard (near #1A3A2A) with authentic chalk drawing texture.
+All lines drawn in chalk: white chalk #E8E8E8 as primary, colored chalk for emphasis — pale yellow #F5E6A3, sky blue #7EC8E3, pink #F0A8B8, light green #A8D8B9, orange #F5C26B.
+Chalk texture throughout: slightly rough powdery edges, variable opacity, subtle smudge marks.
+Erased ghost marks (faint chalk residue) near edges for atmosphere. Tiny chalk dust speckles near bottom.
+Hand-drawn quality with natural chalk-on-board wobble — never perfectly smooth.
+Central diagram compact: 50–60% page width, 35–45% page height, centered with generous dark board margins.
+Chalk-drawn rounded boxes, chalk arrows, chalk star marks. Wooden frame edge optionally visible at bottom.
+No clean vector graphics, no pure black background, no bright neon, no whiteboard, no photorealistic 3D chalk.
+No printed fonts — everything looks chalk-drawn on a real blackboard.
+```
+
 ## Color Palette
 
 | Role | Color | Hex |

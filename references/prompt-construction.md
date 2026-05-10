@@ -4,13 +4,18 @@
 
 ## 核心原则
 
-**三层 Prompt 结构**：每层独立定义、组装时合并：
+**三层 Prompt 结构 × 正交设计**：
 
 ```
 Layer 1: Image Specs & Universal Constraints  ← Image Role 决定
-Layer 2: Style Visual DNA                     ← Design 决定 (style-definitions/)
-Layer 3: Content & Composition                ← 单张图具体内容决定
+Layer 2: Style Lock                           ← Design 决定 (style-definitions/*.md 的 style_lock)
+Layer 3: Archetype Composition + Content      ← Archetype 决定 (references/archetypes.md)
 ```
+
+**Universal × Design-specific 正交**：
+- **Archetype（通用层）**：10 种语义构图模板 — 只管几何布局、节点数量、流向、留白比例。与风格无关
+- **Style Lock（设计层）**：每个 design 的浓缩视觉描述 — 只管颜色、线条、纹理、材质。与布局无关
+- **组装公式**：`Layer 3 = Archetype 构图模板` + `Layer 2 = Style Lock` → 同一张 horizontal process 在 sketch-notes 和 blueprint 下完全不同
 
 **两个 Image Role**：图表角色不同，Layer 1 分支：
 
@@ -37,40 +42,54 @@ Quality: high quality, 2k, detailed, professional, clean composition.
 
 ### Layer 2 组装
 
-从 `references/style-definitions/{design}.md` 加载以下内容并插入：
+**单页生成**：从 `references/style-definitions/{design}.md` 加载完整 Visual DNA。
+
+**多页生成**：使用该文件的 `style_lock`（浓缩 8–12 行段落），**原样粘贴**到每页 prompt 中，保证跨页一致性。仅在首张图 prompt 中附带完整 Color Palette 供初次锚定。
 
 ```text
-Apply {design} visual style with these exact specifications:
+Apply this exact visual style to every page in this deck:
 
-## Color Palette
-{paste the Color Palette table — include hex values}
+{粘贴 style_lock 全文 — 包含精确 hex 色值、线型、纹理、禁止项}
 
-## Visual Elements
-{paste the Visual Elements section — concrete enumeration of what to draw}
-
-## Composition
-{paste the Composition section}
-
-Apply strictly:
-{paste the Negative Constraints}
+This style lock is identical across all pages. Only the central diagram layout changes per page.
 ```
 
 ### Layer 3 组装
 
+从 `references/archetypes.md` 选择匹配的语义 Archetype，加载其通用构图模板，替换其中的占位符。
+
 ```text
-## Scene Description
-{具体构图描述：主体是什么、位置在哪、氛围如何}
+## Archetype: {archetype name}
+{paste 对应 archetype 的"通用结构"描述 — 节点数、流向、留白比例}
 
-## Text Safety
-- Main subject in center-right area, leave left 40% clean empty space for text overlay
-- No text, no labels, no numbers anywhere in the image
-- Uncluttered background, clear focal area
+## Scene Adaptation
+{将 archetype 的通用结构适配到当前页面的具体内容：
+ - 节点对应哪个概念
+ - 流向对应哪个过程  
+ - 具体场景氛围和细节
+}
 
-## Composition Check
-- Subject clarity: single clear subject, centered or slightly offset
-- Slide fit: suitable for presentation slide background, not too busy
-- Same visual style as other images in this deck
+## Illustration-Role Adaptation
+{根据 archetype 的 "Illustration Role 适配" 规则调整：
+ - 标注/标签区改为空白区域
+ - 留白区精确位置标注（供 HTML 层叠字）
+}
 ```
+
+**Archetype 选择参考**：
+
+| 内容语义 | Archetype | 关键结构 |
+|---------|-----------|---------|
+| 开篇/章节起始 | Cover metaphor | 1 主体居中，上方留白 25-30% |
+| 定义/概念 | Single concept | 1 中心 + 2-4 注释辐射 |
+| 对比/A vs B | Left-right contrast | 左右 2 区 + 中线分隔 |
+| 步骤/流程 | Horizontal process | 4-7 节点水平排列 + 箭头链 |
+| 循环/迭代 | Circular mechanism | 3-6 节点环形排列 |
+| 决策/分支 | Branching map | 1 决策点 + 3-5 分支散开 |
+| 分类/框架 | Classification map | 1 父 + 3-5 子层级展开 |
+| 多维对比 | Matrix table | 3-5 行 × 2-3 列网格 |
+| 抽象隐喻 | Main metaphor diagram | 1 主体 + 3-6 标注环绕 |
+| 总结/收束 | Takeaway | 1 核心 + 2-4 支撑点 |
 
 ### 完整组装示例 (sketch-notes, illustration role)
 
@@ -138,29 +157,30 @@ Quality: 2k, detailed, professional, clean composition.
 
 ### Layer 3 组装
 
+与 illustration role 相同：从 `references/archetypes.md` 选择 Archetype，但额外加入中文文字列表。
+
 ```text
 ## Page Content
-Title exactly: {short Chinese title, 5–12 characters}
-Subtitle exactly: {optional short subtitle, 3–12 characters, or omit}
-Archetype: {layout archetype — horizontal process | left-right contrast | circular mechanism | branching map | classification map | takeaway | single concept}
+Archetype: {从 archetypes.md 选择 — horizontal process | left-right contrast | circular mechanism | branching map | classification map | takeaway | single concept | cover metaphor | matrix table | main metaphor diagram}
 Main point: {one sentence summarizing this page}
 
 ## Composition
-{specific layout description based on archetype — describe the hand-drawn diagram, not generic boxes}
+{paste archetype 的"通用结构"描述 + 具体内容适配}
 
 ## Required Text Only
-- Title: {exact Chinese title}
-- Subtitle: {exact Chinese subtitle, or omit}
+Title exactly: {short Chinese title, 5–12 characters}
+Subtitle exactly: {optional short subtitle, 3–12 characters, or omit}
 - Label 1: {text}
 - Label 2: {text}
 - ... (2–5 labels, each 2–8 Chinese characters)
 - Caption: {optional, short}
 
 ## Text Rendering Rules
-- ALL text hand-drawn Chinese — NO printed fonts, NO computer typesetting
-- Main title: hand-lettering feel, medium weight, prominent
-- Keywords: enlarged + highlighter-pastel marker block behind text
-- Labels: small hand-drawn inside pastel marker boxes
+{从 style-definition 的 Typography 段装载具体指令：
+ - sketch-notes: hand-drawn Chinese, highlighter blocks behind keywords, pastel marker boxes for labels
+ - chalkboard: chalk-drawn Chinese text, powdery edges, colored chalk keywords
+ - pixel-art: pixel bitmap lettering, blocky monospaced, in dialog-box rectangles
+ - ...}
 ```
 
 ### 完整组装示例 (sketch-notes, content-page role)
@@ -319,14 +339,15 @@ design → references/style-definitions/{design}.md
 生成图片前检查：
 
 - [ ] Image role 确定（illustration or content-page）
-- [ ] 加载了正确的 style-definition 文件
-- [ ] Layer 1 包含了正确的 aspect ratio 和质量 token
-- [ ] Layer 2 包含了 hex 色值、视觉元素枚举、composition 规则、negative constraints
-- [ ] Layer 3 包含了具体的构图描述
-- [ ] 如果是 content-page：Required Text Only 列表完整且精确
-- [ ] 如果是 content-page：文字渲染规则已包含（hand-drawn Chinese, highlighter, pastel markers）
-- [ ] 如果是 illustration：no text 约束已包含
+- [ ] Archetype 已从 `references/archetypes.md` 选择，匹配内容语义
+- [ ] Style-definition 文件已加载，`style_lock` 已提取
+- [ ] Layer 1 包含正确的 aspect ratio 和质量 token
+- [ ] Layer 2 粘贴了完整的 style_lock（多页时原样复用，不修改）
+- [ ] Layer 3 粘贴了 archetype 通用结构 + 页面具体内容适配
+- [ ] 如果是 content-page：Required Text Only 列表完整且精确，Typography 指令已从 style-definition 装载
+- [ ] 如果是 illustration：no text 约束 + 留白 zone 位置已标注
 - [ ] Image-1 Anchor Chain 已考虑：首图无 ref，后续有 ref 或文本锚定
+- [ ] 多页生成时：style_lock 跨页完全一致，只改变 central diagram 区域的内容
 
 ## 与 Legacy base-prompt.md 的关系
 

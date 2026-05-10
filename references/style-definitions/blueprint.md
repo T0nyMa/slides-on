@@ -8,6 +8,21 @@ text_baking: false
 
 Clean technical schematic style. Dark blue background with white/cyan line work, grid overlay, precise geometric precision. Engineering drawing aesthetic — exact, measured, authoritative.
 
+## Style Lock (跨页复用)
+
+```text
+Clean technical schematic on deep blueprint blue background (#1A2744) with visible engineering grid.
+Fine square grid covering entire canvas at low opacity (rgba(60,120,200,0.15)).
+White-blue (#D0E4F7) primary line work, cyan (#4FC3F7) secondary, pale cyan dimension lines.
+Precise geometric shapes: circles, arcs, rectangles, polygons with exact vertices — no hand-drawn irregularity.
+Dashed lines for hidden edges. Cross-hair center marks on circles. Compass-drawn construction arcs (faint).
+Dimension lines with arrowheads and measurement annotations. Border frame with title block (bottom-right).
+Orthographic or isometric projection only. Engineering drawing precision throughout.
+Amber (#FFB74D) for warning/emphasis marks only. Pale blue (#90CAF9) for annotations.
+No hand-drawn wobble, no organic shapes, no natural forms, no color beyond the blueprint palette.
+No photorealistic, no 3D perspective, no artistic flourishes, no decorative elements.
+```
+
 ## Color Palette
 
 | Role | Color | Hex |

@@ -8,6 +8,21 @@ text_baking: false
 
 Soft watercolor painting style with translucent washes, bleeding edges, and organic color transitions. Artistic, dreamy, emotionally expressive.
 
+## Style Lock (跨页复用)
+
+```text
+Soft watercolor painting on textured cold-press paper (near #FDFBF7) with visible grain.
+Translucent color washes with visible brush strokes — soft blue wash, warm rose wash, soft green wash.
+Bleeding edges where colors meet: no hard boundaries, organic transitions.
+Drying edge effect: paint concentrates slightly at stroke edges, lighter in central wash areas.
+Salt-effect or bloom textures in larger wash areas. Small controlled splatter dots near focal areas.
+Organic asymmetrical balance — not rigidly centered. Large areas of clean paper showing through (40–50%).
+Colors fade softly toward edges (vignette). Shapes defined by color boundaries, not lines.
+Atmospheric, emotional, dreamy — the image evokes a feeling.
+No hard edges, no vector lines, no flat color blocks, no solid fills, no digital gradient tools.
+No photorealistic, no dark heavy compositions, no neon, no saturated pigments, no text-heavy layouts.
+```
+
 ## Color Palette
 
 | Role | Color | Hex |

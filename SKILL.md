@@ -38,7 +38,8 @@ description: >
    - 1000-3000 字 → 10-18 页
    - > 3000 字 → 18-30 页
 5. **信号检测**：扫描关键词匹配推荐 design（详见 `references/style-decision-matrix.md`）
-6. **Ghost Deck Test**：只读标题序列能否讲述完整论点？不能则重排
+6. **Engagement 分析**（社交场景）：当目标场景为小红书/社交媒体/图文卡片时，加载 `references/engagement-analysis.md`，补充 engagement 指标到分析输出中（Hook 类型与评分、受众画像、滑动流设计、保存/分享/评论触发点）
+7. **Ghost Deck Test**：只读标题序列能否讲述完整论点？不能则重排
 
 **产出**：`outline.md`（slides 结构大纲），格式：
 ```markdown
@@ -63,6 +64,7 @@ description: >
 
 **参考文档**：
 - `references/analysis-framework.md` — 详细分析框架
+- `references/engagement-analysis.md` — Engagement 驱动分析框架（小红书/社交媒体场景）
 - `references/content-rules.md` — 内容规范
 - `references/style-decision-matrix.md` — 信号→design 映射表
 

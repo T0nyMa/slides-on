@@ -8,6 +8,22 @@ text_baking: true
 
 Minimalist hand-drawn line art, intellectual aesthetic. Clean organization, soft neutral tones, maximum whitespace. Like a well-organized Notion page hand-sketched on paper.
 
+## Style Lock (跨页复用)
+
+```text
+Minimalist hand-drawn line art on pure white paper (#FFFFFF or #FAFAFA).
+Single-weight thin black ink (#1A1A1A) outlines on all shapes — clean, neat, slightly irregular hand-drawn wobble.
+Soft neutral pastel dots for category markers only: pastel blue #A8D4F0, pastel yellow #F9E79F, pastel pink #FADBD8.
+Geometric shapes: rounded rectangles, circles — drawn with thin single-stroke outlines, no fills.
+Card modules with thin borders and rounded corners, separated by whitespace, not lines.
+Simple hand-drawn emoji-style icons (very small, sparse). Optional faint dot-grid background.
+Maximum whitespace (50–60% empty). Clean modular grid: 2–4 cards per page.
+Simple thin arrows connecting cards. Checkboxes with hand-drawn checkmarks.
+At most one tiny stick figure, intellectual, reading/working.
+No full-page border, no dark backgrounds, no thick strokes, no filled shapes, no shadows, no gradients, no 3D.
+No decorative flourishes, no calligraphy, no brush strokes — keep it light and intellectual.
+```
+
 ## Color Palette
 
 | Role | Color | Hex |

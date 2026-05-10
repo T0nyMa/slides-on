@@ -4,16 +4,24 @@
  * Reads prompt from --prompt or --file, routes to the appropriate provider,
  * and saves the generated image to the output path.
  *
+ * Structured prompt mode (new):
+ *   bun scripts/imagine/main.ts --design sketch-notes --archetype "horizontal process" ...
+ *
+ * Legacy flat prompt mode:
+ *   bun scripts/imagine/main.ts --prompt "a futuristic city skyline"
+ *   bun scripts/imagine/main.ts --file slide-03-architecture.md
+ *
  * Usage:
  *   bun scripts/imagine/main.ts --prompt "a futuristic city skyline"
  *   bun scripts/imagine/main.ts --file slide-03-architecture.md
- *   bun scripts/imagine/main.ts --prompt "..." --provider openai --quality 2k
+ *   bun scripts/imagine/main.ts --design sketch-notes --archetype "horizontal process" --aspect 3:4 ...
  *   bun scripts/imagine/main.ts --list-providers
  */
 
 import * as path from "path";
 import * as fs from "fs";
 import type { ImagineOptions } from "./types";
+import { assemblePrompt } from "./prompt-assembler";
 
 // ─── CLI Parsing ─────────────────────────────────────────────────────
 
@@ -28,11 +36,21 @@ interface CliArgs {
   negative?: string;
   output?: string;
   style?: string;
+  // Structured prompt mode
+  design?: string;
+  archetype?: string;
+  role?: "illustration" | "content-page";
+  content?: string;
+  title?: string;
+  subtitle?: string;
+  labels?: string;
+  textSafe: boolean;
+  anchorRef?: string;
   listProviders: boolean;
 }
 
 function parseArgs(args: string[]): CliArgs {
-  const opts: CliArgs = { listProviders: false };
+  const opts: CliArgs = { listProviders: false, textSafe: false };
   for (let i = 0; i < args.length; i++) {
     switch (args[i]) {
       case "--prompt":
@@ -45,6 +63,10 @@ function parseArgs(args: string[]): CliArgs {
         break;
       case "--provider":
         opts.provider = args[++i];
+        break;
+      case "--model":
+      case "-m":
+        opts.model = args[++i];
         break;
       case "--quality":
       case "-q": {
@@ -68,13 +90,39 @@ function parseArgs(args: string[]): CliArgs {
       case "-o":
         opts.output = args[++i];
         break;
-      case "--model":
-      case "-m":
-        opts.model = args[++i];
-        break;
       case "--style":
       case "-s":
         opts.style = args[++i];
+        break;
+      // Structured prompt mode
+      case "--design":
+      case "-d":
+        opts.design = args[++i];
+        break;
+      case "--archetype":
+        opts.archetype = args[++i];
+        break;
+      case "--role":
+        opts.role = args[++i] as "illustration" | "content-page";
+        break;
+      case "--content":
+      case "-c":
+        opts.content = args[++i];
+        break;
+      case "--title":
+        opts.title = args[++i];
+        break;
+      case "--subtitle":
+        opts.subtitle = args[++i];
+        break;
+      case "--labels":
+        opts.labels = args[++i];
+        break;
+      case "--text-safe":
+        opts.textSafe = true;
+        break;
+      case "--anchor-ref":
+        opts.anchorRef = args[++i];
         break;
       case "--list-providers":
         opts.listProviders = true;
@@ -91,18 +139,32 @@ function parseArgs(args: string[]): CliArgs {
 function printUsage(): void {
   console.log(`Usage: bun scripts/imagine/main.ts [options]
 
-Options:
-  --prompt,     -p   Image generation prompt (required unless --file)
-  --file,       -f   Read prompt from .md prompt file
+Structured prompt mode (--design required):
+  --design,  -d   Style definition name (sketch-notes, chalkboard, notion, etc.)
+  --archetype      Composition archetype (10 types, e.g. "horizontal process")
+  --role           Image role: "illustration" (default) or "content-page"
+  --content, -c    Free-text scene / composition description
+  --title          Title text (content-page role)
+  --subtitle       Subtitle text (content-page role)
+  --labels         Comma-separated label texts (content-page role)
+  --text-safe      Leave blank label spaces, no text baked in (text fidelity fallback)
+
+Legacy flat prompt mode:
+  --prompt,    -p   Image generation prompt (required unless --file)
+  --file,      -f   Read prompt from .md prompt file
+
+Common options:
   --provider        Provider name (dashscope, minimax, openai, replicate, etc.)
-  --quality,    -q   Image quality: "normal" or "2k" (default: normal)
-  --aspect,     -a   Aspect ratio: "16:9", "1:1", "9:16", "4:3", "3:4"
-  --reference,  -r   Path to reference image (provider-dependent)
-  --negative,   -n   Negative prompt
-  --output,     -o   Output file path (default: auto-generated)
-  --style,      -s   Preset style name
+  --model,     -m   Model name (e.g. qwen-image-2.0-pro-2026-04-22)
+  --quality,   -q   Image quality: "normal" or "2k" (default: normal)
+  --aspect,    -a   Aspect ratio: "16:9", "1:1", "9:16", "4:3", "3:4"
+  --reference, -r   Path to reference image (provider-dependent)
+  --negative,  -n   Negative prompt
+  --output,    -o   Output file path (default: auto-generated)
+  --style,     -s   Preset style name
+  --anchor-ref      Path to external anchor reference image
   --list-providers  List all available providers
-  --help,       -h   Show this help
+  --help,      -h   Show this help
 `);
 }
 
@@ -134,36 +196,12 @@ const PROVIDER_DESCRIPTIONS: Record<string, string> = {
   zai: "Z.AI / Zhipu (智谱) — CogView image generation",
 };
 
-/**
- * Provider selection priority (when --provider not specified):
- *
- * With reference image:
- *   1. Google Imagen  (best inpainting/editing)
- *   2. OpenAI DALL-E  (good variant/inpainting)
- *   3. Azure DALL-E    (same as OpenAI but Azure-hosted)
- *
- * Without reference:
- *   Tries providers in the order defined by DEFAULT_ORDER_PLAIN.
- *   The first provider to have its API key set will be used.
- */
 const DEFAULT_ORDER_PLAIN: string[] = [
-  "dashscope",
-  "openai",
-  "minimax",
-  "replicate",
-  "zai",
-  "openrouter",
-  "azure",
-  "google",
-  "jimeng",
-  "seedream",
+  "dashscope", "openai", "minimax", "replicate",
+  "zai", "openrouter", "azure", "google", "jimeng", "seedream",
 ];
 
-const DEFAULT_ORDER_REFERENCE: string[] = [
-  "google",
-  "openai",
-  "azure",
-];
+const DEFAULT_ORDER_REFERENCE: string[] = ["google", "openai", "azure"];
 
 // ─── Prompt Loading ──────────────────────────────────────────────────
 
@@ -176,7 +214,6 @@ function loadPrompt(cliArgs: CliArgs): string {
       throw new Error(`Prompt file not found: ${filePath}`);
     }
     let content = fs.readFileSync(filePath, "utf-8");
-    // Strip markdown formatting: remove headers, code fences, bold/italic markers
     content = content
       .replace(/^#.*$/gm, "")
       .replace(/^##.*$/gm, "")
@@ -188,13 +225,12 @@ function loadPrompt(cliArgs: CliArgs): string {
     return content || "";
   }
 
-  throw new Error("Either --prompt or --file is required");
+  throw new Error("Either --prompt, --file, or --design is required");
 }
 
 // ─── Provider Selection ──────────────────────────────────────────────
 
 async function selectProvider(cliArgs: CliArgs): Promise<string> {
-  // Explicit provider
   if (cliArgs.provider) {
     if (!PROVIDER_MAP[cliArgs.provider]) {
       throw new Error(
@@ -204,7 +240,6 @@ async function selectProvider(cliArgs: CliArgs): Promise<string> {
     return cliArgs.provider;
   }
 
-  // Auto-selection: check reference priority first, then plain order
   const order = cliArgs.reference ? DEFAULT_ORDER_REFERENCE : DEFAULT_ORDER_PLAIN;
 
   for (const name of order) {
@@ -245,7 +280,6 @@ function getProviderEnvKey(provider: string): string {
 async function main(): Promise<void> {
   const cliArgs = parseArgs(process.argv.slice(2));
 
-  // List providers
   if (cliArgs.listProviders) {
     console.log("Available AI image providers:\n");
     for (const [name, desc] of Object.entries(PROVIDER_DESCRIPTIONS)) {
@@ -257,18 +291,53 @@ async function main(): Promise<void> {
   }
 
   try {
-    const prompt = loadPrompt(cliArgs);
+    let prompt: string;
+    let metadata: Record<string, string> = {};
+
+    // ─── Structured prompt mode ───
+    if (cliArgs.design) {
+      const result = assemblePrompt({
+        design: cliArgs.design,
+        archetype: cliArgs.archetype,
+        role: cliArgs.role || "illustration",
+        aspect: cliArgs.aspect || "16:9",
+        content: cliArgs.content,
+        title: cliArgs.title,
+        subtitle: cliArgs.subtitle,
+        labels: cliArgs.labels ? cliArgs.labels.split(",").map(s => s.trim()) : undefined,
+        textSafe: cliArgs.textSafe,
+        quality: cliArgs.quality || "normal",
+      });
+
+      prompt = result.fullPrompt;
+      if (result.negativePrompt && !cliArgs.negative) {
+        cliArgs.negative = result.negativePrompt;
+      }
+      metadata = result.metadata;
+
+      console.log(`Design: ${metadata.design} | Archetype: ${metadata.archetype} | Role: ${metadata.role}`);
+    } else {
+      // Legacy mode
+      prompt = loadPrompt(cliArgs);
+    }
+
     const providerName = await selectProvider(cliArgs);
 
     console.log(`Prompt: ${prompt.slice(0, 80)}${prompt.length > 80 ? "..." : ""}`);
     console.log(`Provider: ${providerName}`);
 
-    // Dynamically load the provider module
     const modulePath = PROVIDER_MAP[providerName];
     const provider = await import(modulePath);
 
-    // Determine output path
     const output = cliArgs.output || `imagine_${providerName}_${Date.now()}.png`;
+
+    // If --anchor-ref is provided and provider doesn't support native refs,
+    // append a text anchor clause to the prompt
+    if (cliArgs.anchorRef) {
+      if (!["seedream", "replicate", "google"].includes(providerName)) {
+        prompt += `\n\nMatch the visual style, line weight, color palette, paper tone, title treatment, corner marks, and diagram density of the reference image exactly. This must look like the same illustrator drew all pages. Same paper, same pen, same hand.`;
+      }
+    }
 
     const options: ImagineOptions = {
       prompt,
@@ -276,11 +345,33 @@ async function main(): Promise<void> {
       model: cliArgs.model,
       quality: cliArgs.quality || "normal",
       aspect: cliArgs.aspect,
-      reference: cliArgs.reference,
+      reference: cliArgs.reference || cliArgs.anchorRef,
       negative: cliArgs.negative,
       output,
       style: cliArgs.style,
     };
+
+    // Write assembled prompt to .prompt.txt for reproducibility
+    if (cliArgs.design && cliArgs.output) {
+      const promptFile = cliArgs.output.replace(/\.png$/i, ".prompt.txt");
+      const header = [
+        `# AI Image Generation Prompt`,
+        `# Design: ${metadata.design || "N/A"}`,
+        `# Archetype: ${metadata.archetype || "N/A"}`,
+        `# Role: ${metadata.role || "N/A"}`,
+        `# Provider: ${providerName}`,
+        `# Aspect: ${cliArgs.aspect || "16:9"}`,
+        `# Generated: ${new Date().toISOString()}`,
+        ``,
+        `## Full Prompt`,
+        prompt,
+      ];
+      if (cliArgs.negative) {
+        header.push(``, `## Negative Prompt`, cliArgs.negative);
+      }
+      fs.writeFileSync(promptFile, header.join("\n"));
+      console.log(`Prompt file: ${promptFile}`);
+    }
 
     const result = await provider.generate(prompt, options);
 

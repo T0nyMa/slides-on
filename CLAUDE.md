@@ -123,6 +123,9 @@ slides-on/
 │   │       └── zai.md
 │   │
 │   ├── analysis-framework.md      #   内容分析框架
+│   ├── archetypes.md               #   10 种语义构图模板
+│   ├── engagement-analysis.md      #   Engagement 驱动分析框架
+│   ├── text-fidelity.md            #   文字兜底策略
 │   ├── base-prompt.md              #   AI 图片基础 prompt（遗留 style token）
 │   ├── prompt-construction.md       #   AI 图片结构化 prompt 组装（三层结构）
 │   ├── content-rules.md            #   16:9 内容规范

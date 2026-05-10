@@ -8,6 +8,21 @@ text_baking: true
 
 Friendly educational illustration style. Paper notebook background, marker pen colors, hand-drawn borders, simulating whiteboard/notebook teaching aesthetics. Warm and inviting, lowers the psychological barrier for learning.
 
+## Style Lock (跨页复用)
+
+```text
+Refined Chinese handdrawn educational illustration on off-white paper (near #FBFAF5) with subtle grain.
+No full-page border. Near-black ink (#111111) linework — hand-drawn, slightly irregular, friendly pen-on-paper feel.
+Optional faint notebook ruled lines in background. Simple rounded-rect borders around key content blocks.
+Marker pen accents: warm orange #F48B5C, sky blue #4E8ED6, sage green #2E9D70, soft purple #7B5DC4.
+Pale yellow #FDF0B2 highlighter marks behind keywords. Colored marker underlines below key terms.
+Generous margins (35–45% whitespace). Central illustration 50–60% page width.
+Simple hand-drawn icons: lightbulb, pencil, book, gear — small and sparse.
+Curved hand-drawn arrow connectors with small arrowheads. Dotted-line underlines. Checkmarks with marker feel.
+At most one tiny stick-figure character (teacher/student), far corner.
+No photorealistic, no 3D, no gradients, no shadows, no neon, no thick permanent-marker strokes, no bullet lists, no corporate template feel, no yellow or beige paper.
+```
+
 ## Color Palette
 
 | Role | Color | Hex |
