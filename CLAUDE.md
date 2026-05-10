@@ -128,6 +128,7 @@ slides-on/
 │   ├── text-fidelity.md            #   文字兜底策略
 │   ├── base-prompt.md              #   AI 图片基础 prompt（遗留 style token）
 │   ├── prompt-construction.md       #   AI 图片结构化 prompt 组装（三层结构）
+│   ├── quality-spec.md              #   slides.json 验证标准（Schema + 预算 + 锚点 + 配色）
 │   ├── component-recipes.md        #   内容语义→组件配方（10 种页面原型 + 密度预算）
 │   ├── content-rules.md            #   16:9 内容规范
 │   ├── content-rules-portrait.md   #   3:4 内容规范（组件大小、密度）
@@ -238,6 +239,7 @@ slides-on/
 │   ├── html-to-pptx.ts            #   HTML → 可编辑 PPTX（dom-to-pptx）
 │   ├── merge-to-pdf.ts            #   PNG → PDF（pdf-lib 自包含）
 │   ├── svg-to-png.ts              #   SVG → @2x PNG
+│   ├── validate-slides.ts          #   slides.json 质量验证（Schema + 预算 + 锚点）
 │   ├── assemble-deck.ts           #   HTML 组装入口（JSON → index.html）
 │   ├── new-deck.sh                 #   新建 deck 脚手架
 │   ├── assemble/                   #   HTML 组装引擎

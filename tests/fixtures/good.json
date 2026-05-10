@@ -1,0 +1,76 @@
+{
+  "config": {
+    "title": "AI 推荐系统优化实践",
+    "design": "pastel-card",
+    "canvas": "3:4",
+    "author": "马江"
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "title": "让推荐更快一点",
+      "subtitle": "端云协同推理优化实践",
+      "kicker": "Tech Report · 2026",
+      "chip": "01",
+      "chipColor": "mint",
+      "blobs": ["b1", "b2"]
+    },
+    {
+      "type": "section",
+      "title": "问题定义",
+      "kicker": "Chapter 1",
+      "chip": "02",
+      "chipColor": "sky"
+    },
+    {
+      "type": "cards-2x2",
+      "title": "三大核心痛点",
+      "cards": [
+        { "num": "01", "title": "推理延迟过高", "body": "精排模型在 CPU 上单次推理超过 30ms，无法满足在线服务延迟约束", "color": "peach" },
+        { "num": "02", "title": "设备算力差异大", "body": "端侧设备从入门到旗舰算力差距达 10 倍，统一模型无法适配", "color": "peach" },
+        { "num": "03", "title": "协同架构缺失", "body": "云端和端侧独立优化，缺乏统一调度框架和算力分配机制", "color": "mint" },
+        { "num": "04", "title": "特征膨胀严重", "body": "精排模型特征维度超 4000，其中 30% 贡献度不足 5%", "color": "rose" }
+      ]
+    },
+    {
+      "type": "quote",
+      "title": "核心洞察",
+      "quote": "不是让模型变小，而是让算力分配变聪明",
+      "quoteAttr": "—— 端云协同的本质",
+      "subtitle": "硬件异构 ≠ 性能瓶颈。关键在计算图的拓扑重排与算力的动态分配。"
+    },
+    {
+      "type": "steps",
+      "title": "三阶段优化路径",
+      "steps": [
+        { "num": "1", "title": "算力建模", "body": "对云端 GPU、端侧 NPU 的算力、带宽、延迟做归一化刻画" },
+        { "num": "2", "title": "模型裁剪", "body": "基于蒸馏和剪枝，自动将模型适配到目标设备算力预算" },
+        { "num": "3", "title": "推理优化", "body": "量化、算子融合、编译优化，最大化硬件利用率" },
+        { "num": "4", "title": "协同调度", "body": "动态决定哪些层在云端执行，哪些在端侧执行" }
+      ]
+    },
+    {
+      "type": "kpi",
+      "title": "优化效果",
+      "kpis": [
+        { "value": "+18%", "label": "单机吞吐提升", "delta": "vs baseline", "deltaDir": "up" },
+        { "value": "-28%", "label": "训练成本降低", "delta": "vs baseline", "deltaDir": "down" },
+        { "value": "15ms", "label": "推理延迟", "delta": "P99", "deltaDir": "flat" }
+      ]
+    },
+    {
+      "type": "cards-2x2",
+      "title": "方案对比",
+      "cards": [
+        { "num": "A", "title": "纯云端方案", "body": "所有推理在云端完成，延迟高，成本大，端侧资源闲置", "color": "rose" },
+        { "num": "B", "title": "端云协同方案", "body": "动态分配推理任务，充分利用端侧算力，降低云端压力", "color": "mint" }
+      ]
+    },
+    {
+      "type": "thanks",
+      "title": "谢谢",
+      "subtitle": "github.com/xxx/edge-cloud-inference",
+      "badges": ["推荐系统", "端云协同", "推理优化"]
+    }
+  ]
+}

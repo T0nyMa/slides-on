@@ -114,19 +114,27 @@ description: >
 
 **处理**：在进入 HTML 渲染前，逐页检查三项，不通过则回 Step 1/2 调整：
 
-1. **内容溢出检查** — 组件容量 < 内容量？
+1. **自动验证**（`bun scripts/validate-slides.ts --input slides.json`）：
+   - Schema 检查：design 名、canvas、slide type 合法性（FAIL 级）
+   - 密度预算：组件数 3-5、字数上限、卡片/步骤数量（WARN 级）
+   - 锚点检查：每页是否有视觉重心（WARN 级）
+   - 色彩语义：warn 色卡片是否有对应 accent 色（WARN 级）
+   - Design 兼容：blob/color/chipColor 是否被目标 Design 支持（INFO 级）
+2. **内容溢出检查** — 组件容量 < 内容量？
    - c-card 正文 > 60 字 → 精简或拆为 2 卡片
    - c-steps > 7 步 → 拆为两页
    - c-icon-row > 10 项 → 拆页或分组
    - c-quote > 40 字 → 只保留核心句
    - 组件总数 > 6 → 拆页
-2. **留白过大检查** — 组件 < 3 个？
+3. **留白过大检查** — 组件 < 3 个？
    - 加 c-badge-row（3-4 标签）、c-note（关键提示）、c-card-soft（补充说明）
    - 或合并到相邻页
-3. **风格匹配检查** — Design 的 mood/texture 与内容调性是否冲突？
+4. **风格匹配检查** — Design 的 mood/texture 与内容调性是否冲突？
    - 严肃/学术内容 + 马卡龙/手绘风 → 换 Design 或降 mood
    - 年轻/社交内容 + corporate → 换 Design
    - 数据密集内容 + 极简 Design → 检查组件颜色变体是否够区分信息层级
+
+> 验证标准详见 `references/quality-spec.md`。validate 脚本的 FAIL 级检查必须全部通过才能进入 Step 4。
 
 **产出**：`review.md`，记录每页判定（pass / adjust）和调整决策。
 
@@ -206,6 +214,7 @@ description: >
 Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps` | `code` | `thanks` | `bullets` | `kpi` | `html`
 
 **关键文件**：
+- `scripts/validate-slides.ts` — slides.json 质量验证（Step 3 自动检查）
 - `scripts/assemble-deck.ts` — HTML 组装入口（JSON → index.html）
 - `scripts/assemble/types.ts` — SlideData、DeckConfig 类型定义
 - `scripts/assemble/designs.ts` — Design 模板注册表（per-design 渲染函数）
