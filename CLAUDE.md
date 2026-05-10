@@ -35,8 +35,8 @@ slides-on/
 │   ├── presenter-mode.md           #   presenter 模式指南
 │   ├── authoring-guide.md          #   HTML 编写指南
 │   │
-│   ├── designs/                    #   17 个 design 定义
-│   │   ├── blueprint.md            #     17 个 design
+│   ├── designs/                    #   18 个 design 定义
+│   │   ├── blueprint.md            #     18 个 design
 │   │   ├── bold-editorial.md
 │   │   ├── chalkboard.md
 │   │   ├── corporate.md
@@ -138,14 +138,17 @@ slides-on/
 │   ├── ai-visuals.md               #   AI 视觉内容生成
 │   ├── components.md               #   共享组件库（card/step/KPI/quote 等）
 │   │
-│   ├── style-definitions/          #   Design 的结构化生图定义（7 个，逐 hex 色值+视觉元素）
-│   │   ├── sketch-notes.md
+│   ├── style-definitions/          #   Design 的结构化生图定义（17 个，逐 hex 色值+视觉元素）
+│   │   ├── sketch-notes.md          #     7 个 original
 │   │   ├── hand-drawn-edu.md
 │   │   ├── chalkboard.md
 │   │   ├── notion.md
 │   │   ├── watercolor.md
 │   │   ├── pixel-art.md
-│   │   └── blueprint.md
+│   │   ├── blueprint.md
+│   │   ├── bold-editorial.md        #     10 个 added (baoyu parity)
+│   │   ├── corporate.md
+│   │   ├── ... (17 files total)
 │
 ├── templates/                      # HTML 模板
 │   ├── full-decks/                 #   15 个 deck template
@@ -220,8 +223,8 @@ slides-on/
 │   │   ├── aurora.css
 │   │   ├── ... (36 files total)
 │   │   └── y2k-chrome.css
-│   └── animations/                 #   动画系统（27 CSS + 20 Canvas FX）
-│       ├── animations.css          #     27 个 CSS animation
+│   └── animations/                 #   动画系统（1 CSS 含 27 动画 + 20 Canvas FX）
+│       ├── animations.css          #     1 个 CSS 文件，内含 27 个 @keyframes
 │       ├── fx-runtime.js           #     Canvas FX 运行时
 │       └── fx/                     #     20 个 Canvas FX 模块
 │           ├── _util.js
@@ -230,7 +233,7 @@ slides-on/
 │           └── word-cascade.js
 │
 ├── scripts/                        # 工具脚本
-│   ├── render-precise.ts           #   Playwright 高精度截图（新增，替代 render.sh）
+│   ├── render-precise.ts           #   Playwright 高精度截图（@2x Retina）
 │   ├── html-to-pptx.ts            #   HTML → 可编辑 PPTX（dom-to-pptx）
 │   ├── merge-to-pdf.ts            #   PNG → PDF（pdf-lib 自包含）
 │   ├── svg-to-png.ts              #   SVG → @2x PNG
@@ -310,7 +313,7 @@ Slides（最终产物 = index.html）
 ### Step 2: 风格决策
 
 两级决策（36 主题系统 + 4 维风格 + 信息图视觉风格）：
-- **Slides 级**：选择 design（17 个 design 或自定义），确定 theme（36 个 HTML theme）+ layout 偏好 + animation + 密度，支持 4 维自定义（Texture × Mood × Typography × Density）
+- **Slides 级**：选择 design（18 个 design 或自定义），确定 theme（36 个 HTML theme）+ layout 偏好 + animation + 密度，支持 4 维自定义（Texture × Mood × Typography × Density）
 - **Slide 级**：根据每页内容类型匹配
   - HTML layout（31 种 single-page 布局）用于文字、代码、图表等
   - Infographic layout（21 种信息图布局）+ visual style（22 种视觉风格）用于信息图页

@@ -8,7 +8,7 @@ Typography（字体风格）决定幻灯片中文字的视觉性格，通过 `--
 
 **视觉描述**: 干净、现代、理性。几何造型的无衬线字体，笔画粗细均匀，圆形笔画接近正圆。
 
-**推荐 Google Fonts**:
+**推荐字体**:
 - [Inter](https://fonts.google.com/specimen/Inter) — 最适合屏幕阅读的无衬线
 - [DM Sans](https://fonts.google.com/specimen/DMSans) — 几何感强
 - [Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk) — 略有性格
@@ -30,7 +30,7 @@ Typography（字体风格）决定幻灯片中文字的视觉性格，通过 `--
 
 **视觉描述**: 温暖、可读、友好。保留手写笔画特征的无衬线字体，笔画粗细有变化，更接近传统书写比例。
 
-**推荐 Google Fonts**:
+**推荐字体**:
 - [Noto Sans SC](https://fonts.google.com/specimen/Noto+Sans+SC) — 中英文混排首选
 - [Source Sans 3](https://fonts.google.com/specimen/Source+Sans+3) — Adobe 出品
 - [Atkinson Hyperlegible](https://fonts.google.com/specimen/Atkinson+Hyperlegible) — 高可读性
@@ -52,7 +52,7 @@ Typography（字体风格）决定幻灯片中文字的视觉性格，通过 `--
 
 **视觉描述**: 个性化、亲切、非正式。模拟手写或草图风格的字体，笔画不规则，传递手工感和创造力。
 
-**推荐 Google Fonts**:
+**推荐字体**:
 - [Caveat](https://fonts.google.com/specimen/Caveat) — 流畅手写
 - [Indie Flower](https://fonts.google.com/specimen/Indie+Flower) — 可爱手写
 - [Nanum Pen Script](https://fonts.google.com/specimen/Nanum+Pen+Script) — 韩式手写
@@ -75,7 +75,7 @@ Typography（字体风格）决定幻灯片中文字的视觉性格，通过 `--
 
 **视觉描述**: 权威、经典、深度。衬线字体传递学术传统和编辑严谨性，适合长文阅读和正式出版物。
 
-**推荐 Google Fonts**:
+**推荐字体**:
 - [Noto Serif SC](https://fonts.google.com/specimen/Noto+Serif+SC) — 中文衬线首选
 - [Source Serif 4](https://fonts.google.com/specimen/Source+Serif+4) — Adobe 出品
 - [Merriweather](https://fonts.google.com/specimen/Merriweather) — 屏幕阅读优化
@@ -98,7 +98,7 @@ Typography（字体风格）决定幻灯片中文字的视觉性格，通过 `--
 
 **视觉描述**: 精确、结构化、代码感。等宽字体或极简无衬线传递技术精确性，每个字符占据相同宽度。
 
-**推荐 Google Fonts**:
+**推荐字体**:
 - [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) — 代码首选
 - [Fira Code](https://fonts.google.com/specimen/Fira+Code) — 连字特性
 - [IBM Plex Mono](https://fonts.google.com/specimen/IBM+Plex+Mono) — IBM 经典

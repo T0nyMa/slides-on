@@ -95,7 +95,7 @@ bun scripts/html-to-pptx.ts <index.html> [--output filename.pptx]
 - 视觉保真度受限于 dom-to-pptx 映射能力（80-95%）
 - 复杂 CSS 布局（Grid/Flexbox）可能错位
 - Canvas/SVG 元素不支持
-- 依赖字体嵌入（Google Fonts 需 crossorigin）
+- 依赖字体嵌入（系统字体无需外部加载）
 
 ### 适用场景
 

@@ -78,7 +78,7 @@ Semantic:   green (--good), amber (--warn), red (--bad) -- used sparingly
 - **One sans-serif family per deck**. Do not mix 2+ sans-serif fonts on different slides.
 - **Monospace is for code only**. Never use monospace for body text or titles.
 - **Chinese + English**: `"Noto Sans SC"` handles Chinese characters. Place it after `"Inter"` so English uses Inter and CJK falls back to Noto Sans SC.
-- **Font loading**: `fonts.css` loads fonts from Google Fonts. If a font fails to load, the system fallback stack (`-apple-system, BlinkMacSystemFont, ...`) ensures readable text.
+- **Font loading**: `fonts.css` uses system font stacks. No external downloads — fonts are instant with solid fallback chains across platforms.
 
 ## Alignment and Consistency
 

@@ -6,7 +6,7 @@ slides-on 内建 AI 视觉内容生成能力，涵盖设计系统、架构图、
 
 ### 提供内容
 
-- **17 个 Design**（视觉皮肤）：blueprint, bold-editorial, chalkboard, corporate, dark-atmospheric, editorial-infographic, fantasy-animation, hand-drawn-edu, intuition-machine, minimal, notion, pixel-art, scientific, sketch-notes, vector-illustration, vintage, watercolor
+- **18 个 Design**（视觉皮肤）：blueprint, bold-editorial, chalkboard, corporate, dark-atmospheric, editorial-infographic, fantasy-animation, hand-drawn-edu, intuition-machine, minimal, notion, pixel-art, scientific, sketch-notes, vector-illustration, vintage, watercolor, xhs-tech-tutorial
 - **4 维自定义**：Texture × Mood × Typography × Density
 - **分析框架**：信号检测 → design 推荐
 

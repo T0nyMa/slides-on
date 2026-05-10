@@ -288,17 +288,27 @@ design → references/style-definitions/{design}.md
 如果 style-definition 存在 → 使用结构化 prompt 组装（升级路径）
 ```
 
-**当前可用的 style-definition（7 个）**：
+**当前可用的 style-definition（17 个）**：
 
 | Design | text_baking | 特点 |
 |--------|-------------|------|
-| sketch-notes | yes | 手绘教育图，macaron 色板，纸纹理 |
+| sketch-notes | yes | 手绘教育图，macaron 色板，牛皮纸纹理 |
 | hand-drawn-edu | yes | 手绘教学，纸笔记本风，马克笔强调 |
 | chalkboard | yes | 黑板教学，粉笔纹理，深绿底 |
 | notion | yes | 知识卡片，极简手绘，最大留白 |
-| watercolor | no | 水彩艺术，轻柔透明 wash，不适合作内容页 |
 | pixel-art | yes | 像素艺术，8-bit 风格，高饱和 |
-| blueprint | no | 蓝图技术，蓝图蓝底白色线框，不适合作内容页 |
+| blueprint | no | 蓝图技术，蓝底白色线框，不适合作内容页 |
+| watercolor | no | 水彩艺术，轻柔透明 wash，不适合作内容页 |
+| bold-editorial | yes | 粗体杂志风，强对比，大号标题 |
+| corporate | yes | 企业专业风，海军蓝+白，保守克制 |
+| dark-atmospheric | no | 暗调氛围，电影感，不适合文字叠加 |
+| editorial-infographic | yes | 编辑信息图，数据可视化，精密网格 |
+| fantasy-animation | no | 幻想动画风，柔和梦幻，不适合内容页 |
+| minimal | yes | 极简白底，最少装饰，文字驱动 |
+| scientific | no | 科学图表，精密技术插图 |
+| vector-illustration | yes | 扁平矢量，几何造型，现代 app 风 |
+| vintage | yes | 复古怀旧，暖色调，纸质肌理 |
+| xiaohongshu-white | yes | 小红书白底，暖红 accent，社交图文 |
 
 ## Provider-Specific 适配
 
@@ -363,4 +373,4 @@ Provider 注册表和自动选择逻辑在 `scripts/imagine/config.ts`。以下�
 - 对应的 style-definition 文件尚未创建（P2 及以后的 9 个 design）
 - 需要快速原型，不需要精确视觉控制
 
-对于有 style-definition 文件的 7 个 design（P0+P1），**必须**使用本文档的结构化 prompt 组装方式。
+对于有 style-definition 文件的 17 个 design，**必须**使用本文档的结构化 prompt 组装方式。
