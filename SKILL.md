@@ -78,8 +78,7 @@ description: >
 1. 从 17 个 design 中选择（或读取 EXTEND.md 默认值）
 2. Design = 可移植的 CSS 变量覆盖层，决定颜色 / 字体 / 纹理 / 密度 / 动画偏好
 3. 支持 4 维自定义覆盖（Texture × Mood × Typography × Density）
-4. 也可直接选择 36 个 theme 作为视觉基础
-5. **3:4 画布**：Design 可以是一个完整的 Design CSS 文件（`assets/designs/{name}.css`），同时提供 CSS 变量、Chrome 样式（`chr-*`）和 c-* 组件扩展。详见 `references/content-rules-portrait.md`
+4. 3:4 画布推荐使用 Design CSS（`assets/designs/{name}.css`），从极简（仅 CSS 变量，~30行）到完整（+ Chrome 样式 + c-* 扩展，~200行）渐进式构建。详见 `references/portrait-user-guide.md`
 
 **Slide 级 — 选择渲染引擎**：
 
@@ -103,7 +102,7 @@ description: >
 - `references/themes.md` — 36 个 theme 详情
 - `references/layouts.md` — 31 个 layout 详情
 - `references/content-rules-portrait.md` — 3:4 画布内容规范（组件大小、字数、密度、Design CSS 用法）
-- `references/portrait-user-guide.md` — 3:4 竖版制作指南（轻装/品牌双路线，组件搭配模式）
+- `references/portrait-user-guide.md` — 3:4 竖版制作指南（Design CSS 渐进式用法，组件搭配模式）
 - `references/components.md` — 共享组件库（card、step、KPI、quote、Chrome 片段等）
 - `references/designs/` — 17 个 design 概念文档
 - `assets/designs/` — Design CSS 实现（可移植视觉皮肤，3 个）

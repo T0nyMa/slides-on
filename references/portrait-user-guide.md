@@ -2,33 +2,17 @@
 
 ---
 
-## 两种制作路线
+## 核心架构
 
-### 轻装路线（Quick Theme）
+3:4 竖版 Slides 统一采用 `Template × Design × Content` 三层分离：
 
-`.portrait` + `components.css` + theme CSS。自定义 CSS ≤ 30 行。
-
-```html
-<link rel="stylesheet" href="assets/base.css">
-<link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="assets/themes/{theme}.css">
-<link rel="stylesheet" href="assets/components.css">
-<link rel="stylesheet" href="style.css">
-<body class="portrait {scope-class}">
+```
+Template    = .portrait + chrome HTML（chr-* 页面壳） + c-* 组件实例
+Design      = assets/designs/{name}.css（CSS 变量 + chrome 样式 + c-* 扩展）
+Content     = c-* 组件（assets/components.css），通过 var(--accent) 等自动染上 Design 色
 ```
 
-| 维度 | 说明 |
-|------|------|
-| 自定义 CSS | ≤ 30 行，仅内容级微调（如 code 样式、1-2 个专用类） |
-| 页面结构 | `h1/h2/lede` + `c-*` 组件直接拼 |
-| 换皮 | 换 theme CSS 一行，36 个 theme 随选 |
-| Chrome 壳层 | 无——没有 topbar、footer、blob 等装饰 |
-| 适用场景 | 知识分享、教程干货、内部培训、读书笔记、技术科普 |
-| 代表 example | `examples/markdown-intro-components/` |
-
-### 品牌路线（Branded Design）
-
-`.portrait` + `components.css` + Design CSS + Chrome HTML。自定义 CSS = 0 行。
+**加载顺序**（不可颠倒）：
 
 ```html
 <link rel="stylesheet" href="assets/fonts.css">
@@ -38,28 +22,35 @@
 <body class="d-{design} portrait">
 ```
 
-| 维度 | 说明 |
-|------|------|
-| 自定义 CSS | 0 行，视觉全在 Design CSS 里 |
-| 页面结构 | `chr-*` Chrome 壳层 + `c-*` 组件填充内容 |
-| 换皮 | 换 Design CSS + body class，Chrome HTML 结构通用 |
-| Chrome 壳层 | 有——topbar / chip / footer / blob / sticker / divider 等 |
-| 适用场景 | 小红书图文、社交媒体卡片、品牌发布、产品介绍、个人 IP 内容 |
-| 已有 Design | `pastel-card`（马卡龙色块）、`white-editorial`（白底杂志）、`xhs-post`（手绘涂鸦） |
-| 代表 example | `templates/full-decks/xhs-pastel-card/` 等 |
+## Design CSS 的两种用法
 
-### 如何选择
+同一套架构，Design CSS 可以极简也可以完整：
 
-| 判断条件 | → 路线 |
-|---------|--------|
-| 内容干货为主，视觉不需要太强 | 轻装路线 |
-| 需要品牌辨识度 / 社交平台发布 | 品牌路线 |
-| 想快速出 10 页，半小时搞定 | 轻装路线 |
-| 有现成 Design CSS 可复用 | 品牌路线 |
-| 需要 topbar / footer / 装饰元素 | 品牌路线 |
-| 对视觉没特殊要求，换个配色就行 | 轻装路线 |
+### 极简 Design（~30行）
 
-**一句话：内容驱动选轻装，视觉驱动选品牌。**
+只设 CSS 变量，无 Chrome 壳层。适合内容干货为主、视觉不需要太强的场景。
+
+```css
+.d-my-deck {
+  --bg: #fff; --surface: #fff; --text-1: #111; --text-2: #555;
+  --accent: #3b6cff; --radius: 18px; --shadow: 0 10px 30px rgba(0,0,0,.08);
+  --font-display: 'Inter', 'Noto Sans SC', sans-serif;
+  --font-sans: 'Inter', 'Noto Sans SC', sans-serif;
+  background: var(--bg); color: var(--text-1); font-family: var(--font-sans);
+}
+```
+
+页面直接用 `h1 / h2 / lede` + `c-*` 组件拼装，无 topbar / footer / blob 等装饰。
+
+### 完整 Design（~200行）
+
+CSS 变量 + Chrome 样式 + c-* 扩展。适合需要品牌辨识度、社交平台发布的场景。
+
+包含：`chr-topbar`（顶栏）、`chr-chip`（标签）、`chr-footer`（底栏）、`chr-blob`（装饰背景）、卡片颜色变体、排版专属类等。
+
+已有完整 Design：`pastel-card`（马卡龙色块）、`white-editorial`（白底杂志）、`xhs-post`（手绘涂鸦）。实现见 `templates/full-decks/xhs-*/` 和 `assets/designs/`。
+
+**极简和完整之间是渐进式的**——从极简 Design 开始，需要什么 Chrome 就加什么，逐步丰富。
 
 ---
 
@@ -67,7 +58,7 @@
 
 ### 1. 先内容后视觉
 
-先确定 10 页内容骨架（不强制），再选视觉皮肤。同一套内容可以换皮输出不同风格。
+先确定内容骨架（10 页左右），再选/写 Design CSS。同一套内容换 Design CSS 即可换皮。
 
 典型骨架：
 ```
@@ -76,15 +67,15 @@ cover → 痛点 → 核心概念 → 速查/清单 → 金句 → 场景/分类
 
 ### 2. 一页一观点
 
-每页只传达一个核心信息。3:4 画布比 16:9 更严格——窄画布没有横向空间分散注意力，每块内容必然被顺序阅读。
+每页只传达一个核心信息。3:4 画布比 16:9 更严格——窄画布没有横向空间分散注意力。
 
 ### 3. 组件数量 3-5 个/页
 
-每页控制在 3-5 个组件块。太少显空，太多显乱。语法速查页（9 个 `c-icon-row`）是密度上限。
+太少显空，太多显乱。语法速查页（9 个 `c-icon-row`）是密度上限。
 
-### 4. 自定义 CSS 红线
+### 4. 自定义 CSS = 0
 
-`style.css` 超过 30 行 = 信号：应该把样式收归到 Design CSS 或组件库。轻装路线通常 ≤ 25 行。
+所有视觉样式收归 Design CSS。页面 HTML 只负责结构和内容，不写 `<style>` 和内联样式（chrome 定位除外）。
 
 ---
 
@@ -92,7 +83,7 @@ cover → 痛点 → 核心概念 → 速查/清单 → 金句 → 场景/分类
 
 ### 信息层次靠卡片颜色变体
 
-卡片颜色即信息层级，不需要额外说明就能让读者感知信息权重：
+卡片颜色即信息层级，不需要额外说明：
 
 | 组件 | 语义 | 用途 |
 |------|------|------|
@@ -123,7 +114,7 @@ cover → 痛点 → 核心概念 → 速查/清单 → 金句 → 场景/分类
 kicker → h1 → lede → c-divider-accent → c-card-soft（摘要）→ c-section（目录预告）→ c-badge-row
 ```
 
-锚点：`h1` 标题。用 `c-section` 嵌套 `c-icon-row` 做"本期内容"目录预告，Cover 不只是标题页。
+锚点：`h1` 标题。用 `c-section` 嵌套 `c-icon-row` 做"本期内容"目录预告。
 
 #### 痛点页
 
@@ -155,7 +146,7 @@ h2 → c-section（c-section-label + c-stack → c-icon-row × N）
 c-glass（c-quote）→ c-divider-accent → c-card-soft（解释）→ c-grid-2（对比卡片）→ c-badge-row
 ```
 
-锚点：`c-glass` + `c-quote`。用 `c-grid-2` 做"没有 X" vs "有了 X" 对比，让金句有具体支撑。
+锚点：`c-glass` + `c-quote`。用 `c-grid-2` 做对比让金句有具体支撑。
 
 #### 场景 / 分类页
 
@@ -163,7 +154,7 @@ c-glass（c-quote）→ c-divider-accent → c-card-soft（解释）→ c-grid-2
 h2 → lede → c-grid-2（c-card-accent × 4）
 ```
 
-锚点：四宫格卡片。每个卡片 `c-title` + `c-body`，简短有力。
+锚点：四宫格卡片。每个卡片 `c-title` + `c-body`。
 
 #### 流程 / 步骤页
 
@@ -203,11 +194,11 @@ c-glass（h1 + c-quote + c-quote-attr）→ c-section（回顾要点 → c-icon-
 
 ### Cover 不要只放标题
 
-加 `c-section` 嵌套 `c-icon-row` 做"本期内容"目录摘要，让 Cover 同时预告全文结构。比单独的标题 + 副标题丰富得多。
+加 `c-section` 嵌套 `c-icon-row` 做"本期内容"目录摘要，让 Cover 同时预告全文结构。
 
 ### 金句页加对比卡片
 
-`c-grid-2` 放"没有 X" vs "有了 X" 的对比（`c-card-warn` vs `c-card-accent`），让金句有具体支撑而非空喊口号。
+`c-grid-2` 放"没有 X" vs "有了 X" 的对比（`c-card-warn` vs `c-card-accent`），让金句有具体支撑。
 
 ### Thanks 页加回顾要点
 
@@ -215,10 +206,19 @@ c-glass（h1 + c-quote + c-quote-attr）→ c-section（回顾要点 → c-icon-
 
 ### 用 c-spacer 控制节奏
 
-`c-spacer-sm` 和 `c-spacer-md` 交替使用，制造阅读节奏。不要让组件贴在一起，也不要全用大间距。
+`c-spacer-sm` 和 `c-spacer-md` 交替使用，制造阅读节奏。
 
 ### 首尾呼应
 
 Cover 和 Thanks 的 `c-badge-row` 使用相同标签，形成闭环。
 
 ---
+
+## 尺寸参考
+
+| 项目 | 值 |
+|------|-----|
+| 画布 | 810 × 1080 px |
+| @2x 输出 | 1620 × 2160 px |
+| 1 cqi | ≈ 8.1 px |
+| Slide padding | 4.5cqi（默认，Design CSS 可覆盖） |

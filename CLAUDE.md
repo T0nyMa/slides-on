@@ -130,7 +130,7 @@ slides-on/
 │   ├── prompt-construction.md       #   AI 图片结构化 prompt 组装（三层结构）
 │   ├── content-rules.md            #   16:9 内容规范
 │   ├── content-rules-portrait.md   #   3:4 内容规范（组件大小、密度）
-│   ├── portrait-user-guide.md      #   3:4 竖版制作指南（轻装/品牌双路线）
+│   ├── portrait-user-guide.md      #   3:4 竖版制作指南（Design CSS + 组件搭配）
 │   ├── design-guidelines.md        #   设计指南
 │   ├── export.md                   #   导出选项
 │   ├── html-engine.md              #   HTML 渲染引擎详解
