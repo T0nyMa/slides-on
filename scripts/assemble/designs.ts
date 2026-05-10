@@ -157,9 +157,9 @@ const xhsPost: DesignTemplate = {
   },
 
   cardHTML(card: CardItem) {
-    // xhs-post cards use hand-drawn boxes with inline bold + dim text
+    // xhs-post cards use hand-drawn boxes with bold + dim text
     const num = card.num ? `${card.num} ` : "";
-    return `<div class="c-card${card.color ? `" style="background:var(--accent-3)` : ""}">
+    return `<div class="c-card">
         <b style="font-size:2.72cqi">${num}${card.title}</b>
         <p class="dim" style="font-size:1.98cqi;margin-top:0.49cqi">${card.body}</p>
       </div>`;

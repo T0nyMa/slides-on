@@ -247,6 +247,8 @@ slides-on/
 │   └── imagine/                    #   AI 图片生成
 │       ├── main.ts                 #     图片生成入口
 │       ├── build-batch.ts          #     批量生成
+│       ├── config.ts               #     Provider 注册表 + CLI 解析
+│       ├── prompt-assembler.ts      #     三层 prompt 组装引擎
 │       ├── types.ts                #     类型定义
 │       └── providers/              #     10 个 Provider 实现
 │           ├── azure.ts
@@ -319,7 +321,7 @@ Slides（最终产物 = index.html）
 ### Step 2: 风格决策
 
 两级决策（36 主题系统 + 4 维风格 + 信息图视觉风格）：
-- **Slides 级**：选择 design（18 个 design 或自定义），确定 theme（36 个 HTML theme）+ layout 偏好 + animation + 密度，支持 4 维自定义（Texture × Mood × Typography × Density）
+- **Slides 级**：选择 design（18 个 design 概念，其中 3 个有完整 Design CSS：pastel-card, white-editorial, xhs-post）。现有 36 个 HTML theme，支持 4 维自定义（Texture × Mood × Typography × Density）
 - **Slide 级**：根据每页内容类型匹配
   - HTML layout（31 种 single-page 布局）用于文字、代码、图表等
   - Infographic layout（21 种信息图布局）+ visual style（22 种视觉风格）用于信息图页

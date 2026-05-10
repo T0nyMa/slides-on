@@ -111,8 +111,6 @@ function readInput(cli: CliArgs): DeckInput {
 function main(): void {
   const cli = parseArgs(process.argv.slice(2));
 
-  if (cli.help) return;
-
   try {
     const input = readInput(cli);
     const { config, slides } = input;

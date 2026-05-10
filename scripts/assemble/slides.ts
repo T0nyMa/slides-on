@@ -37,18 +37,10 @@ function chromeBottom(d: DesignTemplate, s: SlideData, ctx: PageContext, right: 
   return d.footerHTML(left.slice(0, 30), right);
 }
 
-function slideAttrs(s: SlideData, ctx: PageContext): string {
-  const parts: string[] = [];
-  if (ctx.page === 1) parts.push('is-active');
-  if (s.center) parts.push('style="margin:auto 0;text-align:center"');
-  else if (s.style) parts.push(`style="${s.style}"`);
-  return parts.length ? ` class="${parts.filter(p => !p.startsWith('style')).join(' ')}"` : '';
-}
-
 // ─── Slide Renderers ──────────────────────────────────────────────────
 
 export function renderCover(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
-  return `<section class="slide is-active">
+  return `<section class="slide">
     ${chromeTop(d, s, ctx)}
     <div class="${d.kickerClass}">${esc(s.kicker || "")}</div>
     <${d.titleTag} class="${d.titleClass}">${s.title || ""}</${d.titleTag}>
@@ -75,7 +67,7 @@ export function renderCards(d: DesignTemplate, s: SlideData, ctx: PageContext, c
   const cards = s.cards || [];
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <${d.titleTag === "h1" ? "h2" : "h2"} class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</${d.titleTag === "h1" ? "h2" : "h2"}>
+    <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
     <div class="${gridClass}">
       ${cards.map((c) => "      " + d.cardHTML(c)).join("\n")}
     </div>
@@ -99,7 +91,7 @@ export function renderSteps(d: DesignTemplate, s: SlideData, ctx: PageContext): 
   const steps = s.steps || [];
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <${d.titleTag === "h1" ? "h2" : "h2"} class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</${d.titleTag === "h1" ? "h2" : "h2"}>
+    <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
     <div class="c-steps">
       ${steps.map((st) => "      " + d.stepHTML(st)).join("\n")}
     </div>
@@ -110,7 +102,7 @@ export function renderSteps(d: DesignTemplate, s: SlideData, ctx: PageContext): 
 export function renderCode(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <${d.titleTag === "h1" ? "h2" : "h2"} class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</${d.titleTag === "h1" ? "h2" : "h2"}>
+    <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
     ${d.codeHTML(s.code || "")}
     ${chromeBottom(d, s, ctx, "content · code")}
   </section>`;
@@ -123,7 +115,7 @@ export function renderThanks(d: DesignTemplate, s: SlideData, ctx: PageContext):
     <div style="margin:auto 0;text-align:center">
       <div class="${d.kickerClass}" style="text-align:center">thanks for reading</div>
       <${d.titleTag} class="${d.titleClass}" style="font-size:160px;text-align:center">${s.title || "谢谢 · thanks"}</${d.titleTag}>
-      ${d.dividerHTML() ? d.dividerHTML().replace('margin:2.47cqi 0', 'margin:24px auto') : ''}
+      ${d.dividerHTML()}
       <p class="${d.subtitleClass}" style="margin:0 auto">${esc(s.subtitle || "")}</p>
       ${badges.length ? `
       <div style="margin-top:40px">
@@ -138,7 +130,7 @@ export function renderBullets(d: DesignTemplate, s: SlideData, ctx: PageContext)
   const items = s.bullets || [];
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <${d.titleTag === "h1" ? "h2" : "h2"} class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</${d.titleTag === "h1" ? "h2" : "h2"}>
+    <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
     <div class="c-stack">
       ${items.map((item) => `
       <div class="c-icon-row">
@@ -157,7 +149,7 @@ export function renderKpi(d: DesignTemplate, s: SlideData, ctx: PageContext): st
   const kpis = s.kpis || [];
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <${d.titleTag === "h1" ? "h2" : "h2"} class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</${d.titleTag === "h1" ? "h2" : "h2"}>
+    <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
     <div class="c-row">
       ${kpis.map((k) => `
       <div class="c-kpi">

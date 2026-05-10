@@ -72,10 +72,10 @@ description: >
 **两级决策**：
 
 **Slides 级 — 选择 Design（视觉皮肤）**：
-1. 从 18 个 design 中选择（或读取 EXTEND.md 默认值）
+1. 从 18 个 design 概念中选择（`references/designs/`，或读取 EXTEND.md 默认值）。其中 3 个有完整 Design CSS + assemble pipeline 支持：`pastel-card`、`white-editorial`、`xhs-post`。其余 15 个可用于 AI 图片生成（style-definitions）
 2. Design = 可移植的 CSS 变量覆盖层，决定颜色 / 字体 / 纹理 / 密度 / 动画偏好
 3. 支持 4 维自定义覆盖（Texture × Mood × Typography × Density）
-4. 3:4 画布推荐使用 Design CSS（`assets/designs/{name}.css`），从极简（仅 CSS 变量，~30行）到完整（+ Chrome 样式 + c-* 扩展，~200行）渐进式构建。详见 `references/portrait-user-guide.md`
+4. 3:4 画布推荐使用 Design CSS（`assets/designs/{name}.css`，现有 3 个：pastel-card, white-editorial, xhs-post），从极简（仅 CSS 变量，~30行）到完整（+ Chrome 样式 + c-* 扩展，~200行）渐进式构建。详见 `references/portrait-user-guide.md`
 
 **Slide 级 — 选择渲染引擎**：
 
@@ -114,7 +114,7 @@ description: >
 
 **处理**：
 1. 根据 outline.md 和 style-decision.md，整理为结构化 JSON（`slides.json`），包含每页的 type、title、cards、steps 等数据
-2. **AI 图片生成**（如有）：使用 `references/prompt-construction.md` 的结构化三层 prompt 组装方式。通过 `bun scripts/imagine/main.ts`（单张）或 `build-batch.ts`（批量）调用。Provider、Model 等默认配置通过 `IMAGINE_*` 环境变量或 EXTEND.md 的 `ai_image` 节设置，CLI 参数可覆盖
+2. **AI 图片生成**（如有）：使用 `scripts/imagine/prompt-assembler.ts` 自动组装三层结构化 prompt（Layer 1: Image Role → Layer 2: Style Lock → Layer 3: Archetype + Content），或参考 `references/prompt-construction.md` 手动组装。通过 `bun scripts/imagine/main.ts --design <name> --archetype <name> --content "..."` 调用（单张）或 `build-batch.ts`（批量）。Provider、Model 等默认配置通过 `IMAGINE_*` 环境变量或 EXTEND.md 的 `ai_image` 节设置，CLI 参数可覆盖
 3. **HTML 组装**：`bun scripts/assemble-deck.ts --input slides.json --output index.html`。脚本自动完成 CSS 加载、Chrome 片段、c-* 组件拼装。`--asset-depth 2` 用于 `examples/` 输出路径
 4. **SVG 图**（如有）：直接内联到 slides.json 的 `html` 字段，或 `<img>` 引用
 5. 添加 `data-anim` 属性声明动画
@@ -127,9 +127,12 @@ description: >
 - `scripts/assemble/designs.ts` — Design 模板注册表（per-design 渲染函数）
 - `scripts/assemble/slides.ts` — 10 种 slide 类型渲染器
 - `scripts/assemble/skeleton.ts` — Deck HTML 骨架生成
+- `scripts/imagine/prompt-assembler.ts` — 三层结构化 prompt 组装引擎
+- `scripts/imagine/main.ts` — AI 图片生成入口
+- `scripts/imagine/config.ts` — Provider 注册表 + 环境变量默认值
 - `assets/base.css` — 设计系统（150行，30+ CSS Variables）
 - `assets/components.css` — 共享组件库（cqi + CSS vars，c-* 组件）
-- `assets/designs/` — Design CSS 文件（可移植视觉皮肤，含 chrome 样式 + c-* 扩展）
+- `assets/designs/` — Design CSS 文件（3 个：pastel-card, white-editorial, xhs-post）
 - `assets/runtime.js` — 交互引擎（960行，slide 切换、键盘导航、presenter 模式）
 
 **参考文档**：
