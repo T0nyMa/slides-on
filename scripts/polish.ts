@@ -412,7 +412,7 @@ function computeSpecificity(selector: string): number {
   if (attrMatches) b += attrMatches.length;
   const pseudoClassMatches = selector.match(/:(?!:)[\w-]+(?:\([^)]*\))?/g);
   if (pseudoClassMatches) b += pseudoClassMatches.length;
-  const elemMatches = selector.match(/(?:^|[\s>+~])([a-zA-Z][\w-]*)/g);
+  const elemMatches = selector.match(/(?:^|[\s>+~])(?![.#])([a-zA-Z][\w-]*)/g);
   if (elemMatches) c = elemMatches.length;
   const pseudoElemMatches = selector.match(/::[\w-]+/g);
   if (pseudoElemMatches) c += pseudoElemMatches.length;

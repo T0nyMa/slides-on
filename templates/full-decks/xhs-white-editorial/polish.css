@@ -1,0 +1,5 @@
+/* polish.css — auto-generated visual corrections */
+
+/* density: Slide #4: 7 components (max 6 for 3:4) — consider splitting or reducing */
+.slide:nth-child(4) .c-stack > * + * { margin-top: 0.8cqi; }
+.slide:nth-child(4) .c-card { padding: 0.8cqi 1.2cqi; }

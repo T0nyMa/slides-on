@@ -55,7 +55,7 @@ qa_deck() {
   if [ -f "$slides" ]; then
     echo ""
     echo "  [L0] validate-slides.ts"
-    bun "$ROOT/scripts/validate-slides.ts" "$slides" 2>&1 || { ((errors++)); echo "  → FAIL"; }
+    bun "$ROOT/scripts/validate-slides.ts" --input "$slides" 2>&1 || { ((errors++)); echo "  → FAIL"; }
   fi
 
   # L1: Polish (cascade audit + chrome consistency)
