@@ -187,12 +187,72 @@ const xhsPost: DesignTemplate = {
   },
 };
 
+// ─── hermes-cyber-terminal ─────────────────────────────────────────────
+
+const hermesCyberTerminal: DesignTemplate = {
+  titleTag: "h1",
+  titleClass: "chr-title",
+  subtitleClass: "chr-sub",
+  kickerClass: "chr-hc-prompt",
+  bodyClass: "chr-sub",
+
+  topbarHTML(chip, _chipColor, page, total) {
+    const chipHTML = chip ? `<span class="chr-hc-tag">${chip}</span>` : "";
+    return `<div class="chr-topbar"><div class="dots"><span></span><span></span><span></span></div><div>${chipHTML} · ${p(page, total)}</div></div>`;
+  },
+
+  footerHTML(left, right) {
+    return `<div class="chr-footer"><span>${left}</span><span>${right}</span></div>`;
+  },
+
+  blobHTML(_blobs) {
+    return `<div class="chr-hc-grid"></div>\n    <div class="chr-hc-scanlines"></div>`;
+  },
+
+  dividerHTML() {
+    return "";
+  },
+
+  cardHTML(card: CardItem) {
+    const color = card.color ? ` ${card.color}` : "";
+    const num = card.num ? `<div class="chr-hc-val">${card.num}</div>\n        ` : "";
+    return `<div class="c-card${color}">
+        <div class="chr-hc-lbl">${card.num || ""}</div>
+        ${num}<div class="chr-hc-val">${card.title}</div>
+        <div class="chr-hc-desc">${card.body}</div>
+      </div>`;
+  },
+
+  cardNumHTML(num: string) {
+    return `<div class="chr-hc-val">${num}</div>`;
+  },
+
+  stepHTML(step: StepItem) {
+    return `<div class="c-step">
+        <div class="chr-hc-val">${step.num}</div>
+        <div class="c-step-content">
+          <div class="c-step-title">${step.title}</div>
+          ${step.body ? `<div class="c-step-body">${step.body}</div>` : ""}
+        </div>
+      </div>`;
+  },
+
+  codeHTML(code: string) {
+    return `<pre class="chr-codebox">${code}</pre>`;
+  },
+
+  quoteHTML(quote: string, attr?: string) {
+    return `<div class="c-quote">${quote}</div>${attr ? `\n      <div class="c-quote-attr">${attr}</div>` : ""}`;
+  },
+};
+
 // ─── Registry ─────────────────────────────────────────────────────────
 
 export const DESIGN_TEMPLATES: Record<string, DesignTemplate> = {
   "pastel-card": pastelCard,
   "white-editorial": whiteEditorial,
   "xhs-post": xhsPost,
+  "hermes-cyber-terminal": hermesCyberTerminal,
 };
 
 export function getDesignTemplate(name: string): DesignTemplate {

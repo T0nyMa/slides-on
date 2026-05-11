@@ -200,6 +200,18 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
   justify-content: flex-start;
 }
 
+/* .landscape class — 16:9 canvas (standard presentation) */
+.landscape .deck {
+  width: min(100vw, calc(100vh * 16 / 9));
+  height: min(100vh, calc(100vw * 9 / 16));
+  margin: auto; overflow: hidden;
+  container-type: inline-size;
+}
+.landscape .slide {
+  padding: 3.5cqi 5cqi;
+  justify-content: center;
+}
+
 /* ================= PRINT ================= */
 @media print{
   .slide{position:relative;opacity:1!important;transform:none!important;page-break-after:always;height:100vh}

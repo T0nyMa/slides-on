@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>从零搭建你的第一个 AI Agent · 小红书技术教程</title>
+<link rel="stylesheet" href="../../../assets/base.css">
+<link rel="stylesheet" href="../../../assets/fonts.css">
+<link rel="stylesheet" href="../../../assets/animations/animations.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="tpl-xhs-tt portrait">
+<div class="deck">
+
+  <!-- 1. Cover -->
+  <section class="slide tt-cover" data-title="Cover" style="padding:4.94cqi">
+    <div class="tt-cover-sub">综合 Anthropic + OpenAI 官方资料 · 完整8章教程</div>
+    <h1 class="tt-cover-title">
+      从<span class="hl-blue">零</span>搭建<br>
+      你的第一个<br>
+      <span class="hl-gold">AI Agent</span>
+    </h1>
+    <div class="tt-illust tt-illust-lg" data-prompt="一个背包客站在台阶路上，前方有写着章节名的路牌，水彩墨线风格">
+      插图区：学习路径图
+    </div>
+    <div class="tt-cover-footer">
+      <div class="tt-cover-source">Source: @hooeem · 572K views · 5.2K bookmarks</div>
+      <div class="tt-cover-badge">全8章 · 10页精华图解</div>
+    </div>
+  </section>
+
+  <!-- 2. Step-flow: 动手搭建 -->
+  <section class="slide" data-title="动手搭建">
+    <h2 class="tt-title">动手：搭建你的第一个Agent</h2>
+    <div class="tt-step-flow">
+
+      <div class="tt-step">
+        <div class="tt-illust tt-illust-md" data-prompt="一个人在纸上写字，旁边有咖啡杯，水彩墨线风格">插图</div>
+        <div class="tt-step-text">
+          <div class="tt-step-title">写一句话描述你的Agent</div>
+          <div class="tt-step-body">
+            例：我想要一个Agent，帮我调研加密项目并输出风险分析报告<br>
+            <strong>要具体！</strong>不要写"帮我做事"这种模糊描述<br>
+            Agent = Role + Goal + Tools + Rules + Output
+          </div>
+        </div>
+      </div>
+
+      <div class="tt-connector">
+        <span class="tt-connector-arrow">▼</span>
+        <span class="tt-connector-text">把这句话喂给AI</span>
+      </div>
+
+      <div class="tt-step">
+        <div class="tt-illust tt-illust-md" data-prompt="一个机器人拿着扳手在修理齿轮，水彩墨线风格">插图</div>
+        <div class="tt-step-text">
+          <div class="tt-step-title">让AI帮你设计Agent</div>
+          <div class="tt-step-body">
+            把这段话发给Claude或ChatGPT：<br>
+            我想搭建一个AI Agent，目标是[你的目标]，需要用到[工具列表]，必须遵守[规则]。请帮我生成：1.系统提示词 2.工具清单 3.十个测试用例
+          </div>
+        </div>
+      </div>
+
+      <div class="tt-connector">
+        <span class="tt-connector-arrow">▼</span>
+        <span class="tt-connector-text">拿到方案后</span>
+      </div>
+
+      <div class="tt-step">
+        <div class="tt-illust tt-illust-md" data-prompt="一个人在电脑前写代码，旁边有AI机器人助手，水彩墨线风格">插图</div>
+        <div class="tt-step-text">
+          <div class="tt-step-title">搭建最小可用版本</div>
+          <div class="tt-step-body">
+            不要多Agent，不要复杂记忆，不要RAG<br>
+            一个Agent + 一个系统提示词 + 最多两个工具<br>
+            Anthropic适合：文件操作/Shell/MCP/编程任务<br>
+            OpenAI适合：SDK开发/Handoff/Guardrails/量产
+          </div>
+        </div>
+      </div>
+
+      <div class="tt-connector">
+        <span class="tt-connector-arrow">▼</span>
+        <span class="tt-connector-text">搭好后立刻</span>
+      </div>
+
+      <div class="tt-step">
+        <div class="tt-illust tt-illust-md" data-prompt="多个试管和烧杯，有的打勾有的打叉，水彩墨线风格">插图</div>
+        <div class="tt-step-text">
+          <div class="tt-step-title">用10个真实案例测试</div>
+          <div class="tt-step-body">
+            不要用完美输入！用脏的、模糊的、带错别字的<br>
+            好的测试："为啥又扣我钱了搞什么鬼"<br>
+            记录每次失败的原因：Prompt不清晰？缺工具？缺规则？
+          </div>
+        </div>
+      </div>
+
+      <div class="tt-connector">
+        <span class="tt-connector-arrow">▼</span>
+        <span class="tt-connector-text">根据测试结果</span>
+      </div>
+
+      <div class="tt-step">
+        <div class="tt-illust tt-illust-md" data-prompt="一个机器人在修理自己，旁边有工具箱，水彩墨线风格">插图</div>
+        <div class="tt-step-text">
+          <div class="tt-step-title">每次只改进一个地方</div>
+          <div class="tt-step-body">
+            严格按这个顺序改进：<br>
+            1. 优化Prompt措辞 &emsp;4. 加工具（仅在必要时）<br>
+            2. 规范输出格式 &emsp;&emsp;5. 加记忆（仅在必要时）<br>
+            3. 增加示例 &emsp;&emsp;&emsp;&emsp;6. 加RAG（仅在必要时）
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. Formula + Icon-list: 万能公式 -->
+  <section class="slide" data-title="万能公式">
+    <h2 class="tt-title">Agent万能公式和5种新手类型</h2>
+
+    <div class="tt-subtitle text-center mb-sm">Agent公式和实例</div>
+    <div class="tt-formula">Agent = Role + Goal + Tools + Rules + Output</div>
+
+    <div class="mb-md">
+      <div class="tt-badge-row">
+        <span class="tt-badge green">目标是什么</span>
+        <span class="tt-badge-row-text">Agent要产出什么成果</span>
+      </div>
+      <div class="tt-badge-row">
+        <span class="tt-badge blue">需要什么信息</span>
+        <span class="tt-badge-row-text">网页搜索、文件、数据库、还是用户消息</span>
+      </div>
+      <div class="tt-badge-row">
+        <span class="tt-badge orange">允许做什么</span>
+        <span class="tt-badge-row-text">搜索、编辑、发邮件、写代码、调API</span>
+      </div>
+      <div class="tt-badge-row">
+        <span class="tt-badge red">必须遵守什么</span>
+        <span class="tt-badge-row-text">语气、格式、安全规则、不确定时怎么办</span>
+      </div>
+    </div>
+
+    <div class="tt-example-box mb-md">
+      Role：加密货币研究助手<br>
+      Goal：找到准确信息并清晰总结<br>
+      Tools：网页搜索、文件搜索、计算器<br>
+      Rules：引用来源、不猜测、标注不确定性<br>
+      Output：摘要 + 风险 + 机会 + 最终判断
+    </div>
+
+    <div class="tt-subtitle mb-sm">5种新手Agent类型</div>
+    <div class="tt-icon-list">
+      <div class="tt-icon-row">
+        <div class="tt-illust tt-illust-sm" data-prompt="地球仪和放大镜，水彩墨线风格">插图</div>
+        <div class="tt-icon-row-text">
+          <div class="tt-icon-row-title">Research 研究型</div>
+          <div class="tt-icon-row-body">搜集信息并总结。需要：网页搜索 + 清晰输出格式</div>
+        </div>
+      </div>
+      <div class="tt-icon-row">
+        <div class="tt-illust tt-illust-sm" data-prompt="一支钢笔在纸上写字，水彩墨线风格">插图</div>
+        <div class="tt-icon-row-text">
+          <div class="tt-icon-row-title">Content 内容型</div>
+          <div class="tt-icon-row-body">写作、改写、摘要、转化内容。需要：强系统提示词 + 风格示例</div>
+        </div>
+      </div>
+      <div class="tt-icon-row">
+        <div class="tt-illust tt-illust-sm" data-prompt="齿轮和箭头流程图，水彩墨线风格">插图</div>
+        <div class="tt-icon-row-text">
+          <div class="tt-icon-row-title">Workflow 流程型</div>
+          <div class="tt-icon-row-body">执行固定业务流程。需要：清晰分类 + 规则 + 可能需要API</div>
+        </div>
+      </div>
+      <div class="tt-icon-row">
+        <div class="tt-illust tt-illust-sm" data-prompt="书架上的书和文件夹，水彩墨线风格">插图</div>
+        <div class="tt-icon-row-text">
+          <div class="tt-icon-row-title">Knowledge 知识型</div>
+          <div class="tt-icon-row-body">从你的文档中回答问题。需要：文件搜索或RAG</div>
+        </div>
+      </div>
+      <div class="tt-icon-row">
+        <div class="tt-illust tt-illust-sm" data-prompt="机械臂在操作面板，水彩墨线风格">插图</div>
+        <div class="tt-icon-row-text">
+          <div class="tt-icon-row-title">Operator 操作型</div>
+          <div class="tt-icon-row-body">在环境中执行动作。需要：工具 + 权限 + 安全边界</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Section-boxes: 核心引擎 -->
+  <section class="slide" data-title="核心引擎">
+    <h2 class="tt-title">Agent的核心引擎</h2>
+
+    <div class="tt-section">
+      <div class="tt-section-title">核心循环</div>
+      <div class="tt-two-col">
+        <div class="tt-illust" style="height:22.22cqi" data-prompt="循环图：输入→推理→决策→工具→记忆→回复→执行，中间有大脑和手的图标，水彩墨线风格">
+          插图：核心循环图
+        </div>
+        <div>
+          <div class="tt-body" style="font-weight:700;margin-bottom:0.74cqi">所有Agent共享同一个核心循环</div>
+          <div class="tt-small">
+            用户输入 → LLM推理 → 决策：回复还是调用工具<br>
+            如果调用工具 → 执行 → 结果反馈回LLM → 继续循环
+          </div>
+          <div class="tt-body mt-sm">
+            <strong>LLM = 大脑</strong><br>
+            <span class="tt-small">负责推理和决策</span>
+          </div>
+          <div class="tt-body mt-sm">
+            <strong>Tools = 双手</strong><br>
+            <span class="tt-small">执行搜索、计算、文件读写</span>
+          </div>
+          <div class="tt-body mt-sm">
+            <strong>Memory = 笔记本</strong><br>
+            <span class="tt-small">记录对话历史和上下文</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tt-section">
+      <div class="tt-section-title">增强型LLM三大能力</div>
+      <div class="tt-card-grid cols-3">
+        <div class="tt-card blue">
+          <div class="tt-card-title">工具调用</div>
+          <div class="tt-card-body">让模型调用外部函数<br>计算器、数据库、API、文件操作</div>
+        </div>
+        <div class="tt-card amber">
+          <div class="tt-card-title">信息检索</div>
+          <div class="tt-card-body">从外部拉取相关信息<br>搜索引擎、文档库、向量数据库</div>
+        </div>
+        <div class="tt-card teal">
+          <div class="tt-card-title">记忆存储</div>
+          <div class="tt-card-body">跨轮对话保持上下文<br>消息历史、持久化存储</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tt-section">
+      <div class="tt-section-title">Workflow vs Agent</div>
+      <div class="tt-comparison">
+        <div>
+          <div class="tt-illust" style="height:11.11cqi" data-prompt="一辆火车在铁轨上行驶，水彩墨线风格">插图</div>
+          <div class="tt-subtitle mt-sm">Workflow 确定性执行</div>
+          <div class="tt-small">
+            代码控制流程，相同输入相同路径<br>
+            成本低，适合步骤固定的任务
+          </div>
+        </div>
+        <div>
+          <div class="tt-illust" style="height:11.11cqi" data-prompt="一个探险者站在分叉路口，带着帽子和背包，水彩墨线风格">插图</div>
+          <div class="tt-subtitle mt-sm">Agent 动态决策</div>
+          <div class="tt-small">
+            LLM自主决定下一步<br>
+            灵活但成本高，适合开放性任务
+          </div>
+        </div>
+      </div>
+      <div class="tt-sep-text">起步建议：先用Workflow，搞不定再升级成Agent</div>
+    </div>
+  </section>
+
+  <!-- 5. Icon-list: 五种工作流模式 -->
+  <section class="slide" data-title="工作流模式">
+    <h2 class="tt-title">五种核心工作流模式</h2>
+    <div class="tt-icon-list flex-1">
+      <div class="tt-icon-row">
+        <div class="tt-illust tt-illust-md" data-prompt="流水线上的工人依次传递物品，水彩墨线风格">插图</div>
+        <div class="tt-icon-row-text">
+          <div class="tt-icon-row-title">Prompt Chaining 提示链</div>
+          <div class="tt-icon-row-body">
+            任务拆成多步串联执行，每步处理上一步输出<br>
+            中间加质检门控验证质量<br>
+            适合可清晰拆分的固定子任务
+          </div>
+        </div>
+      </div>
+      <div class="tt-icon-row">
+        <div class="tt-illust tt-illust-md" data-prompt="邮筒和信件分拣，水彩墨线风格">插图</div>
+        <div class="tt-icon-row-text">
+          <div class="tt-icon-row-title">Routing 路由分发</div>
+          <div class="tt-icon-row-body">
+            先分类，再派给专属处理器<br>
+            每类路由到专用prompt处理<br>
+            适合不同类别需要完全不同处理逻辑
+          </div>
+        </div>
+      </div>
+      <div class="tt-icon-row">
+        <div class="tt-illust tt-illust-md" data-prompt="多条小船在河流中并行航行，水彩墨线风格">插图</div>
+        <div class="tt-icon-row-text">
+          <div class="tt-icon-row-title">Parallelisation 并行处理</div>
+          <div class="tt-icon-row-body">
+            多路并发，最后汇总结果<br>
+            切分法：独立子任务同时处理<br>
+            适合子任务互不依赖或需要高置信决策
+          </div>
+        </div>
+      </div>
+      <div class="tt-icon-row">
+        <div class="tt-illust tt-illust-md" data-prompt="控制塔指挥多个工人干活，水彩墨线风格">插图</div>
+        <div class="tt-icon-row-text">
+          <div class="tt-icon-row-title">Orchestrator-Workers 指挥执行</div>
+          <div class="tt-icon-row-body">
+            中枢动态派活，子任务运行时决定<br>
+            不是预设的固定分工，是实时调度<br>
+            适合无法预测结构的复杂任务
+          </div>
+        </div>
+      </div>
+      <div class="tt-icon-row">
+        <div class="tt-illust tt-illust-md" data-prompt="一个人用放大镜检查作品，旁边有评分表，水彩墨线风格">插图</div>
+        <div class="tt-icon-row-text">
+          <div class="tt-icon-row-title">Evaluator-Optimiser 评估优化</div>
+          <div class="tt-icon-row-body">
+            一个生成，一个评审，循环改进<br>
+            不合格就打回重做，直到达标<br>
+            适合有明确质量标准的迭代任务
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Mixed-cards: 记忆系统 -->
+  <section class="slide" data-title="记忆系统">
+    <h2 class="tt-title">记忆系统三选一</h2>
+
+    <div class="tt-section">
+      <div class="tt-section-title">两种记忆类型</div>
+      <div class="tt-two-col">
+        <div style="text-align:center">
+          <div class="tt-illust" style="height:13.58cqi" data-prompt="桌子上摆满便利贴和备忘录，水彩墨线风格">插图</div>
+          <div class="tt-subtitle mt-sm">短期记忆</div>
+          <div class="tt-small">短期记忆 = 对话历史<br>就是到目前为止聊了什么，默认就有</div>
+        </div>
+        <div style="text-align:center">
+          <div class="tt-illust" style="height:13.58cqi" data-prompt="书架上整齐排列着PDF和文件夹，水彩墨线风格">插图</div>
+          <div class="tt-subtitle mt-sm">长期记忆</div>
+          <div class="tt-small">长期记忆 = 外部知识库<br>你的笔记、PDF、文档、数据库，需要额外配置</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tt-section">
+      <div class="tt-section-title">三条路怎么选</div>
+      <div class="tt-card-grid cols-3">
+        <div class="tt-card amber">
+          <div class="tt-card-title">选项A 不加记忆</div>
+          <div class="tt-card-body">
+            70%的场景够用<br>
+            适合大多数新手<br>
+            不需要跨对话记住东西就不要加
+          </div>
+        </div>
+        <div class="tt-card blue">
+          <div class="tt-card-title">选项B 对话记忆</div>
+          <div class="tt-card-body">
+            SDK已内置<br>
+            大部分框架自动处理<br>
+            不重置消息列表就行
+          </div>
+        </div>
+        <div class="tt-card green">
+          <div class="tt-card-title">选项C 文件记忆 RAG</div>
+          <div class="tt-card-body">
+            上传文档加文件搜索工具<br>
+            比自建向量数据库简单得多<br>
+            适合需要查阅大量文档的场景
+          </div>
+        </div>
+      </div>
+      <div class="tt-sep-text">大多数选A 需要上下文选B 需要查文档选C</div>
+    </div>
+
+    <div class="tt-warn-box">
+      <div class="tt-illust tt-illust-sm" data-prompt="一堆缠绕的管道和电线，很混乱，水彩墨线风格">插图</div>
+      <div class="tt-warn-box-text">
+        <div class="tt-warn-box-title">过度设计警告</div>
+        <div class="tt-warn-box-body">
+          还没确认是否需要记忆就急着加向量数据库<br>
+          还没测试简单方案就搭复杂embedding流水线<br>
+          <strong>铁律：Agent没有记忆也能跑就不要加</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Cheat Sheet: 速查表 -->
+  <section class="slide" data-title="速查表" style="padding:3.7cqi 4.94cqi 3.7cqi">
+    <h2 class="tt-title" style="margin-bottom:1.48cqi">⚡ AI Agent 全课程速查表</h2>
+
+    <div class="tt-two-col mb-md">
+      <div>
+        <div class="tt-subtitle text-center" style="font-size:2.47cqi">Agent核心公式</div>
+        <div class="tt-formula" style="font-size:3.21cqi;padding:1.85cqi;text-align:left">
+          Agent = Role + Goal +<br>Tools + Rules + Output
+        </div>
+        <div class="tt-small">搭建任何Agent前，先回答四个问题：<br>目标？信息？权限？规则？</div>
+      </div>
+      <div>
+        <div class="tt-subtitle text-center" style="font-size:2.47cqi">核心循环</div>
+        <div class="tt-illust" style="height:16.05cqi" data-prompt="循环流程图：输入→反馈→核心循环→推理→决策（回复/工具），水彩墨线风格">
+          插图：核心循环
+        </div>
+      </div>
+    </div>
+
+    <table class="tt-table">
+      <thead><tr><th>模式</th><th>一句话</th><th>适用场景</th></tr></thead>
+      <tbody>
+        <tr><td>Prompt Chain</td><td>串联多步，逐步加工</td><td>固定子任务，如先写再翻译</td></tr>
+        <tr><td>Routing</td><td>先分类，再专人处理</td><td>不同类别需要不同逻辑</td></tr>
+        <tr><td>Parallelisation</td><td>多路并发，结果汇总</td><td>独立子任务或需要投票共识</td></tr>
+        <tr><td>Orchestrator</td><td>中枢实时派活</td><td>无法预测结构的复杂任务</td></tr>
+        <tr><td>Evaluator</td><td>生成+评审循环</td><td>有明确质量标准的迭代任务</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tt-two-col mb-md">
+      <div>
+        <div class="tt-subtitle" style="font-size:2.72cqi;margin-bottom:0.74cqi">选型速查</div>
+        <div class="tt-dtree">
+          <div class="tt-dtree-root">推选 →</div>
+          <div class="tt-dtree-branch">需要文件/Shell/MCP/编程？<br>→ <strong>Anthropic</strong></div>
+          <div class="tt-dtree-branch">需要SDK/Handoff/<br>Guardrails/量产？→ <strong>OpenAI</strong></div>
+        </div>
+      </div>
+      <div>
+        <div class="tt-subtitle" style="font-size:2.72cqi;margin-bottom:0.74cqi">五种新手Agent</div>
+        <ul class="tt-compact-list">
+          <li><span class="icon">🔍</span><strong>Research：</strong>搜集+总结</li>
+          <li><span class="icon">✏️</span><strong>Content：</strong>写作+改写</li>
+          <li><span class="icon">⚙️</span><strong>Workflow：</strong>固定流程</li>
+          <li><span class="icon">📋</span><strong>Knowledge：</strong>文档问答</li>
+          <li><span class="icon">🔧</span><strong>Operator：</strong>环境操作</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tt-warn-box" style="padding:1.48cqi 1.85cqi">
+      <div class="tt-warn-box-text">
+        <ul class="tt-cheat-warn">
+          <li>一上来就搞20个工具 → 先用1-2个</li>
+          <li>直接上多Agent → 先跑通单Agent</li>
+          <li>加向量数据库 → 先确认需不需要记忆</li>
+          <li>只用完美输入测试 → 用脏数据测</li>
+          <li>想造全能超级Agent → 一个Agent一个任务</li>
+        </ul>
+      </div>
+      <div class="tt-illust tt-illust-sm" data-prompt="警告三角形标志，水彩墨线风格">⚠️</div>
+    </div>
+  </section>
+
+</div>
+<script src="../../../assets/runtime.js"></script>
+</body></html>

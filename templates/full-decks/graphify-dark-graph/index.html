@@ -6,15 +6,33 @@
 <title>Graphify Dark Graph</title>
 <link rel="stylesheet" href="../../../assets/fonts.css">
 <link rel="stylesheet" href="../../../assets/base.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../../assets/components.css">
+<link rel="stylesheet" href="../../../assets/designs/pastel-card.css">
 </head>
-<body class="tpl-graphify-dark-graph">
+<body class="d-pastel-card landscape">
 <div class="deck">
 
-  <!-- 1. COVER -->
-  <section class="slide is-active">
-    <div class="gd-ambient"><div class="gd-orb gd-orb-1"></div><div class="gd-orb gd-orb-2"></div><div class="gd-orb gd-orb-3"></div></div>
-    <!-- live force-directed graph bg -->
+  <section class="slide is-active" style="background:linear-gradient(160deg,#08080f,#0e1020 50%,#08080f)">
+    <style>
+      .d-pastel-card {
+        --bg:#08080f;--surface:rgba(255,255,255,.04);--surface-2:rgba(10,14,30,.7);
+        --border:rgba(255,255,255,.1);--border-strong:rgba(255,255,255,.16);
+        --text-1:#f0ece4;--text-2:#b0a99e;--text-3:#7a746c;
+        --accent:#e8a87c;--accent-2:#7eb8da;--accent-3:#7ed3a4;
+        --grad:linear-gradient(135deg,#e8a87c,#d4a0b9,#b8a4d6);
+        --radius:20px;--shadow:0 8px 32px rgba(0,0,0,.3);
+        --shadow-lg:0 16px 48px rgba(0,0,0,.5);
+        --font-display:'Inter','Noto Sans SC',sans-serif;
+        --font-serif:'Inter','Noto Sans SC',sans-serif;
+        background:#08080f;font-family:'Inter','Noto Sans SC',-apple-system,sans-serif;
+      }
+      @keyframes gdDrift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(25px,-20px) scale(1.08)}}@keyframes gdRainbow{0%{background-position:0% center}100%{background-position:200% center}}
+    </style>
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden">
+      <div style="position:absolute;width:520px;height:520px;border-radius:50%;filter:blur(110px);opacity:.35;background:radial-gradient(circle,rgba(126,184,218,.55),transparent 70%);top:-12%;left:-6%;animation:gdDrift 22s ease-in-out infinite alternate"></div>
+      <div style="position:absolute;width:460px;height:460px;border-radius:50%;filter:blur(110px);opacity:.35;background:radial-gradient(circle,rgba(232,168,124,.45),transparent 70%);top:55%;right:-8%;animation:gdDrift 22s ease-in-out infinite alternate;animation-delay:-6s"></div>
+      <div style="position:absolute;width:420px;height:420px;border-radius:50%;filter:blur(110px);opacity:.35;background:radial-gradient(circle,rgba(184,164,214,.4),transparent 70%);bottom:-8%;left:30%;animation:gdDrift 22s ease-in-out infinite alternate;animation-delay:-11s"></div>
+    </div>
     <svg viewBox="0 0 1600 900" style="position:absolute;inset:0;width:100%;height:100%;opacity:.38;z-index:1" xmlns="http://www.w3.org/2000/svg">
       <g stroke="#7eb8da" stroke-width="1" stroke-opacity=".5" fill="none">
         <line x1="300" y1="200" x2="520" y2="340"/>
@@ -44,49 +62,54 @@
         <circle cx="360" cy="640" r="11" fill="#7eb8da"/>
       </g>
     </svg>
-    <div class="gd-snum">01 / 08</div>
+    <div class="chr-page" style="position:absolute;top:28px;right:40px;z-index:3;font-size:12px;letter-spacing:.25em">01 · 08</div>
     <div style="margin-top:auto">
-      <p class="gd-eyebrow">Tech Sharing · 纯干货</p>
-      <h1 class="gd-h1" style="font-size:88px"><span class="gd-rainbow">手把手用 Graphify<br>搭建个人知识图谱</span></h1>
-      <p class="gd-lede" style="margin-top:20px">一行命令 · 全多模态 · 诚实审计 —— <span class="gd-accent">把任何文件夹变成可导航的知识网络。</span></p>
-      <p class="gd-eyebrow" style="margin-top:26px">↑ 背景就是 Graphify 真实跑出来的知识图谱</p>
+      <p class="chr-kicker" style="font-size:13px;letter-spacing:.2em;margin-bottom:10px">Tech Sharing · 纯干货</p>
+      <h1 class="chr-title" style="font-size:88px;line-height:1.08;margin:10px 0"><span style="background:linear-gradient(90deg,#ff0080,#ff4d00,#ff9900,#ffe600,#00c853,#0091ea,#6200ea,#ff0080);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gdRainbow 4s linear infinite">手把手用 Graphify<br>搭建个人知识图谱</span></h1>
+      <p class="chr-sub" style="margin-top:20px;font-size:22px;font-weight:300;line-height:1.65;max-width:850px">一行命令 · 全多模态 · 诚实审计 —— <span style="color:var(--accent);font-weight:500">把任何文件夹变成可导航的知识网络。</span></p>
+      <p class="chr-kicker" style="margin-top:26px;font-size:13px;letter-spacing:.2em">↑ 背景就是 Graphify 真实跑出来的知识图谱</p>
     </div>
   </section>
 
-  <!-- 2. SECTION DIVIDER -->
-  <section class="slide">
-    <div class="gd-ambient"><div class="gd-orb gd-orb-1"></div><div class="gd-orb gd-orb-2"></div></div>
-    <div class="gd-snum">02 / 08</div>
+  <section class="slide" style="background:linear-gradient(160deg,#08080f,#0e1020 50%,#08080f)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden">
+      <div style="position:absolute;width:520px;height:520px;border-radius:50%;filter:blur(110px);opacity:.35;background:radial-gradient(circle,rgba(126,184,218,.55),transparent 70%);top:-12%;left:-6%;animation:gdDrift 22s ease-in-out infinite alternate"></div>
+      <div style="position:absolute;width:460px;height:460px;border-radius:50%;filter:blur(110px);opacity:.35;background:radial-gradient(circle,rgba(232,168,124,.45),transparent 70%);top:55%;right:-8%;animation:gdDrift 22s ease-in-out infinite alternate;animation-delay:-6s"></div>
+    </div>
+    <div class="chr-page" style="position:absolute;top:28px;right:40px;z-index:3;font-size:12px;letter-spacing:.25em">02 · 08</div>
     <div style="margin:auto 0">
-      <div class="gd-eyebrow">Part 01</div>
-      <h1 class="gd-h1" style="font-size:120px">Why <span class="gd-grad">Graph</span>?</h1>
-      <p class="gd-lede">folder → tree → graph，人类认知的下一步</p>
+      <div class="chr-kicker" style="font-size:13px;letter-spacing:.2em;margin-bottom:8px">Part 01</div>
+      <h1 class="chr-title" style="font-size:120px;line-height:1.05">Why <span class="c-grad">Graph</span>?</h1>
+      <p class="chr-sub" style="font-size:22px;font-weight:300;line-height:1.65">folder → tree → graph，人类认知的下一步</p>
     </div>
   </section>
 
-  <!-- 3. CONTENT — plugin grid -->
-  <section class="slide">
-    <div class="gd-ambient"><div class="gd-orb gd-orb-2"></div><div class="gd-orb gd-orb-3"></div></div>
-    <div class="gd-snum">03 / 08</div>
-    <p class="gd-eyebrow">Feature Map</p>
-    <h2 class="gd-h2">一个工具，<span class="gd-grad">四件事</span></h2>
-    <div class="gd-grid-4">
-      <div class="gd-glass gd-glass-warm"><div style="font-size:30px">📂</div><h4 style="margin:10px 0 6px">Folder Ingest</h4><p class="gd-dim" style="font-size:13px;line-height:1.55">递归扫描任意路径，支持 md / pdf / 代码 / 图片</p></div>
-      <div class="gd-glass gd-glass-blue"><div style="font-size:30px">🧠</div><h4 style="margin:10px 0 6px">Entity Extract</h4><p class="gd-dim" style="font-size:13px;line-height:1.55">用 LLM 抽概念、人物、事件、关系</p></div>
-      <div class="gd-glass gd-glass-green"><div style="font-size:30px">🕸️</div><h4 style="margin:10px 0 6px">Force Graph</h4><p class="gd-dim" style="font-size:13px;line-height:1.55">D3 力导向，点击即跳转原文</p></div>
-      <div class="gd-glass"><div style="font-size:30px">🔍</div><h4 style="margin:10px 0 6px">Audit Trail</h4><p class="gd-dim" style="font-size:13px;line-height:1.55">每条边都能追溯到 source span</p></div>
+  <section class="slide" style="background:linear-gradient(160deg,#08080f,#0e1020 50%,#08080f)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden">
+      <div style="position:absolute;width:460px;height:460px;border-radius:50%;filter:blur(110px);opacity:.35;background:radial-gradient(circle,rgba(232,168,124,.45),transparent 70%);top:55%;right:-8%;animation:gdDrift 22s ease-in-out infinite alternate;animation-delay:-6s"></div>
+      <div style="position:absolute;width:420px;height:420px;border-radius:50%;filter:blur(110px);opacity:.35;background:radial-gradient(circle,rgba(184,164,214,.4),transparent 70%);bottom:-8%;left:30%;animation:gdDrift 22s ease-in-out infinite alternate;animation-delay:-11s"></div>
     </div>
-    <div class="gd-glass gd-glass-warm" style="margin-top:24px"><p style="font-size:18px;line-height:1.6">它不是「又一个 RAG」—— 它是 <span class="gd-accent">把检索结果画出来，让你一眼就知道信息长什么样</span>。</p></div>
+    <div class="chr-page" style="position:absolute;top:28px;right:40px;z-index:3;font-size:12px;letter-spacing:.25em">03 · 08</div>
+    <p class="chr-kicker" style="font-size:13px;letter-spacing:.2em;margin-bottom:6px">Feature Map</p>
+    <h2 class="chr-heading">一个工具，<span class="c-grad">四件事</span></h2>
+    <div class="g4" style="margin-top:24px;gap:14px">
+      <div class="c-glass" style="background:rgba(232,168,124,.06);border-color:rgba(232,168,124,.2);backdrop-filter:blur(20px) saturate(160%);border-radius:20px"><div style="font-size:30px">📂</div><h4 style="margin:10px 0 6px;font-weight:600;font-size:18px">Folder Ingest</h4><p class="c-body" style="font-size:13px;line-height:1.55">递归扫描任意路径，支持 md / pdf / 代码 / 图片</p></div>
+      <div class="c-glass" style="background:rgba(126,184,218,.06);border-color:rgba(126,184,218,.2);backdrop-filter:blur(20px) saturate(160%);border-radius:20px"><div style="font-size:30px">🧠</div><h4 style="margin:10px 0 6px;font-weight:600;font-size:18px">Entity Extract</h4><p class="c-body" style="font-size:13px;line-height:1.55">用 LLM 抽概念、人物、事件、关系</p></div>
+      <div class="c-glass" style="background:rgba(126,211,164,.06);border-color:rgba(126,211,164,.2);backdrop-filter:blur(20px) saturate(160%);border-radius:20px"><div style="font-size:30px">🕸️</div><h4 style="margin:10px 0 6px;font-weight:600;font-size:18px">Force Graph</h4><p class="c-body" style="font-size:13px;line-height:1.55">D3 力导向，点击即跳转原文</p></div>
+      <div class="c-glass" style="backdrop-filter:blur(20px) saturate(160%);border-radius:20px"><div style="font-size:30px">🔍</div><h4 style="margin:10px 0 6px;font-weight:600;font-size:18px">Audit Trail</h4><p class="c-body" style="font-size:13px;line-height:1.55">每条边都能追溯到 source span</p></div>
+    </div>
+    <div class="c-glass" style="margin-top:24px;background:rgba(232,168,124,.06);border-color:rgba(232,168,124,.2);backdrop-filter:blur(20px) saturate(160%);border-radius:20px"><p style="font-size:18px;line-height:1.6">它不是「又一个 RAG」—— 它是 <span style="color:var(--accent);font-weight:500">把检索结果画出来，让你一眼就知道信息长什么样</span>。</p></div>
   </section>
 
-  <!-- 4. CODE -->
-  <section class="slide">
-    <div class="gd-ambient"><div class="gd-orb gd-orb-1"></div></div>
-    <div class="gd-snum">04 / 08</div>
-    <p class="gd-eyebrow">One command</p>
-    <h2 class="gd-h2">从 0 到图谱，<span class="gd-grad">大概 90 秒</span></h2>
-    <p class="gd-cmd" style="margin:16px 0 22px">$ graphify ~/notes --out ./graph</p>
-    <pre class="gd-codebox"><span class="cm"># graphify.config.yaml</span>
+  <section class="slide" style="background:linear-gradient(160deg,#08080f,#0e1020 50%,#08080f)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden">
+      <div style="position:absolute;width:520px;height:520px;border-radius:50%;filter:blur(110px);opacity:.35;background:radial-gradient(circle,rgba(126,184,218,.55),transparent 70%);top:-12%;left:-6%;animation:gdDrift 22s ease-in-out infinite alternate"></div>
+    </div>
+    <div class="chr-page" style="position:absolute;top:28px;right:40px;z-index:3;font-size:12px;letter-spacing:.25em">04 · 08</div>
+    <p class="chr-kicker" style="font-size:13px;letter-spacing:.2em;margin-bottom:6px">One command</p>
+    <h2 class="chr-heading">从 0 到图谱，<span class="c-grad">大概 90 秒</span></h2>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:var(--accent-3);text-shadow:0 0 30px rgba(126,211,164,.45),0 0 60px rgba(126,211,164,.15);letter-spacing:-.01em;margin:16px 0 22px">$ graphify ~/notes --out ./graph</p>
+    <pre class="c-codebox" style="font-size:14px;line-height:1.8;border-radius:14px;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.08);color:#d8d4c8"><span class="cm"># graphify.config.yaml</span>
 <span class="kw">ingest</span>:
   paths: [<span class="st">~/notes</span>, <span class="st">~/code/docs</span>]
   include: [<span class="st">"*.md"</span>, <span class="st">"*.pdf"</span>, <span class="st">"*.py"</span>]
@@ -100,77 +123,82 @@
   audit: <span class="fn">true</span>     <span class="cm"># 每条边带 source span</span></pre>
   </section>
 
-  <!-- 5. CHART — race diagram -->
-  <section class="slide">
-    <div class="gd-ambient"><div class="gd-orb gd-orb-3"></div></div>
-    <div class="gd-snum">05 / 08</div>
-    <p class="gd-eyebrow">Efficiency Race</p>
-    <h2 class="gd-h2">没有知识库 vs 有知识库</h2>
+  <section class="slide" style="background:linear-gradient(160deg,#08080f,#0e1020 50%,#08080f)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden">
+      <div style="position:absolute;width:420px;height:420px;border-radius:50%;filter:blur(110px);opacity:.35;background:radial-gradient(circle,rgba(184,164,214,.4),transparent 70%);bottom:-8%;left:30%;animation:gdDrift 22s ease-in-out infinite alternate;animation-delay:-11s"></div>
+    </div>
+    <div class="chr-page" style="position:absolute;top:28px;right:40px;z-index:3;font-size:12px;letter-spacing:.25em">05 · 08</div>
+    <p class="chr-kicker" style="font-size:13px;letter-spacing:.2em;margin-bottom:6px">Efficiency Race</p>
+    <h2 class="chr-heading">没有知识库 vs 有知识库</h2>
     <div style="max-width:900px;margin-top:30px">
       <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px">
-        <div style="width:110px;text-align:right;font-weight:700;color:var(--gd-danger)">没有<br>知识库</div>
+        <div style="width:110px;text-align:right;font-weight:700;color:#e07070">没有<br>知识库</div>
         <div style="flex:1;position:relative;height:70px;background:rgba(224,112,112,.06);border:1px solid rgba(224,112,112,.2);border-radius:16px">
           <div style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:32px">🛵</div>
-          <div style="position:absolute;left:72px;top:50%;transform:translateY(-50%);color:var(--gd-danger);font-size:14px">反复喂信息…整理…又忘了…</div>
+          <div style="position:absolute;left:72px;top:50%;transform:translateY(-50%);color:#e07070;font-size:14px">反复喂信息…整理…又忘了…</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:16px">
-        <div style="width:110px;text-align:right;font-weight:700;color:var(--gd-green)">有<br>知识库</div>
+        <div style="width:110px;text-align:right;font-weight:700;color:var(--accent-3)">有<br>知识库</div>
         <div style="flex:1;position:relative;height:70px;background:rgba(126,211,164,.06);border:1px solid rgba(126,211,164,.25);border-radius:16px">
           <div style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:32px">🏎️</div>
-          <div style="position:absolute;right:72px;top:50%;transform:translateY(-50%);color:var(--gd-green);font-size:14px">AI 自己找 → 确认 → 干活!</div>
+          <div style="position:absolute;right:72px;top:50%;transform:translateY(-50%);color:var(--accent-3);font-size:14px">AI 自己找 → 确认 → 干活!</div>
         </div>
       </div>
     </div>
-    <div class="gd-grid-3" style="margin-top:36px">
-      <div class="gd-glass gd-glass-warm"><div class="gd-big gd-grad">5×</div><p class="gd-dim" style="margin-top:6px">速度提升</p></div>
-      <div class="gd-glass gd-glass-green"><div class="gd-big gd-grad">-80%</div><p class="gd-dim" style="margin-top:6px">重复喂信息</p></div>
-      <div class="gd-glass gd-glass-blue"><div class="gd-big gd-grad">∞</div><p class="gd-dim" style="margin-top:6px">记忆持久化</p></div>
+    <div class="c-grid-3" style="margin-top:36px">
+      <div class="c-glass" style="background:rgba(232,168,124,.06);border-color:rgba(232,168,124,.2);backdrop-filter:blur(20px) saturate(160%);border-radius:20px;text-align:center"><span class="c-grad" style="font-size:120px;font-weight:900;letter-spacing:-.04em;line-height:1;display:block">5x</span><p class="c-body" style="margin-top:6px;font-size:14px">速度提升</p></div>
+      <div class="c-glass" style="background:rgba(126,211,164,.06);border-color:rgba(126,211,164,.2);backdrop-filter:blur(20px) saturate(160%);border-radius:20px;text-align:center"><span class="c-grad" style="font-size:120px;font-weight:900;letter-spacing:-.04em;line-height:1;display:block">-80%</span><p class="c-body" style="margin-top:6px;font-size:14px">重复喂信息</p></div>
+      <div class="c-glass" style="background:rgba(126,184,218,.06);border-color:rgba(126,184,218,.2);backdrop-filter:blur(20px) saturate(160%);border-radius:20px;text-align:center"><span class="c-grad" style="font-size:120px;font-weight:900;letter-spacing:-.04em;line-height:1;display:block">∞</span><p class="c-body" style="margin-top:6px;font-size:14px">记忆持久化</p></div>
     </div>
   </section>
 
-  <!-- 6. PIPELINE -->
-  <section class="slide">
-    <div class="gd-ambient"><div class="gd-orb gd-orb-2"></div></div>
-    <div class="gd-snum">06 / 08</div>
-    <p class="gd-eyebrow">Pipeline</p>
-    <h2 class="gd-h2">端到端 <span class="gd-grad">4 步走</span></h2>
+  <section class="slide" style="background:linear-gradient(160deg,#08080f,#0e1020 50%,#08080f)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden">
+      <div style="position:absolute;width:460px;height:460px;border-radius:50%;filter:blur(110px);opacity:.35;background:radial-gradient(circle,rgba(232,168,124,.45),transparent 70%);top:55%;right:-8%;animation:gdDrift 22s ease-in-out infinite alternate;animation-delay:-6s"></div>
+    </div>
+    <div class="chr-page" style="position:absolute;top:28px;right:40px;z-index:3;font-size:12px;letter-spacing:.25em">06 · 08</div>
+    <p class="chr-kicker" style="font-size:13px;letter-spacing:.2em;margin-bottom:6px">Pipeline</p>
+    <h2 class="chr-heading">端到端 <span class="c-grad">4 步走</span></h2>
     <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:36px">
-      <div class="gd-glass" style="flex:1;text-align:center"><div style="font-size:34px">📂</div><div style="font-weight:600;margin-top:8px">Scan</div><div class="gd-dim" style="font-size:13px">递归读文件</div></div>
-      <div style="color:var(--gd-text3);font-size:24px">→</div>
-      <div class="gd-glass gd-glass-blue" style="flex:1;text-align:center"><div style="font-size:34px">🔬</div><div style="font-weight:600;margin-top:8px">Extract</div><div class="gd-dim" style="font-size:13px">LLM 抽实体</div></div>
-      <div style="color:var(--gd-text3);font-size:24px">→</div>
-      <div class="gd-glass gd-glass-green" style="flex:1;text-align:center"><div style="font-size:34px">🕸️</div><div style="font-weight:600;margin-top:8px">Build</div><div class="gd-dim" style="font-size:13px">构图 + 去重</div></div>
-      <div style="color:var(--gd-text3);font-size:24px">→</div>
-      <div class="gd-glass gd-glass-warm" style="flex:1;text-align:center"><div style="font-size:34px">🎨</div><div style="font-weight:600;margin-top:8px">Render</div><div class="gd-dim" style="font-size:13px">D3 交互图</div></div>
+      <div class="c-glass" style="flex:1;text-align:center;backdrop-filter:blur(20px) saturate(160%);border-radius:20px"><div style="font-size:34px">📂</div><div style="font-weight:600;margin-top:8px;font-size:16px">Scan</div><div class="c-body" style="font-size:13px">递归读文件</div></div>
+      <div style="color:var(--text-3);font-size:24px">→</div>
+      <div class="c-glass" style="flex:1;text-align:center;background:rgba(126,184,218,.06);border-color:rgba(126,184,218,.2);backdrop-filter:blur(20px) saturate(160%);border-radius:20px"><div style="font-size:34px">🔬</div><div style="font-weight:600;margin-top:8px;font-size:16px">Extract</div><div class="c-body" style="font-size:13px">LLM 抽实体</div></div>
+      <div style="color:var(--text-3);font-size:24px">→</div>
+      <div class="c-glass" style="flex:1;text-align:center;background:rgba(126,211,164,.06);border-color:rgba(126,211,164,.2);backdrop-filter:blur(20px) saturate(160%);border-radius:20px"><div style="font-size:34px">🕸️</div><div style="font-weight:600;margin-top:8px;font-size:16px">Build</div><div class="c-body" style="font-size:13px">构图 + 去重</div></div>
+      <div style="color:var(--text-3);font-size:24px">→</div>
+      <div class="c-glass" style="flex:1;text-align:center;background:rgba(232,168,124,.06);border-color:rgba(232,168,124,.2);backdrop-filter:blur(20px) saturate(160%);border-radius:20px"><div style="font-size:34px">🎨</div><div style="font-weight:600;margin-top:8px;font-size:16px">Render</div><div class="c-body" style="font-size:13px">D3 交互图</div></div>
     </div>
-    <div class="gd-glass" style="margin-top:32px"><p style="font-size:16px;line-height:1.6;color:var(--gd-text2)">每一步都有 audit log：你永远知道某个节点为什么存在、它来自哪个文件的哪一行。</p></div>
+    <div class="c-glass" style="margin-top:32px;backdrop-filter:blur(20px) saturate(160%);border-radius:20px"><p style="font-size:16px;line-height:1.6;color:var(--text-2)">每一步都有 audit log：你永远知道某个节点为什么存在、它来自哪个文件的哪一行。</p></div>
   </section>
 
-  <!-- 7. CTA -->
-  <section class="slide">
-    <div class="gd-ambient"><div class="gd-orb gd-orb-1"></div><div class="gd-orb gd-orb-3"></div></div>
-    <div class="gd-snum">07 / 08</div>
-    <p class="gd-eyebrow">Try it tonight</p>
-    <h2 class="gd-h1" style="font-size:80px">Graphify <span class="gd-grad">your folders</span></h2>
-    <p class="gd-cmd" style="margin-top:22px">$ npm i -g @lewis/graphify</p>
-    <p class="gd-cmd" style="margin-top:10px;color:var(--gd-warm);text-shadow:0 0 30px rgba(232,168,124,.45)">$ graphify ~/obsidian-vault</p>
+  <section class="slide" style="background:linear-gradient(160deg,#08080f,#0e1020 50%,#08080f)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden">
+      <div style="position:absolute;width:520px;height:520px;border-radius:50%;filter:blur(110px);opacity:.35;background:radial-gradient(circle,rgba(126,184,218,.55),transparent 70%);top:-12%;left:-6%;animation:gdDrift 22s ease-in-out infinite alternate"></div>
+      <div style="position:absolute;width:420px;height:420px;border-radius:50%;filter:blur(110px);opacity:.35;background:radial-gradient(circle,rgba(184,164,214,.4),transparent 70%);bottom:-8%;left:30%;animation:gdDrift 22s ease-in-out infinite alternate;animation-delay:-11s"></div>
+    </div>
+    <div class="chr-page" style="position:absolute;top:28px;right:40px;z-index:3;font-size:12px;letter-spacing:.25em">07 · 08</div>
+    <p class="chr-kicker" style="font-size:13px;letter-spacing:.2em;margin-bottom:10px">Try it tonight</p>
+    <h1 class="chr-title" style="font-size:80px;line-height:1.08;margin:10px 0">Graphify <span class="c-grad">your folders</span></h1>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:var(--accent-3);text-shadow:0 0 30px rgba(126,211,164,.45),0 0 60px rgba(126,211,164,.15);letter-spacing:-.01em;margin-top:22px">$ npm i -g @lewis/graphify</p>
+    <p style="font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:var(--accent);text-shadow:0 0 30px rgba(232,168,124,.45);letter-spacing:-.01em;margin-top:10px">$ graphify ~/obsidian-vault</p>
     <div style="margin-top:32px">
-      <span class="gd-tag">#knowledge-graph</span>
-      <span class="gd-tag">#open-source</span>
-      <span class="gd-tag">#claude-agent</span>
-      <span class="gd-tag">#obsidian</span>
-      <span class="gd-tag">#d3-force</span>
+      <span class="c-badge">#knowledge-graph</span>
+      <span class="c-badge">#open-source</span>
+      <span class="c-badge">#claude-agent</span>
+      <span class="c-badge">#obsidian</span>
+      <span class="c-badge">#d3-force</span>
     </div>
   </section>
 
-  <!-- 8. THANKS -->
-  <section class="slide">
-    <div class="gd-ambient"><div class="gd-orb gd-orb-2"></div></div>
-    <div class="gd-snum">08 / 08</div>
+  <section class="slide" style="background:linear-gradient(160deg,#08080f,#0e1020 50%,#08080f)">
+    <div style="position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden">
+      <div style="position:absolute;width:460px;height:460px;border-radius:50%;filter:blur(110px);opacity:.35;background:radial-gradient(circle,rgba(232,168,124,.45),transparent 70%);top:55%;right:-8%;animation:gdDrift 22s ease-in-out infinite alternate;animation-delay:-6s"></div>
+    </div>
+    <div class="chr-page" style="position:absolute;top:28px;right:40px;z-index:3;font-size:12px;letter-spacing:.25em">08 · 08</div>
     <div style="margin:auto 0;text-align:center">
-      <div class="gd-big gd-rainbow" style="font-size:180px">Thanks.</div>
-      <p class="gd-lede" style="margin:28px auto 0">github.com/lewis/graphify · 欢迎 star / issue / PR</p>
+      <div style="font-size:180px;font-weight:900;letter-spacing:-.04em;line-height:1;background:linear-gradient(90deg,#ff0080,#ff4d00,#ff9900,#ffe600,#00c853,#0091ea,#6200ea,#ff0080);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gdRainbow 4s linear infinite">Thanks.</div>
+      <p class="chr-sub" style="margin:28px auto 0;font-size:22px;font-weight:300;line-height:1.65">github.com/lewis/graphify · 欢迎 star / issue / PR</p>
     </div>
   </section>
 

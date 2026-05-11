@@ -168,6 +168,58 @@
 .c-icon-row-body { font-size: 1.05cqi; line-height: 1.5; color: var(--text-2); }
 
 /* ══════════════════════════════════════════════════════
+   CODE & TERMINAL
+   ══════════════════════════════════════════════════════ */
+
+/* Code box — syntax-highlighted code block */
+.c-codebox {
+  background: #1a1a1a; color: #e4e2d8;
+  border-radius: var(--radius); padding: 2.5cqi 3cqi;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  font-size: 1.4cqi; line-height: 1.75; overflow: auto;
+}
+.c-codebox .cm { color: #6b6a62; font-style: italic; }  /* comment */
+.c-codebox .kw { color: #e8a87c; font-weight: 700; }     /* keyword */
+.c-codebox .st { color: #a8c292; }                       /* string */
+.c-codebox .fn { color: #c9a0dc; }                       /* function */
+.c-codebox .hl { color: #e9c58a; font-weight: 700; background: rgba(255,255,255,.06); padding: 0 2px; border-radius: 3px; }  /* highlight */
+
+/* Terminal window — with traffic-light dots */
+.c-terminal {
+  background: #0f1117; color: #e4e2d8;
+  border: 1px solid #1f222c; border-radius: var(--radius-lg);
+  overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,.3);
+}
+.c-terminal-topbar {
+  display: flex; align-items: center; gap: 8px; padding: 12px 16px;
+  background: #16181f; border-bottom: 1px solid #1f222c;
+}
+.c-terminal-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.c-terminal-dot.red    { background: #ff5f57; }
+.c-terminal-dot.yellow { background: #febc2e; }
+.c-terminal-dot.green  { background: #28c840; }
+.c-terminal-title {
+  flex: 1; text-align: center; font-size: 12px; color: #666;
+  font-family: 'JetBrains Mono', monospace;
+}
+.c-terminal-body { padding: 16px 20px; }
+.c-terminal-body .prompt { color: #28c840; }  /* green $ prompt */
+.c-terminal-body .cursor { display: inline-block; width: 8px; height: 16px; background: #e4e2d8; vertical-align: text-bottom; animation: c-cursor-blink 1s step-end infinite; }
+@keyframes c-cursor-blink { 50% { opacity: 0; } }
+
+/* ══════════════════════════════════════════════════════
+   HERO NUMBER
+   ══════════════════════════════════════════════════════ */
+
+/* Hero-size number for stats/impact pages */
+.c-hero-num {
+  font-family: 'Playfair Display', Georgia, 'Noto Serif SC', serif;
+  font-size: 16cqi; font-weight: 900; line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+.c-hero-num-label { font-size: 1.5cqi; color: var(--text-3); margin-top: 0.5cqi; }
+
+/* ══════════════════════════════════════════════════════
    SPECIAL BOXES
    ══════════════════════════════════════════════════════ */
 
@@ -267,6 +319,11 @@
   .c-note-body { font-size: 1.8cqi; }
   .c-example { padding: 2cqi 2.5cqi; font-size: 1.8cqi; }
   .c-example-label { font-size: 1.5cqi; }
+
+  .c-codebox { font-size: 2.2cqi; padding: 3cqi 3.5cqi; }
+  .c-terminal-body { padding: 20px 24px; }
+  .c-hero-num { font-size: 24cqi; }
+  .c-hero-num-label { font-size: 2.5cqi; }
 
   .c-stack > * + * { margin-top: 2.5cqi; }
   .c-spacer-sm { height: 1.5cqi; }

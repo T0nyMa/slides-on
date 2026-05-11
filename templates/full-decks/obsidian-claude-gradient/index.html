@@ -6,81 +6,274 @@
 <title>Obsidian × Claude Gradient</title>
 <link rel="stylesheet" href="../../../assets/fonts.css">
 <link rel="stylesheet" href="../../../assets/base.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../../assets/components.css">
+<link rel="stylesheet" href="../../../assets/designs/pastel-card.css">
 </head>
-<body class="tpl-obsidian-claude-gradient">
+<body class="d-pastel-card landscape">
 <div class="deck">
 
-  <!-- 1. COVER -->
   <section class="slide is-active">
-    <div class="oc-cbg"></div>
-    <div class="oc-cgrid"></div>
-    <div class="oc-snum">01 / 08</div>
-    <div class="oc-tag">● OBSIDIAN × CLAUDE · 第二大脑</div>
-    <h1 class="oc-h1">把 Obsidian 和 Claude<br>拧成 <span class="oc-g">一条神经</span></h1>
-    <p class="oc-sub">不是又一个 AI 笔记插件 —— 是让 Claude 真正理解你 vault 的结构、链接、双向引用，<br>然后在你想写东西之前就把资料准备好。</p>
+<style>
+/* ── Dark theme: override pastel-card tokens ── */
+.d-pastel-card {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface-2: #21262d;
+  --border: #30363d;
+  --border-strong: #484f58;
+  --text-1: #e6edf3;
+  --text-2: #8b949e;
+  --text-3: #484f58;
+  --accent: #7c3aed;
+  --accent-2: #a855f7;
+  --accent-3: #c084fc;
+  --grad: linear-gradient(135deg, #a855f7 0%, #60a5fa 55%, #34d399 100%);
+  --shadow: none;
+  --shadow-lg: none;
+  --font-display: 'Inter','Noto Sans SC',sans-serif;
+  --font-sans: 'Inter','Noto Sans SC','PingFang SC',-apple-system,sans-serif;
+  --font-serif: 'Inter','Noto Sans SC',sans-serif;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-lg: 20px;
+  --pc-peach: rgba(124,58,237,.15); --pc-peach-d: #7c3aed;
+  --pc-mint: rgba(63,185,80,.15); --pc-mint-d: #3fb950;
+  --pc-sky: rgba(88,166,255,.15); --pc-sky-d: #58a6ff;
+  --pc-lilac: rgba(168,85,247,.15); --pc-lilac-d: #a855f7;
+  --pc-lemon: rgba(251,191,36,.15); --pc-lemon-d: #fbbf24;
+  --pc-rose: rgba(248,113,113,.15); --pc-rose-d: #f87171;
+  --pc-code-bg: #010409;
+  background: var(--bg); color: var(--text-1);
+  font-family: var(--font-sans);
+}
+
+/* ── Hide pastel-card chrome (blobs, topbar, footer, kicker, divider) ── */
+.d-pastel-card .chr-blob { display: none; }
+.d-pastel-card .chr-topbar { display: none; }
+.d-pastel-card .chr-footer { display: none; }
+.d-pastel-card .chr-kicker { display: none; }
+.d-pastel-card .chr-divider { display: none; }
+
+/* ── Background glow + grid (replaces oc-cbg + oc-cgrid) ── */
+.bg-glow {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(ellipse at 28% 38%, rgba(124,58,237,.25) 0%, transparent 60%),
+              radial-gradient(ellipse at 72% 62%, rgba(88,166,255,.18) 0%, transparent 60%);
+}
+.bg-grid {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image: linear-gradient(rgba(48,54,61,.4) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(48,54,61,.4) 1px, transparent 1px);
+  background-size: 60px 60px;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 35%, transparent 80%);
+  mask-image: radial-gradient(ellipse at center, black 35%, transparent 80%);
+}
+
+/* ── Slide defaults ── */
+.d-pastel-card .slide { align-items: center; text-align: center; overflow: hidden; }
+.d-pastel-card .slide > * { position: relative; z-index: 2; }
+
+/* ── Page number (replaces oc-snum) ── */
+.pg-num {
+  position: absolute; top: 24px; right: 36px; z-index: 3;
+  color: var(--text-3); font-size: 12px; letter-spacing: .1em;
+}
+
+/* ── Chip tag (replaces oc-tag) ── */
+.d-pastel-card .chr-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent-3); background: rgba(124,58,237,.14);
+  border: 1px solid rgba(168,85,247,.3);
+  padding: 5px 16px; border-radius: 999px; margin-bottom: 22px;
+}
+.d-pastel-card .chr-chip::before { display: none; }
+
+/* ── Typography (replaces oc-h1 / oc-h2 / oc-sub) ── */
+.d-pastel-card .chr-title {
+  font-size: 72px; font-weight: 800; line-height: 1.08;
+  letter-spacing: -.02em; margin: 0 0 10px; font-family: var(--font-sans);
+}
+.d-pastel-card .chr-heading {
+  font-size: 44px; font-weight: 700; line-height: 1.18;
+  letter-spacing: -.015em; margin: 0 0 14px; font-family: var(--font-sans);
+}
+.d-pastel-card .chr-sub {
+  font-size: 19px; color: var(--text-2); line-height: 1.65;
+  max-width: 100%; font-family: var(--font-sans); margin-top: 14px;
+}
+
+/* ── Gradient text (replaces oc-g) ── */
+.c-grad {
+  background: var(--grad); -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Pill tags (replaces oc-pill) ── */
+.d-pastel-card .chr-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 999px; padding: 7px 18px;
+  font-size: 14px; font-weight: 500; color: var(--text-1);
+  margin: 4px 6px 4px 0;
+}
+
+/* ── Cards (replaces oc-card) ── */
+.d-pastel-card .c-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 22px 26px;
+  text-align: left; position: relative; overflow: hidden;
+}
+.d-pastel-card .c-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(168,85,247,.4), transparent);
+}
+.d-pastel-card .c-card h4 { font-size: 20px; font-weight: 600; margin-bottom: 10px; color: var(--text-1); font-family: var(--font-sans); }
+.d-pastel-card .c-card p { color: var(--text-2); font-size: 14px; line-height: 1.65; font-family: var(--font-sans); }
+
+/* ── Grids (replaces oc-grid-2 / oc-grid-3) ── */
+.d-pastel-card .c-grid-2 { gap: 18px; margin-top: 24px; width: 100%; max-width: 1000px; }
+.d-pastel-card .c-grid-3 { gap: 16px; margin-top: 28px; width: 100%; max-width: 1080px; }
+
+/* ── Steps (replaces oc-steps / oc-step / oc-sn / oc-sc) ── */
+.d-pastel-card .c-steps {
+  display: flex; flex-direction: column; gap: 0;
+  width: 100%; max-width: 820px; text-align: left;
+}
+.d-pastel-card .c-step {
+  display: flex; gap: 20px; align-items: flex-start;
+  padding: 18px 0; border-bottom: 1px solid var(--border);
+}
+.d-pastel-card .c-step:last-child { border-bottom: none; }
+.d-pastel-card .c-step-num {
+  width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 15px;
+  background: linear-gradient(135deg, var(--accent), #58a6ff); color: #fff;
+}
+.d-pastel-card .c-step-content { flex: 1; min-width: 0; }
+.d-pastel-card .c-step-title { font-size: 17px; font-weight: 600; margin-bottom: 6px; color: var(--text-1); }
+.d-pastel-card .c-step-body { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+
+/* ── Code block (replaces oc-code) ── */
+.d-pastel-card .chr-codebox {
+  background: #010409; border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px 24px;
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  line-height: 1.85; color: #e6edf3;
+  width: 100%; max-width: 860px; text-align: left; margin-top: 18px;
+}
+.chr-codebox .cm { color: var(--text-3); }
+.chr-codebox .cc { color: #58a6ff; }
+.chr-codebox .cs { color: var(--accent-3); }
+
+/* ── Highlight / callout (replaces oc-hl) ── */
+.d-pastel-card .c-note {
+  background: rgba(124,58,237,.1); border: 1px solid rgba(168,85,247,.3);
+  border-left: 4px solid var(--accent-2);
+  border-radius: 0 12px 12px 0; padding: 16px 22px;
+  font-size: 16px; line-height: 1.7;
+  max-width: 860px; text-align: left; color: var(--text-1);
+}
+.d-pastel-card .c-note b { color: var(--accent-3); }
+
+/* ── Quote (replaces oc-quote) ── */
+.d-pastel-card .c-quote {
+  font-size: 26px; font-weight: 500; line-height: 1.6;
+  font-family: var(--font-sans); font-style: normal;
+  padding: 0 36px; max-width: 800px;
+  text-align: center; color: var(--text-1);
+}
+.d-pastel-card .c-quote::before {
+  content: '"'; position: absolute; left: -6px; top: -22px;
+  font-size: 78px; color: var(--accent); opacity: .4;
+  font-family: Georgia, serif; line-height: 1;
+}
+.d-pastel-card .c-quote-attr {
+  margin-top: 20px; font-size: 13px; color: var(--text-2);
+  text-align: center;
+}
+
+/* ── Hero number (replaces oc-big) + KPI ── */
+.c-hero-num {
+  font-size: 140px; font-weight: 900; line-height: .95;
+  letter-spacing: -.04em; text-align: center;
+  font-family: var(--font-sans); color: var(--text-1);
+}
+.d-pastel-card .c-kpi { text-align: center; }
+.d-pastel-card .c-kpi-value {
+  font-size: 80px; font-weight: 900;
+  font-family: var(--font-sans);
+}
+.d-pastel-card .c-kpi-label {
+  font-size: 13px; color: var(--text-2); margin-top: 8px;
+}
+</style>
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <div class="pg-num">01 / 08</div>
+    <div class="chr-chip">● OBSIDIAN × CLAUDE · 第二大脑</div>
+    <h1 class="chr-title">把 Obsidian 和 Claude<br>拧成 <span class="c-grad">一条神经</span></h1>
+    <p class="chr-sub" style="max-width:720px">不是又一个 AI 笔记插件 —— 是让 Claude 真正理解你 vault 的结构、链接、双向引用，<br>然后在你想写东西之前就把资料准备好。</p>
     <div style="margin-top:32px">
-      <span class="oc-pill">🧠 Markdown-native</span>
-      <span class="oc-pill">⚡ MCP-ready</span>
-      <span class="oc-pill">🔗 双链理解</span>
+      <span class="chr-pill">🧠 Markdown-native</span>
+      <span class="chr-pill">⚡ MCP-ready</span>
+      <span class="chr-pill">🔗 双链理解</span>
     </div>
   </section>
 
-  <!-- 2. SECTION -->
   <section class="slide">
-    <div class="oc-cbg"></div>
-    <div class="oc-cgrid"></div>
-    <div class="oc-snum">02 / 08</div>
-    <div class="oc-tag">● CHAPTER 01</div>
-    <h1 class="oc-h1" style="font-size:110px">Why <span class="oc-g">not</span> Notion?</h1>
-    <p class="oc-sub">当你的知识多到会互相引用时，<br>「文件夹」就不够了，「数据库」也不是答案。</p>
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <div class="pg-num">02 / 08</div>
+    <div class="chr-chip">● CHAPTER 01</div>
+    <h1 class="chr-title" style="font-size:110px">Why <span class="c-grad">not</span> Notion?</h1>
+    <p class="chr-sub">当你的知识多到会互相引用时，<br>「文件夹」就不够了，「数据库」也不是答案。</p>
   </section>
 
-  <!-- 3. CONTENT — compare cards -->
   <section class="slide">
-    <div class="oc-cbg"></div>
-    <div class="oc-cgrid"></div>
-    <div class="oc-snum">03 / 08</div>
-    <div class="oc-tag">● COMPARE</div>
-    <h2 class="oc-h2">Notion vs <span class="oc-g">Obsidian</span> · 对 AI 友好度</h2>
-    <div class="oc-grid-2">
-      <div class="oc-card">
-        <span class="oc-badge oc-bb">NOTION</span>
-        <h4 style="font-size:20px;margin-bottom:10px">数据库原生</h4>
-        <p style="color:var(--oc-dim);font-size:14px;line-height:1.65">适合结构化任务、团队协作，但是——<br>• AI 要走 API，拿不到实时全文<br>• 嵌套块结构复杂，token 成本高<br>• 本地化差，没法当长期记忆</p>
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <div class="pg-num">03 / 08</div>
+    <div class="chr-chip">● COMPARE</div>
+    <h2 class="chr-heading">Notion vs <span class="c-grad">Obsidian</span> · 对 AI 友好度</h2>
+    <div class="c-grid-2">
+      <div class="c-card">
+        <span class="c-badge">NOTION</span>
+        <h4>数据库原生</h4>
+        <p>适合结构化任务、团队协作，但是——<br>· AI 要走 API，拿不到实时全文<br>· 嵌套块结构复杂，token 成本高<br>· 本地化差，没法当长期记忆</p>
       </div>
-      <div class="oc-card" style="border-color:rgba(168,85,247,.35);background:rgba(124,58,237,.05)">
-        <span class="oc-badge oc-bp">OBSIDIAN</span>
-        <h4 style="font-size:20px;margin-bottom:10px">纯 Markdown + 双链</h4>
-        <p style="color:var(--oc-dim);font-size:14px;line-height:1.65">对 AI 天生友好 ——<br>• 所有东西就是文件，Claude 直接读<br>• 双链 = 天然 graph，抽实体几乎零成本<br>• 离线、可 git、可 diff、可回滚</p>
+      <div class="c-card" style="border-color:rgba(168,85,247,.35);background:rgba(124,58,237,.05)">
+        <span class="c-badge accent">OBSIDIAN</span>
+        <h4>纯 Markdown + 双链</h4>
+        <p>对 AI 天生友好 ——<br>· 所有东西就是文件，Claude 直接读<br>· 双链 = 天然 graph，抽实体几乎零成本<br>· 离线、可 git、可 diff、可回滚</p>
       </div>
     </div>
-    <div class="oc-hl" style="margin-top:26px">💡 <b>关键洞察：</b>AI 不需要「更聪明的数据库」，它需要「能被它自己读懂的文件系统」。</div>
+    <div class="c-note" style="margin-top:26px"><b>● 关键洞察：</b>AI 不需要「更聪明的数据库」，它需要「能被它自己读懂的文件系统」。</div>
   </section>
 
-  <!-- 4. STEPS -->
   <section class="slide">
-    <div class="oc-cbg"></div>
-    <div class="oc-cgrid"></div>
-    <div class="oc-snum">04 / 08</div>
-    <div class="oc-tag">● SETUP · 4 STEPS</div>
-    <h2 class="oc-h2">从 0 到第一次「AI 写笔记」</h2>
-    <div class="oc-steps">
-      <div class="oc-step"><div class="oc-sn">1</div><div class="oc-sc"><h4>装 Obsidian + 开 Local REST API 插件</h4><p>社区插件，一个勾就开。它让外部进程能 read/write 你的 vault。</p></div></div>
-      <div class="oc-step"><div class="oc-sn">2</div><div class="oc-sc"><h4>接 Claude Desktop + obsidian-mcp server</h4><p>MCP 一个配置文件就能接，token 填 vault 的 api key。</p></div></div>
-      <div class="oc-step"><div class="oc-sn">3</div><div class="oc-sc"><h4>装 5 个 obsidian-skills</h4><p>markdown / bases / canvas / cli / defuddle —— 让 Claude 知道怎么正确使用 Obsidian。</p></div></div>
-      <div class="oc-step"><div class="oc-sn">4</div><div class="oc-sc"><h4>让 Claude 自己整理一次</h4><p>「帮我把最近 10 篇笔记里的重复概念合并，生成一张新的 MOC」—— 90 秒出结果。</p></div></div>
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <div class="pg-num">04 / 08</div>
+    <div class="chr-chip">● SETUP · 4 STEPS</div>
+    <h2 class="chr-heading">从 0 到第一次「AI 写笔记」</h2>
+    <div class="c-steps">
+      <div class="c-step"><div class="c-step-num">1</div><div class="c-step-content"><div class="c-step-title">装 Obsidian + 开 Local REST API 插件</div><div class="c-step-body">社区插件，一个勾就开。它让外部进程能 read/write 你的 vault。</div></div></div>
+      <div class="c-step"><div class="c-step-num">2</div><div class="c-step-content"><div class="c-step-title">接 Claude Desktop + obsidian-mcp server</div><div class="c-step-body">MCP 一个配置文件就能接，token 填 vault 的 api key。</div></div></div>
+      <div class="c-step"><div class="c-step-num">3</div><div class="c-step-content"><div class="c-step-title">装 5 个 obsidian-skills</div><div class="c-step-body">markdown / bases / canvas / cli / defuddle —— 让 Claude 知道怎么正确使用 Obsidian。</div></div></div>
+      <div class="c-step"><div class="c-step-num">4</div><div class="c-step-content"><div class="c-step-title">让 Claude 自己整理一次</div><div class="c-step-body">「帮我把最近 10 篇笔记里的重复概念合并，生成一张新的 MOC」—— 90 秒出结果。</div></div></div>
     </div>
   </section>
 
-  <!-- 5. CODE -->
   <section class="slide">
-    <div class="oc-cbg"></div>
-    <div class="oc-cgrid"></div>
-    <div class="oc-snum">05 / 08</div>
-    <div class="oc-tag">● MCP CONFIG</div>
-    <h2 class="oc-h2">claude_desktop_config.json</h2>
-    <pre class="oc-code"><span class="cm">// ~/Library/Application Support/Claude/claude_desktop_config.json</span>
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <div class="pg-num">05 / 08</div>
+    <div class="chr-chip">● MCP CONFIG</div>
+    <h2 class="chr-heading">claude_desktop_config.json</h2>
+    <pre class="chr-codebox"><span class="cm">// ~/Library/Application Support/Claude/claude_desktop_config.json</span>
 {
   <span class="cc">"mcpServers"</span>: {
     <span class="cc">"obsidian"</span>: {
@@ -93,49 +286,52 @@
     }
   }
 }</pre>
-    <p class="oc-sub" style="margin-top:18px">重启 Claude Desktop，输入 <b style="color:var(--oc-accent3)">/mcp</b>，你会看到 obsidian 已连。</p>
+    <p class="chr-sub" style="margin-top:18px;max-width:860px;font-size:19px">重启 Claude Desktop，输入 <b style="color:var(--accent-3)">/mcp</b>，你会看到 obsidian 已连。</p>
   </section>
 
-  <!-- 6. STATS -->
   <section class="slide">
-    <div class="oc-cbg"></div>
-    <div class="oc-cgrid"></div>
-    <div class="oc-snum">06 / 08</div>
-    <div class="oc-tag">● 3 MONTHS IN</div>
-    <h2 class="oc-h2">跑了 90 天，我的 <span class="oc-g">vault 数据</span></h2>
-    <div class="oc-grid-3" style="margin-top:28px">
-      <div class="oc-card" style="text-align:center"><div class="oc-big oc-g" style="font-size:80px">1,842</div><p style="color:var(--oc-dim);margin-top:8px;font-size:13px">notes in vault</p></div>
-      <div class="oc-card" style="text-align:center"><div class="oc-big oc-g" style="font-size:80px">6.3k</div><p style="color:var(--oc-dim);margin-top:8px;font-size:13px">backlinks (由 AI 自动补)</p></div>
-      <div class="oc-card" style="text-align:center"><div class="oc-big oc-g" style="font-size:80px">-74%</div><p style="color:var(--oc-dim);margin-top:8px;font-size:13px">找资料平均耗时</p></div>
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <div class="pg-num">06 / 08</div>
+    <div class="chr-chip">● 3 MONTHS IN</div>
+    <h2 class="chr-heading">跑了 90 天，我的 <span class="c-grad">vault 数据</span></h2>
+    <div class="c-grid-3" style="margin-top:28px">
+      <div class="c-card" style="text-align:center">
+        <div class="c-kpi"><div class="c-kpi-value c-grad">1,842</div><div class="c-kpi-label">notes in vault</div></div>
+      </div>
+      <div class="c-card" style="text-align:center">
+        <div class="c-kpi"><div class="c-kpi-value c-grad">6.3k</div><div class="c-kpi-label">backlinks (由 AI 自动补)</div></div>
+      </div>
+      <div class="c-card" style="text-align:center">
+        <div class="c-kpi"><div class="c-kpi-value c-grad">-74%</div><div class="c-kpi-label">找资料平均耗时</div></div>
+      </div>
     </div>
-    <div class="oc-hl" style="margin-top:26px">最大收益不是「AI 帮我写」，而是「AI 帮我把旧笔记重新连起来」—— 每周 30 分钟，vault 就会主动生长。</div>
+    <div class="c-note" style="margin-top:26px">最大收益不是「AI 帮我写」，而是「AI 帮我把旧笔记重新连起来」—— 每周 30 分钟，vault 就会主动生长。</div>
   </section>
 
-  <!-- 7. QUOTE / CTA -->
   <section class="slide">
-    <div class="oc-cbg"></div>
-    <div class="oc-cgrid"></div>
-    <div class="oc-snum">07 / 08</div>
-    <div class="oc-tag">● CTA · 今晚可以做</div>
-    <div class="oc-quote">
-      <blockquote>不要再找「AI 笔记应用」了。<br>你要的是一个 <span class="oc-g">文件夹 + 一条神经</span>。</blockquote>
-      <div class="attr">— 我自己，用了 90 天后</div>
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <div class="pg-num">07 / 08</div>
+    <div class="chr-chip">● CTA · 今晚可以做</div>
+    <div class="c-quote">
+      <blockquote style="font-size:26px;font-weight:500;line-height:1.6;padding:0 36px;margin:0;color:var(--text-1)">不要再找「AI 笔记应用」了。<br>你要的是一个 <span class="c-grad">文件夹 + 一条神经</span>。</blockquote>
+      <div class="c-quote-attr" style="margin-top:20px;font-size:13px;color:var(--text-2)">— 我自己，用了 90 天后</div>
     </div>
     <div style="margin-top:36px">
-      <span class="oc-pill">⬇ obsidian.md</span>
-      <span class="oc-pill">⬇ Claude Desktop</span>
-      <span class="oc-pill">⬇ obsidian-mcp</span>
-      <span class="oc-pill">⬇ obsidian-skills × 5</span>
+      <span class="chr-pill">⬇ obsidian.md</span>
+      <span class="chr-pill">⬇ Claude Desktop</span>
+      <span class="chr-pill">⬇ obsidian-mcp</span>
+      <span class="chr-pill">⬇ obsidian-skills × 5</span>
     </div>
   </section>
 
-  <!-- 8. THANKS -->
   <section class="slide">
-    <div class="oc-cbg"></div>
-    <div class="oc-cgrid"></div>
-    <div class="oc-snum">08 / 08</div>
-    <div class="oc-big oc-g">Thanks.</div>
-    <p class="oc-sub" style="margin-top:26px">配置模板、skill manifest、我的 vault 结构图都在 <b style="color:var(--oc-accent3)">github.com/lewis/obsidian-claude</b></p>
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <div class="pg-num">08 / 08</div>
+    <div class="c-hero-num c-grad">Thanks.</div>
+    <p class="chr-sub" style="margin-top:26px">配置模板、skill manifest、我的 vault 结构图都在 <b style="color:var(--accent-3)">github.com/lewis/obsidian-claude</b></p>
   </section>
 
 </div>

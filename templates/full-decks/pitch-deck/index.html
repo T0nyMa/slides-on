@@ -1,148 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lumen · Pitch Deck</title>
 <link rel="stylesheet" href="../../../assets/fonts.css">
 <link rel="stylesheet" href="../../../assets/base.css">
-<link rel="stylesheet" href="../../../assets/animations/animations.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../../assets/components.css">
+<link rel="stylesheet" href="../../../assets/designs/pastel-card.css">
 </head>
-<body class="tpl-pitch-deck">
+<body class="d-pastel-card landscape">
 <div class="deck">
 
-  <!-- 1. Cover -->
-  <section class="slide" data-title="Cover">
-    <div class="cover-bg"></div>
-    <div class="cover-blob"></div>
-    <div style="position:absolute;top:56px;left:112px"><span class="brand-dot"></span><span class="brand">Lumen</span></div>
-    <p class="kicker">Seed round · 2026</p>
-    <h1 class="h1 anim-fade-up" data-anim="fade-up">The operating system<br>for <span class="gradient-text">solo founders</span>.</h1>
-    <p class="lede mt-m">One workspace for billing, CRM, contracts and taxes — built for the 70M people running a business of one.</p>
-    <div class="deck-footer"><span>Maya Chen · CEO</span><span class="slide-number" data-current="1" data-total="10"></span></div>
-  </section>
+  <section class="slide is-active"><div style="position:absolute;inset:0;background:var(--grad);opacity:.06;z-index:0"></div><div class="chr-blob b1"></div><div class="chr-blob b2"></div><div style="position:relative;z-index:2"><div class="chr-topbar"><div class="chr-chip">Lumen</div><div class="chr-page">01 · 10</div></div><div class="chr-kicker">Seed round · 2026</div><h1 class="chr-title" style="font-size:86px;line-height:1.02;font-weight:900;letter-spacing:-.035em">The operating system<br>for <span class="c-grad">solo founders</span>.</h1><div class="chr-divider"></div><p class="chr-sub" style="font-size:22px;max-width:62ch">One workspace for billing, CRM, contracts and taxes — built for the 70M people running a business of one.</p></div><div class="chr-footer"><span>Maya Chen · CEO</span><span>Lumen</span></div></section>
 
-  <!-- 2. Problem -->
-  <section class="slide" data-title="Problem">
-    <span class="section-num">01</span>
-    <p class="num-tag">PROBLEM</p>
-    <h2 class="h2 mt-s">Solo founders duct-tape<br>7+ tools to stay alive.</h2>
-    <div class="grid g3 mt-l">
-      <div class="card"><h4>Fragmentation</h4><p class="dim">Stripe, QuickBooks, HubSpot, DocuSign, Notion, Gusto, a spreadsheet. Nothing talks.</p></div>
-      <div class="card"><h4>$480/mo wasted</h4><p class="dim">Average solo founder pays for 9 SaaS seats they only half-use.</p></div>
-      <div class="card"><h4>14 hrs / week lost</h4><p class="dim">Copy-pasting between tools instead of selling.</p></div>
-    </div>
-  </section>
+  <section class="slide"><div class="chr-topbar"><div class="chr-chip rose">Problem</div><div class="chr-page">02 · 10</div></div><div class="chr-kicker">Problem</div><h2 class="chr-heading" style="font-size:62px;font-weight:800;letter-spacing:-.03em">Solo founders duct-tape<br>7+ tools to stay alive.</h2><div class="c-grid-3"><div class="c-card"><h4>Fragmentation</h4><p>Stripe, QuickBooks, HubSpot, DocuSign, Notion, Gusto, a spreadsheet. Nothing talks.</p></div><div class="c-card"><h4>$480/mo wasted</h4><p>Average solo founder pays for 9 SaaS seats they only half-use.</p></div><div class="c-card"><h4>14 hrs / week lost</h4><p>Copy-pasting between tools instead of selling.</p></div></div><div style="position:absolute;right:72px;bottom:40px;font-size:220px;font-weight:900;line-height:.9;color:var(--surface-2);letter-spacing:-.05em;z-index:0">01</div><div class="chr-footer"><span>Problem</span><span>Lumen</span></div></section>
 
-  <!-- 3. Solution -->
-  <section class="slide" data-title="Solution">
-    <span class="section-num">02</span>
-    <p class="num-tag">SOLUTION</p>
-    <h2 class="h2 mt-s">Lumen is <span class="gradient-text">one spine</span><br>for the business of one.</h2>
-    <p class="lede mt-m">Invoice a client → the payment lands → the tax is reserved → the contract is filed → your dashboard updates. In one app. Without plumbing.</p>
-    <div class="row mt-l">
-      <span class="pill pill-accent">Billing</span>
-      <span class="pill pill-accent">CRM</span>
-      <span class="pill pill-accent">Contracts</span>
-      <span class="pill pill-accent">Taxes</span>
-      <span class="pill pill-accent">Banking</span>
-    </div>
-  </section>
+  <section class="slide"><div class="chr-topbar"><div class="chr-chip mint">Solution</div><div class="chr-page">03 · 10</div></div><div class="chr-kicker">Solution</div><h2 class="chr-heading" style="font-size:62px;font-weight:800;letter-spacing:-.03em">Lumen is <span class="c-grad">one spine</span><br>for the business of one.</h2><p class="chr-sub" style="font-size:22px;max-width:62ch">Invoice a client → the payment lands → the tax is reserved → the contract is filed → your dashboard updates. In one app. Without plumbing.</p><div style="display:flex;gap:12px;margin-top:32px;flex-wrap:wrap"><span class="c-badge accent">Billing</span><span class="c-badge accent">CRM</span><span class="c-badge accent">Contracts</span><span class="c-badge accent">Taxes</span><span class="c-badge accent">Banking</span></div><div style="position:absolute;right:72px;bottom:40px;font-size:220px;font-weight:900;line-height:.9;color:var(--surface-2);letter-spacing:-.05em;z-index:0">02</div><div class="chr-footer"><span>Solution</span><span>Lumen</span></div></section>
 
-  <!-- 4. Product -->
-  <section class="slide" data-title="Product">
-    <span class="section-num">03</span>
-    <p class="num-tag">PRODUCT</p>
-    <h2 class="h2 mt-s">Built around "jobs to be done".</h2>
-    <div class="grid g2 mt-l">
-      <div class="card card-hover"><h4>Get paid</h4><p class="dim">Invoices, subscriptions and Stripe/Wise payouts with a single click. ACH, card, wire, crypto.</p></div>
-      <div class="card card-hover"><h4>Stay legal</h4><p class="dim">E-sign contracts from templates. Auto-file 1099s and quarterly estimates.</p></div>
-      <div class="card card-hover"><h4>Sell smarter</h4><p class="dim">Lead inbox, pipeline, email sequences. No separate CRM.</p></div>
-      <div class="card card-hover"><h4>See the business</h4><p class="dim">Live P&amp;L, runway, top customers, churn. One dashboard, zero spreadsheets.</p></div>
-    </div>
-  </section>
+  <section class="slide"><div class="chr-topbar"><div class="chr-chip sky">Product</div><div class="chr-page">04 · 10</div></div><div class="chr-kicker">Product</div><h2 class="chr-heading" style="font-size:62px;font-weight:800;letter-spacing:-.03em">Built around 'jobs to be done'.</h2><div class="c-grid-2"><div class="c-card peach"><h4>Get paid</h4><p>Invoices, subscriptions and Stripe/Wise payouts with a single click. ACH, card, wire, crypto.</p></div><div class="c-card mint"><h4>Stay legal</h4><p>E-sign contracts from templates. Auto-file 1099s and quarterly estimates.</p></div><div class="c-card sky"><h4>Sell smarter</h4><p>Lead inbox, pipeline, email sequences. No separate CRM.</p></div><div class="c-card lilac"><h4>See the business</h4><p>Live P&amp;L, runway, top customers, churn. One dashboard, zero spreadsheets.</p></div></div><div style="position:absolute;right:72px;bottom:40px;font-size:220px;font-weight:900;line-height:.9;color:var(--surface-2);letter-spacing:-.05em;z-index:0">03</div><div class="chr-footer"><span>Product</span><span>Lumen</span></div></section>
 
-  <!-- 5. Market -->
-  <section class="slide" data-title="Market">
-    <span class="section-num">04</span>
-    <p class="num-tag">MARKET</p>
-    <h2 class="h2 mt-s">A very big small business.</h2>
-    <div class="grid g3 mt-l">
-      <div class="metric"><div class="n">73M</div><div class="l">solo businesses in the US + EU</div></div>
-      <div class="metric"><div class="n">$186B</div><div class="l">TAM · horizontal SaaS spend</div></div>
-      <div class="metric"><div class="n">9.4%</div><div class="l">CAGR through 2030</div></div>
-    </div>
-    <p class="lede mt-l">Creators, consultants, indie devs, coaches, freelancers — the fastest-growing segment of the workforce, and the most under-served by tooling.</p>
-  </section>
+  <section class="slide"><div class="chr-topbar"><div class="chr-chip lilac">Market</div><div class="chr-page">05 · 10</div></div><div class="chr-kicker">Market</div><h2 class="chr-heading" style="font-size:62px;font-weight:800;letter-spacing:-.03em">A very big small business.</h2><div class="c-row" style="margin-top:32px"><div class="c-kpi" style="text-align:left"><div class="c-kpi-value" style="font-size:72px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">73M</div><div class="c-kpi-label" style="font-size:16px">solo businesses in the US + EU</div></div><div class="c-kpi" style="text-align:left"><div class="c-kpi-value" style="font-size:72px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">$186B</div><div class="c-kpi-label" style="font-size:16px">TAM · horizontal SaaS spend</div></div><div class="c-kpi" style="text-align:left"><div class="c-kpi-value" style="font-size:72px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">9.4%</div><div class="c-kpi-label" style="font-size:16px">CAGR through 2030</div></div></div><p class="chr-sub" style="font-size:20px;margin-top:40px;max-width:62ch">Creators, consultants, indie devs, coaches, freelancers — the fastest-growing segment of the workforce, and the most under-served by tooling.</p><div style="position:absolute;right:72px;bottom:40px;font-size:220px;font-weight:900;line-height:.9;color:var(--surface-2);letter-spacing:-.05em;z-index:0">04</div><div class="chr-footer"><span>Market</span><span>Lumen</span></div></section>
 
-  <!-- 6. Business model -->
-  <section class="slide" data-title="Business Model">
-    <span class="section-num">05</span>
-    <p class="num-tag">BUSINESS MODEL</p>
-    <h2 class="h2 mt-s">Flat SaaS + payment rake.</h2>
-    <div class="grid g3 mt-l">
-      <div class="card"><h4>Starter</h4><div class="metric mt-s"><div class="n" style="font-size:56px">$29</div><div class="l">/ month · core billing + CRM</div></div></div>
-      <div class="card card-accent"><h4>Pro</h4><div class="metric mt-s"><div class="n" style="font-size:56px">$79</div><div class="l">/ month · contracts, taxes, banking</div></div></div>
-      <div class="card"><h4>+ Payments</h4><div class="metric mt-s"><div class="n" style="font-size:56px">0.4%</div><div class="l">interchange rake on processed volume</div></div></div>
-    </div>
-    <p class="dim mt-l">Blended LTV $1,920 · CAC payback 5 months at current funnel.</p>
-  </section>
+  <section class="slide"><div class="chr-topbar"><div class="chr-chip lemon">Model</div><div class="chr-page">06 · 10</div></div><div class="chr-kicker">Business Model</div><h2 class="chr-heading" style="font-size:62px;font-weight:800;letter-spacing:-.03em">Flat SaaS + payment rake.</h2><div class="c-grid-3"><div class="c-card"><h4>Starter</h4><div style="margin-top:16px"><div style="font-size:56px;font-weight:900;letter-spacing:-.035em;line-height:1">$29</div><div class="c-kpi-label" style="font-size:16px">/ month · core billing + CRM</div></div></div><div class="c-card-accent"><h4>Pro</h4><div style="margin-top:16px"><div style="font-size:56px;font-weight:900;letter-spacing:-.035em;line-height:1">$79</div><div class="c-kpi-label" style="font-size:16px">/ month · contracts, taxes, banking</div></div></div><div class="c-card"><h4>+ Payments</h4><div style="margin-top:16px"><div style="font-size:56px;font-weight:900;letter-spacing:-.035em;line-height:1">0.4%</div><div class="c-kpi-label" style="font-size:16px">interchange rake on processed volume</div></div></div></div><p style="color:var(--text-2);font-size:16px;margin-top:40px">Blended LTV $1,920 · CAC payback 5 months at current funnel.</p><div style="position:absolute;right:72px;bottom:40px;font-size:220px;font-weight:900;line-height:.9;color:var(--surface-2);letter-spacing:-.05em;z-index:0">05</div><div class="chr-footer"><span>Business Model</span><span>Lumen</span></div></section>
 
-  <!-- 7. Traction -->
-  <section class="slide" data-title="Traction">
-    <span class="section-num">06</span>
-    <p class="num-tag">TRACTION</p>
-    <h2 class="h2 mt-s">6 months, growing 38% MoM.</h2>
-    <div class="traction-bar mt-l">
-      <div class="bar" style="height:18%"><em>$6k</em><span>Oct</span></div>
-      <div class="bar" style="height:30%"><em>$11k</em><span>Nov</span></div>
-      <div class="bar" style="height:44%"><em>$17k</em><span>Dec</span></div>
-      <div class="bar" style="height:62%"><em>$26k</em><span>Jan</span></div>
-      <div class="bar" style="height:82%"><em>$38k</em><span>Feb</span></div>
-      <div class="bar" style="height:100%"><em>$54k</em><span>Mar</span></div>
-    </div>
-    <p class="dim mt-l" style="margin-top:48px">2,140 paying customers · NPS 72 · Net retention 118%</p>
-  </section>
+  <section class="slide"><div class="chr-topbar"><div class="chr-chip">Traction</div><div class="chr-page">07 · 10</div></div><div class="chr-kicker">Traction</div><h2 class="chr-heading" style="font-size:62px;font-weight:800;letter-spacing:-.03em">6 months, growing 38% MoM.</h2><div style="display:flex;align-items:flex-end;gap:14px;height:240px;margin-top:48px"><div style="flex:1;background:var(--grad);border-radius:8px 8px 0 0;height:18%;min-height:20px;position:relative"><em style="position:absolute;top:-28px;left:0;right:0;text-align:center;font-size:14px;font-weight:700;font-style:normal;color:var(--text-1)">$6k</em><span style="position:absolute;bottom:-28px;left:0;right:0;text-align:center;font-size:13px;color:var(--text-3)">Oct</span></div><div style="flex:1;background:var(--grad);border-radius:8px 8px 0 0;height:30%;min-height:20px;position:relative"><em style="position:absolute;top:-28px;left:0;right:0;text-align:center;font-size:14px;font-weight:700;font-style:normal;color:var(--text-1)">$11k</em><span style="position:absolute;bottom:-28px;left:0;right:0;text-align:center;font-size:13px;color:var(--text-3)">Nov</span></div><div style="flex:1;background:var(--grad);border-radius:8px 8px 0 0;height:44%;min-height:20px;position:relative"><em style="position:absolute;top:-28px;left:0;right:0;text-align:center;font-size:14px;font-weight:700;font-style:normal;color:var(--text-1)">$17k</em><span style="position:absolute;bottom:-28px;left:0;right:0;text-align:center;font-size:13px;color:var(--text-3)">Dec</span></div><div style="flex:1;background:var(--grad);border-radius:8px 8px 0 0;height:62%;min-height:20px;position:relative"><em style="position:absolute;top:-28px;left:0;right:0;text-align:center;font-size:14px;font-weight:700;font-style:normal;color:var(--text-1)">$26k</em><span style="position:absolute;bottom:-28px;left:0;right:0;text-align:center;font-size:13px;color:var(--text-3)">Jan</span></div><div style="flex:1;background:var(--grad);border-radius:8px 8px 0 0;height:82%;min-height:20px;position:relative"><em style="position:absolute;top:-28px;left:0;right:0;text-align:center;font-size:14px;font-weight:700;font-style:normal;color:var(--text-1)">$38k</em><span style="position:absolute;bottom:-28px;left:0;right:0;text-align:center;font-size:13px;color:var(--text-3)">Feb</span></div><div style="flex:1;background:var(--grad);border-radius:8px 8px 0 0;height:100%;min-height:20px;position:relative"><em style="position:absolute;top:-28px;left:0;right:0;text-align:center;font-size:14px;font-weight:700;font-style:normal;color:var(--text-1)">$54k</em><span style="position:absolute;bottom:-28px;left:0;right:0;text-align:center;font-size:13px;color:var(--text-3)">Mar</span></div></div><p style="color:var(--text-2);font-size:16px;margin-top:56px">2,140 paying customers · NPS 72 · Net retention 118%</p><div style="position:absolute;right:72px;bottom:40px;font-size:220px;font-weight:900;line-height:.9;color:var(--surface-2);letter-spacing:-.05em;z-index:0">06</div><div class="chr-footer"><span>Traction</span><span>Lumen</span></div></section>
 
-  <!-- 8. Team -->
-  <section class="slide" data-title="Team">
-    <span class="section-num">07</span>
-    <p class="num-tag">TEAM</p>
-    <h2 class="h2 mt-s">Shipped at scale before.</h2>
-    <div class="grid g3 mt-l">
-      <div class="card team-card"><div class="avatar">MC</div><h4>Maya Chen</h4><p class="dim">CEO · ex-Stripe billing lead. 8 yrs in payments.</p></div>
-      <div class="card team-card"><div class="avatar">RP</div><h4>Raj Patel</h4><p class="dim">CTO · ex-Linear. Built multiplayer sync at 10M users.</p></div>
-      <div class="card team-card"><div class="avatar">EK</div><h4>Elena Kim</h4><p class="dim">Head of Design · ex-Notion. Shipped the mobile relaunch.</p></div>
-    </div>
-  </section>
+  <section class="slide"><div class="chr-topbar"><div class="chr-chip lilac">Team</div><div class="chr-page">08 · 10</div></div><div class="chr-kicker">Team</div><h2 class="chr-heading" style="font-size:62px;font-weight:800;letter-spacing:-.03em">Shipped at scale before.</h2><div class="c-grid-3"><div class="c-card" style="text-align:center;padding:32px 20px"><div style="width:96px;height:96px;border-radius:50%;margin:0 auto 14px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:32px">MC</div><h4>Maya Chen</h4><p>CEO · ex-Stripe billing lead. 8 yrs in payments.</p></div><div class="c-card" style="text-align:center;padding:32px 20px"><div style="width:96px;height:96px;border-radius:50%;margin:0 auto 14px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:32px">RP</div><h4>Raj Patel</h4><p>CTO · ex-Linear. Built multiplayer sync at 10M users.</p></div><div class="c-card" style="text-align:center;padding:32px 20px"><div style="width:96px;height:96px;border-radius:50%;margin:0 auto 14px;background:var(--grad);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:32px">EK</div><h4>Elena Kim</h4><p>Head of Design · ex-Notion. Shipped the mobile relaunch.</p></div></div><div style="position:absolute;right:72px;bottom:40px;font-size:220px;font-weight:900;line-height:.9;color:var(--surface-2);letter-spacing:-.05em;z-index:0">07</div><div class="chr-footer"><span>Team</span><span>Lumen</span></div></section>
 
-  <!-- 9. Ask -->
-  <section class="slide" data-title="The Ask">
-    <p class="num-tag">THE ASK</p>
-    <div class="ask-box mt-m">
-      <h2 class="h2">Raising $4.5M seed.</h2>
-      <p class="lede" style="color:rgba(255,255,255,.9);max-width:60ch">18 months of runway to reach $3M ARR. 40% engineering, 35% growth, 15% compliance/banking licenses, 10% runway buffer.</p>
-      <div class="row mt-l" style="gap:40px">
-        <div><div style="font-size:44px;font-weight:900">$4.5M</div><div class="dim">SAFE · post-money cap $28M</div></div>
-        <div><div style="font-size:44px;font-weight:900">18 mo</div><div class="dim">runway to Series A</div></div>
-        <div><div style="font-size:44px;font-weight:900">$3M</div><div class="dim">ARR target by close</div></div>
-      </div>
-    </div>
-  </section>
+  <section class="slide"><div class="chr-topbar"><div class="chr-chip rose">The Ask</div><div class="chr-page">09 · 10</div></div><div class="chr-kicker">The Ask</div><div style="background:var(--grad);color:#fff;padding:56px 64px;border-radius:36px;box-shadow:0 30px 70px rgba(59,91,255,.25);margin-top:24px"><h2 style="font-size:62px;font-weight:800;letter-spacing:-.03em;color:#fff;margin:0 0 18px">Raising $4.5M seed.</h2><p style="font-size:20px;line-height:1.55;color:rgba(255,255,255,.9);max-width:60ch">18 months of runway to reach $3M ARR. 40% engineering, 35% growth, 15% compliance/banking licenses, 10% runway buffer.</p><div style="display:flex;gap:40px;margin-top:32px"><div><div style="font-size:44px;font-weight:900;color:#fff">$4.5M</div><div style="font-size:14px;color:rgba(255,255,255,.85)">SAFE · post-money cap $28M</div></div><div><div style="font-size:44px;font-weight:900;color:#fff">18 mo</div><div style="font-size:14px;color:rgba(255,255,255,.85)">runway to Series A</div></div><div><div style="font-size:44px;font-weight:900;color:#fff">$3M</div><div style="font-size:14px;color:rgba(255,255,255,.85)">ARR target by close</div></div></div></div><div style="position:absolute;right:72px;bottom:40px;font-size:220px;font-weight:900;line-height:.9;color:var(--surface-2);letter-spacing:-.05em;z-index:0">08</div><div class="chr-footer"><span>The Ask</span><span>Lumen</span></div></section>
 
-  <!-- 10. Thanks -->
-  <section class="slide center tc" data-title="Thanks">
-    <div class="cover-bg"></div>
-    <div>
-      <div class="mega">Thanks.</div>
-      <p class="mega-sub">maya@lumen.app · lumen.app/investors</p>
-      <div class="row mt-l" style="justify-content:center;gap:24px">
-        <span class="pill pill-accent">Let's talk</span>
-        <span class="pill">Deck v4.2 · Apr 2026</span>
-      </div>
-    </div>
-  </section>
+  <section class="slide"><div style="position:absolute;inset:0;background:var(--grad);opacity:.06;z-index:0"></div><div class="chr-blob b2"></div><div class="chr-blob b3"></div><div style="position:relative;z-index:2;text-align:center;margin:auto 0"><div style="font-size:180px;font-weight:900;line-height:.95;letter-spacing:-.05em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent">Thanks.</div><p class="chr-sub" style="font-size:28px;text-align:center;margin:18px auto 0">maya@lumen.app · lumen.app/investors</p><div style="display:flex;justify-content:center;gap:16px;margin-top:32px;flex-wrap:wrap"><span class="c-badge accent">Let's talk</span><span class="c-badge">Deck v4.2 · Apr 2026</span></div></div><div class="chr-footer"><span>Maya Chen · CEO</span><span>Thanks</span></div></section>
 
 </div>
 <script src="../../../assets/runtime.js"></script>
-</body></html>
+</body>
+</html>

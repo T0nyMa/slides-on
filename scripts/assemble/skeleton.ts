@@ -10,6 +10,7 @@ const DESIGN_BODY_CLASS: Record<string, string> = {
   "pastel-card": "d-pastel-card",
   "white-editorial": "d-white-editorial",
   "xhs-post": "d-xhs-post",
+  "hermes-cyber-terminal": "d-hermes-cyber-terminal",
 };
 
 /**
@@ -31,10 +32,8 @@ export function renderDeck(config: DeckConfig, slidesHTML: string[], assetDepth:
     : `${prefix}/designs/${config.design}.css`;
 
   const isPortrait = config.canvas === "3:4";
-  const portraitAttr = isPortrait ? " portrait" : "";
-  const componentsLink = isPortrait
-    ? `\n<link rel="stylesheet" href="${prefix}/components.css">`
-    : "";
+  const canvasClass = isPortrait ? " portrait" : " landscape";
+  const componentsLink = `\n<link rel="stylesheet" href="${prefix}/components.css">`;
 
   const slidesStr = slidesHTML.map((html, i) => {
     // Ensure first slide has is-active
@@ -54,7 +53,7 @@ export function renderDeck(config: DeckConfig, slidesHTML: string[], assetDepth:
 <link rel="stylesheet" href="${prefix}/base.css">${componentsLink}
 <link rel="stylesheet" href="${designPath}">
 </head>
-<body class="${bodyClass}${portraitAttr}">
+<body class="${bodyClass}${canvasClass}">
 <div class="deck">
 
   ${slidesStr}

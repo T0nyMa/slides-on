@@ -12,7 +12,7 @@
 |--------|------|------|
 | config.title | 非空字符串 | FAIL |
 | config.design | 必须为 `pastel-card` \| `white-editorial` \| `xhs-post` | FAIL |
-| config.canvas | 必须为 `3:4`（16:9 暂不支持 assemble） | FAIL |
+| config.canvas | 必须为 `3:4` 或 `16:9` | FAIL |
 | slides 数组 | 至少 1 个元素 | FAIL |
 | slide.type | 必须为 11 种合法类型之一 | FAIL |
 | slide.title（非 html/cover 类型）| 非空字符串 | FAIL |

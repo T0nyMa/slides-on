@@ -240,6 +240,7 @@ slides-on/
 │   ├── merge-to-pdf.ts            #   PNG → PDF（pdf-lib 自包含）
 │   ├── svg-to-png.ts              #   SVG → @2x PNG
 │   ├── validate-slides.ts          #   slides.json 质量验证（Schema + 预算 + 锚点）
+│   ├── qa-migrate.ts               #   迁移质量门禁（内容完整性 + class 合法性）
 │   ├── assemble-deck.ts           #   HTML 组装入口（JSON → index.html）
 │   ├── new-deck.sh                 #   新建 deck 脚手架
 │   ├── assemble/                   #   HTML 组装引擎

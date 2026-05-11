@@ -1,189 +1,246 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Module 04 · Recursion · CS101</title>
 <link rel="stylesheet" href="../../../assets/fonts.css">
 <link rel="stylesheet" href="../../../assets/base.css">
-<link rel="stylesheet" href="../../../assets/animations/animations.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../../assets/components.css">
+<link rel="stylesheet" href="../../../assets/designs/pastel-card.css">
 </head>
-<body class="tpl-course-module">
+<body class="d-pastel-card landscape">
 <div class="deck">
 
-  <!-- 1. Cover -->
-  <section class="slide full" data-title="Cover">
-    <p class="kicker">CS 101 · MODULE 04</p>
-    <h1 class="h1 mt-s">Recursion: solving<br>problems by <em>calling yourself</em>.</h1>
-    <p class="lede mt-l" style="max-width:62ch">In this module you'll learn why a function that calls itself is not a trick, but the most natural way to describe problems that contain smaller copies of themselves.</p>
-    <div class="row mt-l" style="gap:16px">
-      <span class="pill-academic">~ 45 min read</span>
-      <span class="pill-academic">prereq · functions, if/else</span>
-      <span class="pill-academic">lang · Python</span>
-    </div>
-    <div class="deck-footer"><span>Dr. A. Rivera · Spring 2026</span><span class="slide-number" data-current="1" data-total="7"></span></div>
-  </section>
+  <style>
+/* ── Course Module custom elements (sidebar, objectives, MCQ, exercise) ── */
 
-  <!-- 2. Objectives -->
-  <section class="slide" data-title="Objectives">
-    <aside class="sidebar">
-      <div class="brand">CS 101 · M04</div>
-      <h5>Learning objectives</h5>
-      <ul class="obj-list">
-        <li class="current">Define recursion</li>
-        <li>Identify a base case</li>
-        <li>Trace a recursive call</li>
-        <li>Convert loop ↔ recursion</li>
-        <li>Recognize when recursion helps</li>
-      </ul>
-      <h5>Module progress</h5>
-      <p class="dim" style="font-size:13px">Page 2 of 7 · ~5 min in</p>
-    </aside>
-    <div class="main">
-      <p class="kicker">OBJECTIVES</p>
-      <h2 class="h2 mt-s">By the end, you will be able to…</h2>
-      <div class="stack mt-l">
-        <div class="concept-box"><h4>① Explain recursion in one sentence.</h4><p class="dim">"A function that solves a problem by calling itself on a smaller version of that problem."</p></div>
-        <div class="concept-box"><h4>② Write a base case that always terminates.</h4><p class="dim">Every recursive function must have an exit door, or it runs forever.</p></div>
-        <div class="concept-box"><h4>③ Trace a call stack on paper.</h4><p class="dim">Given <code>fact(4)</code>, draw the stack frames top-to-bottom.</p></div>
-        <div class="concept-box"><h4>④ Convert a while-loop to a recursive equivalent.</h4><p class="dim">And explain when one is clearer than the other.</p></div>
-      </div>
-    </div>
-  </section>
+.cm-sidebar-slide { display: grid !important; grid-template-columns: 14cqi 1fr; gap: 3cqi; align-content: start !important; justify-content: unset !important; }
+.cm-full-slide { display: flex !important; flex-direction: column; justify-content: center !important; }
 
-  <!-- 3. Concept -->
-  <section class="slide" data-title="Concept">
-    <aside class="sidebar">
-      <div class="brand">CS 101 · M04</div>
-      <h5>Learning objectives</h5>
-      <ul class="obj-list">
-        <li class="done">Define recursion</li>
-        <li class="current">Identify a base case</li>
-        <li>Trace a recursive call</li>
-        <li>Convert loop ↔ recursion</li>
-        <li>Recognize when recursion helps</li>
-      </ul>
-      <h5>Key terms</h5>
-      <p class="dim" style="font-size:13px">base case · recursive case · call stack · tail call</p>
-    </aside>
-    <div class="main">
-      <p class="kicker">CORE CONCEPT</p>
-      <h2 class="h2 mt-s">Two parts, always.</h2>
-      <p class="lede mt-m">A recursive function has exactly two things inside it: a <b>base case</b> (when to stop) and a <b>recursive case</b> (how to shrink the problem before calling yourself).</p>
-      <div class="callout">
-        <b>Rule of thumb.</b> If you can't name the base case out loud, don't write the recursion yet. Draw it on paper first.
-      </div>
-      <div class="grid g2 mt-l">
-        <div class="concept-box"><h4>Base case</h4><p class="dim">The smallest possible input — one the function answers directly, without calling itself.</p><p class="pill-academic">e.g. <b>n == 0</b></p></div>
-        <div class="concept-box"><h4>Recursive case</h4><p class="dim">Every other input — delegate to a smaller version of the same problem.</p><p class="pill-academic">e.g. <b>n × fact(n-1)</b></p></div>
-      </div>
-    </div>
-  </section>
+.cm-sidebar { border-right: 1px solid var(--border); padding-right: 2cqi; }
+.cm-sidebar-brand { font-family: var(--font-display); font-size: 1.6cqi; font-weight: 700; color: var(--accent); }
+.cm-sidebar-brand::before { content: "✦ "; color: var(--accent-2); }
+.cm-sidebar h5 { font-size: 0.7cqi; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--text-3); margin: 2cqi 0 0.8cqi; }
+.cm-sidebar h5:first-of-type { margin-top: 2.5cqi; }
 
-  <!-- 4. Example -->
-  <section class="slide" data-title="Example">
-    <aside class="sidebar">
-      <div class="brand">CS 101 · M04</div>
-      <h5>Learning objectives</h5>
-      <ul class="obj-list">
-        <li class="done">Define recursion</li>
-        <li class="done">Identify a base case</li>
-        <li class="current">Trace a recursive call</li>
-        <li>Convert loop ↔ recursion</li>
-        <li>Recognize when recursion helps</li>
-      </ul>
-      <h5>Try it yourself</h5>
-      <p class="dim" style="font-size:13px">Open repl.it and run the code on the right. Then try <code>fact(10)</code>.</p>
-    </aside>
-    <div class="main">
-      <p class="kicker">WORKED EXAMPLE</p>
-      <h2 class="h2 mt-s">Factorial, 7 lines.</h2>
-      <div class="code mt-m"><pre style="margin:0"><span class="cmt"># fact(n) = n × (n-1) × … × 1,  and fact(0) = 1</span>
+.cm-obj-list { list-style: none; padding: 0; margin: 0; font-size: 0.75cqi; color: var(--text-2); line-height: 1.5; }
+.cm-obj-list li { padding: 0.5cqi 0 0.5cqi 1.4cqi; position: relative; border-bottom: 1px dashed var(--border); }
+.cm-obj-list li::before { content: "○"; position: absolute; left: 0; top: 0.5cqi; color: var(--accent); font-size: 0.7cqi; }
+.cm-obj-list li.done { color: var(--text-3); }
+.cm-obj-list li.done::before { content: "●"; color: var(--accent-3); }
+.cm-obj-list li.current { color: var(--text-1); font-weight: 700; }
+.cm-obj-list li.current::before { content: "▸"; color: var(--accent-2); font-size: 0.75cqi; top: 0.45cqi; }
+
+.cm-main { min-width: 0; }
+
+.cm-concept-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.4cqi 1.6cqi; box-shadow: var(--shadow); }
+.cm-concept-box h4 { color: var(--accent); margin: 0 0 0.4cqi; font-size: 1.3cqi; font-weight: 700; }
+.cm-concept-box p { margin: 0; }
+
+.cm-pill { display: inline-block; padding: 0.15cqi 0.6cqi; border-radius: 3px; background: var(--surface-2); border: 1px solid var(--border); font-size: 0.7cqi; color: var(--text-2); font-family: var(--font-mono, 'JetBrains Mono', monospace); }
+
+.cm-exercise { background: #fff8ed; border: 1.5px dashed var(--accent-2); border-radius: var(--radius); padding: 1.4cqi 1.6cqi; }
+.cm-exercise::before { content: "✎ Exercise"; display: block; font-size: 0.65cqi; font-weight: 700; letter-spacing: .12em; color: var(--accent-2); margin-bottom: 0.6cqi; text-transform: uppercase; }
+.cm-exercise ol { color: var(--text-2); line-height: 1.8; margin: 0.6cqi 0 0; padding-left: 1.3cqi; font-size: 0.95cqi; }
+.cm-exercise ol li { margin-bottom: 0.2cqi; }
+
+.cm-mcq { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1cqi 1.3cqi; margin-bottom: 0.6cqi; display: flex; gap: 0.8cqi; align-items: flex-start; }
+.cm-mcq-letter { flex: none; width: 1.6cqi; height: 1.6cqi; border-radius: 50%; border: 2px solid var(--text-3); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75cqi; color: var(--text-2); }
+.cm-mcq.correct { border-color: var(--accent-3); background: rgba(46,157,112,.08); }
+.cm-mcq.correct .cm-mcq-letter { border-color: var(--accent-3); background: var(--accent-3); color: #fff; }
+
+.cm-codebox { background: #2a2340; color: #fef8f1; border-radius: var(--radius); padding: 0.9cqi 1.2cqi; font-family: 'JetBrains Mono', monospace; font-size: 0.75cqi; line-height: 1.75; overflow: auto; margin-top: 1cqi; }
+.cm-codebox .cmt { color: #9089a8; font-style: italic; }
+.cm-codebox .kw { color: #e8a770; }
+.cm-codebox .str { color: #8ec6b2; }
+
+.cm-lede { font-size: 1.1cqi; color: var(--text-2); line-height: 1.7; max-width: 62ch; }
+.cm-h1 { font-family: var(--font-display); font-size: 4cqi; line-height: 1.05; font-weight: 800; letter-spacing: -0.02em; color: var(--text-1); margin: 0 0 1cqi; }
+.cm-h1 em { font-style: italic; color: var(--accent); }
+.cm-h2 { font-family: var(--font-display); font-size: 2.8cqi; line-height: 1.1; font-weight: 700; letter-spacing: -0.015em; color: var(--text-1); margin: 0 0 0.8cqi; }
+.cm-h2 em { font-style: italic; color: var(--accent); }
+
+.cm-callout { border-left: 4px solid var(--accent-2); background: var(--surface-2); padding: 0.9cqi 1.2cqi; border-radius: 0 var(--radius) var(--radius) 0; margin-top: 1cqi; font-size: 0.85cqi; line-height: 1.6; color: var(--text-2); }
+.cm-callout b { color: var(--accent-2); }
+
+.cm-dim { color: var(--text-3); }
+.cm-spacer-sm { height: 0.5cqi; }
+.cm-spacer { height: 1cqi; }
+.cm-spacer-lg { height: 1.8cqi; }
+
+.cm-footer { color: var(--text-3); font-size: 0.7cqi; display: flex; justify-content: space-between; margin-top: auto; padding-top: 1cqi; }
+
+/* Override pastel-card chr-kicker to be cqi-based for 16:9 */
+.cm-kicker { color: var(--accent-2); font-size: 0.7cqi; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-family: var(--font-sans); margin-bottom: 0.6cqi; }
+</style>
+<section class="slide cm-full-slide is-active" data-title="Cover">
+  <p class="cm-kicker">CS 101 · MODULE 04</p>
+  <h1 class="cm-h1">Recursion: solving<br>problems by <em>calling yourself</em>.</h1>
+  <p class="cm-lede" style="max-width:62ch;margin-top:1.2cqi">In this module you'll learn why a function that calls itself is not a trick, but the most natural way to describe problems that contain smaller copies of themselves.</p>
+  <div class="c-badge-row" style="margin-top:1.2cqi;gap:0.6cqi">
+    <span class="c-badge">~ 45 min read</span>
+    <span class="c-badge">prereq · functions, if/else</span>
+    <span class="c-badge">lang · Python</span>
+  </div>
+  <div class="cm-footer" style="margin-top:1.8cqi"><span>Dr. A. Rivera · Spring 2026</span><span>1 / 7</span></div>
+</section>
+
+  <section class="slide cm-sidebar-slide" data-title="Objectives">
+  <aside class="cm-sidebar">
+    <div class="cm-sidebar-brand">CS 101 · M04</div>
+    <h5>Learning objectives</h5>
+    <ul class="cm-obj-list">
+      <li class="current">Define recursion</li>
+      <li>Identify a base case</li>
+      <li>Trace a recursive call</li>
+      <li>Convert loop &harr; recursion</li>
+      <li>Recognize when recursion helps</li>
+    </ul>
+    <h5>Module progress</h5>
+    <p class="cm-dim" style="font-size:0.72cqi">Page 2 of 7 · ~5 min in</p>
+  </aside>
+  <div class="cm-main">
+    <p class="cm-kicker">OBJECTIVES</p>
+    <h2 class="cm-h2">By the end, you will be able to&hellip;</h2>
+    <div class="c-stack" style="margin-top:1.2cqi">
+      <div class="cm-concept-box"><h4>① Explain recursion in one sentence.</h4><p class="cm-dim" style="font-size:0.85cqi">"A function that solves a problem by calling itself on a smaller version of that problem."</p></div>
+      <div class="cm-concept-box"><h4>② Write a base case that always terminates.</h4><p class="cm-dim" style="font-size:0.85cqi">Every recursive function must have an exit door, or it runs forever.</p></div>
+      <div class="cm-concept-box"><h4>③ Trace a call stack on paper.</h4><p class="cm-dim" style="font-size:0.85cqi">Given <code>fact(4)</code>, draw the stack frames top-to-bottom.</p></div>
+      <div class="cm-concept-box"><h4>④ Convert a while-loop to a recursive equivalent.</h4><p class="cm-dim" style="font-size:0.85cqi">And explain when one is clearer than the other.</p></div>
+    </div>
+  </div>
+</section>
+
+  <section class="slide cm-sidebar-slide" data-title="Concept">
+  <aside class="cm-sidebar">
+    <div class="cm-sidebar-brand">CS 101 · M04</div>
+    <h5>Learning objectives</h5>
+    <ul class="cm-obj-list">
+      <li class="done">Define recursion</li>
+      <li class="current">Identify a base case</li>
+      <li>Trace a recursive call</li>
+      <li>Convert loop &harr; recursion</li>
+      <li>Recognize when recursion helps</li>
+    </ul>
+    <h5>Key terms</h5>
+    <p class="cm-dim" style="font-size:0.72cqi">base case · recursive case · call stack · tail call</p>
+  </aside>
+  <div class="cm-main">
+    <p class="cm-kicker">CORE CONCEPT</p>
+    <h2 class="cm-h2">Two parts, always.</h2>
+    <p class="cm-lede" style="margin-top:0.8cqi">A recursive function has exactly two things inside it: a <b>base case</b> (when to stop) and a <b>recursive case</b> (how to shrink the problem before calling yourself).</p>
+    <div class="cm-callout">
+      <b>Rule of thumb.</b> If you can't name the base case out loud, don't write the recursion yet. Draw it on paper first.
+    </div>
+    <div class="c-grid-2" style="margin-top:1.2cqi">
+      <div class="cm-concept-box"><h4>Base case</h4><p class="cm-dim" style="font-size:0.85cqi">The smallest possible input &mdash; one the function answers directly, without calling itself.</p><p style="margin-top:0.6cqi"><span class="cm-pill">e.g. <b>n == 0</b></span></p></div>
+      <div class="cm-concept-box"><h4>Recursive case</h4><p class="cm-dim" style="font-size:0.85cqi">Every other input &mdash; delegate to a smaller version of the same problem.</p><p style="margin-top:0.6cqi"><span class="cm-pill">e.g. <b>n × fact(n-1)</b></span></p></div>
+    </div>
+  </div>
+</section>
+
+  <section class="slide cm-sidebar-slide" data-title="Example">
+  <aside class="cm-sidebar">
+    <div class="cm-sidebar-brand">CS 101 · M04</div>
+    <h5>Learning objectives</h5>
+    <ul class="cm-obj-list">
+      <li class="done">Define recursion</li>
+      <li class="done">Identify a base case</li>
+      <li class="current">Trace a recursive call</li>
+      <li>Convert loop &harr; recursion</li>
+      <li>Recognize when recursion helps</li>
+    </ul>
+    <h5>Try it yourself</h5>
+    <p class="cm-dim" style="font-size:0.72cqi">Open repl.it and run the code on the right. Then try <code>fact(10)</code>.</p>
+  </aside>
+  <div class="cm-main">
+    <p class="cm-kicker">WORKED EXAMPLE</p>
+    <h2 class="cm-h2">Factorial, 7 lines.</h2>
+    <div class="cm-codebox"><pre style="margin:0"><span class="cmt"># fact(n) = n × (n-1) × … × 1,  and fact(0) = 1</span>
 <span class="kw">def</span> fact(n):
     <span class="kw">if</span> n == <span class="str">0</span>:          <span class="cmt"># base case</span>
         <span class="kw">return</span> <span class="str">1</span>
     <span class="kw">return</span> n * fact(n - <span class="str">1</span>)   <span class="cmt"># recursive case</span>
 
 <span class="kw">print</span>(fact(<span class="str">4</span>))   <span class="cmt"># → 24</span></pre></div>
-      <div class="callout">
-        <b>Trace fact(4).</b> 4 × fact(3) → 4 × (3 × fact(2)) → 4 × 3 × (2 × fact(1)) → 4 × 3 × 2 × 1 × fact(0) → 4 × 3 × 2 × 1 × 1 = <b>24</b>.
-      </div>
+    <div class="cm-callout">
+      <b>Trace fact(4).</b> 4 × fact(3) → 4 × (3 × fact(2)) → 4 × 3 × (2 × fact(1)) → 4 × 3 × 2 × 1 × fact(0) → 4 × 3 × 2 × 1 × 1 = <b>24</b>.
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 5. Exercise -->
-  <section class="slide" data-title="Exercise">
-    <aside class="sidebar">
-      <div class="brand">CS 101 · M04</div>
-      <h5>Learning objectives</h5>
-      <ul class="obj-list">
-        <li class="done">Define recursion</li>
-        <li class="done">Identify a base case</li>
-        <li class="done">Trace a recursive call</li>
-        <li class="current">Convert loop ↔ recursion</li>
-        <li>Recognize when recursion helps</li>
-      </ul>
-      <h5>Time</h5>
-      <p class="dim" style="font-size:13px">~10 minutes · solo</p>
-    </aside>
-    <div class="main">
-      <p class="kicker">EXERCISE 4.1</p>
-      <h2 class="h2 mt-s">Write <em>sum_to(n)</em>.</h2>
-      <p class="lede mt-m">Return <code>1 + 2 + … + n</code> using recursion — no loops allowed.</p>
-      <div class="exercise mt-l">
-        <p style="margin:0;font-size:18px;color:var(--text-1)"><b>Your task</b></p>
-        <ol style="color:var(--text-2);line-height:1.8;margin:10px 0 0">
-          <li>Write the base case. What does <code>sum_to(0)</code> return?</li>
-          <li>Write the recursive case in terms of <code>sum_to(n - 1)</code>.</li>
-          <li>Test it: <code>sum_to(5) == 15</code>, <code>sum_to(10) == 55</code>.</li>
-          <li>Bonus: what happens if you call <code>sum_to(-3)</code>? Fix it.</li>
-        </ol>
-      </div>
-      <p class="dim mt-m" style="font-size:14px">Stuck? Remember: a base case is the smallest input you already know the answer to.</p>
+  <section class="slide cm-sidebar-slide" data-title="Exercise">
+  <aside class="cm-sidebar">
+    <div class="cm-sidebar-brand">CS 101 · M04</div>
+    <h5>Learning objectives</h5>
+    <ul class="cm-obj-list">
+      <li class="done">Define recursion</li>
+      <li class="done">Identify a base case</li>
+      <li class="done">Trace a recursive call</li>
+      <li class="current">Convert loop &harr; recursion</li>
+      <li>Recognize when recursion helps</li>
+    </ul>
+    <h5>Time</h5>
+    <p class="cm-dim" style="font-size:0.72cqi">~10 minutes · solo</p>
+  </aside>
+  <div class="cm-main">
+    <p class="cm-kicker">EXERCISE 4.1</p>
+    <h2 class="cm-h2">Write <em>sum_to(n)</em>.</h2>
+    <p class="cm-lede" style="margin-top:0.8cqi">Return <code>1 + 2 + &hellip; + n</code> using recursion &mdash; no loops allowed.</p>
+    <div class="cm-exercise" style="margin-top:1.2cqi">
+      <p style="margin:0;font-size:1cqi;color:var(--text-1);font-weight:700">Your task</p>
+      <ol>
+        <li>Write the base case. What does <code>sum_to(0)</code> return?</li>
+        <li>Write the recursive case in terms of <code>sum_to(n - 1)</code>.</li>
+        <li>Test it: <code>sum_to(5) == 15</code>, <code>sum_to(10) == 55</code>.</li>
+        <li>Bonus: what happens if you call <code>sum_to(-3)</code>? Fix it.</li>
+      </ol>
     </div>
-  </section>
+    <p class="cm-dim" style="margin-top:0.8cqi;font-size:0.78cqi">Stuck? Remember: a base case is the smallest input you already know the answer to.</p>
+  </div>
+</section>
 
-  <!-- 6. Check understanding -->
-  <section class="slide" data-title="Check">
-    <aside class="sidebar">
-      <div class="brand">CS 101 · M04</div>
-      <h5>Learning objectives</h5>
-      <ul class="obj-list">
-        <li class="done">Define recursion</li>
-        <li class="done">Identify a base case</li>
-        <li class="done">Trace a recursive call</li>
-        <li class="done">Convert loop ↔ recursion</li>
-        <li class="current">Recognize when recursion helps</li>
-      </ul>
-      <h5>Self-assess</h5>
-      <p class="dim" style="font-size:13px">You should get 3/3.</p>
-    </aside>
-    <div class="main">
-      <p class="kicker">CHECK YOUR UNDERSTANDING</p>
-      <h2 class="h2 mt-s">Which function will recurse forever?</h2>
-      <div class="mt-l">
-        <div class="mcq"><div class="letter">A</div><div><b>def f(n): return 1 if n == 0 else n * f(n - 1)</b><p class="dim" style="font-size:13px;margin:4px 0 0">Base case <code>n == 0</code>, shrinks toward it. Terminates.</p></div></div>
-        <div class="mcq correct"><div class="letter">B</div><div><b>def f(n): return n + f(n + 1)</b><p class="dim" style="font-size:13px;margin:4px 0 0"><b style="color:var(--accent)">✓ Correct.</b> No base case, and <code>n</code> grows — infinite recursion.</p></div></div>
-        <div class="mcq"><div class="letter">C</div><div><b>def f(n): return n if n &lt; 2 else f(n - 1) + f(n - 2)</b><p class="dim" style="font-size:13px;margin:4px 0 0">Classic Fibonacci. Base case on <code>n &lt; 2</code>. Terminates.</p></div></div>
-      </div>
+  <section class="slide cm-sidebar-slide" data-title="Check">
+  <aside class="cm-sidebar">
+    <div class="cm-sidebar-brand">CS 101 · M04</div>
+    <h5>Learning objectives</h5>
+    <ul class="cm-obj-list">
+      <li class="done">Define recursion</li>
+      <li class="done">Identify a base case</li>
+      <li class="done">Trace a recursive call</li>
+      <li class="done">Convert loop &harr; recursion</li>
+      <li class="current">Recognize when recursion helps</li>
+    </ul>
+    <h5>Self-assess</h5>
+    <p class="cm-dim" style="font-size:0.72cqi">You should get 3/3.</p>
+  </aside>
+  <div class="cm-main">
+    <p class="cm-kicker">CHECK YOUR UNDERSTANDING</p>
+    <h2 class="cm-h2">Which function will recurse forever?</h2>
+    <div style="margin-top:1.2cqi">
+      <div class="cm-mcq"><div class="cm-mcq-letter">A</div><div><b style="font-size:0.85cqi">def f(n): return 1 if n == 0 else n * f(n - 1)</b><p class="cm-dim" style="font-size:0.7cqi;margin:0.25cqi 0 0">Base case <code>n == 0</code>, shrinks toward it. Terminates.</p></div></div>
+      <div class="cm-mcq correct"><div class="cm-mcq-letter">B</div><div><b style="font-size:0.85cqi">def f(n): return n + f(n + 1)</b><p class="cm-dim" style="font-size:0.7cqi;margin:0.25cqi 0 0"><b style="color:var(--accent-3)">✓ Correct.</b> No base case, and <code>n</code> grows &mdash; infinite recursion.</p></div></div>
+      <div class="cm-mcq"><div class="cm-mcq-letter">C</div><div><b style="font-size:0.85cqi">def f(n): return n if n &lt; 2 else f(n - 1) + f(n - 2)</b><p class="cm-dim" style="font-size:0.7cqi;margin:0.25cqi 0 0">Classic Fibonacci. Base case on <code>n &lt; 2</code>. Terminates.</p></div></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 7. Summary -->
-  <section class="slide full" data-title="Summary">
-    <p class="kicker">SUMMARY · MODULE 04</p>
-    <h1 class="h1 mt-s">You can now…</h1>
-    <div class="grid g2 mt-l">
-      <div class="concept-box"><h4>✓ Define recursion</h4><p class="dim">A function that calls itself on a smaller input.</p></div>
-      <div class="concept-box"><h4>✓ Write a safe base case</h4><p class="dim">Every recursion needs an exit door.</p></div>
-      <div class="concept-box"><h4>✓ Trace a call stack</h4><p class="dim">You can unwind <code>fact(4)</code> by hand.</p></div>
-      <div class="concept-box"><h4>✓ Judge when to use it</h4><p class="dim">Trees and self-similar problems → recursion. Flat iteration → loop.</p></div>
-    </div>
-    <div class="callout mt-l">
-      <b>Up next · Module 05.</b> Divide &amp; conquer: merge sort. We'll use everything you just learned — but on lists, not numbers.
-    </div>
-  </section>
+  <section class="slide cm-full-slide" data-title="Summary">
+  <p class="cm-kicker">SUMMARY · MODULE 04</p>
+  <h1 class="cm-h1">You can now&hellip;</h1>
+  <div class="c-grid-2" style="margin-top:1.2cqi">
+    <div class="cm-concept-box"><h4>✓ Define recursion</h4><p class="cm-dim" style="font-size:0.85cqi">A function that calls itself on a smaller input.</p></div>
+    <div class="cm-concept-box"><h4>✓ Write a safe base case</h4><p class="cm-dim" style="font-size:0.85cqi">Every recursion needs an exit door.</p></div>
+    <div class="cm-concept-box"><h4>✓ Trace a call stack</h4><p class="cm-dim" style="font-size:0.85cqi">You can unwind <code>fact(4)</code> by hand.</p></div>
+    <div class="cm-concept-box"><h4>✓ Judge when to use it</h4><p class="cm-dim" style="font-size:0.85cqi">Trees and self-similar problems → recursion. Flat iteration → loop.</p></div>
+  </div>
+  <div class="cm-callout" style="margin-top:1.2cqi">
+    <b>Up next · Module 05.</b> Divide &amp; conquer: merge sort. We'll use everything you just learned &mdash; but on lists, not numbers.
+  </div>
+</section>
 
 </div>
 <script src="../../../assets/runtime.js"></script>
-</body></html>
+</body>
+</html>

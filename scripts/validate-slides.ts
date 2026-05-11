@@ -108,11 +108,11 @@ function checkSchema(config: any, slides: any[]): CheckResult[] {
     results.push(pass("schema.config.design", `design: ${config.design}`));
   }
 
-  if (config.canvas !== "3:4") {
+  if (!["3:4", "16:9"].includes(config.canvas)) {
     results.push(fail("schema.config.canvas",
-      `canvas must be "3:4" (16:9 not supported by assemble). Got: "${config.canvas}"`));
+      `Unknown canvas "${config.canvas}". Must be "3:4" or "16:9"`));
   } else {
-    results.push(pass("schema.config.canvas", "canvas: 3:4"));
+    results.push(pass("schema.config.canvas", `canvas: ${config.canvas}`));
   }
 
   if (!Array.isArray(slides) || slides.length === 0) {
