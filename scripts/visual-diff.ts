@@ -57,13 +57,17 @@ interface FontIssue {
   issue: string; // "too-small" | "too-large"
 }
 
+type VSeverity = "BLOCKER" | "WARN" | "INFO";
+
+interface VCheckedIssue { severity: VSeverity; tag: string; message: string; slide?: number; }
+
 interface QAReport {
-  chromeConsistency: { pass: boolean; issues: string[] };
-  overflow: { pass: boolean; issues: OverflowIssue[] };
-  whitespace?: { pass: boolean; issues: WhitespaceIssue[] };
-  balance?: { pass: boolean; issues: BalanceIssue[] };
-  fontAudit?: { pass: boolean; issues: FontIssue[] };
-  pixelDiff?: { pass: boolean; threshold: number; results: DiffResult[] };
+  chromeConsistency: { pass: boolean; issues: string[]; tag: string; severity: VSeverity };
+  overflow: { pass: boolean; issues: OverflowIssue[]; tag: string; severity: VSeverity };
+  whitespace?: { pass: boolean; issues: WhitespaceIssue[]; tag: string; severity: VSeverity };
+  balance?: { pass: boolean; issues: BalanceIssue[]; tag: string; severity: VSeverity };
+  fontAudit?: { pass: boolean; issues: FontIssue[]; tag: string; severity: VSeverity };
+  pixelDiff?: { pass: boolean; threshold: number; results: DiffResult[]; tag: string; severity: VSeverity };
 }
 
 // ─── Cli ────────────────────────────────────────────────────────────────
@@ -91,13 +95,15 @@ function parseArgs(args: string[]): CliArgs {
   bun scripts/visual-diff.ts --old old.html --new new.html  (pixel diff)
   bun scripts/visual-diff.ts --input index.html --full       (all checks)
 
+Severity: BLOCKER (must fix) | WARN (should review) | INFO (suggestion)
+
 Checks:
-  1. Chrome position consistency — chr-topbar/chr-footer Y pos stable across slides
-  2. Pixel diff — per-slide screenshot comparison (old vs new), threshold 2%
-  3. Overflow detection — no content element exceeds slide boundaries
-  4. Whitespace fill — content should fill ≥30% of slide area
-  5. Visual balance — L-R and T-B visual center within 20% of geometric center
-  6. Font size audit — no text < 10px, no heading > 25% of slide width`);
+  [A5] Chrome position — Y pos stable across slides
+  [S4] Pixel diff — screenshot comparison (old vs new)
+  [S3] Overflow — no content exceeds slide bounds
+  [V1] Whitespace — content fill ≥30%
+  [V2] Balance — visual center within 20% of geometric
+  [A4] Font audit — text ≥7px, heading ≤30% slide width`);
         process.exit(0);
     }
   }
@@ -492,61 +498,34 @@ function printReport(report: QAReport): void {
   console.log(`\n  Visual Diff Report`);
   console.log(`  ─────────────────`);
 
-  // Chrome consistency
-  const ccIcon = report.chromeConsistency.pass ? "✅" : "❌";
-  console.log(`\n  ${ccIcon} Chrome Position Consistency`);
-  for (const issue of report.chromeConsistency.issues) {
-    console.log(`     ${issue}`);
-  }
+  // Summary header
+  const allChecks = [
+    { name: "Chrome Position", result: report.chromeConsistency },
+    { name: "Overflow", result: report.overflow },
+    ...(report.whitespace ? [{ name: "Whitespace", result: report.whitespace }] : []),
+    ...(report.balance ? [{ name: "Balance", result: report.balance }] : []),
+    ...(report.fontAudit ? [{ name: "Font Audit", result: report.fontAudit }] : []),
+    ...(report.pixelDiff ? [{ name: "Pixel Diff", result: report.pixelDiff }] : []),
+  ];
+  const totalIssues = allChecks.reduce((s, c) => s + (c.result.issues?.length || 0), 0);
+  const blockers = allChecks.filter(c => c.result.severity === "BLOCKER" && !c.result.pass);
+  const warns = allChecks.filter(c => c.result.severity === "WARN" && !c.result.pass);
+  console.log(`\n  Visual Diff — ${totalIssues} issue(s)`);
+  console.log(`  BLOCKER ${blockers.length} | WARN ${warns.length}\n`);
 
-  // Overflow
-  const ovIcon = report.overflow.pass ? "✅" : "❌";
-  console.log(`\n  ${ovIcon} Overflow Detection (${report.overflow.issues.length} issue(s))`);
-  for (const issue of report.overflow.issues) {
-    console.log(`     slide #${issue.slide}: ${issue.element} overflows ${issue.overflow} by ${issue.amount.toFixed(0)}px`);
-  }
-
-  // Whitespace
-  if (report.whitespace) {
-    const wsIcon = report.whitespace.pass ? "✅" : "⚠️";
-    console.log(`\n  ${wsIcon} Whitespace Fill (threshold: ≥30%)`);
-    for (const issue of report.whitespace.issues) {
-      console.log(`     slide #${issue.slide}: only ${issue.fillPercent}% content fill — too much whitespace`);
+  for (const { name, result } of allChecks) {
+    const icon = result.pass ? "✅" : result.severity === "BLOCKER" ? "❌" : "⚠️";
+    console.log(`  ${icon} [${result.tag}] ${name}`);
+    const issues = result.issues as any[];
+    if (issues) {
+      for (const issue of issues.slice(0, 10)) {
+        const loc = issue.slide ? `slide #${issue.slide}` : "";
+        const msg = issue.message || issue.element ? `${issue.element || ""} ${issue.direction || issue.overflow || ""} ${issue.amount ? issue.amount + "px" : ""} ${issue.fillPercent ? issue.fillPercent + "%" : ""} ${issue.offsetPercent ? issue.offsetPercent + "%" : ""} ${issue.issue || ""}`.trim() : issue;
+        console.log(`     ${loc}: ${msg}`);
+      }
+      if (issues.length > 10) console.log(`     ... and ${issues.length - 10} more`);
     }
   }
-
-  // Balance
-  if (report.balance) {
-    const balIcon = report.balance.pass ? "✅" : "⚠️";
-    console.log(`\n  ${balIcon} Visual Balance (offset < 20%)`);
-    for (const issue of report.balance.issues) {
-      console.log(`     slide #${issue.slide}: ${issue.direction} (${issue.offsetPercent}% offset from center)`);
-    }
-  }
-
-  // Font audit
-  if (report.fontAudit) {
-    const faIcon = report.fontAudit.pass ? "✅" : "⚠️";
-    console.log(`\n  ${faIcon} Font Size Audit`);
-    for (const issue of report.fontAudit.issues) {
-      console.log(`     slide #${issue.slide}: ${issue.selector} at ${issue.fontSize}px — ${issue.issue}`);
-    }
-  }
-
-  // Pixel diff
-  if (report.pixelDiff) {
-    const pdIcon = report.pixelDiff.pass ? "✅" : "❌";
-    console.log(`\n  ${pdIcon} Pixel Diff (threshold: ${report.pixelDiff.threshold}%)`);
-    for (const r of report.pixelDiff.results) {
-      const icon = r.matchPercent >= (100 - report.pixelDiff.threshold) ? "  " : "❌";
-      console.log(`     ${icon} slide #${r.slide}: ${r.matchPercent.toFixed(1)}% match (${r.diffPixels.toLocaleString()} diff px / ${r.totalPixels.toLocaleString()} total)`);
-    }
-  }
-
-  const allPass = report.chromeConsistency.pass &&
-    report.overflow.pass &&
-    (!report.pixelDiff || report.pixelDiff.pass);
-  console.log(`\n  Result: ${allPass ? "PASS" : "FAIL"}\n`);
 }
 
 // ─── Main ────────────────────────────────────────────────────────────────
@@ -554,8 +533,8 @@ function printReport(report: QAReport): void {
 async function main(): Promise<void> {
   const cli = parseArgs(process.argv.slice(2));
   const report: QAReport = {
-    chromeConsistency: { pass: true, issues: [] },
-    overflow: { pass: true, issues: [] },
+    chromeConsistency: { pass: true, issues: [], tag: "A5", severity: "WARN" },
+    overflow: { pass: true, issues: [], tag: "S3", severity: "BLOCKER" },
   };
 
   // ── Chrome consistency + overflow (--input mode) ──
@@ -572,11 +551,11 @@ async function main(): Promise<void> {
     const total = await getSlideCount(page);
     console.log(`  Slides: ${total}`);
 
-    report.chromeConsistency = await checkChromePositions(page);
-    report.overflow = await checkOverflow(page);
-    report.whitespace = await checkWhitespace(page);
-    report.balance = await checkBalance(page);
-    report.fontAudit = await checkFontSizes(page);
+    report.chromeConsistency = { ...await checkChromePositions(page), tag: "A5", severity: "WARN" as VSeverity };
+    report.overflow = { ...await checkOverflow(page), tag: "S3", severity: "BLOCKER" as VSeverity };
+    report.whitespace = { ...await checkWhitespace(page), tag: "V1", severity: "INFO" as VSeverity };
+    report.balance = { ...await checkBalance(page), tag: "V2", severity: "INFO" as VSeverity };
+    report.fontAudit = { ...await checkFontSizes(page), tag: "A4", severity: "WARN" as VSeverity };
 
     await browser.close();
   }
@@ -595,6 +574,8 @@ async function main(): Promise<void> {
 
     report.pixelDiff = await compareHTMLs(oldPath, newPath, threshold);
     report.pixelDiff.threshold = threshold;
+    report.pixelDiff.tag = "S4";
+    report.pixelDiff.severity = "BLOCKER";
   }
 
   if (!cli.input && !cli.old) {

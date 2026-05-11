@@ -4,14 +4,17 @@
  * Reads assembled index.html + associated CSS, applies deterministic design rules,
  * and outputs polish.css with corrective styles.
  *
- * Rules (deterministic, CSS-variable-aware):
- *   1. Color contrast    — WCAG AA between text and background
- *   2. Font hierarchy    — clear size progression h1→h2→h3→body
- *   3. Density relief    — overcrowded slides (>6 components on 3:4, >8 on 16:9)
- *   4. Spacing uniformity — normalize gaps between same-type adjacent components
- *   5. Variable health    — flag overrides that break Design CSS intent
- *   6. Cascade audit       — CSS specificity conflicts (position/display/visibility/opacity)
- *   7. Chrome consistency   — verify topbar/footer/page-number on every slide
+ * Severity: BLOCKER (must fix) | WARN (should review) | INFO (suggestion)
+ * Tags:     S1-S5 (structural) | A1-A6 (aesthetic) | V1-V4 (visual suggestion)
+ *
+ * Rules:
+ *   S5  Contrast        — WCAG AA between text and background (BLOCKER)
+ *   A2  Font hierarchy   — size progression h1→h2→h3→body (WARN)
+ *   A3  Density relief   — overcrowded slides (WARN)
+ *   V3  Spacing uniformity — component gap variance (INFO)
+ *   S5  Variable health   — critical CSS vars present (BLOCKER)
+ *   S2  Cascade audit     — specificity conflicts (BLOCKER)
+ *   A6  Chrome consistency — topbar/footer/page-num on every slide (WARN)
  *
  * AI polish (Step 4b in pipeline): Claude reviews the rendered deck and appends
  * additional tweaks to polish.css for subjective visual quality.
@@ -26,13 +29,17 @@ import * as path from "path";
 
 // ─── Types ──────────────────────────────────────────────────────────────
 
+type Severity = "BLOCKER" | "WARN" | "INFO";
+type QATag = "S1" | "S2" | "S3" | "S4" | "S5" | "A1" | "A2" | "A3" | "A4" | "A5" | "A6" | "V1" | "V2" | "V3" | "V4";
+
 interface PolishIssue {
   rule: string;
-  severity: "error" | "warn" | "info";
+  severity: Severity;
+  tag: QATag;
   slide?: number;
   selector: string;
   message: string;
-  fix?: string; // CSS snippet to fix
+  fix?: string;
 }
 
 interface CSSVarMap {
@@ -235,7 +242,7 @@ function checkContrast(vars: CSSVarMap, combinedCSS: string): PolishIssue[] {
     const adjusted = adjustColor(text1, darkBg ? 1.3 : 0.7);
     issues.push({
       rule: "contrast",
-      severity: "error",
+      severity: "BLOCKER", tag: "S5",
       selector: ":root",
       message: `--text-1 (${text1}) vs --bg (${bg}) contrast ${cr1.toFixed(2)}:1 — below WCAG AA (4.5:1)`,
       fix: adjusted ? `:root { --text-1: ${adjusted}; }` : undefined,
@@ -245,7 +252,7 @@ function checkContrast(vars: CSSVarMap, combinedCSS: string): PolishIssue[] {
   if (cr2 !== null && cr2 < 3.0) {
     issues.push({
       rule: "contrast",
-      severity: "warn",
+      severity: "WARN", tag: "S5",
       selector: ":root",
       message: `--text-2 (${text2}) vs --bg (${bg}) contrast ${cr2.toFixed(2)}:1 — below 3:1 for secondary text`,
     });
@@ -293,7 +300,7 @@ function checkFontHierarchy(cssBlocks: string[], vars: CSSVarMap): PolishIssue[]
   if (maxH1 > 0 && maxH2 > 0 && maxH2 >= maxH1 * 0.95) {
     issues.push({
       rule: "font-hierarchy",
-      severity: "warn",
+      severity: "WARN", tag: "A2",
       selector: ".chr-heading",
       message: `h2 (${maxH2}) too close to h1 (${maxH1}) — hierarchy unclear. Aim for h2 ≤ 0.75× h1`,
       fix: `.chr-heading { font-size: ${(maxH1 * 0.7).toFixed(1)}px !important; }`,
@@ -303,7 +310,7 @@ function checkFontHierarchy(cssBlocks: string[], vars: CSSVarMap): PolishIssue[]
   if (maxH2 > 0 && maxH3 > 0 && maxH3 >= maxH2) {
     issues.push({
       rule: "font-hierarchy",
-      severity: "warn",
+      severity: "WARN", tag: "A2",
       selector: ".chr-sub",
       message: `h3/sub (${maxH3}) ≥ h2 (${maxH2}) — inverted hierarchy`,
     });
@@ -322,7 +329,7 @@ function checkDensity(slides: SlideInfo[], isPortrait: boolean): PolishIssue[] {
     if (slide.componentCount > maxComponents) {
       issues.push({
         rule: "density",
-        severity: "warn",
+        severity: "WARN", tag: "A3",
         slide: slide.index + 1,
         selector: `.slide:nth-child(${slide.index + 1})`,
         message: `Slide #${slide.index + 1}: ${slide.componentCount} components (max ${maxComponents} for ${isPortrait ? "3:4" : "16:9"}) — consider splitting or reducing`,
@@ -353,7 +360,7 @@ function checkSpacing(html: string): PolishIssue[] {
     if (maxDev > 0.25) {
       issues.push({
         rule: "spacing",
-        severity: "warn",
+        severity: "INFO", tag: "V3",
         selector: ".c-card",
         message: `Card margin-top varies by ${(maxDev * 100).toFixed(0)}% across deck — inconsistent rhythm`,
         fix: `.c-stack > .c-card + .c-card { margin-top: ${avg.toFixed(1)}cqi; }`,
@@ -382,7 +389,7 @@ function checkVariableHealth(vars: CSSVarMap, designName: string): PolishIssue[]
     if (!vars[v.replace("--", "")]) {
       issues.push({
         rule: "variable-health",
-        severity: "warn",
+        severity: "BLOCKER", tag: "S5",
         selector: ":root",
         message: `${v} is not defined — Design CSS may be missing or overridden by style.css`,
       });
@@ -500,7 +507,7 @@ function checkCascadeAudit(combinedCSS: string, html: string): PolishIssue[] {
 
         issues.push({
           rule: "cascade-audit",
-          severity: "error",
+          severity: "BLOCKER", tag: "S2",
           selector: intended.selector,
           message: `${intended.selector} { ${prop}: ${intended.properties.get(prop)} } (spec ${intended.specificity}) overridden by ${overrider.selector} { ${prop}: ${overrider.properties.get(prop)} } (spec ${overrider.specificity}) — ${watch.label} silently lost`,
           fix: `${intended.selector} { ${prop}: ${intended.properties.get(prop)} !important; }`,
@@ -557,7 +564,7 @@ function checkChromeConsistency(html: string): PolishIssue[] {
     const missing = slides.filter(s => !s.hasTopbar).map(s => `#${s.slide}`);
     issues.push({
       rule: "chrome-consistency",
-      severity: "warn",
+      severity: "WARN", tag: "A6",
       selector: ".chr-topbar",
       message: `chr-topbar missing on slide(s) ${missing.join(", ")} (${topbarCount}/${slides.length} have it) — inconsistent chrome`,
     });
@@ -569,7 +576,7 @@ function checkChromeConsistency(html: string): PolishIssue[] {
     const missing = slides.filter(s => !s.hasFooter).map(s => `#${s.slide}`);
     issues.push({
       rule: "chrome-consistency",
-      severity: "warn",
+      severity: "WARN", tag: "A6",
       selector: ".chr-footer",
       message: `chr-footer missing on slide(s) ${missing.join(", ")} (${footerCount}/${slides.length} have it) — inconsistent chrome`,
     });
@@ -581,7 +588,7 @@ function checkChromeConsistency(html: string): PolishIssue[] {
     const missing = slides.filter(s => !s.hasPageNum).map(s => `#${s.slide}`);
     issues.push({
       rule: "chrome-consistency",
-      severity: "info",
+      severity: "INFO", tag: "A6",
       selector: ".chr-page",
       message: `Page number missing on slide(s) ${missing.join(", ")} (${pageCount}/${slides.length} have it)`,
     });
@@ -593,19 +600,19 @@ function checkChromeConsistency(html: string): PolishIssue[] {
 // ─── CSS Generation ─────────────────────────────────────────────────────
 
 function generatePolishCSS(issues: PolishIssue[]): string {
-  const errors = issues.filter((i) => i.severity === "error");
-  const warns = issues.filter((i) => i.severity === "warn");
+  const blockers = issues.filter((i) => i.severity === "BLOCKER");
+  const warns = issues.filter((i) => i.severity === "WARN");
 
   let css = "/* polish.css — auto-generated visual corrections */\n";
 
-  for (const issue of [...errors, ...warns]) {
+  for (const issue of [...blockers, ...warns]) {
     if (issue.fix) {
       css += `\n/* ${issue.rule}: ${issue.message} */\n`;
       css += `${issue.fix}\n`;
     }
   }
 
-  if (errors.length === 0 && warns.filter((w) => w.fix).length === 0) {
+  if (blockers.length === 0 && warns.filter((w) => w.fix).length === 0) {
     css += "\n/* All checks passed — no corrections needed */\n";
   }
 
@@ -615,20 +622,26 @@ function generatePolishCSS(issues: PolishIssue[]): string {
 // ─── Report ──────────────────────────────────────────────────────────────
 
 function printReport(issues: PolishIssue[]): void {
-  const errors = issues.filter((i) => i.severity === "error");
-  const warns = issues.filter((i) => i.severity === "warn");
-  const infos = issues.filter((i) => i.severity === "info");
+  const blockers = issues.filter((i) => i.severity === "BLOCKER");
+  const warns = issues.filter((i) => i.severity === "WARN");
+  const infos = issues.filter((i) => i.severity === "INFO");
+
+  // Group by category
+  const structural = issues.filter(i => i.tag.startsWith("S"));
+  const aesthetic = issues.filter(i => i.tag.startsWith("A"));
+  const visual = issues.filter(i => i.tag.startsWith("V"));
 
   console.log(`\n  Polish Report — ${issues.length} issue(s)`);
-  console.log(`  ${errors.length} error(s), ${warns.length} warning(s), ${infos.length} info(s)\n`);
+  console.log(`  BLOCKER ${blockers.length} | WARN ${warns.length} | INFO ${infos.length}`);
+  console.log(`  Structural ${structural.length} | Aesthetic ${aesthetic.length} | Visual ${visual.length}\n`);
 
   for (const issue of issues) {
-    const icon = issue.severity === "error" ? "❌" : issue.severity === "warn" ? "⚠️ " : "ℹ️ ";
+    const icon = issue.severity === "BLOCKER" ? "❌" : issue.severity === "WARN" ? "⚠️ " : "ℹ️ ";
     const location = issue.slide ? `slide #${issue.slide}` : issue.selector;
-    console.log(`  ${icon} [${issue.rule}] ${location}`);
+    console.log(`  ${icon} [${issue.tag}] ${location}`);
     console.log(`     ${issue.message}`);
     if (issue.fix) {
-      console.log(`     → fix: ${issue.fix.slice(0, 80)}${issue.fix.length > 80 ? "..." : ""}`);
+      console.log(`     → ${issue.fix.slice(0, 80)}${issue.fix.length > 80 ? "..." : ""}`);
     }
   }
   console.log();
@@ -652,13 +665,17 @@ function parseArgs(args: string[]): CliArgs {
       case "--help": case "-h":
         console.log(`Usage: bun scripts/polish.ts --input index.html [--output polish.css] [--check-only]
 
-Rules applied:
-  1. Color contrast — WCAG AA (4.5:1 body, 3:1 large)
-  2. Font hierarchy — h1 > h2 > h3 > body
-  3. Density relief — flag overcrowded slides
-  4. Spacing uniformity — normalize component gaps
-  5. Variable health — ensure critical CSS vars are defined
-  6. Cascade audit — detect CSS specificity conflicts (position overrides)`);
+Severity: BLOCKER (must fix) | WARN (should review) | INFO (suggestion)
+Tags:      S1-S5 (structural) | A1-A6 (aesthetic) | V1-V4 (visual)
+
+Rules:
+  [S5] Contrast — WCAG AA (4.5:1 body, 3:1 large)
+  [A2] Font hierarchy — h1 > h2 > h3 > body
+  [A3] Density relief — flag overcrowded slides
+  [V3] Spacing uniformity — normalize component gaps
+  [S5] Variable health — ensure critical CSS vars are defined
+  [S2] Cascade audit — detect CSS specificity conflicts
+  [A6] Chrome consistency — topbar/footer/page-num per slide`);
         process.exit(0);
     }
   }
@@ -718,7 +735,7 @@ function main(): void {
     console.log(`  Written: ${outPath} (${css.split("\n").filter(l => l.trim() && !l.startsWith("/*")).length - 1} CSS rule(s))\n`);
   }
 
-  process.exit(allIssues.filter(i => i.severity === "error").length > 0 ? 1 : 0);
+  process.exit(allIssues.filter(i => i.severity === "BLOCKER").length > 0 ? 1 : 0);
 }
 
 main();

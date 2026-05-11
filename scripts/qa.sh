@@ -8,10 +8,10 @@
 #   bash scripts/qa.sh --all --visual           # Full QA including browser checks
 #
 # Layers:
-#   L0: validate-slides.ts   — JSON schema + budget (instant)
-#   L1: polish.ts             — CSS cascade audit + chrome consistency (instant)
-#   L2: visual-diff.ts        — Browser position/balance/font audit (requires Playwright)
-#   L3: qa-migrate.ts         — Old vs new content comparison (requires old.html)
+#   L0: validate-slides.ts   — JSON schema + budget  [S1-S5]
+#   L1: polish.ts             — CSS audit              [S2,S5,A2,A3,A6,V3]
+#   L2: visual-diff.ts        — Browser checks          [S3,S4,A4,A5,V1,V2]
+#   L3: qa-migrate.ts         — Migration diff          [S1,S4]
 
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"

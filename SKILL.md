@@ -7,7 +7,8 @@ description: >
   make a deck, generate a PPT, weekly report, pitch deck, 周报, 提案, 分享,
   or any document-to-slides task — even if they don't say "slides" explicitly
   (e.g. "帮我整理一下这个文档", "把这篇做成卡片"). One pipeline: content analysis
-  → style decision → review → HTML rendering → export (PNG/PPTX/PDF).
+  → style decision → review → HTML rendering → QA gate → export (PNG/PPTX/PDF).
+  Built-in 3-layer QA: BLOCKER (must fix) / WARN (should review) / INFO (suggestion).
 ---
 
 # slides-on — 统一演示文稿制作
@@ -19,6 +20,7 @@ description: >
 1. Pipeline 严格按序执行，不可跳步。每步产出写入工作目录
 2. AI 图片生成使用 prompt 文件机制，保证可复现
 3. 所有视觉样式收归 Design CSS，页面 HTML 只负责结构和内容
+4. **QA 门禁**：Step 4 产出后自动运行，BLOCKER > 0 则阻塞，不得进入 Step 5
 
 ## Pipeline 详细流程
 
@@ -115,12 +117,12 @@ description: >
 **处理**：在进入 HTML 渲染前，逐页检查三项，不通过则回 Step 1/2 调整：
 
 1. **自动验证**（`bun scripts/validate-slides.ts --input slides.json`）：
-   - Schema 检查：design 名、canvas、slide type 合法性（FAIL 级）
-   - 密度预算：组件数 3-5、字数上限、卡片/步骤数量（WARN 级）
-   - 锚点检查：每页是否有视觉重心（WARN 级）
-   - 色彩语义：warn 色卡片是否有对应 accent 色（WARN 级）
-   - Design 兼容：blob/color/chipColor 是否被目标 Design 支持（INFO 级）
-   > 注意：JSON 阶段无法检测 CSS 级联冲突（如 `.slide > * { position: relative }` 覆盖 `.chr-page { position: absolute }`）。这类问题由 Step 4 的 `polish.ts` Rule 6（cascade audit）在生成 HTML 后补检。
+   - Schema 检查：design 名、canvas、slide type 合法性 → **BLOCKER（必须修）**
+   - 密度预算：组件数 3-5、字数上限、卡片/步骤数量 → WARN（应该看）
+   - 锚点检查：每页是否有视觉重心 → WARN
+   - 色彩语义：warn 色卡片是否有对应 accent 色 → WARN
+   - Design 兼容：blob/color/chipColor 是否被目标 Design 支持 → INFO（仅供参考）
+   > 所有 BLOCKER 项必须 0 才能进入 Step 4。JSON 阶段无法检测 CSS 级联冲突，由 Step 4 的 `polish.ts` 补检。
 2. **内容溢出检查** — 组件容量 < 内容量？
    - c-card 正文 > 60 字 → 精简或拆为 2 卡片
    - c-steps > 7 步 → 拆为两页
@@ -135,7 +137,7 @@ description: >
    - 年轻/社交内容 + corporate → 换 Design
    - 数据密集内容 + 极简 Design → 检查组件颜色变体是否够区分信息层级
 
-> 验证标准详见 `references/quality-spec.md`。validate 脚本的 FAIL 级检查必须全部通过才能进入 Step 4。
+> 验证标准详见 `references/quality-spec.md`。BLOCKER 项必须 0 才能进入 Step 4。
 
 **产出**：`review.md`，记录每页判定（pass / adjust）和调整决策。
 
@@ -171,15 +173,55 @@ description: >
 4. **SVG 图**（如有）：直接内联到 slides.json 的 `html` 字段，或 `<img>` 引用
 5. 添加 `data-anim` 属性声明动画
 6. **视觉抛光**（自动 + AI 可选）：`assemble-deck.ts` 自动调用 `scripts/polish.ts` 生成 `polish.css`（规则引擎：对比度、字体层级、密度、间距、CSS cascade 冲突、chrome 一致性）。**AI 抛光**（需要时）：打开生成的 index.html，逐页审视视觉平衡、强调层级、留白节奏，将微调追加到 `polish.css`。AI 抛光只追加 CSS，不修改 HTML 结构，安全可逆
-7. **QA 质量门禁**（自动）：`assemble-deck.ts` 输出 polish 报告。检查以下 FAIL 级项目必须全部通过才能进入 Step 5：
+7. **QA 质量门禁**（自动）：`assemble-deck.ts` 输出 polish 报告。所有 BLOCKER 项必须为 0 才能进入 Step 5。用户也可随时手动运行：
 
-   | 层级 | 检查 | 工具 | 通过标准 |
-   |------|------|------|---------|
-   | L0 | JSON schema + 预算 | `validate-slides.ts` | 0 FAIL |
-   | L1 | CSS cascade / 对比度 / chrome 一致性 | `polish.ts`（自动运行） | 0 error |
-   | L2 | 位置一致性 / 溢出 / 留白 / 平衡（可选） | `visual-diff.ts --input index.html` | 0 FAIL |
+   ```bash
+   bash scripts/qa.sh <deck-name>           # 快速：L0 (JSON) + L1 (CSS)
+   bash scripts/qa.sh <deck-name> --visual  # 完整：+ L2 (浏览器渲染)
+   bash scripts/qa.sh --all                 # 全量，所有 deck
+   ```
 
-   > L0 + L1 是必检项（快速、零依赖）。L2 需要 Playwright，适合对视觉效果要求高的场景。也可用 `bash scripts/qa.sh <name> --visual` 一键跑全量。QA 不通过则定位具体 rule 修复，修复后重新 assemble，直到 pass。
+   **三级严重度** — 统一标识，看图标就知道要不要停：
+
+   | 图标 | 级别 | 含义 | 行动 |
+   |------|------|------|------|
+   | ❌ | **BLOCKER** | 客观错误，渲染结果不对 | **必须修**，修到 0 才能往下走 |
+   | ⚠️ | **WARN** | 有客观标准，但可以接受 | 看一下，大部分应该修，少量可豁免 |
+   | ℹ️ | **INFO** | 主观审美建议 | 参考，觉得有道理就调 |
+
+   **S/A/V 分类标签** — 看前缀知道问题性质：
+
+   | 分类 | 标签 | 说明 |
+   |------|------|------|
+   | **Structural（结构）** | S1-S5 | 写错了、漏了、冲突了——修 |
+   | **Aesthetic（美观）** | A1-A6 | 不好看、不统一、太挤——调整 |
+   | **Visual（建议）** | V1-V4 | 可以更好——酌情 |
+
+   完整规则映射表：
+
+   | Tag | 检查 | 级别 | 工具 |
+   |-----|------|------|------|
+   | S1 | JSON schema | BLOCKER | validate-slides |
+   | S2 | CSS cascade 冲突 | BLOCKER | polish R6 |
+   | S3 | 元素溢出 | BLOCKER | visual-diff |
+   | S4 | 内容完整性 | BLOCKER | qa-migrate |
+   | S5 | 对比度 / CSS 变量缺失 | BLOCKER | polish R1,R5 |
+   | A2 | 字体层级 | WARN | polish R2 |
+   | A3 | 组件密度 | WARN | polish R3 |
+   | A4 | 字号可读性 | WARN | visual-diff |
+   | A5 | Chrome 位置一致 | WARN | visual-diff |
+   | A6 | Chrome 存在一致 | WARN | polish R7 |
+   | V1 | 留白比例 | INFO | visual-diff |
+   | V2 | 视觉重心 | INFO | visual-diff |
+   | V3 | 间距均匀 | INFO | polish R4 |
+   | V4 | Design 匹配度 | INFO | validate-slides |
+
+   **QA 不通过时的排查流程**：
+   1. 看 tag 前缀：S → 代码写错了（修 CSS/JSON），A → 设计参数不对（调密度/字号），V → 主观审美（可酌情跳过）
+   2. S2（cascade 冲突）最常见：某个 `position: absolute` 被 `.slide > * { position: relative }` 覆盖 → 改选择器加 `.d-xxx .slide .` 前缀
+   3. A3（密度超标）：拆页（>6 组件 → 分两页）或压缩间距（polish 已自动生成压缩 CSS）
+   4. 修复后 `bun scripts/assemble-deck.ts --input slides.json --output index.html` 重新生成 → 再跑 QA
+   5. 直到 BLOCKER = 0，进入 Step 5
 
 **产出**：一个完整的 `index.html`（可浏览器打开交互演示）+ `polish.css`（视觉抛光修正）+ QA 报告
 
