@@ -55,11 +55,13 @@
   background: var(--grad);
 }
 
-/* Topbar — tag + page number */
-.d-white-editorial .chr-topbar {
+/* Topbar — tag + page number (fixed position, never drifts) */
+.d-white-editorial .slide > .chr-topbar {
+  position: absolute; top: 4.44cqi; left: 11.11cqi; right: 11.11cqi; z-index: 3;
   display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 2.22cqi;
 }
+.d-white-editorial.portrait .slide { padding-top: 9cqi; }
+.d-white-editorial.landscape .slide { padding-top: 8cqi; }
 .d-white-editorial .chr-chip {
   display: inline-flex; align-items: center; gap: 1.23cqi;
   padding: 1.23cqi 2.22cqi; border-radius: 999px;

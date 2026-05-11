@@ -1,0 +1,13 @@
+/* polish.css — auto-generated visual corrections */
+
+/* density: Slide #3: 9 components (max 6 for 3:4) — consider splitting or reducing */
+.slide:nth-child(3) .c-stack > * + * { margin-top: 0.8cqi; }
+.slide:nth-child(3) .c-card { padding: 0.8cqi 1.2cqi; }
+
+/* density: Slide #6: 13 components (max 6 for 3:4) — consider splitting or reducing */
+.slide:nth-child(6) .c-stack > * + * { margin-top: 0.8cqi; }
+.slide:nth-child(6) .c-card { padding: 0.8cqi 1.2cqi; }
+
+/* density: Slide #8: 7 components (max 6 for 3:4) — consider splitting or reducing */
+.slide:nth-child(8) .c-stack > * + * { margin-top: 0.8cqi; }
+.slide:nth-child(8) .c-card { padding: 0.8cqi 1.2cqi; }

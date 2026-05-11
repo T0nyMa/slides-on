@@ -67,11 +67,13 @@
 .d-hermes-cyber-terminal .slide > * { position: relative; z-index: 2; }
 
 /* ── Chrome: topbar ── */
-.d-hermes-cyber-terminal .chr-topbar {
+.d-hermes-cyber-terminal .slide > .chr-topbar {
+  position: absolute; top: 32px; left: 84px; right: 84px; z-index: 3;
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 18px; font-size: 11px; color: var(--text-2);
+  font-size: 11px; color: var(--text-2);
   letter-spacing: .18em; text-transform: uppercase;
 }
+.d-hermes-cyber-terminal.landscape .slide { padding-top: 80px; }
 
 .d-hermes-cyber-terminal .chr-topbar .dots {
   display: flex; gap: 8px;

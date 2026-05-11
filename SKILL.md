@@ -120,6 +120,7 @@ description: >
    - 锚点检查：每页是否有视觉重心（WARN 级）
    - 色彩语义：warn 色卡片是否有对应 accent 色（WARN 级）
    - Design 兼容：blob/color/chipColor 是否被目标 Design 支持（INFO 级）
+   > 注意：JSON 阶段无法检测 CSS 级联冲突（如 `.slide > * { position: relative }` 覆盖 `.chr-page { position: absolute }`）。这类问题由 Step 4 的 `polish.ts` Rule 6（cascade audit）在生成 HTML 后补检。
 2. **内容溢出检查** — 组件容量 < 内容量？
    - c-card 正文 > 60 字 → 精简或拆为 2 卡片
    - c-steps > 7 步 → 拆为两页
@@ -169,8 +170,18 @@ description: >
 3. **HTML 组装**：`bun scripts/assemble-deck.ts --input slides.json --output index.html`。脚本自动完成 CSS 加载、Chrome 片段、c-* 组件拼装。`--asset-depth 2` 用于 `examples/` 输出路径
 4. **SVG 图**（如有）：直接内联到 slides.json 的 `html` 字段，或 `<img>` 引用
 5. 添加 `data-anim` 属性声明动画
+6. **视觉抛光**（自动 + AI 可选）：`assemble-deck.ts` 自动调用 `scripts/polish.ts` 生成 `polish.css`（规则引擎：对比度、字体层级、密度、间距、CSS cascade 冲突、chrome 一致性）。**AI 抛光**（需要时）：打开生成的 index.html，逐页审视视觉平衡、强调层级、留白节奏，将微调追加到 `polish.css`。AI 抛光只追加 CSS，不修改 HTML 结构，安全可逆
+7. **QA 质量门禁**（自动）：`assemble-deck.ts` 输出 polish 报告。检查以下 FAIL 级项目必须全部通过才能进入 Step 5：
 
-**产出**：一个完整的 `index.html`（可浏览器打开交互演示）
+   | 层级 | 检查 | 工具 | 通过标准 |
+   |------|------|------|---------|
+   | L0 | JSON schema + 预算 | `validate-slides.ts` | 0 FAIL |
+   | L1 | CSS cascade / 对比度 / chrome 一致性 | `polish.ts`（自动运行） | 0 error |
+   | L2 | 位置一致性 / 溢出 / 留白 / 平衡（可选） | `visual-diff.ts --input index.html` | 0 FAIL |
+
+   > L0 + L1 是必检项（快速、零依赖）。L2 需要 Playwright，适合对视觉效果要求高的场景。也可用 `bash scripts/qa.sh <name> --visual` 一键跑全量。QA 不通过则定位具体 rule 修复，修复后重新 assemble，直到 pass。
+
+**产出**：一个完整的 `index.html`（可浏览器打开交互演示）+ `polish.css`（视觉抛光修正）+ QA 报告
 
 **`slides.json` 格式示例**（完整类型定义见 `scripts/assemble/types.ts`）：
 ```json
@@ -219,7 +230,8 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
 - `scripts/assemble/types.ts` — SlideData、DeckConfig 类型定义
 - `scripts/assemble/designs.ts` — Design 模板注册表（per-design 渲染函数）
 - `scripts/assemble/slides.ts` — 10 个渲染函数（覆盖 11 种 slide 类型）
-- `scripts/assemble/skeleton.ts` — Deck HTML 骨架生成
+- `scripts/assemble/skeleton.ts` — Deck HTML 骨架生成（CSS 加载顺序：fonts → base → components → design → style → polish）
+- `scripts/polish.ts` — 视觉抛光引擎（规则引擎：对比度/字体层级/密度/间距，自动生成 polish.css）
 - `scripts/imagine/prompt-assembler.ts` — 三层结构化 prompt 组装引擎
 - `scripts/imagine/main.ts` — AI 图片生成入口
 - `scripts/imagine/config.ts` — Provider 注册表 + 环境变量默认值
@@ -236,6 +248,38 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
 - `references/ai-visuals.md` — AI 视觉内容生成
 - `references/prompt-construction.md` — AI 图片结构化 prompt 组装（三层结构 + Image-1 Anchor Chain）
 - `references/components.md` — 组件调色板（3:4 自由拼装）
+
+### Step 4b: AI 视觉抛光（可选）
+
+当自动生成的 deck 需要精细化视觉调整时，在 Step 4 后执行。AI 抛光与规则引擎互补：
+- **规则引擎**（`polish.ts`）：处理可量化的客观问题（对比度、密度、层级）
+- **AI 抛光**：处理主观审美问题（视觉平衡、强调权重、节奏感）
+
+**执行方式**：
+
+1. **逐页审视**：打开生成的 `index.html`，逐页检查以下维度：
+
+   | 维度 | 检查项 |
+   |------|--------|
+   | 视觉重心 | 页面焦点是否明确？最重要的信息是否视觉最突出？ |
+   | 留白节奏 | 上下半页重量是否平衡？边缘是否太挤或太空？ |
+   | 强调层级 | 标题 → 副标题 → 正文的视觉权重递减是否清晰？ |
+   | 颜色协调 | accent 色使用是否克制（≤3 处/页）？彩色卡片是否区分度足够？ |
+   | 排版微调 | 中英文混排间距、标点悬挂、列表缩进是否舒适？ |
+
+2. **追加 polish.css**：所有调整以 CSS 追加到 `polish.css`，不修改 HTML 结构。例如：
+   ```css
+   /* slide 3: 右侧卡片过重，增加左边距平衡 */
+   .slide:nth-child(3) .c-card:first-child { margin-right: 1cqi; }
+   /* slide 5: 标题字号过大，微调 */
+   .slide:nth-child(5) .chr-heading { font-size: 5.5cqi !important; }
+   ```
+
+3. **约束**：
+   - 只追加 CSS，不修改 HTML 结构（保护内容完整性）
+   - 每页不超过 5 条 CSS 规则（避免过度润色）
+   - 使用 `.slide:nth-child(N)` 限定作用域（避免跨页泄漏）
+   - 颜色值优先使用 CSS 变量而非硬编码（保持 Design 可移植性）
 
 ### Step 5: 导出
 

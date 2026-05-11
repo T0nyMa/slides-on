@@ -136,6 +136,21 @@ function main(): void {
       fs.mkdirSync(path.dirname(outPath), { recursive: true });
       fs.writeFileSync(outPath, html);
       console.log(`Written: ${outPath} (${slides.length} slides, design: ${config.design}, canvas: ${config.canvas})`);
+
+      // Run polish if available
+      try {
+        const scriptDir = path.dirname(path.resolve(__filename));
+        const polishScript = path.join(scriptDir, "polish.ts");
+        const polishPath = path.join(path.dirname(outPath), "polish.css");
+        if (fs.existsSync(polishScript)) {
+          const proc = Bun.spawnSync(["bun", polishScript, "--input", outPath, "--output", polishPath]);
+          if (proc.success) {
+            console.log(`Polished: ${polishPath}`);
+          }
+        }
+      } catch {
+        // polish is optional — silently skip if unavailable
+      }
     } else {
       console.log(html);
     }

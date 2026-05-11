@@ -8,11 +8,22 @@
 <link rel="stylesheet" href="../../../assets/base.css">
 <link rel="stylesheet" href="../../../assets/components.css">
 <link rel="stylesheet" href="../../../assets/designs/pastel-card.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="polish.css">
 </head>
 <body class="d-pastel-card landscape">
 <div class="deck">
 
   <style>
+/* ── Course Module: visual identity overrides ── */
+.d-pastel-card {
+  --bg: #fbfaf6; --bg-soft: #f4f1e8; --surface: #ffffff; --surface-2: #f6f3ea;
+  --text-1: #2a2418; --text-2: #5a5140; --text-3: #8a7f68;
+  --accent: #2d7d6e; --accent-2: #d88a3a; --accent-3: #c4593f;
+  --grad: linear-gradient(135deg, #2d7d6e, #4ea893);
+  --font-display: 'Playfair Display', Georgia, 'Noto Serif SC', serif;
+}
+
 /* ── Course Module custom elements (sidebar, objectives, MCQ, exercise) ── */
 
 .cm-sidebar-slide { display: grid !important; grid-template-columns: 14cqi 1fr; gap: 3cqi; align-content: start !important; justify-content: unset !important; }

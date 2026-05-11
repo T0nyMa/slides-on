@@ -71,11 +71,15 @@
 }
 .d-pastel-card .slide > * { position: relative; z-index: 2; }
 
-/* Topbar — chip tag + page number */
-.d-pastel-card .chr-topbar {
+/* Topbar — chip tag + page number (fixed position, never drifts) */
+.d-pastel-card .slide > .chr-topbar {
+  position: absolute; top: 4.94cqi; left: 11.11cqi; right: 11.11cqi; z-index: 3;
   display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 2.72cqi; font-family: var(--font-sans);
+  font-family: var(--font-sans);
 }
+/* Ensure slide content clears the fixed topbar */
+.d-pastel-card.portrait .slide { padding-top: 10cqi; }
+.d-pastel-card.landscape .slide { padding-top: 9cqi; }
 .d-pastel-card .chr-chip {
   display: inline-flex; align-items: center; gap: 1.23cqi;
   padding: .99cqi 2.22cqi; border-radius: 999px;

@@ -241,6 +241,9 @@ slides-on/
 │   ├── svg-to-png.ts              #   SVG → @2x PNG
 │   ├── validate-slides.ts          #   slides.json 质量验证（Schema + 预算 + 锚点）
 │   ├── qa-migrate.ts               #   迁移质量门禁（内容完整性 + class 合法性）
+│   ├── polish.ts                    #   视觉抛光引擎（7 规则：对比度/层级/密度/间距/cascade/chrome）
+│   ├── visual-diff.ts               #   浏览器 QA（Playwright：位置一致性/溢出/留白/平衡/字号）
+│   ├── qa.sh                        #   统一 QA 入口（L0 validate → L1 polish → L2 visual-diff）
 │   ├── assemble-deck.ts           #   HTML 组装入口（JSON → index.html）
 │   ├── new-deck.sh                 #   新建 deck 脚手架
 │   ├── assemble/                   #   HTML 组装引擎
