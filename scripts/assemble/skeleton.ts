@@ -52,6 +52,7 @@ export function renderDeck(config: DeckConfig, slidesHTML: string[], assetDepth:
 <link rel="stylesheet" href="${prefix}/fonts.css">
 <link rel="stylesheet" href="${prefix}/base.css">${componentsLink}
 <link rel="stylesheet" href="${designPath}">
+<link rel="stylesheet" href="style.css">
 </head>
 <body class="${bodyClass}${canvasClass}">
 <div class="deck">

@@ -1,62 +1,288 @@
-/* testing-safety-alert — 红/琥珀 警示风 · 白底高对比 */
-.tpl-testing-safety-alert{
-  --ts-bg:#fffaf7;
-  --ts-ink:#14141a;
-  --ts-ink2:#4a4955;
-  --ts-muted:#8a8892;
-  --ts-line:rgba(20,20,26,.08);
-  --ts-red:#e0314a;
-  --ts-red-soft:#ffecee;
-  --ts-amber:#d97706;
-  --ts-amber-soft:#fff5e6;
-  --ts-green:#067647;
-  --ts-green-soft:#e8f8ee;
-  background:var(--ts-bg);
-  color:var(--ts-ink);
-  font-family:'Inter','Noto Sans SC','PingFang SC',-apple-system,sans-serif;
+/* testing-safety-alert — 红/琥珀 警示风 · 白底高对比 Design CSS */
+/* Usage: <body class="d-testing-safety-alert landscape"> */
+
+.d-testing-safety-alert {
+  /* ── Token overrides ── */
+  --bg: #fffaf7;
+  --surface: #ffffff;
+  --surface-2: #fffaf7;
+  --border: rgba(20,20,26,.08);
+  --border-strong: rgba(20,20,26,.16);
+  --text-1: #14141a;
+  --text-2: #4a4955;
+  --text-3: #8a8892;
+  --accent: #e0314a;
+  --bad:  #e0314a;
+  --warn: #d97706;
+  --good: #067647;
+  --radius: 18px;
+  --radius-sm: 14px;
+  --radius-lg: 26px;
+  --shadow: 0 6px 20px rgba(17,19,24,.04);
+  --shadow-lg: 0 14px 36px rgba(224,49,74,.14);
+  --font-display: 'Inter', 'Noto Sans SC', 'PingFang SC', -apple-system, sans-serif;
+  --font-sans: 'Inter', 'Noto Sans SC', 'PingFang SC', -apple-system, sans-serif;
+
+  /* Design-specific tokens */
+  --tsa-red:       #e0314a;
+  --tsa-red-soft:  #ffecee;
+  --tsa-amber:     #d97706;
+  --tsa-amber-soft:#fff5e6;
+  --tsa-green:     #067647;
+  --tsa-green-soft:#e8f8ee;
+  --tsa-stripe-dark:#111318;
+  --tsa-code-bg:   #141418;
+
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-display);
 }
-.tpl-testing-safety-alert .slide{background:var(--ts-bg);color:var(--ts-ink);padding:64px 84px}
-.tpl-testing-safety-alert .ts-stripe{position:absolute;top:0;left:0;right:0;height:14px;background:repeating-linear-gradient(45deg,var(--ts-red) 0 18px,#111318 18px 36px)}
-.tpl-testing-safety-alert .ts-stripe-b{position:absolute;bottom:0;left:0;right:0;height:6px;background:repeating-linear-gradient(45deg,var(--ts-red) 0 10px,#111318 10px 20px);opacity:.6}
-.tpl-testing-safety-alert .ts-chrome{display:flex;justify-content:space-between;align-items:center;margin:22px 0 16px}
-.tpl-testing-safety-alert .ts-alert-tag{display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:10px;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;background:var(--ts-red);color:#fff;box-shadow:0 6px 18px rgba(224,49,74,.28)}
-.tpl-testing-safety-alert .ts-alert-tag::before{content:'⚠';font-size:16px}
-.tpl-testing-safety-alert .ts-alert-tag.amber{background:var(--ts-amber);box-shadow:0 6px 18px rgba(217,119,6,.25)}
-.tpl-testing-safety-alert .ts-alert-tag.green{background:var(--ts-green);box-shadow:0 6px 18px rgba(6,118,71,.22)}
-.tpl-testing-safety-alert .ts-alert-tag.green::before{content:'✓'}
-.tpl-testing-safety-alert .ts-page{font-size:13px;color:var(--ts-muted);letter-spacing:.15em;font-weight:700}
-.tpl-testing-safety-alert .ts-kicker{font-size:15px;font-weight:700;color:var(--ts-red);letter-spacing:.06em;margin-bottom:10px;text-transform:uppercase}
-.tpl-testing-safety-alert .ts-h1{font-size:88px;font-weight:900;line-height:1.04;letter-spacing:-2px;margin:10px 0 16px;color:var(--ts-ink)}
-.tpl-testing-safety-alert .ts-h1 .red{color:var(--ts-red)}
-.tpl-testing-safety-alert .ts-h1 .strike{position:relative;display:inline-block}
-.tpl-testing-safety-alert .ts-h1 .strike::after{content:'';position:absolute;left:-4%;right:-4%;top:50%;height:10px;background:var(--ts-red);transform:skewX(-12deg);opacity:.85}
-.tpl-testing-safety-alert .ts-h2{font-size:54px;font-weight:900;line-height:1.1;letter-spacing:-1px;margin:0 0 14px}
-.tpl-testing-safety-alert .ts-sub{font-size:22px;line-height:1.5;color:var(--ts-ink2);max-width:880px;margin-top:10px}
-.tpl-testing-safety-alert .ts-highlight-red{display:inline-block;padding:4px 14px;background:var(--ts-red);color:#fff;border-radius:8px;font-weight:800}
-.tpl-testing-safety-alert .ts-highlight-amber{display:inline-block;padding:4px 14px;background:var(--ts-amber-soft);color:var(--ts-amber);border-radius:8px;font-weight:800;border:1px solid rgba(217,119,6,.2)}
-.tpl-testing-safety-alert .ts-highlight-green{display:inline-block;padding:4px 14px;background:var(--ts-green-soft);color:var(--ts-green);border-radius:8px;font-weight:800;border:1px solid rgba(6,118,71,.2)}
-.tpl-testing-safety-alert .ts-alert-box{border:2px solid var(--ts-red);border-radius:18px;padding:26px 30px;background:linear-gradient(180deg,#fff 0%,var(--ts-red-soft) 100%);box-shadow:0 14px 36px rgba(224,49,74,.14);margin-top:24px;position:relative}
-.tpl-testing-safety-alert .ts-alert-box::before{content:'';position:absolute;top:-11px;left:24px;width:22px;height:22px;background:var(--ts-red);border-radius:50%;box-shadow:0 0 0 6px rgba(224,49,74,.2)}
-.tpl-testing-safety-alert .ts-alert-box.amber{border-color:var(--ts-amber);background:linear-gradient(180deg,#fff 0%,var(--ts-amber-soft) 100%);box-shadow:0 14px 36px rgba(217,119,6,.14)}
-.tpl-testing-safety-alert .ts-alert-box.amber::before{background:var(--ts-amber);box-shadow:0 0 0 6px rgba(217,119,6,.2)}
-.tpl-testing-safety-alert .ts-alert-box.green{border-color:var(--ts-green);background:linear-gradient(180deg,#fff 0%,var(--ts-green-soft) 100%);box-shadow:0 14px 36px rgba(6,118,71,.14)}
-.tpl-testing-safety-alert .ts-alert-box.green::before{background:var(--ts-green);box-shadow:0 0 0 6px rgba(6,118,71,.2)}
-.tpl-testing-safety-alert .ts-alert-box h3{font-size:34px;font-weight:900;margin:0 0 10px}
-.tpl-testing-safety-alert .ts-alert-box p{font-size:17px;line-height:1.6;color:var(--ts-ink2);margin:0}
-.tpl-testing-safety-alert .ts-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
-.tpl-testing-safety-alert .ts-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:20px}
-.tpl-testing-safety-alert .ts-card{border:1px solid var(--ts-line);border-radius:16px;padding:22px 24px;background:#fff;box-shadow:0 6px 20px rgba(17,19,24,.04)}
-.tpl-testing-safety-alert .ts-card .lbl{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ts-muted);margin-bottom:8px}
-.tpl-testing-safety-alert .ts-card h4{font-size:26px;font-weight:900;line-height:1.2;margin-bottom:8px}
-.tpl-testing-safety-alert .ts-card p{font-size:14px;color:var(--ts-ink2);line-height:1.55}
-.tpl-testing-safety-alert .ts-checklist{display:flex;flex-direction:column;gap:12px;margin-top:20px;max-width:880px}
-.tpl-testing-safety-alert .ts-check{display:flex;gap:16px;align-items:flex-start;padding:16px 20px;border:1px solid var(--ts-line);border-radius:14px;background:#fff}
-.tpl-testing-safety-alert .ts-check .box{flex:0 0 32px;height:32px;border-radius:8px;border:2px solid var(--ts-red);display:grid;place-items:center;font-weight:900;color:var(--ts-red);background:var(--ts-red-soft)}
-.tpl-testing-safety-alert .ts-check.ok .box{border-color:var(--ts-green);color:var(--ts-green);background:var(--ts-green-soft)}
-.tpl-testing-safety-alert .ts-check .txt{font-size:18px;line-height:1.5;font-weight:600}
-.tpl-testing-safety-alert .ts-codebox{background:#141418;color:#fff5ea;border-radius:14px;padding:22px 26px;font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.85;margin-top:20px;border-left:6px solid var(--ts-red)}
-.tpl-testing-safety-alert .ts-codebox .cm{color:#7a756d}
-.tpl-testing-safety-alert .ts-codebox .kw{color:#ffb38a}
-.tpl-testing-safety-alert .ts-codebox .st{color:#b3e6c2}
-.tpl-testing-safety-alert .ts-codebox .bad{color:#ff9aa8;font-weight:700}
-.tpl-testing-safety-alert .ts-footer{position:absolute;left:84px;right:84px;bottom:36px;display:flex;justify-content:space-between;font-size:12px;color:var(--ts-muted);letter-spacing:.1em}
+
+/* ══════════════════════════════════════════════════════
+   CHROME — shared page shell elements
+   ══════════════════════════════════════════════════════ */
+
+/* Warning stripe — top */
+.d-testing-safety-alert .chr-stripe {
+  position: absolute; top: 0; left: 0; right: 0; height: 14px;
+  background: repeating-linear-gradient(45deg, var(--tsa-red) 0 18px, var(--tsa-stripe-dark) 18px 36px);
+}
+
+/* Warning stripe — bottom (subtler) */
+.d-testing-safety-alert .chr-stripe-b {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 6px;
+  background: repeating-linear-gradient(45deg, var(--tsa-red) 0 10px, var(--tsa-stripe-dark) 10px 20px);
+  opacity: .6;
+}
+
+/* Topbar — alert tag + page number */
+.d-testing-safety-alert .chr-topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 22px 0 16px; font-family: var(--font-sans);
+}
+
+/* Chip — alert level tag (red / amber / green) */
+.d-testing-safety-alert .chr-chip {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 18px; border-radius: 10px;
+  font-size: 13px; font-weight: 800; letter-spacing: .12em;
+  text-transform: uppercase;
+  background: var(--bad); color: #fff;
+  box-shadow: 0 6px 18px rgba(224,49,74,.28);
+}
+.d-testing-safety-alert .chr-chip::before { content: '⚠'; font-size: 16px; }
+.d-testing-safety-alert .chr-chip.amber {
+  background: var(--tsa-amber);
+  box-shadow: 0 6px 18px rgba(217,119,6,.25);
+}
+.d-testing-safety-alert .chr-chip.green {
+  background: var(--tsa-green);
+  box-shadow: 0 6px 18px rgba(6,118,71,.22);
+}
+.d-testing-safety-alert .chr-chip.green::before { content: '✓'; }
+
+/* Page number */
+.d-testing-safety-alert .chr-page {
+  font-size: 13px; color: var(--text-3); letter-spacing: .15em;
+  font-weight: 700; font-family: 'Inter', sans-serif;
+}
+
+/* Kicker — small uppercase label above title */
+.d-testing-safety-alert .chr-kicker {
+  font-family: var(--font-sans); font-size: 15px; font-weight: 700;
+  color: var(--accent); letter-spacing: .06em; margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+/* Footer — bottom status bar */
+.d-testing-safety-alert .chr-footer {
+  position: absolute; left: 84px; right: 84px; bottom: 36px;
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--text-3); letter-spacing: .1em;
+  font-family: var(--font-sans);
+}
+
+/* ══════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ══════════════════════════════════════════════════════ */
+
+/* Title (h1) — massive, bold */
+.d-testing-safety-alert .chr-title {
+  font-size: 88px; font-weight: 900; line-height: 1.04;
+  letter-spacing: -2px; margin: 10px 0 16px; color: var(--text-1);
+  font-family: var(--font-display);
+}
+.d-testing-safety-alert .chr-title .red { color: var(--accent); }
+.d-testing-safety-alert .chr-title .strike {
+  position: relative; display: inline-block;
+}
+.d-testing-safety-alert .chr-title .strike::after {
+  content: ''; position: absolute; left: -4%; right: -4%; top: 50%;
+  height: 10px; background: var(--accent); transform: skewX(-12deg); opacity: .85;
+}
+
+/* Heading (h2) */
+.d-testing-safety-alert .chr-heading {
+  font-size: 54px; font-weight: 900; line-height: 1.1;
+  letter-spacing: -1px; margin: 0 0 14px; color: var(--text-1);
+  font-family: var(--font-display);
+}
+
+/* Subtitle / body text */
+.d-testing-safety-alert .chr-sub {
+  font-family: var(--font-sans); font-size: 22px; line-height: 1.5;
+  color: var(--text-2); max-width: 880px; margin-top: 10px; font-weight: 400;
+}
+
+/* Inline highlight pills */
+.d-testing-safety-alert .chr-highlight {
+  display: inline-block; padding: 4px 14px; border-radius: 8px; font-weight: 800;
+}
+.d-testing-safety-alert .chr-highlight.red {
+  background: var(--bad); color: #fff;
+}
+.d-testing-safety-alert .chr-highlight.amber {
+  background: var(--tsa-amber-soft); color: var(--tsa-amber);
+  border: 1px solid rgba(217,119,6,.2);
+}
+.d-testing-safety-alert .chr-highlight.green {
+  background: var(--tsa-green-soft); color: var(--tsa-green);
+  border: 1px solid rgba(6,118,71,.2);
+}
+
+/* Divider — short accent line */
+.d-testing-safety-alert .chr-divider {
+  width: 80px; height: 4px; background: var(--accent);
+  border-radius: 2px; margin: 24px 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   c-* EXTENSIONS — safety-alert specific overrides
+   ══════════════════════════════════════════════════════ */
+
+/* Grid gaps */
+.d-testing-safety-alert .c-grid-2 { gap: 20px; margin-top: 20px; }
+.d-testing-safety-alert .c-grid-3 { gap: 16px; margin-top: 20px; }
+
+/* Card */
+.d-testing-safety-alert .c-card {
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 22px 24px; background: #fff;
+  box-shadow: 0 6px 20px rgba(17,19,24,.04);
+}
+.d-testing-safety-alert .c-card .lbl {
+  font-size: 12px; font-weight: 800; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-3); margin-bottom: 8px;
+}
+.d-testing-safety-alert .c-card h4 {
+  font-size: 26px; font-weight: 900; line-height: 1.2; margin-bottom: 8px;
+  font-family: var(--font-sans);
+}
+.d-testing-safety-alert .c-card p {
+  font-size: 14px; color: var(--text-2); line-height: 1.55;
+  font-family: var(--font-sans);
+}
+
+/* ── Warning box (c-warn) ── */
+
+/* Override default c-warn with safety-alert specific sizing & decorative dot */
+.d-testing-safety-alert .c-warn {
+  border: 2px solid var(--bad); border-radius: 18px;
+  padding: 26px 30px;
+  background: linear-gradient(180deg, #fff 0%, var(--tsa-red-soft) 100%);
+  box-shadow: 0 14px 36px rgba(224,49,74,.14);
+  margin-top: 24px; position: relative;
+}
+/* Decorative dot — red pulsing indicator */
+.d-testing-safety-alert .c-warn::before {
+  content: ''; position: absolute; top: -11px; left: 24px;
+  width: 22px; height: 22px; background: var(--bad); border-radius: 50%;
+  box-shadow: 0 0 0 6px rgba(224,49,74,.2);
+}
+/* Amber variant */
+.d-testing-safety-alert .c-warn.amber {
+  border-color: var(--tsa-amber);
+  background: linear-gradient(180deg, #fff 0%, var(--tsa-amber-soft) 100%);
+  box-shadow: 0 14px 36px rgba(217,119,6,.14);
+}
+.d-testing-safety-alert .c-warn.amber::before {
+  background: var(--tsa-amber);
+  box-shadow: 0 0 0 6px rgba(217,119,6,.2);
+}
+/* Green (safe/good) variant */
+.d-testing-safety-alert .c-warn.green {
+  border-color: var(--tsa-green);
+  background: linear-gradient(180deg, #fff 0%, var(--tsa-green-soft) 100%);
+  box-shadow: 0 14px 36px rgba(6,118,71,.14);
+}
+.d-testing-safety-alert .c-warn.green::before {
+  background: var(--tsa-green);
+  box-shadow: 0 0 0 6px rgba(6,118,71,.2);
+}
+/* Warn title & body overrides for larger sizing */
+.d-testing-safety-alert .c-warn-title {
+  font-size: 34px; font-weight: 900; margin: 0 0 10px;
+}
+.d-testing-safety-alert .c-warn-body {
+  font-size: 17px; line-height: 1.6; color: var(--text-2); margin: 0;
+}
+
+/* ── Checklist (c-check) ── */
+
+/* Vertical stack for check items */
+.d-testing-safety-alert .c-stack {
+  display: flex; flex-direction: column; gap: 12px; margin-top: 20px; max-width: 880px;
+}
+
+/* Individual check item */
+.d-testing-safety-alert .c-check {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 16px 20px; border: 1px solid var(--border);
+  border-radius: 14px; background: #fff;
+}
+/* Checkbox — red by default (unsafe/unchecked) */
+.d-testing-safety-alert .c-check-box {
+  flex: 0 0 32px; height: 32px; border-radius: 8px;
+  border: 2px solid var(--bad); display: grid; place-items: center;
+  font-weight: 900; color: var(--bad); background: var(--tsa-red-soft);
+}
+/* Checkbox — green when safe/checked */
+.d-testing-safety-alert .c-check-box.ok {
+  border-color: var(--tsa-green); color: var(--tsa-green);
+  background: var(--tsa-green-soft);
+}
+/* Check text */
+.d-testing-safety-alert .c-check-text {
+  font-size: 18px; line-height: 1.5; font-weight: 600;
+}
+
+/* ── Code box (c-codebox) ── */
+
+/* Override default codebox with safety-alert dark theme */
+.d-testing-safety-alert .c-codebox {
+  background: var(--tsa-code-bg); color: #fff5ea;
+  border-radius: 14px; padding: 22px 26px;
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  line-height: 1.85; margin-top: 20px;
+  border-left: 6px solid var(--accent);
+}
+/* Syntax tokens */
+.d-testing-safety-alert .c-codebox .cm  { color: #7a756d; }            /* comment */
+.d-testing-safety-alert .c-codebox .kw  { color: #ffb38a; }            /* keyword */
+.d-testing-safety-alert .c-codebox .st  { color: #b3e6c2; }            /* string */
+.d-testing-safety-alert .c-codebox .bad { color: #ff9aa8; font-weight: 700; } /* dangerous/bad */
+
+/* ── Container query overrides: preserve multi-column grids on narrow viewports ── */
+@container (max-width: 1000px) {
+  .d-testing-safety-alert .c-grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .d-testing-safety-alert .c-grid-3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ── Narrow viewport: scale down typography ── */
+@media (max-width: 900px) {
+  .d-testing-safety-alert .chr-title  { font-size: 48px; letter-spacing: -1px; }
+  .d-testing-safety-alert .chr-heading { font-size: 32px; }
+  .d-testing-safety-alert .chr-sub    { font-size: 16px; }
+  .d-testing-safety-alert .c-warn-title { font-size: 22px; }
+  .d-testing-safety-alert .c-warn-body  { font-size: 14px; }
+}

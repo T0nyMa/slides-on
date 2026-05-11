@@ -12,6 +12,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
+import { DESIGN_TEMPLATES } from "./assemble/designs";
 
 // ─── Types ────────────────────────────────────────────────────────────────
 
@@ -44,7 +45,7 @@ interface ValidationReport {
 
 // ─── Design Capability Matrix ─────────────────────────────────────────────
 
-const KNOWN_DESIGNS = ["pastel-card", "white-editorial", "xhs-post"] as const;
+const KNOWN_DESIGNS = Object.keys(DESIGN_TEMPLATES);
 
 const DESIGN_COLORS: Record<string, string[]> = {
   "pastel-card": ["peach", "mint", "sky", "lilac", "lemon", "rose"],

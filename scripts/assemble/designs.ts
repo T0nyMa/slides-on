@@ -215,10 +215,9 @@ const hermesCyberTerminal: DesignTemplate = {
 
   cardHTML(card: CardItem) {
     const color = card.color ? ` ${card.color}` : "";
-    const num = card.num ? `<div class="chr-hc-val">${card.num}</div>\n        ` : "";
     return `<div class="c-card${color}">
         <div class="chr-hc-lbl">${card.num || ""}</div>
-        ${num}<div class="chr-hc-val">${card.title}</div>
+        <div class="chr-hc-val">${card.title}</div>
         <div class="chr-hc-desc">${card.body}</div>
       </div>`;
   },
