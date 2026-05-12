@@ -38,7 +38,7 @@ function parseArgs(args: string[]): CliArgs {
       case "--output": case "-o":
         opts.output = args[++i]; break;
       case "--asset-depth":
-        opts.assetDepth = parseInt(args[++i]!, 10) || 3; break;
+        const v = parseInt(args[++i]!, 10); opts.assetDepth = isNaN(v) ? 3 : v; break;
       case "--help": case "-h":
         console.log(`Usage: bun scripts/assemble-deck.ts --input slides.json [--output index.html]
        cat slides.json | bun scripts/assemble-deck.ts --stdin > index.html
@@ -127,7 +127,7 @@ function main(): void {
     });
 
     // Wrap in deck skeleton
-    const assetDepth = cli.assetDepth || 3;
+    const assetDepth = cli.assetDepth ?? 3;
     const html = renderDeck(config, slidesHTML, assetDepth);
 
     // Output

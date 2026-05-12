@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "prompt": "帮我把下面这个产品发布公告做成演示文稿，要吸引投资人，16:9画布，modern professional风格：\n\n# CloudForge v3.0 发布公告\n\n## 概述\nCloudForge v3.0 是我们迄今为止最大的更新，重新定义了企业级云基础设施管理。经过18个月的开发和200+企业客户的反馈，我们自豪地推出这一里程碑版本。\n\n## 核心新功能\n- 智能资源编排：AI驱动的自动扩缩容，成本降低高达40%\n- 零信任安全架构：默认拒绝所有流量，细粒度访问控制\n- 多云统一管理：单一控制面板管理 AWS、Azure、GCP 资源\n- 实时合规监控：150+内置合规检查规则，支持 HIPAA、SOC2、GDPR\n\n## 性能提升\n- 部署速度提升 5 倍\n- API 延迟降低 60%（P99 < 100ms）\n- 资源利用率从 35% 提升到 78%\n\n## 客户反馈\nCloudForge v3 让我们把基础设施成本砍了一半 — CTO, FinTech Global\n\n## 下一步\n立即申请试用：cloudforge.io/v3-beta",
+    "expected_output": "slides.json + index.html，包含封面、功能卡片、性能KPI、客户证言、CTA页，使用 white-editorial design",
+    "files": []
+  },
+  {
+    "id": 2,
+    "prompt": "帮我把这篇笔记做成小红书图文卡片，要手绘风格的，3:4竖版，适合发在小红书上：\n\n# 我如何用AI搭建了自己的第二大脑\n\n最近三个月我试了一个方法，把Obsidian和Claude连起来用，效果惊人。\n\n## 四个步骤\n\n1. 装Obsidian，开Local REST API插件。社区插件，一个勾就开，外部进程能读写你的vault。\n2. 接Claude Desktop + obsidian-mcp server。一个配置文件就搞定，token填vault的api key。\n3. 装5个obsidian-skills：markdown / bases / canvas / cli / defuddle。让Claude知道怎么正确使用Obsidian。\n4. 让Claude自己整理一次。\"帮我把最近10篇笔记里的重复概念合并\"，90秒出结果。\n\n## 跑了90天的数据\n\n- 1842条笔记\n- 6300+反向链接（AI自动补的）\n- 找资料耗时减少74%\n\n## 心得\n\n不要找AI笔记应用，你要的是一个文件夹+一条神经。",
+    "expected_output": "3:4 portrait slides.json + index.html，使用 xhs-post design 或 pastel-card，包含封面、步骤、数据卡片、结语页",
+    "files": []
+  },
+  {
+    "id": 3,
+    "prompt": "我想做一个技术分享PPT，主题是\"从零搭建AI Agent\"，面向工程师，需要包含代码示例。帮我做成slides，大概7-8页。内容大概是：\n\n1. 什么是AI Agent（不是chatbot，是能执行动作的AI）\n2. Agent的核心公式：Agent = Role + Goal + Tools + Rules + Output\n3. 四种Agent类型：Research / Content / Workflow / Operator\n4. 搭建流程：定义目标 → 选工具 → 写prompt → 测试 → 上线\n5. 代码示例（Python发邮件agent）\n6. 常见坑：过度工程化、工具太多、prompt不清晰\n7. 总结：从简单开始，一个prompt一个工具就够了",
+    "expected_output": "slides.json + index.html，包含代码块（chr-codebox）、步骤组件（c-steps）、卡片布局（c-grid），使用 white-editorial 或 pastel-card design",
+    "files": []
+  },
+  {
+    "id": 4,
+    "prompt": "帮我做一个\"端云协同推理架构\"的技术汇报PPT，16:9画布。封面需要一张AI生成的四层架构概念图（cyberpunk neon风格），内容页需要画一张SVG架构图（端侧层→边缘层→云端层→协同调度层），颜色用深蓝+霓虹绿。内容大概是：\n\n# 端云协同推理加速平台\n\n## 架构概览\n- 端侧：模型量化 + NPU加速，时延<5ms\n- 边缘：CDN就近接入 + 轻量GPU推理\n- 云端：A100集群 + 模型并行推理\n- 调度：动态负载均衡 + 精度自适应路由\n\n## 核心指标\n- P99延迟从120ms降至28ms\n- 端侧覆盖85%流量\n- GPU利用率提升40%",
+    "expected_output": "slides.json + index.html，封面包含AI图片prompt或占位，内容页包含内联SVG四层架构图，使用 hermes-cyber-terminal 或 corporate design",
+    "files": []
+  },
+  {
+    "id": 5,
+    "prompt": "帮我画一张推荐系统推理管线的SVG架构图，要分层展示，从请求进来到结果返回的完整链路。层级包括：\n- 用户请求层（HTTP/gRPC入口，AB实验分流）\n- 特征服务层（实时特征+离线特征拼接，特征缓存）\n- 召回层（多路召回：向量召回、图召回、热门召回）\n- 粗排层（轻量模型打分，Top 500）\n- 精排层（DeepFM + MMOE 大模型，Top 50）\n- 重排层（多样性打散、广告插入、业务规则）\n- 返回层（封装结果、埋点日志）\n\n颜色用深色底+亮色分层，箭头用渐变色，每层标注时延预算。做成独立SVG文件也行，或者嵌到slides里也行。",
+    "expected_output": "一个完整的SVG架构图（7层分层结构，带箭头连接和时延标注）或包含内联SVG的slides.json。使用深色科技风格配色。",
+    "files": []
+  }
+]
