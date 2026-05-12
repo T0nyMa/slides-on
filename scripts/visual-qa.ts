@@ -166,6 +166,11 @@ const DECORATIVE_CLASSES = [
   "chr-hc-scanlines", "chr-hc-vignette",
 ];
 
+const CHROME_SELECTORS = [
+  ".chr-topbar", ".chr-footer", ".chr-page", ".chr-page-dot",
+  ".chr-chip", ".chr-sticker", ".chr-kicker",
+].join(", ");
+
 const TEXT_SELECTORS = [
   "h1", "h2", "h3", "h4", "p", "li", "span",
   ".c-card", ".c-card-soft", ".c-step", ".c-kpi",
@@ -241,70 +246,96 @@ async function checkTextOverflow(page: any, slideIndex: number): Promise<Issue[]
   }, { idx: slideIndex, selectors: TEXT_SELECTORS });
 }
 
-// ─── Group 2: Element occlusion ─────────────────────────────────────────
+// ─── Group 2: Element occlusion + boundary overflow ──────────────────────
 
+/** Occlusion check: content × content, chrome × content, and boundary overflow */
 async function checkOcclusion(page: any, slideIndex: number): Promise<Issue[]> {
-  return page.evaluate((args: { idx: number; selectors: string; decoClasses: string[] }) => {
+  return page.evaluate((args: { idx: number; contentSel: string; chromeSel: string; decoClasses: string[] }) => {
     const slide = document.querySelector(".deck > .slide.is-active");
     if (!slide) return [];
-
-    const elements: { el: Element; rect: DOMRect; area: number; label: string }[] = [];
-
-    for (const el of slide.querySelectorAll(args.selectors)) {
-      const cls = el.getAttribute("class") || "";
-      if (args.decoClasses.some(c => cls.includes(c))) continue;
-
-      const style = window.getComputedStyle(el);
-      if (style.display === "none" || style.visibility === "hidden") continue;
-      if (style.pointerEvents === "none" &&
-          (style.position === "absolute" || style.position === "fixed")) continue;
-      if (parseFloat(style.opacity) < 0.1) continue;
-
-      const rect = el.getBoundingClientRect();
-      if (rect.width < 5 || rect.height < 5) continue;
-
-      const tag = el.tagName.toLowerCase();
-      const clsShort = cls.split(" ").slice(0, 2).join(".") || "";
-      elements.push({
-        el,
-        rect,
-        area: rect.width * rect.height,
-        label: clsShort ? `${tag}.${clsShort}` : tag,
-      });
-    }
-
+    const slideRect = slide.getBoundingClientRect();
     const issues: any[] = [];
 
-    for (let i = 0; i < elements.length; i++) {
-      for (let j = i + 1; j < elements.length; j++) {
-        if (elements[i]!.el.contains(elements[j]!.el) ||
-            elements[j]!.el.contains(elements[i]!.el)) continue;
+    // Collect content elements + chrome elements separately
+    interface ElInfo { rect: DOMRect; area: number; label: string; isChrome: boolean; }
+    const contentEls: ElInfo[] = [];
+    const chromeEls: ElInfo[] = [];
 
-        const a = elements[i]!.rect;
-        const b = elements[j]!.rect;
+    const collect = (sel: string, isChrome: boolean) => {
+      for (const el of slide.querySelectorAll(sel)) {
+        const cls = el.getAttribute("class") || "";
+        if (args.decoClasses.some(c => cls.includes(c))) continue;
+        const style = window.getComputedStyle(el);
+        if (style.display === "none" || style.visibility === "hidden") continue;
+        if (!isChrome && style.pointerEvents === "none" &&
+            (style.position === "absolute" || style.position === "fixed")) continue;
+        if (parseFloat(style.opacity) < 0.1) continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.width < 5 || rect.height < 5) continue;
+        const tag = el.tagName.toLowerCase();
+        const clsShort = cls.split(" ").slice(0, 2).join(".") || "";
+        (isChrome ? chromeEls : contentEls).push({
+          rect, area: rect.width * rect.height,
+          label: clsShort ? `${tag}.${clsShort}` : tag, isChrome,
+        });
+      }
+    };
+    collect(args.contentSel, false);
+    collect(args.chromeSel, true);
 
-        const overlapX = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
-        const overlapY = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
-        const intersection = overlapX * overlapY;
-
-        if (intersection === 0) continue;
-
-        const smallerArea = Math.min(elements[i]!.area, elements[j]!.area);
-        const ratio = intersection / smallerArea;
-
+    // ── 1. Content × Content overlap (existing) ──
+    for (let i = 0; i < contentEls.length; i++) {
+      for (let j = i + 1; j < contentEls.length; j++) {
+        const a = contentEls[i]!.rect, b = contentEls[j]!.rect;
+        const ox = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+        const oy = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+        if (ox * oy === 0) continue;
+        const ratio = (ox * oy) / Math.min(contentEls[i]!.area, contentEls[j]!.area);
         if (ratio > 0.1) {
-          issues.push({
-            group: "occlusion",
-            severity: ratio > 0.3 ? "BLOCKER" : "WARN",
-            slide: args.idx + 1,
-            element: `${elements[i]!.label} × ${elements[j]!.label}`,
-            message: `元素遮挡 ${(ratio * 100).toFixed(0)}%（交叉面积 ${Math.round(intersection)}px²）`,
-          });
+          issues.push({ group: "occlusion",
+            severity: ratio > 0.3 ? "BLOCKER" : "WARN", slide: args.idx + 1,
+            element: `${contentEls[i]!.label} × ${contentEls[j]!.label}`,
+            message: `内容元素遮挡 ${(ratio * 100).toFixed(0)}%` });
         }
       }
     }
+
+    // ── 2. Chrome × Content overlap ──
+    for (const chrome of chromeEls) {
+      for (const content of contentEls) {
+        const ox = Math.max(0, Math.min(chrome.rect.right, content.rect.right) - Math.max(chrome.rect.left, content.rect.left));
+        const oy = Math.max(0, Math.min(chrome.rect.bottom, content.rect.bottom) - Math.max(chrome.rect.top, content.rect.top));
+        if (ox * oy === 0) continue;
+        const ratio = (ox * oy) / Math.min(chrome.area, content.area);
+        if (ratio > 0.15) {
+          issues.push({ group: "occlusion",
+            severity: "BLOCKER", slide: args.idx + 1,
+            element: `${chrome.label} ⇄ ${content.label}`,
+            message: `Chrome 遮挡内容 ${(ratio * 100).toFixed(0)}%（交叉 ${Math.round(ox*oy)}px²），检查定位` });
+        }
+      }
+    }
+
+    // ── 3. Boundary overflow — elements extending beyond slide edges ──
+    const allEls = [...contentEls, ...chromeEls];
+    for (const el of allEls) {
+      const r = el.rect;
+      const dirs: string[] = [];
+      if (r.left < slideRect.left - 2) dirs.push(`左溢出 ${Math.round(slideRect.left - r.left)}px`);
+      if (r.right > slideRect.right + 2) dirs.push(`右溢出 ${Math.round(r.right - slideRect.right)}px`);
+      if (r.top < slideRect.top - 2) dirs.push(`上溢出 ${Math.round(slideRect.top - r.top)}px`);
+      if (r.bottom > slideRect.bottom + 2) dirs.push(`下溢出 ${Math.round(r.bottom - slideRect.bottom)}px`);
+      if (dirs.length > 0) {
+        const isChrome = el.isChrome;
+        issues.push({ group: "occlusion",
+          severity: isChrome ? "BLOCKER" : "BLOCKER", slide: args.idx + 1,
+          element: el.label,
+          message: `${isChrome ? "Chrome" : "内容"}元素溢出 slide 边界（${dirs.join("，")}），可能被 overflow:hidden 裁切` });
+      }
+    }
+
     return issues;
-  }, { idx: slideIndex, selectors: CONTENT_SELECTORS, decoClasses: DECORATIVE_CLASSES });
+  }, { idx: slideIndex, contentSel: CONTENT_SELECTORS, chromeSel: CHROME_SELECTORS, decoClasses: DECORATIVE_CLASSES });
 }
 
 // ─── Group 3: Whitespace ────────────────────────────────────────────────
@@ -315,106 +346,181 @@ async function checkWhitespace(page: any, slideIndex: number, portrait: boolean)
     if (!slide) return [];
 
     const slideRect = slide.getBoundingClientRect();
-    const slideArea = slideRect.width * slideRect.height;
+    const slideW = slideRect.width;
+    const slideH = slideRect.height;
+    const slideArea = slideW * slideH;
     if (slideArea === 0) return [];
 
-    const contentRects: DOMRect[] = [];
+    interface ContentEl { rect: DOMRect; tag: string; cls: string; }
+    const items: ContentEl[] = [];
     for (const el of slide.querySelectorAll(args.selectors)) {
       const cls = el.getAttribute("class") || "";
       if (args.decoClasses.some(c => cls.includes(c))) continue;
-
       const style = window.getComputedStyle(el);
       if (style.display === "none" || style.visibility === "hidden") continue;
       if (style.pointerEvents === "none" &&
           (style.position === "absolute" || style.position === "fixed")) continue;
-
       const rect = el.getBoundingClientRect();
       if (rect.width < 5 || rect.height < 5) continue;
       if (rect.left >= slideRect.right || rect.right <= slideRect.left) continue;
-
-      contentRects.push(rect);
+      items.push({ rect, tag: el.tagName.toLowerCase(), cls });
     }
 
-    if (contentRects.length === 0) return [];
+    if (items.length === 0) return [];
 
-    // Grid-based area coverage (200×200 grid, handles overlapping rects)
+    // ── 1. Grid coverage + quadrant balance (existing) ──
     const GRID = 200;
-    const cellW = slideRect.width / GRID;
-    const cellH = slideRect.height / GRID;
+    const cellW = slideW / GRID;
+    const cellH = slideH / GRID;
     const covered = new Uint8Array(GRID * GRID);
+    let contentTop = slideH, contentBottom = 0, contentLeft = slideW, contentRight = 0;
 
-    for (const rect of contentRects) {
+    for (const { rect } of items) {
       const x1 = Math.max(0, Math.floor((rect.left - slideRect.left) / cellW));
       const x2 = Math.min(GRID - 1, Math.floor((rect.right - slideRect.left) / cellW));
       const y1 = Math.max(0, Math.floor((rect.top - slideRect.top) / cellH));
       const y2 = Math.min(GRID - 1, Math.floor((rect.bottom - slideRect.top) / cellH));
-      for (let y = y1; y <= y2; y++) {
-        for (let x = x1; x <= x2; x++) {
+      for (let y = y1; y <= y2; y++)
+        for (let x = x1; x <= x2; x++)
           covered[y * GRID + x] = 1;
-        }
-      }
+      if (rect.top < contentTop) contentTop = rect.top;
+      if (rect.bottom > contentBottom) contentBottom = rect.bottom;
+      if (rect.left < contentLeft) contentLeft = rect.left;
+      if (rect.right > contentRight) contentRight = rect.right;
     }
 
     const totalCovered = covered.reduce((a, b) => a + b, 0);
     const fillPercent = Math.round((totalCovered / (GRID * GRID)) * 100);
 
-    // Quadrant balance
     const half = GRID / 2;
     const quadrantFills: number[] = [];
     for (const [qy, qx] of [[0, 0], [0, half], [half, 0], [half, half]]) {
       let count = 0;
-      for (let y = qy; y < qy + half; y++) {
-        for (let x = qx; x < qx + half; x++) {
+      for (let y = qy; y < qy + half; y++)
+        for (let x = qx; x < qx + half; x++)
           count += covered[y * GRID + x]!;
-        }
-      }
       quadrantFills.push(count / (half * half));
     }
-
     const maxQ = Math.max(...quadrantFills);
     const minQ = Math.min(...quadrantFills);
 
     const issues: any[] = [];
 
-    if (fillPercent < 15) {
-      issues.push({
-        group: "whitespace",
-        severity: "BLOCKER",
-        slide: args.idx + 1,
-        element: ".slide",
-        message: `页面填充率仅 ${fillPercent}%（< 15%），内容严重不足`,
-      });
-    } else if (fillPercent < 30) {
-      issues.push({
-        group: "whitespace",
-        severity: "WARN",
-        slide: args.idx + 1,
-        element: ".slide",
-        message: `页面填充率 ${fillPercent}%（< 30%），内容稀疏`,
-      });
+    // ── Fill percent ──
+    const thresholdLow = args.portrait ? 18 : 15;
+    const thresholdWarn = args.portrait ? 35 : 30;
+    if (fillPercent < thresholdLow) {
+      issues.push({ group: "whitespace", severity: "BLOCKER", slide: args.idx + 1,
+        element: ".slide", message: `填充率仅 ${fillPercent}%（< ${thresholdLow}%），内容严重不足` });
+    } else if (fillPercent < thresholdWarn) {
+      issues.push({ group: "whitespace", severity: "WARN", slide: args.idx + 1,
+        element: ".slide", message: `填充率 ${fillPercent}%（< ${thresholdWarn}%），内容稀疏` });
     } else if (fillPercent > 85) {
-      issues.push({
-        group: "whitespace",
-        severity: "WARN",
-        slide: args.idx + 1,
-        element: ".slide",
-        message: `页面填充率 ${fillPercent}%（> 85%），过于密集`,
-      });
+      issues.push({ group: "whitespace", severity: "WARN", slide: args.idx + 1,
+        element: ".slide", message: `填充率 ${fillPercent}%（> 85%），过于密集` });
     }
 
+    // ── Quadrant balance ──
     if (maxQ > 0 && minQ / maxQ < 0.1) {
       const labels = ["左上", "右上", "左下", "右下"];
-      const emptyQuadrants = quadrantFills
-        .map((f, i) => f < 0.05 ? labels[i] : null)
-        .filter(Boolean);
-      if (emptyQuadrants.length > 0) {
-        issues.push({
-          group: "whitespace",
-          severity: "WARN",
-          slide: args.idx + 1,
-          element: ".slide",
-          message: `内容分布不均衡，${emptyQuadrants.join("/")} 区域几乎空白`,
-        });
+      const empty = quadrantFills.map((f, i) => f < 0.05 ? labels[i] : null).filter(Boolean);
+      if (empty.length > 0) {
+        issues.push({ group: "whitespace", severity: "WARN", slide: args.idx + 1,
+          element: ".slide", message: `内容分布不均衡，${empty.join("/")} 区域几乎空白` });
+      }
+    }
+
+    // ── 2. Vertical center-of-mass ──
+    const relTop = (contentTop - slideRect.top) / slideH;
+    const relBottom = (contentBottom - slideRect.top) / slideH;
+    const contentMidY = (relTop + relBottom) / 2;
+    const centerOffset = Math.abs(contentMidY - 0.5);
+    if (centerOffset > 0.18) {
+      const dir = contentMidY < 0.5 ? "偏上" : "偏下";
+      issues.push({ group: "whitespace", severity: "WARN", slide: args.idx + 1,
+        element: ".slide", message: `内容重心${dir}（偏移 ${(centerOffset * 100).toFixed(0)}%），${args.portrait ? "3:4建议居中" : "建议调整分布"}` });
+    } else if (centerOffset > 0.12) {
+      issues.push({ group: "whitespace", severity: "INFO", slide: args.idx + 1,
+        element: ".slide", message: `内容重心略偏（偏移 ${(centerOffset * 100).toFixed(0)}%）` });
+    }
+
+    // ── 3. Top/bottom whitespace ratio ──
+    const topWhitespace = relTop;
+    const bottomWhitespace = 1 - relBottom;
+    if (topWhitespace > 0.3 && bottomWhitespace < 0.1) {
+      issues.push({ group: "whitespace", severity: "WARN", slide: args.idx + 1,
+        element: ".slide", message: `顶部大面积留白（${(topWhitespace * 100).toFixed(0)}%），内容沉底` });
+    } else if (bottomWhitespace > 0.3 && topWhitespace < 0.1) {
+      issues.push({ group: "whitespace", severity: "WARN", slide: args.idx + 1,
+        element: ".slide", message: `底部大面积留白（${(bottomWhitespace * 100).toFixed(0)}%），内容堆顶` });
+    }
+    if (topWhitespace > 0.25 && bottomWhitespace > 0.25) {
+      const gap = Math.max(topWhitespace, bottomWhitespace) / Math.max(0.01, Math.min(topWhitespace, bottomWhitespace));
+      if (gap > 2.5) {
+        issues.push({ group: "whitespace", severity: "WARN", slide: args.idx + 1,
+          element: ".slide", message: `上下留白比 ${gap.toFixed(1)}:1，严重不均（上${(topWhitespace*100).toFixed(0)}% 下${(bottomWhitespace*100).toFixed(0)}%）` });
+      }
+    }
+
+    // ── 4. Edge margin checks ──
+    const marginTop = (contentTop - slideRect.top) / slideH;
+    const marginBottom = (slideRect.bottom - contentBottom) / slideH;
+    const marginLeft = (contentLeft - slideRect.left) / slideW;
+    const marginRight = (slideRect.right - contentRight) / slideW;
+    const minEdgePx = 4;
+
+    for (const [label, marginRatio, edgePx, isH] of [
+      ["上边距", marginTop, contentTop - slideRect.top, false],
+      ["下边距", marginBottom, slideRect.bottom - contentBottom, false],
+      ["左边距", marginLeft, contentLeft - slideRect.left, true],
+      ["右边距", marginRight, slideRect.right - contentRight, true],
+    ] as const) {
+      if (edgePx < minEdgePx && edgePx >= 0 && marginRatio < 0.01) {
+        issues.push({ group: "whitespace", severity: "BLOCKER", slide: args.idx + 1,
+          element: ".slide", message: `${label}仅 ${edgePx.toFixed(0)}px，内容太贴边可能被裁切` });
+      }
+    }
+
+    // ── 5. Component-specific whitespace diagnosis ──
+    // Find the lowest content element — the one with largest bottom
+    let lastEl: ContentEl | null = null;
+    for (const item of items) {
+      if (!lastEl || item.rect.bottom > lastEl.rect.bottom) lastEl = item;
+    }
+    if (lastEl && bottomWhitespace > 0.3) {
+      const elH = lastEl.rect.height;
+      const availableH = slideH - (lastEl.rect.top - slideRect.top);
+      const elFillRatio = elH / availableH;
+
+      // Table-specific: table too small for available space
+      if (lastEl.cls.includes("c-table") || lastEl.cls.includes("c-table-wrap") || lastEl.tag === "table") {
+        if (elFillRatio < 0.25) {
+          issues.push({ group: "whitespace", severity: "WARN", slide: args.idx + 1,
+            element: ".c-table", message: `表格仅占可用空间 ${(elFillRatio*100).toFixed(0)}%，增大 --tbl-font 或使用更少列` });
+        }
+      }
+      // Single small component at bottom with lots of empty space
+      else if (elFillRatio < 0.2 && items.length <= 3) {
+        const compType = lastEl.cls.split(" ")[0] || lastEl.tag;
+        issues.push({ group: "whitespace", severity: "INFO", slide: args.idx + 1,
+          element: compType, message: `${compType} 仅占可用空间 ${(elFillRatio*100).toFixed(0)}%，考虑加 c-badge-row、c-note 或增大字体` });
+      }
+    }
+
+    // ── 6. Gap variance between vertically stacked siblings ──
+    const gaps: number[] = [];
+    const sorted = [...items].sort((a, b) => a.rect.top - b.rect.top);
+    for (let i = 1; i < sorted.length; i++) {
+      const gap = sorted[i].rect.top - sorted[i-1].rect.bottom;
+      if (gap > 2 && gap < slideH * 0.5) gaps.push(gap);
+    }
+    if (gaps.length >= 2) {
+      const mean = gaps.reduce((a, b) => a + b, 0) / gaps.length;
+      const variance = gaps.reduce((s, g) => s + (g - mean) ** 2, 0) / gaps.length;
+      const stddev = Math.sqrt(variance);
+      if (mean > 0 && stddev / mean > 0.5) {
+        issues.push({ group: "whitespace", severity: "INFO", slide: args.idx + 1,
+          element: ".slide", message: `组件间距不一致（stddev ${(stddev/mean*100).toFixed(0)}%），范围 ${gaps[0].toFixed(0)}-${gaps[gaps.length-1].toFixed(0)}px` });
       }
     }
 
