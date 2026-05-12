@@ -1,0 +1,6 @@
+/* typography: humanist — warm, readable sans-serif with handwritten proportions */
+:root {
+  --font-display: 'Noto Sans SC', 'Source Sans 3', system-ui, sans-serif;
+  --font-sans: 'Noto Sans SC', 'Source Sans 3', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}

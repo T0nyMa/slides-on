@@ -1,0 +1,6 @@
+/* typography: handwritten — personal, informal, sketch-like */
+:root {
+  --font-display: 'Caveat', 'Kalam', cursive;
+  --font-sans: 'Caveat', 'Kalam', cursive;
+  --font-mono: 'Courier Prime', monospace;
+}

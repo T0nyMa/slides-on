@@ -245,9 +245,69 @@ const hermesCyberTerminal: DesignTemplate = {
   },
 };
 
+// ─── base (free-form layer composition) ─────────────────────────────────
+
+const base: DesignTemplate = {
+  titleTag: "h1",
+  titleClass: "chr-title",
+  subtitleClass: "chr-sub",
+  kickerClass: "chr-kicker",
+  bodyClass: "chr-sub",
+
+  topbarHTML(chip, chipColor, page, total) {
+    const cc = chipColor ? ` ${chipColor}` : "";
+    const chipHTML = chip ? `<div class="chr-chip${cc}">${chip}</div>` : "";
+    return `<div class="chr-topbar">${chipHTML}<div class="chr-page">${p(page, total)}</div></div>`;
+  },
+
+  footerHTML(left, right) {
+    return `<div class="chr-footer"><span>${left}</span><span>${right}</span></div>`;
+  },
+
+  blobHTML(_blobs) {
+    return "";
+  },
+
+  dividerHTML() {
+    return `<div class="chr-divider"></div>`;
+  },
+
+  cardHTML(card: CardItem) {
+    const color = card.color ? ` ${card.color}` : "";
+    const num = card.num ? `<div class="chr-card-num">${card.num}</div>\n        ` : "";
+    return `<div class="c-card${color}">
+        ${num}<h4>${card.title}</h4>
+        <p>${card.body}</p>
+      </div>`;
+  },
+
+  cardNumHTML(num: string) {
+    return `<div class="chr-card-num">${num}</div>`;
+  },
+
+  stepHTML(step: StepItem) {
+    return `<div class="c-step">
+        <div class="c-step-num">${step.num}</div>
+        <div class="c-step-content">
+          <div class="c-step-title">${step.title}</div>
+          ${step.body ? `<div class="c-step-body">${step.body}</div>` : ""}
+        </div>
+      </div>`;
+  },
+
+  codeHTML(code: string) {
+    return `<pre class="chr-codebox">${code}</pre>`;
+  },
+
+  quoteHTML(quote: string, attr?: string) {
+    return `<div class="c-quote">${quote}</div>${attr ? `\n      <div class="c-quote-attr">${attr}</div>` : ""}`;
+  },
+};
+
 // ─── Registry ─────────────────────────────────────────────────────────
 
 export const DESIGN_TEMPLATES: Record<string, DesignTemplate> = {
+  "base": base,
   "pastel-card": pastelCard,
   "white-editorial": whiteEditorial,
   "xhs-post": xhsPost,

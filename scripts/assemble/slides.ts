@@ -166,6 +166,44 @@ export function renderHtml(_d: DesignTemplate, s: SlideData, _ctx: PageContext):
   return s.html || "";
 }
 
+export function renderTable(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
+  const cols = s.tableColumns || [];
+  const rows = s.tableRows || [];
+  const rowCount = rows.length;
+  // Enable adaptive sizing at 10/12/15 rows
+  const dataRowsAttr = rowCount >= 10 ? ` data-rows="${Math.min(rowCount, 15)}"` : "";
+
+  const headerRow = `<tr>${cols.map((c) => {
+    const alignClass = c.align === "right" ? "num" : c.align === "center" ? "center" : "";
+    return `<th class="${alignClass}"${c.width ? ` style="width:${c.width}"` : ""}>${esc(c.header)}</th>`;
+  }).join("")}</tr>`;
+
+  const bodyRows = rows.map((row) =>
+    `<tr>${row.map((cell, i) => {
+      const align = cols[i]?.align;
+      const alignClass = align === "right" ? "num" : align === "center" ? "center" : "";
+      return `<td class="${alignClass}">${esc(cell)}</td>`;
+    }).join("")}</tr>`
+  ).join("\n        ");
+
+  const headingClass = d.titleClass === "chr-title" ? "chr-heading" : d.titleClass;
+
+  return `<section class="slide">
+    ${chromeTop(d, s, ctx)}
+    ${s.title ? `<h2 class="${headingClass}">${s.title}</h2>` : ""}
+    <div class="c-table-wrap">
+      <table class="c-table c-table-striped"${dataRowsAttr}>
+        <thead>${headerRow}</thead>
+        <tbody>
+        ${bodyRows}
+        </tbody>
+      </table>
+    </div>
+    ${s.subtitle ? `<p class="${d.subtitleClass}" style="margin-top:1cqi">${esc(s.subtitle)}</p>` : ""}
+    ${chromeBottom(d, s, ctx, `data · ${rows.length} rows`)}
+  </section>`;
+}
+
 // ─── Router ───────────────────────────────────────────────────────────
 
 export function renderSlide(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
@@ -180,6 +218,7 @@ export function renderSlide(d: DesignTemplate, s: SlideData, ctx: PageContext): 
     case "thanks":    return renderThanks(d, s, ctx);
     case "bullets":   return renderBullets(d, s, ctx);
     case "kpi":       return renderKpi(d, s, ctx);
+    case "table":     return renderTable(d, s, ctx);
     case "html":      return renderHtml(d, s, ctx);
     default:          return `<!-- Unknown slide type: ${(s as any).type} -->`;
   }

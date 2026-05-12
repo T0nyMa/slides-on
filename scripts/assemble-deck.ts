@@ -13,7 +13,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import type { DeckConfig, SlideData } from "./assemble/types";
+import type { DeckConfig, SlideData, DesignConfig } from "./assemble/types";
 import { getDesignTemplate } from "./assemble/designs";
 import { renderSlide } from "./assemble/slides";
 import { renderDeck } from "./assemble/skeleton";
@@ -118,7 +118,8 @@ function main(): void {
     // Validate
     if (!slides.length) throw new Error("No slides in input");
 
-    const design = getDesignTemplate(config.design);
+    const designName = typeof config.design === "string" ? config.design : "base";
+    const design = getDesignTemplate(designName);
     const total = slides.length;
 
     // Render each slide
@@ -135,7 +136,8 @@ function main(): void {
       const outPath = path.resolve(cli.output);
       fs.mkdirSync(path.dirname(outPath), { recursive: true });
       fs.writeFileSync(outPath, html);
-      console.log(`Written: ${outPath} (${slides.length} slides, design: ${config.design}, canvas: ${config.canvas})`);
+      const designLabel = typeof config.design === "string" ? config.design : JSON.stringify(config.design);
+      console.log(`Written: ${outPath} (${slides.length} slides, design: ${designLabel}, canvas: ${config.canvas})`);
 
       // Run polish if available
       try {

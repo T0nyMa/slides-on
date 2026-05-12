@@ -110,7 +110,10 @@ async function renderDeck(
   });
   const page = await context.newPage();
 
-  for (let n = 1; n <= slideCount; n++) {
+  const startN = opts.slide ?? 1;
+  const endN = opts.slide ?? slideCount;
+
+  for (let n = startN; n <= endN; n++) {
     const outFile = path.join(outDir, `page_${String(n).padStart(2, "0")}.${ext}`);
 
     try {
@@ -135,7 +138,17 @@ async function renderDeck(
       const box = await slideEl.boundingBox();
       const w = box ? Math.round(box.width * opts.dsf) : canvas.width * opts.dsf;
       const h = box ? Math.round(box.height * opts.dsf) : canvas.height * opts.dsf;
-      console.log(`  [${n}/${slideCount}] page_${String(n).padStart(2, "0")}.${ext}  (${w}×${h}, ${sizeKB} KB)`);
+
+      // Overflow check (optional)
+      let overflowNote = "";
+      if (opts.checkOverflow) {
+        const overflows = await checkSlideOverflow(page);
+        if (overflows.length > 0) {
+          overflowNote = `  ⚠ OVERFLOW: ${overflows.join("; ")}`;
+        }
+      }
+
+      console.log(`  [${n}/${slideCount}] page_${String(n).padStart(2, "0")}.${ext}  (${w}×${h}, ${sizeKB} KB)${overflowNote}`);
     } catch (err: any) {
       const msg = `Slide ${n}: ${err.message}`;
       errors.push(msg);
@@ -244,6 +257,38 @@ async function detectNavMode(page: Page, fileUrl: string): Promise<"hash" | "que
 
   // Otherwise default to html-ppt standard hash navigation #/N
   return "hash";
+}
+
+// ─── Overflow detection ──────────────────────────────────────────────
+
+async function checkSlideOverflow(page: Page): Promise<string[]> {
+  return await page.evaluate(() => {
+    const issues: string[] = [];
+    const slide = document.querySelector(".slide.is-active") as HTMLElement | null;
+    if (!slide) return issues;
+    const slideRect = slide.getBoundingClientRect();
+    const decorativeClasses = ["chr-blob", "chr-hc-grid", "chr-hc-scanlines", "bg-glow", "chr-bg"];
+    const children = slide.querySelectorAll("*");
+    children.forEach((el) => {
+      const style = window.getComputedStyle(el);
+      if (style.display === "none" || style.visibility === "hidden") return;
+      if (style.position === "absolute" || style.position === "fixed") return;
+      if (style.pointerEvents === "none") return;
+      if (decorativeClasses.some((c) => el.classList.contains(c))) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return;
+      const dirs: string[] = [];
+      if (rect.right - slideRect.right > 2) dirs.push(`${Math.round(rect.right - slideRect.right)}px right`);
+      if (rect.bottom - slideRect.bottom > 2) dirs.push(`${Math.round(rect.bottom - slideRect.bottom)}px bottom`);
+      if (slideRect.left - rect.left > 2) dirs.push(`${Math.round(slideRect.left - rect.left)}px left`);
+      if (dirs.length > 0) {
+        const text = (el.textContent || "").slice(0, 30).replace(/\s+/g, " ");
+        const cls = el.className ? "." + (typeof el.className === "string" ? el.className.split(" ")[0] : "") : "";
+        issues.push(`${el.tagName.toLowerCase()}${cls} "${text}" → ${dirs.join(", ")}`);
+      }
+    });
+    return issues;
+  });
 }
 
 // ─── Animation waiting ───────────────────────────────────────────────

@@ -1,0 +1,10 @@
+/* density: dense — information-rich, 4-6+ items per slide */
+:root {
+  --body-size: 1.6cqi;
+  --slide-padding-y: 2.5cqi;
+  --slide-padding-x: 4cqi;
+  --card-pad-y: 1cqi;
+  --card-pad-x: 1.2cqi;
+  --card-gap: 1cqi;
+  --component-gap: 0.8cqi;
+}

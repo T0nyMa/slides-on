@@ -26,6 +26,22 @@
   --letter-tight: -.03em;
   --letter-normal: -.01em;
   --ease: cubic-bezier(.4,0,.2,1);
+
+  /* Layer system — dimension variables (overridden by assets/layers/) */
+  --body-size: 2cqi;
+  --slide-padding-y: 4cqi;
+  --slide-padding-x: 6cqi;
+  --card-pad-y: 1.5cqi;
+  --card-pad-x: 1.8cqi;
+  --card-gap: 1.5cqi;
+  --component-gap: 1.5cqi;
+  --bg-texture: none;
+  --bg-pattern: none;
+  --bg-pattern-size: 0;
+  --card-shadow: 0 2px 8px rgba(0,0,0,.08);
+  --border-style: solid;
+  --tbl-font: var(--body-size);
+  --tbl-cell-pad: 0.6cqi 1.2cqi;
 }
 
 *,*::before,*::after{box-sizing:border-box}

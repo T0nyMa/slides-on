@@ -1,0 +1,11 @@
+/* texture: grid — blueprint grid lines, technical precision */
+:root {
+  --bg-texture: none;
+  --bg-pattern:
+    linear-gradient(rgba(30, 64, 175, .08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 64, 175, .08) 1px, transparent 1px);
+  --bg-pattern-size: 24px 24px;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+  --card-radius: 2px;
+  --border-style: solid;
+}

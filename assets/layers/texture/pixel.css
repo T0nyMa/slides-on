@@ -1,0 +1,11 @@
+/* texture: pixel — visible pixel grid, 8-bit/16-bit retro aesthetic */
+:root {
+  --bg-texture: none;
+  --bg-pattern:
+    linear-gradient(rgba(0, 0, 0, .06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, .06) 1px, transparent 1px);
+  --bg-pattern-size: 8px 8px;
+  --card-shadow: 3px 3px 0 rgba(0, 0, 0, .15);
+  --card-radius: 0;
+  --border-style: solid;
+}

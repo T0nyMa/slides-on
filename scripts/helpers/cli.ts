@@ -4,6 +4,7 @@ export interface RenderOptions {
   input: string;
   output: string;
   slides: number | "auto";
+  slide?: number;          // render only slide N (1-indexed), skips full loop
   canvas: string;
   dsf: number;
   format: "png" | "jpeg";
@@ -11,6 +12,7 @@ export interface RenderOptions {
   waitAnimations: boolean;
   extraDelay: number;
   verbose: boolean;
+  checkOverflow: boolean;
 }
 
 export function parseArgs(args: string[]): RenderOptions {
@@ -46,6 +48,7 @@ export function parseArgs(args: string[]): RenderOptions {
     input: positional[0] || "",
     output: opts.output || opts.o || "",
     slides: opts.slides === "auto" ? "auto" : parseInt(opts.slides) || "auto",
+    slide: opts.slide ? parseInt(opts.slide) : undefined,
     canvas: opts.canvas || opts.c || "16:9",
     dsf: parseFloat(opts.dsf || opts.d || "2"),
     format: (opts.format || opts.f || "png") as "png" | "jpeg",
@@ -53,6 +56,7 @@ export function parseArgs(args: string[]): RenderOptions {
     waitAnimations: opts["wait-animations"] === "true" || opts.a === "true",
     extraDelay: parseInt(opts["extra-delay"] || opts.e || "500"),
     verbose: opts.verbose === "true" || opts.v === "true",
+    checkOverflow: opts["check-overflow"] === "true" || opts.overflow === "true",
   };
 }
 
@@ -64,6 +68,7 @@ Usage: bun scripts/render-precise.ts <html-file> [options]
 
 Options:
   --slides N|auto      Number of slides or auto-detect (default: auto)
+  --slide N            Render only slide N (1-indexed), skip full loop
   --canvas PRESET|WxH  Canvas size (default: 16:9)
                        Presets: 16:9, 4:3, 3:4 (XHS), 9:16, 1:1, 2.35:1, a4-landscape
                        Custom: 810x1080
@@ -73,12 +78,15 @@ Options:
   --output DIR         Output directory (default: <input-stem>-png/)
   --wait-animations    Wait for CSS animations to complete (slower but accurate)
   --extra-delay MS     Extra delay after all waits in ms (default: 500)
+  --check-overflow     Check for text overflow after rendering
   --verbose            Print detailed progress
 
 Examples:
   bun scripts/render-precise.ts deck.html
   bun scripts/render-precise.ts deck.html --canvas 3:4 --dsf 2
+  bun scripts/render-precise.ts deck.html --slide 5 --canvas 3:4
   bun scripts/render-precise.ts deck.html --slides 9 --canvas 16:9 --dsf 3
   bun scripts/render-precise.ts deck.html --slides auto --canvas 810x1080 --output ./out/
+  bun scripts/render-precise.ts deck.html --check-overflow --canvas 3:4
 `;
 }

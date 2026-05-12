@@ -1,0 +1,7 @@
+/* typography: editorial — authoritative, classic serif for formal publications */
+:root {
+  --font-display: 'Playfair Display', 'Noto Serif SC', Georgia, serif;
+  --font-sans: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+  --font-serif: 'Noto Serif SC', 'Source Serif 4', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}

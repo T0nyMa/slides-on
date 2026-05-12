@@ -1,0 +1,105 @@
+/* base-design-chrome.css — minimal chrome defaults for free-form layer composition */
+/* Used when config.design is a { theme, typography, texture, density } object */
+/* Design CSS presets (pastel-card, etc.) override these with their own chrome */
+
+/* ── Topbar: chip + page number ── */
+.chr-topbar {
+  position: absolute; top: 4cqi; left: var(--slide-padding-x, 6cqi); right: var(--slide-padding-x, 6cqi); z-index: 3;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-sans);
+}
+
+/* ── Chip / tag ── */
+.chr-chip {
+  display: inline-flex; align-items: center; gap: 1cqi;
+  padding: .8cqi 1.8cqi; border-radius: 999px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  font-size: 1.4cqi; font-weight: 600; letter-spacing: .06em;
+  color: var(--text-2); text-transform: uppercase;
+}
+.chr-chip::before {
+  content: ''; width: 1cqi; height: 1cqi; border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ── Page number ── */
+.chr-page {
+  font-family: var(--font-mono); font-size: 1.4cqi;
+  color: var(--text-3); letter-spacing: .1em; font-weight: 600;
+}
+
+/* ── Kicker ── */
+.chr-kicker {
+  font-family: var(--font-sans); font-size: 1.6cqi; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 1.5cqi;
+}
+
+/* ── Footer ── */
+.chr-footer {
+  position: absolute; left: var(--slide-padding-x, 6cqi); right: var(--slide-padding-x, 6cqi); bottom: 4cqi;
+  display: flex; justify-content: space-between;
+  font-family: var(--font-sans); font-size: 1.3cqi;
+  color: var(--text-3); letter-spacing: .08em;
+}
+
+/* ── Titles ── */
+.chr-title {
+  font-family: var(--font-display); font-size: 10cqi; font-weight: 900; line-height: 1.05;
+  letter-spacing: -.02em; margin: 0 0 2cqi; color: var(--text-1);
+}
+.chr-heading {
+  font-family: var(--font-display); font-size: 6.5cqi; font-weight: 800; line-height: 1.1;
+  letter-spacing: -.01em; margin: 0 0 1.5cqi;
+}
+.chr-sub {
+  font-family: var(--font-sans); font-size: var(--body-size, 2cqi); line-height: 1.55;
+  color: var(--text-2); max-width: 100%;
+}
+
+/* ── Divider ── */
+.chr-divider {
+  width: 10cqi; height: .4cqi;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: .2cqi; margin: 2cqi 0;
+}
+
+/* ── Code block ── */
+.chr-codebox {
+  background: #1a1a1a; color: #e4e2d8;
+  border-radius: var(--radius); padding: 2.5cqi 3cqi;
+  font-family: var(--font-mono); font-size: 1.6cqi;
+  line-height: 1.75; overflow: auto; margin-top: 2cqi;
+}
+.chr-codebox .cm { color: #6b6a62; font-style: italic; }
+.chr-codebox .kw { color: #e8a87c; font-weight: 700; }
+.chr-codebox .st { color: #a8c292; }
+.chr-codebox .fn { color: #c9a0dc; }
+.chr-codebox .hl { color: #e9c58a; font-weight: 700; background: rgba(255,255,255,.06); padding: 0 2px; border-radius: 3px; }
+
+/* ── Hero card ── */
+.chr-hero {
+  box-shadow: var(--shadow-lg); border: 1px solid var(--border-strong);
+}
+
+/* ── Pill tag ── */
+.chr-pill {
+  display: inline-block; padding: .8cqi 1.8cqi; border-radius: 999px;
+  font-size: 1.5cqi; font-weight: 600; margin: 0 .6cqi .6cqi 0;
+  background: var(--surface); border: 1.5px solid var(--border); color: var(--text-2);
+}
+
+/* ── Slide z-index for chrome children ── */
+.slide > * { position: relative; z-index: 2; }
+
+/* ── Narrow canvas overrides ── */
+@container (max-width: 1000px) {
+  .chr-title { font-size: 12cqi; }
+  .chr-heading { font-size: 8cqi; }
+  .chr-sub { font-size: 3cqi; }
+  .chr-chip { font-size: 2cqi; }
+  .chr-page { font-size: 2cqi; }
+  .chr-footer { font-size: 1.8cqi; }
+  .chr-kicker { font-size: 2.2cqi; }
+  .chr-codebox { font-size: 2.2cqi; padding: 3cqi 3.5cqi; }
+}

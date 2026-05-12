@@ -1,0 +1,8 @@
+/* texture: clean — flat color, no visible texture, sharp edges */
+:root {
+  --bg-texture: none;
+  --bg-pattern: none;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+  --card-radius: 8px;
+  --border-style: solid;
+}

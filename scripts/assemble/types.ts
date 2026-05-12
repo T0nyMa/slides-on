@@ -6,7 +6,7 @@
 
 export interface DeckConfig {
   title: string;
-  design: string;           // "pastel-card" | "white-editorial" | "xhs-post"
+  design: string | DesignConfig;  // preset name or free-form composition
   canvas: "16:9" | "3:4";
   author?: string;
   source?: string;          // source note in footer
@@ -25,6 +25,7 @@ export type SlideType =
   | "thanks"
   | "bullets"
   | "kpi"
+  | "table"
   | "html";
 
 export interface CardItem {
@@ -53,6 +54,12 @@ export interface KpiItem {
   deltaDir?: "up" | "down" | "flat";
 }
 
+export interface TableColumn {
+  header: string;
+  align?: "left" | "center" | "right";
+  width?: string;  // e.g. "40%", "120px"
+}
+
 export interface SlideData {
   type: SlideType;
   // Content
@@ -77,8 +84,20 @@ export interface SlideData {
   kpis?: KpiItem[];
   badges?: string[];
   html?: string;
+  // Table type
+  tableColumns?: TableColumn[];
+  tableRows?: string[][];
   // Design-specific overrides
   designOverrides?: Record<string, unknown>;
+}
+
+// ─── Design Config (free-form composition) ───────────────────────────
+
+export interface DesignConfig {
+  theme?: string;        // theme CSS name e.g. "minimal-white"
+  typography?: string;   // "geometric" | "editorial" | "humanist" | "handwritten" | "technical"
+  texture?: string;      // "clean" | "paper" | "grid" | "organic" | "pixel"
+  density?: string;      // "minimal" | "balanced" | "dense"
 }
 
 // ─── Design Template ──────────────────────────────────────────────────

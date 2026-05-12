@@ -1,0 +1,6 @@
+/* typography: technical — precise, code-oriented monospace */
+:root {
+  --font-display: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+  --font-sans: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}

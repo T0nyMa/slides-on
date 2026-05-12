@@ -1,0 +1,10 @@
+/* density: minimal — sparse, breathable, 1-2 items per slide */
+:root {
+  --body-size: 2.5cqi;
+  --slide-padding-y: 6cqi;
+  --slide-padding-x: 8cqi;
+  --card-pad-y: 2.5cqi;
+  --card-pad-x: 3cqi;
+  --card-gap: 2.5cqi;
+  --component-gap: 2cqi;
+}
