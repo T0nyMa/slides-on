@@ -37,6 +37,14 @@ function chromeBottom(d: DesignTemplate, s: SlideData, ctx: PageContext, right: 
   return d.footerHTML(left.slice(0, 30), right);
 }
 
+/** Render kicker + title block used by content slides */
+function headingHTML(d: DesignTemplate, s: SlideData): string {
+  const kicker = s.kicker ? `<div class="${d.kickerClass}">${esc(s.kicker)}</div>` : "";
+  const headingClass = d.titleClass === "chr-title" ? "chr-heading" : d.titleClass;
+  const title = s.title ? `<h2 class="${headingClass}">${s.title}</h2>` : "";
+  return kicker + title;
+}
+
 // ─── Slide Renderers ──────────────────────────────────────────────────
 
 export function renderCover(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
@@ -67,7 +75,7 @@ export function renderCards(d: DesignTemplate, s: SlideData, ctx: PageContext, c
   const cards = s.cards || [];
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
+    ${headingHTML(d, s)}
     <div class="${gridClass}">
       ${cards.map((c) => "      " + d.cardHTML(c)).join("\n")}
     </div>
@@ -91,7 +99,7 @@ export function renderSteps(d: DesignTemplate, s: SlideData, ctx: PageContext): 
   const steps = s.steps || [];
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
+    ${headingHTML(d, s)}
     <div class="c-steps">
       ${steps.map((st) => "      " + d.stepHTML(st)).join("\n")}
     </div>
@@ -102,7 +110,7 @@ export function renderSteps(d: DesignTemplate, s: SlideData, ctx: PageContext): 
 export function renderCode(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
+    ${headingHTML(d, s)}
     ${d.codeHTML(s.code || "")}
     ${chromeBottom(d, s, ctx, "content · code")}
   </section>`;
@@ -130,7 +138,7 @@ export function renderBullets(d: DesignTemplate, s: SlideData, ctx: PageContext)
   const items = s.bullets || [];
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
+    ${headingHTML(d, s)}
     <div class="c-stack">
       ${items.map((item) => `
       <div class="c-icon-row">
@@ -149,7 +157,7 @@ export function renderKpi(d: DesignTemplate, s: SlideData, ctx: PageContext): st
   const kpis = s.kpis || [];
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
+    ${headingHTML(d, s)}
     <div class="c-row">
       ${kpis.map((k) => `
       <div class="c-kpi">
@@ -186,11 +194,9 @@ export function renderTable(d: DesignTemplate, s: SlideData, ctx: PageContext): 
     }).join("")}</tr>`
   ).join("\n        ");
 
-  const headingClass = d.titleClass === "chr-title" ? "chr-heading" : d.titleClass;
-
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    ${s.title ? `<h2 class="${headingClass}">${s.title}</h2>` : ""}
+    ${headingHTML(d, s)}
     <div class="c-table-wrap">
       <table class="c-table c-table-striped"${dataRowsAttr}>
         <thead>${headerRow}</thead>
