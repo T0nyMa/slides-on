@@ -73,11 +73,23 @@ description: >
 
 **两级决策**：
 
-**Slides 级 — 选择 Design（视觉皮肤）**：
-1. 从 18 个 design 概念中选择（`references/designs/`，或读取 EXTEND.md 默认值）。其中 3 个有完整 Design CSS + assemble pipeline 支持：`pastel-card`、`white-editorial`、`xhs-post`。其余 15 个可用于 AI 图片生成（style-definitions）
-2. Design = 可移植的 CSS 变量覆盖层，决定颜色 / 字体 / 纹理 / 密度 / 动画偏好
-3. 支持 4 维自定义覆盖（Texture × Mood × Typography × Density）
-4. 3:4 画布推荐使用 Design CSS（`assets/designs/{name}.css`，现有 3 个：pastel-card, white-editorial, xhs-post），从极简（仅 CSS 变量，~30行）到完整（+ Chrome 样式 + c-* 扩展，~200行）渐进式构建。详见 `references/portrait-user-guide.md`
+**Slides 级 — 选择视觉风格**：
+
+通过 4 个维度自由组合视觉效果（2700+ 种组合）：
+
+- **typography**：`geometric` | `editorial` | `humanist` | `handwritten` | `technical`
+- **texture**：`clean` | `paper` | `grid` | `organic` | `pixel`
+- **density**：`minimal` | `balanced` | `dense`
+- **theme**：36 个颜色主题（`assets/themes/`），如 `minimal-white`、`academic-paper`、`dracula`
+
+在 `slides.json` 的 `config.design` 中使用对象格式：
+```json
+"design": { "typography": "editorial", "texture": "clean", "density": "dense", "theme": "minimal-white" }
+```
+
+骨架自动加载对应的 layer CSS 文件（`assets/layers/{typography,texture,density}/`）+ `base-design-chrome.css`（chrome 默认样式）。每个 layer 文件只设 `:root` 变量，不写选择器，无副作用。
+
+**快速参考**：17 个 Design 概念（`references/dimensions/designs.md`）提供了预设的维度组合，如 `scientific` = editorial + clean + balanced + academic-paper，可直接查表使用。用户也可按需覆盖任意维度。
 
 **Slide 级 — 选择渲染引擎**：
 
@@ -98,13 +110,12 @@ description: >
 **产出**：`style-decision.md`，记录每个 slide 的 theme、layout、渲染引擎选择。
 
 **参考文档**：
+- `references/dimensions/designs.md` — 17 个 Design 概念 → layer 组合映射表（快速查表）
 - `references/themes.md` — 36 个 theme 详情
 - `references/layouts.md` — 31 个 layout 详情
-- `references/content-rules-portrait.md` — 3:4 画布内容规范（组件大小、字数、密度、Design CSS 用法）
-- `references/portrait-user-guide.md` — 3:4 竖版制作指南（Design CSS 渐进式用法，组件搭配模式）
-- `references/components.md` — 共享组件库（card、step、KPI、quote、Chrome 片段等）
-- `references/designs/` — 18 个 design 概念文档
-- `assets/designs/` — Design CSS 实现（可移植视觉皮肤，3 个）
+- `references/content-rules-portrait.md` — 3:4 画布内容规范（组件大小、字数、密度、layer 用法）
+- `references/portrait-user-guide.md` — 3:4 竖版制作指南（组件搭配模式）
+- `references/components.md` — 共享组件库（card、step、KPI、quote、table 等）
 - `references/style-definitions/` — Design 的结构化生图数据（hex 色值、视觉元素、排版指令）
 - `references/prompt-construction.md` — AI 图片结构化 prompt 组装指南
 - `references/diagram/` — 4 种架构图类型
@@ -172,12 +183,10 @@ description: >
 3. **HTML 组装**：`bun scripts/assemble-deck.ts --input slides.json --output index.html`。脚本自动完成 CSS 加载、Chrome 片段、c-* 组件拼装。`--asset-depth 2` 用于 `examples/` 输出路径
 4. **SVG 图**（如有）：直接内联到 slides.json 的 `html` 字段，或 `<img>` 引用
 5. 添加 `data-anim` 属性声明动画
-6. **视觉抛光**（自动 + AI 可选）：`assemble-deck.ts` 自动调用 `scripts/polish.ts` 生成 `polish.css`（规则引擎：对比度、字体层级、密度、间距、CSS cascade 冲突、chrome 一致性）。**AI 抛光**（需要时）：打开生成的 index.html，逐页审视视觉平衡、强调层级、留白节奏，将微调追加到 `polish.css`。AI 抛光只追加 CSS，不修改 HTML 结构，安全可逆
-7. **QA 质量门禁**（自动）：`assemble-deck.ts` 输出 polish 报告。所有 BLOCKER 项必须为 0 才能进入 Step 5。用户也可随时手动运行：
+6. **QA 质量门禁**（自动）：`assemble-deck.ts` 自动调用 `scripts/visual-qa.ts`（Playwright 10 项检测：溢出、遮挡、留白、间距、对比度、字体层级、Chrome 位置/存在、CSS 变量健康、组件密度）。所有 BLOCKER 项必须为 0 才能进入 Step 5。用户也可随时手动运行：
 
    ```bash
-   bash scripts/qa.sh <deck-name>           # 快速：L0 (JSON) + L1 (CSS)
-   bash scripts/qa.sh <deck-name> --visual  # 完整：+ L2 (浏览器渲染)
+   bash scripts/qa.sh <deck-name>           # L0 (JSON) + L1 (浏览器)
    bash scripts/qa.sh --all                 # 全量，所有 deck
    ```
 
@@ -202,28 +211,28 @@ description: >
    | Tag | 检查 | 级别 | 工具 |
    |-----|------|------|------|
    | S1 | JSON schema | BLOCKER | validate-slides |
-   | S2 | CSS cascade 冲突 | BLOCKER | polish R6 |
-   | S3 | 元素溢出 | BLOCKER | visual-diff |
-   | S4 | 内容完整性 | BLOCKER | qa-migrate |
-   | S5 | 对比度 / CSS 变量缺失 | BLOCKER | polish R1,R5 |
-   | A2 | 字体层级 | WARN | polish R2 |
-   | A3 | 组件密度 | WARN | polish R3 |
-   | A4 | 字号可读性 | WARN | visual-diff |
-   | A5 | Chrome 位置一致 | WARN | visual-diff |
-   | A6 | Chrome 存在一致 | WARN | polish R7 |
-   | V1 | 留白比例 | INFO | visual-diff |
-   | V2 | 视觉重心 | INFO | visual-diff |
-   | V3 | 间距均匀 | INFO | polish R4 |
+   | S2 | CSS cascade 冲突 | BLOCKER | visual-qa |
+   | S3 | 元素溢出 | BLOCKER | visual-qa |
+   | S4 | 内容完整性 | BLOCKER | visual-qa |
+   | S5 | 对比度 / CSS 变量缺失 | BLOCKER | visual-qa |
+   | A2 | 字体层级 | WARN | visual-qa |
+   | A3 | 组件密度 | WARN | visual-qa |
+   | A4 | 字号可读性 | WARN | visual-qa |
+   | A5 | Chrome 位置一致 | WARN | visual-qa |
+   | A6 | Chrome 存在一致 | WARN | visual-qa |
+   | V1 | 留白比例 | INFO | visual-qa |
+   | V2 | 视觉重心 | INFO | visual-qa |
+   | V3 | 间距均匀 | INFO | visual-qa |
    | V4 | Design 匹配度 | INFO | validate-slides |
 
    **QA 不通过时的排查流程**：
    1. 看 tag 前缀：S → 代码写错了（修 CSS/JSON），A → 设计参数不对（调密度/字号），V → 主观审美（可酌情跳过）
    2. S2（cascade 冲突）最常见：某个 `position: absolute` 被 `.slide > * { position: relative }` 覆盖 → 改选择器加 `.d-xxx .slide .` 前缀
-   3. A3（密度超标）：拆页（>6 组件 → 分两页）或压缩间距（polish 已自动生成压缩 CSS）
+   3. A3（密度超标）：拆页（>6 组件 → 分两页）或使用 dense density 层（`"density": "dense"`）
    4. 修复后 `bun scripts/assemble-deck.ts --input slides.json --output index.html` 重新生成 → 再跑 QA
    5. 直到 BLOCKER = 0，进入 Step 5
 
-**产出**：一个完整的 `index.html`（可浏览器打开交互演示）+ `polish.css`（视觉抛光修正）+ QA 报告
+**产出**：一个完整的 `index.html`（可浏览器打开交互演示）+ `polish.css`（`visual-qa.ts` 自动生成的视觉修正）+ QA 报告
 
 **`slides.json` 格式示例**（完整类型定义见 `scripts/assemble/types.ts`）：
 ```json
@@ -260,11 +269,41 @@ description: >
         { "num": "2", "title": "第二步", "body": "具体描述" }
       ]
     },
+    {
+      "type": "table",
+      "title": "核心指标对比",
+      "tableColumns": [
+        { "header": "指标", "width": "50%" },
+        { "header": "Q4 2025", "align": "right" },
+        { "header": "Q1 2026", "align": "right" }
+      ],
+      "tableRows": [
+        ["日活用户", "2.4M", "3.1M"],
+        ["转化率", "4.2%", "5.8%"]
+      ]
+    },
     { "type": "html", "html": "<section class=\"slide is-active\"><!-- 自定义 HTML --></section>" }
   ]
 }
 ```
-Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps` | `code` | `thanks` | `bullets` | `kpi` | `html`
+**`c-table` 自适应**：当 `tableRows` ≥ 10 行时，自动添加 `data-rows` 属性触发字号缩小（10行→82%, 12行→72%, 15行→64%）。`align: "right"` 的列右对齐 + 等宽数字（tabular-nums）。超出 5 列或 15 行建议拆表。
+
+**自由组合 Design 配置示例**：
+```json
+{
+  "config": {
+    "title": "数据报告",
+    "design": {
+      "typography": "editorial",
+      "texture": "clean",
+      "density": "dense",
+      "theme": "minimal-white"
+    },
+    "canvas": "3:4"
+  }
+}
+```
+Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps` | `code` | `thanks` | `bullets` | `kpi` | `table` | `html`
 
 **关键文件**：
 - `scripts/validate-slides.ts` — slides.json 质量验证（Step 3 自动检查）
@@ -273,13 +312,15 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
 - `scripts/assemble/designs.ts` — Design 模板注册表（per-design 渲染函数）
 - `scripts/assemble/slides.ts` — 10 个渲染函数（覆盖 11 种 slide 类型）
 - `scripts/assemble/skeleton.ts` — Deck HTML 骨架生成（CSS 加载顺序：fonts → base → components → design → style → polish）
-- `scripts/polish.ts` — 视觉抛光引擎（规则引擎：对比度/字体层级/密度/间距，自动生成 polish.css）
+- `scripts/visual-qa.ts` — 统一视觉质量引擎（Playwright 10 项检测：溢出/遮挡/留白/间距/对比度/字体层级/Chrome 一致性/CSS 变量健康/组件密度）
 - `scripts/imagine/prompt-assembler.ts` — 三层结构化 prompt 组装引擎
 - `scripts/imagine/main.ts` — AI 图片生成入口
 - `scripts/imagine/config.ts` — Provider 注册表 + 环境变量默认值
-- `assets/base.css` — 设计系统（150行，30+ CSS Variables）
-- `assets/components.css` — 共享组件库（cqi + CSS vars，c-* 组件）
-- `assets/designs/` — Design CSS 文件（3 个：pastel-card, white-editorial, xhs-post）
+- `assets/base.css` — 设计系统（150行，30+ CSS Variables + layer 变量默认值）
+- `assets/components.css` — 共享组件库（cqi + CSS vars，含 c-table 表格组件 + data-rows 自适应）
+- `assets/designs/` — Design CSS 预设文件（4 个：pastel-card, white-editorial, xhs-post, hermes-cyber-terminal）
+- `assets/layers/` — Layer CSS 系统（typography 5 + texture 5 + density 3），自由组合
+- `assets/base-design-chrome.css` — 自由组合模式的最简 chrome 默认样式
 - `assets/runtime.js` — 交互引擎（960行，slide 切换、键盘导航、presenter 模式）
 
 **参考文档**：
@@ -293,8 +334,8 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
 
 ### Step 4b: AI 视觉抛光（可选）
 
-当自动生成的 deck 需要精细化视觉调整时，在 Step 4 后执行。AI 抛光与规则引擎互补：
-- **规则引擎**（`polish.ts`）：处理可量化的客观问题（对比度、密度、层级）
+当自动生成的 deck 需要精细化视觉调整时，在 Step 4 后执行。AI 抛光与自动 QA 互补：
+- **自动 QA**（`visual-qa.ts`）：处理可量化的客观问题（溢出、对比度、密度、层级）
 - **AI 抛光**：处理主观审美问题（视觉平衡、强调权重、节奏感）
 
 **执行方式**：
@@ -343,6 +384,12 @@ bun scripts/render-precise.ts <index.html> \
   --slides auto \      # 自动检测页数，或指定 N
   --format png \       # png 或 jpeg
   --output ./png-out/  # 输出目录
+
+# 单页快速预览（调试用，只渲染第 5 页，<10秒）
+bun scripts/render-precise.ts <index.html> --slide 5 --canvas 3:4
+
+# 渲染后检测文字溢出
+bun scripts/render-precise.ts <index.html> --check-overflow
 ```
 
 **路径 B — PPTX（可编辑）**：
@@ -380,7 +427,7 @@ bun scripts/merge-to-pdf.ts <png-dir> --output deck.pdf
 | 图形 | arch-diagram, mindmap, image-grid, image-hero | 架构图、思维导图、图片 |
 | 结尾 | cta, thanks, todo-checklist | 行动号召、致谢、清单 |
 
-> 上表为 16:9 画布的 31 个 single-page layout。3:4 画布使用 assemble-deck 的 11 种 slide 类型（cover, section, cards-2x2, cards-3, quote, steps, code, thanks, bullets, kpi, html），见 Step 4 的 slides.json 格式。
+> 上表为 16:9 画布的 31 个 single-page layout。3:4 画布使用 assemble-deck 的 12 种 slide 类型（cover, section, cards-2x2, cards-3, quote, steps, code, thanks, bullets, kpi, table, html），见 Step 4 的 slides.json 格式。
 
 ## 画布适配：16:9 与 3:4
 
@@ -393,18 +440,14 @@ Pipeline 一开始就确定画布比例，两种画布采用不同策略：
 
 ### 3:4 画布（手机端）
 
-**一步切换**：在 `<body>` 上加 `class="portrait"` 即可。
-
-```html
-<body class="d-pastel-card portrait">
-```
+**一步切换**：在 `<body>` 上加 `class="portrait"` 即可。assemble-deck.ts 在 `canvas: "3:4"` 时自动添加。
 
 `.portrait` 自动完成：
 - Deck 约束为 3:4 比例（`min(100vw, 100vh * 3/4)`）
 - 启用 Container Query（`container-type: inline-size`），`cqi` 单位等比缩放
 - Slide 默认 `padding: 4.5cqi; justify-content: flex-start`（内容从上排列）
 
-**内容策略**：3:4 不推荐使用单一 layout 模板。改用 **Component Palette**（`assets/components.css`），通过 `c-stack`、`c-row`、`c-card`、`c-steps` 等组件自由拼装，纵向堆叠填满屏幕。详见 `references/components.md`。
+**内容策略**：3:4 不推荐使用单一 layout 模板。改用 **Component Palette**（`assets/components.css`），通过 `c-stack`、`c-row`、`c-card`、`c-steps`、`c-table` 等组件自由拼装，纵向堆叠填满屏幕。搭配 `dense` density 层可获得更紧凑的排版。详见 `references/components.md`。
 
 **导出**：`bun scripts/render-precise.ts --canvas 3:4` 渲染为 810×1080 @2x。
 

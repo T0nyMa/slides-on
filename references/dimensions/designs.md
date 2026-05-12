@@ -1,38 +1,57 @@
 # Design 维度映射表
 
-每个 Design 在 Texture、Mood、Typography、Density 四个维度上的默认取值，以及绑定的默认主题。
+17 个 Design 概念作为视觉风格参考，每个对应一组 layer 组合。选择 design 概念后，用下表查对应的 layer 参数填入 `slides.json`。
 
 ## 映射表
 
-| Design | Texture | Mood | Typography | Density | Default Theme |
-|--------|---------|------|------------|---------|---------------|
-| blueprint | grid | dark | technical | balanced | `blueprint.css` |
-| bold-editorial | clean | vibrant | editorial | dense | `magazine-bold.css` |
-| chalkboard | paper | dark | handwritten | balanced | — (custom: 黑板绿底白粉笔字) |
-| corporate | clean | professional | geometric | balanced | `corporate-clean.css` |
-| dark-atmospheric | clean | dark | geometric | minimal | — (custom: 深黑渐变, 高对比, 霓虹点缀) |
-| editorial-infographic | clean | neutral | editorial | dense | — (custom: 杂志编辑风, 信息图混合, 衬线标题) |
-| fantasy-animation | organic | vibrant | handwritten | minimal | — (custom: 梦幻插画, 暖色渐变, 手写字体) |
-| hand-drawn-edu | paper | warm | handwritten | balanced | — (custom: 纸纹理背景+手绘边框+马克笔色) |
-| intuition-machine | grid | dark | technical | dense | `blueprint.css` |
-| minimal | clean | neutral | geometric | minimal | `minimal-white.css` |
-| notion | clean | neutral | geometric | balanced | — (custom: Notion 白底黑字, 无衬线, 模块卡片) |
-| pixel-art | pixel | cool | technical | balanced | — (custom: 像素网格, 8-bit 字体, 高饱和) |
-| scientific | clean | neutral | editorial | balanced | `academic-paper.css` |
-| sketch-notes | paper | warm | handwritten | minimal | — (custom: 牛皮纸底, 手绘线条, 马克笔色) |
-| vector-illustration | clean | vibrant | geometric | balanced | — (custom: 扁平矢量插画, 高饱和色块, 圆角) |
-| vintage | organic | warm | editorial | balanced | — (custom: 泛黄纸张, 衬线, 暖棕墨) |
-| watercolor | organic | warm | handwritten | minimal | — (custom: 水彩纸张纹理, 湿笔触, 柔色) |
+| Design | Typography | Texture | Density | Theme | 说明 |
+|--------|------------|---------|---------|-------|------|
+| blueprint | technical | grid | balanced | `blueprint` | 蓝图网格、工程图纸风 |
+| bold-editorial | editorial | clean | dense | `magazine-bold` | 大胆杂志编辑风 |
+| chalkboard | handwritten | paper | balanced | `gruvbox-dark` | 黑板粉笔字 |
+| corporate | geometric | clean | balanced | `corporate-clean` | 企业商务风 |
+| dark-atmospheric | geometric | clean | minimal | `dracula` | 深黑渐变、高对比 |
+| editorial-infographic | editorial | clean | dense | `minimal-white` | 白底杂志 + 信息图 |
+| fantasy-animation | handwritten | organic | minimal | `aurora` | 梦幻插画暖色渐变 |
+| hand-drawn-edu | handwritten | paper | balanced | `soft-pastel` | 纸纹理 + 手绘边框 |
+| intuition-machine | technical | grid | dense | `sharp-mono` | 数据密集仪表盘 |
+| minimal | geometric | clean | minimal | `minimal-white` | 极简白底 |
+| notion | geometric | clean | balanced | `minimal-white` | Notion 风格模块卡片 |
+| pixel-art | technical | pixel | balanced | `retro-tv` | 像素网格 8-bit |
+| scientific | editorial | clean | balanced | `academic-paper` | 学术论文风 |
+| sketch-notes | handwritten | paper | minimal | `soft-pastel` | 牛皮纸手绘 |
+| vector-illustration | geometric | clean | balanced | `bauhaus` | 扁平矢量插画 |
+| vintage | editorial | organic | balanced | `midcentury` | 泛黄衬线暖棕 |
+| watercolor | handwritten | organic | minimal | `rose-pine` | 水彩纸纹理 |
+
+## 使用方式
+
+在 `slides.json` 的 `config.design` 中填入对应的 layer 组合：
+
+```json
+{
+  "config": {
+    "design": {
+      "typography": "editorial",
+      "texture": "clean",
+      "density": "dense",
+      "theme": "minimal-white"
+    }
+  }
+}
+```
+
+例如："科学论文"场景 → 查表得 `scientific` = `editorial + clean + balanced + academic-paper`。
 
 ## 维度含义速查
 
 | 维度 | 可选值 | 简要说明 |
 |------|--------|---------|
-| **Texture** | clean, grid, organic, pixel, paper | 画面质感，决定背景纹理和视觉深度 |
-| **Mood** | professional, warm, cool, vibrant, dark, neutral | 情感基调，决定配色方案和氛围 |
-| **Typography** | geometric, humanist, handwritten, editorial, technical | 字体风格，决定 `--font-sans` / `--font-mono` CSS 变量 |
-| **Density** | minimal, balanced, dense | 信息密度，决定字号、间距、每页元素数量 |
+| **Typography** | geometric, editorial, humanist, handwritten, technical | 字体风格，控制 `--font-display` / `--font-sans` / `--font-mono` |
+| **Texture** | clean, paper, grid, organic, pixel | 画面质感，控制背景纹理/阴影/圆角 |
+| **Density** | minimal, balanced, dense | 信息密度，控制字号/间距/每页元素数 |
+| **Theme** | 36 个 CSS 文件（`assets/themes/`） | 颜色方案，控制 `--bg` / `--text-1` / `--accent` 等 |
 
-## Custom Theme 说明
+## 自定义
 
-标记为 `— (custom)` 的 Design 不绑定已有 CSS 文件，而是在运行时通过组合 CSS 变量实现其视觉风格。具体规则见各 Design 文档的 Visual Identity 章节。
+上表为推荐映射，用户可按需覆盖任意维度。例如在 `scientific` 基础上换用 `dense` density 获得更紧凑的排版，或换用 `dracula` theme 获得深色版本。
