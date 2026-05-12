@@ -241,9 +241,8 @@ slides-on/
 │   ├── svg-to-png.ts              #   SVG → @2x PNG
 │   ├── validate-slides.ts          #   slides.json 质量验证（Schema + 预算 + 锚点）
 │   ├── qa-migrate.ts               #   迁移质量门禁（内容完整性 + class 合法性）
-│   ├── polish.ts                    #   视觉抛光引擎（7 规则：对比度/层级/密度/间距/cascade/chrome）
-│   ├── visual-diff.ts               #   浏览器 QA（Playwright：位置一致性/溢出/留白/平衡/字号）
-│   ├── qa.sh                        #   统一 QA 入口（L0 validate → L1 polish → L2 visual-diff）
+│   ├── visual-qa.ts                 #   统一视觉 QA 引擎（Playwright，10 组检测：溢出/遮挡/留白/间距/对比度/字号/chrome/变量/密度）
+│   ├── qa.sh                        #   统一 QA 入口（L0 validate → L1 visual-qa）
 │   ├── assemble-deck.ts           #   HTML 组装入口（JSON → index.html）
 │   ├── new-deck.sh                 #   新建 deck 脚手架
 │   ├── assemble/                   #   HTML 组装引擎
@@ -462,6 +461,15 @@ bun scripts/svg-to-png.ts <svg-file>
 
 # 新建 deck 脚手架
 bash scripts/new-deck.sh <name>
+
+# QA 质量门禁
+bash scripts/qa.sh <deck-name>           # 单个 deck（L0 validate + L1 visual-qa）
+bash scripts/qa.sh --all                 # 全部 deck
+
+# 视觉 QA（单独使用）
+bun scripts/visual-qa.ts --input <html>                  # 检测 + 生成 polish.css
+bun scripts/visual-qa.ts --input <html> --check-only     # 仅检测
+bun scripts/visual-qa.ts --input <html> --report r.json  # 输出 JSON 报告
 ```
 
 ## 画布尺寸
