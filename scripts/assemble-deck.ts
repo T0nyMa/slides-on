@@ -139,19 +139,21 @@ function main(): void {
       const designLabel = typeof config.design === "string" ? config.design : JSON.stringify(config.design);
       console.log(`Written: ${outPath} (${slides.length} slides, design: ${designLabel}, canvas: ${config.canvas})`);
 
-      // Run polish if available
+      // Run visual QA if available
       try {
         const scriptDir = path.dirname(path.resolve(__filename));
-        const polishScript = path.join(scriptDir, "polish.ts");
-        const polishPath = path.join(path.dirname(outPath), "polish.css");
-        if (fs.existsSync(polishScript)) {
-          const proc = Bun.spawnSync(["bun", polishScript, "--input", outPath, "--output", polishPath]);
+        const qaScript = path.join(scriptDir, "visual-qa.ts");
+        if (fs.existsSync(qaScript)) {
+          const proc = Bun.spawnSync(["bun", qaScript, "--input", outPath, "--check-only"]);
           if (proc.success) {
-            console.log(`Polished: ${polishPath}`);
+            console.log(`QA passed`);
+          } else {
+            const stderr = new TextDecoder().decode(proc.stderr).trim();
+            if (stderr) console.log(`QA: ${stderr.split("\n").slice(0, 3).join("; ")}`);
           }
         }
       } catch {
-        // polish is optional — silently skip if unavailable
+        // visual-qa is optional — silently skip if unavailable
       }
     } else {
       console.log(html);
