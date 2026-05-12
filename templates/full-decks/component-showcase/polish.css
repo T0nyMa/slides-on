@@ -1,13 +1,43 @@
-/* polish.css — auto-generated visual corrections */
+/* visual-qa.css — auto-generated visual corrections */
 
-/* density: Slide #3: 9 components (max 6 for 3:4) — consider splitting or reducing */
-.slide:nth-child(3) .c-stack > * + * { margin-top: 0.8cqi; }
-.slide:nth-child(3) .c-card { padding: 0.8cqi 1.2cqi; }
+/* [BLOCKER] font-hierarchy: 字号 9px 过小（最小 10px） */
+.slide:nth-child(1) p { font-size: 10px; }
 
-/* density: Slide #6: 13 components (max 6 for 3:4) — consider splitting or reducing */
-.slide:nth-child(6) .c-stack > * + * { margin-top: 0.8cqi; }
-.slide:nth-child(6) .c-card { padding: 0.8cqi 1.2cqi; }
+/* [BLOCKER] font-hierarchy: 字号 8px 过小（最小 10px） */
+.slide:nth-child(1) span { font-size: 10px; }
 
-/* density: Slide #8: 7 components (max 6 for 3:4) — consider splitting or reducing */
-.slide:nth-child(8) .c-stack > * + * { margin-top: 0.8cqi; }
-.slide:nth-child(8) .c-card { padding: 0.8cqi 1.2cqi; }
+/* [BLOCKER] font-hierarchy: 字号 9px 过小（最小 10px） */
+.slide:nth-child(3) span { font-size: 10px; }
+
+/* [BLOCKER] font-hierarchy: 字号 10px 过小（最小 10px） */
+.slide:nth-child(7) span { font-size: 10px; }
+
+/* [BLOCKER] font-hierarchy: 字号 8px 过小（最小 10px） */
+.slide:nth-child(9) span { font-size: 10px; }
+
+/* [WARN] spacing: cards 纵向间距偏差 139%（最大 37px，平均 27px） */
+.slide:nth-child(8) .c-cards + .c-cards { margin-top: 26.7px; }
+
+/* contrast auto-fix */
+.slide:nth-child(1) p { color: #925337; }
+
+/* contrast auto-fix */
+.slide:nth-child(1) span { color: #925337; }
+
+/* contrast auto-fix */
+.slide:nth-child(1) span { color: #106941; }
+
+/* contrast auto-fix */
+.slide:nth-child(3) span { color: #925337; }
+
+/* contrast auto-fix */
+.slide:nth-child(7) span { color: #565265; }
+
+/* contrast auto-fix */
+.slide:nth-child(7) span { color: #925337; }
+
+/* contrast auto-fix */
+.slide:nth-child(9) span { color: #106941; }
+
+/* contrast auto-fix */
+.slide:nth-child(9) span { color: #925337; }
