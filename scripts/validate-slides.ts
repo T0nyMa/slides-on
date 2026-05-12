@@ -47,6 +47,10 @@ interface ValidationReport {
 
 const KNOWN_DESIGNS = Object.keys(DESIGN_TEMPLATES);
 
+const VALID_TYPOGRAPHIES = ["geometric", "editorial", "humanist", "handwritten", "technical"];
+const VALID_TEXTURES = ["clean", "paper", "grid", "organic", "pixel"];
+const VALID_DENSITIES = ["minimal", "balanced", "dense"];
+
 const DESIGN_COLORS: Record<string, string[]> = {
   "pastel-card": ["peach", "mint", "sky", "lilac", "lemon", "rose"],
   "white-editorial": ["purple", "pink", "blue", "green", "orange"],
@@ -102,11 +106,38 @@ function checkSchema(config: any, slides: any[]): CheckResult[] {
     results.push(pass("schema.config.title", `title: "${config.title.slice(0, 30)}"`));
   }
 
-  if (!KNOWN_DESIGNS.includes(config.design)) {
-    results.push(fail("schema.config.design",
-      `Unknown design "${config.design}". Must be one of: ${KNOWN_DESIGNS.join(", ")}`));
+  // Accept string preset or free-form object
+  if (typeof config.design === "string") {
+    if (!KNOWN_DESIGNS.includes(config.design)) {
+      results.push(fail("schema.config.design",
+        `Unknown design "${config.design}". Must be one of: ${KNOWN_DESIGNS.join(", ")}`));
+    } else {
+      results.push(pass("schema.config.design", `design: ${config.design}`));
+    }
+  } else if (typeof config.design === "object" && config.design !== null) {
+    const d = config.design;
+    if (d.typography && !VALID_TYPOGRAPHIES.includes(d.typography)) {
+      results.push(fail("schema.config.design.typography",
+        `Unknown typography "${d.typography}". Must be one of: ${VALID_TYPOGRAPHIES.join(", ")}`));
+    } else if (d.typography) {
+      results.push(pass("schema.config.design.typography", d.typography));
+    }
+    if (d.texture && !VALID_TEXTURES.includes(d.texture)) {
+      results.push(fail("schema.config.design.texture",
+        `Unknown texture "${d.texture}". Must be one of: ${VALID_TEXTURES.join(", ")}`));
+    } else if (d.texture) {
+      results.push(pass("schema.config.design.texture", d.texture));
+    }
+    if (d.density && !VALID_DENSITIES.includes(d.density)) {
+      results.push(fail("schema.config.design.density",
+        `Unknown density "${d.density}". Must be one of: ${VALID_DENSITIES.join(", ")}`));
+    } else if (d.density) {
+      results.push(pass("schema.config.design.density", d.density));
+    }
+    const keys = [d.typography && "typography", d.texture && "texture", d.density && "density", d.theme && "theme"].filter(Boolean);
+    results.push(pass("schema.config.design", `free-form: ${keys.join(", ")}`));
   } else {
-    results.push(pass("schema.config.design", `design: ${config.design}`));
+    results.push(fail("schema.config.design", "design must be a string or object"));
   }
 
   if (!["3:4", "16:9"].includes(config.canvas)) {
@@ -136,8 +167,8 @@ function checkSlideType(slide: any): CheckResult[] {
 
   results.push(pass("schema.slide.type", `type: ${slide.type}`));
 
-  // Title required except for html type
-  if (slide.type !== "html" && slide.type !== "cover") {
+  // Title required except for types that have their own primary content
+  if (slide.type !== "html" && slide.type !== "cover" && slide.type !== "quote" && slide.type !== "thanks") {
     if (!slide.title || typeof slide.title !== "string" || !slide.title.trim()) {
       results.push(fail("schema.slide.title", "title is required for non-cover/non-html slides"));
     }
@@ -408,7 +439,7 @@ function checkDesignCompat(slide: any, design: string): CheckResult[] {
   }
 
   // Validate card colors against design
-  if (slide.cards && design !== "xhs-post") {
+  if (slide.cards && typeof design === "string" && design !== "xhs-post") {
     const validColors = DESIGN_COLORS[design] || [];
     for (let i = 0; i < slide.cards.length; i++) {
       const color = slide.cards[i].color;

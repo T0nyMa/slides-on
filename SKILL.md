@@ -75,21 +75,30 @@ description: >
 
 **Slides 级 — 选择视觉风格**：
 
-通过 4 个维度自由组合视觉效果（2700+ 种组合）：
+**`config.design` 必须是对象，不能用字符串。** 通过 4 个维度自由组合：
 
 - **typography**：`geometric` | `editorial` | `humanist` | `handwritten` | `technical`
 - **texture**：`clean` | `paper` | `grid` | `organic` | `pixel`
 - **density**：`minimal` | `balanced` | `dense`
 - **theme**：36 个颜色主题（`assets/themes/`），如 `minimal-white`、`academic-paper`、`dracula`
 
-在 `slides.json` 的 `config.design` 中使用对象格式：
 ```json
 "design": { "typography": "editorial", "texture": "clean", "density": "dense", "theme": "minimal-white" }
 ```
 
-骨架自动加载对应的 layer CSS 文件（`assets/layers/{typography,texture,density}/`）+ `base-design-chrome.css`（chrome 默认样式）。每个 layer 文件只设 `:root` 变量，不写选择器，无副作用。
+骨架自动加载 layer CSS + `base-design-chrome.css`。
 
-**快速参考**：17 个 Design 概念（`references/dimensions/designs.md`）提供了预设的维度组合，如 `scientific` = editorial + clean + balanced + academic-paper，可直接查表使用。用户也可按需覆盖任意维度。
+**选择指引**：
+| 内容调性 | typography | texture | density | theme |
+|---------|-----------|---------|---------|-------|
+| 数据报告/白皮书 | editorial | clean | dense | minimal-white |
+| 学术论文 | editorial | clean | balanced | academic-paper |
+| 商业路演 | geometric | clean | balanced | corporate-clean |
+| 技术分享/代码 | technical | grid | balanced | sharp-mono |
+| 小红书/社交媒体 | humanist | organic | minimal | soft-pastel |
+| 创意/插画风 | handwritten | paper | minimal | warm-cream |
+
+**17 个 Design 概念速查**：`references/dimensions/designs.md` 提供完整映射表（如 `scientific` = editorial + clean + balanced + academic-paper），可直接查表组合。用户可按需覆盖任意维度。
 
 **Slide 级 — 选择渲染引擎**：
 
@@ -239,9 +248,9 @@ description: >
 {
   "config": {
     "title": "My Deck",
-    "design": "pastel-card",
     "canvas": "3:4",
-    "author": "Author Name"
+    "author": "Author Name",
+    "design": { "typography": "editorial", "texture": "clean", "density": "balanced", "theme": "minimal-white" }
   },
   "slides": [
     {

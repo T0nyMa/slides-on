@@ -1,0 +1,72 @@
+{
+  "config": {
+    "title": "每天只睡 6h 还能精神一整天的 3 个小习惯",
+    "design": { "typography": "humanist", "texture": "paper", "density": "minimal", "theme": "xiaohongshu-white" },
+    "canvas": "3:4",
+    "author": "@小熊不困了"
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "kicker": "打工人深夜自救手册",
+      "title": "每天只睡 <em>6h</em> 还能精神一整天 的 <em>3 个小习惯</em>",
+      "subtitle": "← 左滑 查看",
+      "chip": "💤 救命 · 亲测 7 天"
+    },
+    {
+      "type": "html",
+      "html": "<section class=\"slide\"><div class=\"chr-topbar\"><div class=\"chr-page\">2 / 9</div></div><div style=\"margin:auto 0;text-align:center\"><div class=\"chr-big-emoji\">👀</div><h2 class=\"h2\">等等先别划走！</h2><div class=\"c-card-soft\" style=\"margin-top:2cqi;text-align:left\"><p class=\"lede\">我也曾是那个 早上起来像被卡车撞过的人。直到我发现了 <b>1 件事</b> 比睡够 8 小时还重要。</p></div><div class=\"chr-sticker blue\" style=\"top:auto;bottom:6cqi;left:50%;transform:translateX(-50%) rotate(-2deg)\">真 · 转折点 ↓</div></div></section>",
+      "hideChrome": true
+    },
+    {
+      "type": "cards-3",
+      "title": "越睡越累",
+      "kicker": "❌ 你是不是也这样",
+      "cards": [
+        { "num": "😵‍💫", "title": "周末补觉到中午", "body": "起来头更晕，一整天废掉" },
+        { "num": "☕️", "title": "咖啡续三杯", "body": "下午 3 点照样困到扶墙" },
+        { "num": "📱", "title": "睡前刷到凌晨", "body": "明明很困就是不舍得睡" }
+      ]
+    },
+    {
+      "type": "quote",
+      "quote": "不是睡得少，是醒得不对。",
+      "quoteAttr": "身体有 90 分钟一个周期。在「深睡」里被闹钟拽起来，就算睡 9 小时也跟没睡一样。关键是：<em>卡着周期醒。</em>",
+      "kicker": "💡 真相是",
+      "chip": "✨ aha moment"
+    },
+    {
+      "type": "html",
+      "html": "<section class=\"slide\"><div class=\"chr-topbar\"><div class=\"chr-page-dot\">5 / 9</div></div><div style=\"margin:auto 0;display:flex;flex-direction:column;gap:2cqi\"><div class=\"chr-num-circle\" style=\"align-self:center\">1</div><h2 class=\"h2\" style=\"text-align:center\">倒推睡眠时间</h2><div class=\"c-formula\">起床时间 − 90min × N − 15min 入睡 = 你今晚该上床的点</div><div class=\"c-card-soft\">举例：要 7 点起 → 23:15 上床 (4 个周期) / → 00:45 上床 (3 个周期)</div></div></section>",
+      "hideChrome": true
+    },
+    {
+      "type": "html",
+      "html": "<section class=\"slide\"><div class=\"chr-topbar\"><div class=\"chr-page-dot\">6 / 9</div></div><div style=\"margin:auto 0;display:flex;flex-direction:column;gap:2cqi\"><div class=\"chr-num-circle\" style=\"align-self:center;background:var(--accent-2)\">2</div><h2 class=\"h2\" style=\"text-align:center\">早晨 10 分钟光</h2><div class=\"c-card\"><b style=\"font-size:2.72cqi\">☀️ 打开窗帘 / 下楼遛弯</b><p class=\"dim\" style=\"font-size:1.98cqi;margin-top:0.49cqi\">自然光一照，褪黑素立刻被掐停，人就真的醒了。阴天也有效，别偷懒。</p></div><div class=\"c-card-soft\">懒人方案：刷牙的时候站在窗边</div><div class=\"chr-sticker yellow\" style=\"top:auto;bottom:4cqi;right:5cqi;transform:rotate(8deg)\">⏰ 比咖啡还猛</div></div></section>",
+      "hideChrome": true
+    },
+    {
+      "type": "html",
+      "html": "<section class=\"slide\"><div class=\"chr-topbar\"><div class=\"chr-page-dot\">7 / 9</div></div><div style=\"margin:auto 0;display:flex;flex-direction:column;gap:2cqi\"><div class=\"chr-num-circle\" style=\"align-self:center;background:var(--accent-3)\">3</div><h2 class=\"h2\" style=\"text-align:center\">下午 3 点 20 分钟小睡</h2><div class=\"c-card\"><b style=\"font-size:2.72cqi\">⏱️ 最多 20 分钟。</b><p class=\"dim\" style=\"font-size:1.98cqi;margin-top:0.49cqi\">超过 30 就会进入深睡，醒来会更累。</p></div><div class=\"c-card-soft\">💡 小 tip：睡前喝一口咖啡。20 分钟后咖啡因正好起效，和小睡的清醒 buff 叠加。</div><div class=\"chr-sticker pink\" style=\"top:auto;bottom:4cqi;left:50%;transform:translateX(-50%) rotate(-3deg)\">打工人作弊技</div></div></section>",
+      "hideChrome": true
+    },
+    {
+      "type": "cards-3",
+      "title": "结果是……",
+      "kicker": "✅ 我坚持 7 天后",
+      "cards": [
+        { "num": "😌", "title": "早上闹钟响之前就自然醒", "body": "" },
+        { "num": "💪", "title": "下午不再崩溃", "body": "" },
+        { "num": "☕️", "title": "咖啡从 3 杯 → 1 杯", "body": "" },
+        { "num": "✨", "title": "最重要：脾气变好了", "body": "" }
+      ]
+    },
+    {
+      "type": "thanks",
+      "kicker": "觉得有用的话",
+      "title": "收藏 + 关注",
+      "subtitle": "下期讲「打工人脊椎急救 5 式」办公室也能做",
+      "badges": ["#睡眠", "#打工人日常", "#自律", "#健康生活"]
+    }
+  ]
+}

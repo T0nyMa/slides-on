@@ -1,0 +1,82 @@
+{
+  "config": {
+    "title": "以后最贵的工作，是测试+安全",
+    "design": { "typography": "editorial", "texture": "clean", "density": "dense", "theme": "minimal-white" },
+    "canvas": "3:4",
+    "author": "html-ppt · full-deck"
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "kicker": "我越来越确定的一件事",
+      "title": "以后最贵的工作，是 <em>测试</em> + <em>安全</em>",
+      "subtitle": "AI 会越来越会做事。但谁来保证它 做对、没风险、不会出事？",
+      "chip": "AI 时代 · 职业判断",
+      "blobs": ["b1"]
+    },
+    {
+      "type": "section",
+      "kicker": "第一章",
+      "title": "先看 <em>大趋势</em>",
+      "subtitle": "当执行越来越便宜，判断就会越来越贵。",
+      "chip": "Chapter · 01",
+      "center": true
+    },
+    {
+      "type": "cards-2x2",
+      "title": "未来 3 年，这些事都会 <em>自动跑</em>",
+      "chip": "越来越多的事会交给 AI",
+      "cards": [
+        { "num": "内容", "title": "写文案 · 写方案 · 写脚本", "body": "创作变成一个 prompt 的距离", "color": "pink" },
+        { "num": "生产", "title": "做图 · 搭页面 · 做表格", "body": "生产力工具集体重写一次", "color": "blue" },
+        { "num": "执行", "title": "跑流程 · 写代码 · 自动操作", "body": "Agent 从 demo 走进真实工作流", "color": "green" },
+        { "num": "分析", "title": "读数据 · 做总结 · 给建议", "body": "决策支持层彻底向下延伸", "color": "orange" }
+      ]
+    },
+    {
+      "type": "steps",
+      "title": "AI 越强，<em>判断对错</em> 越值钱",
+      "chip": "为什么会这样",
+      "steps": [
+        { "num": "1", "title": "生产会更便宜", "body": "边际成本接近零" },
+        { "num": "2", "title": "复制会更快", "body": "错误也一起被加速" },
+        { "num": "3", "title": "AI 一本正经地做错", "body": "人类难以察觉" },
+        { "num": "4", "title": "最贵的能力变成 发现问题", "body": "验收和兜底成为核心竞争力" }
+      ]
+    },
+    {
+      "type": "code",
+      "title": "不是写 prompt，是写 <em>验收清单</em>",
+      "chip": "一段你今晚就能跑的验收 Skill",
+      "code": "# skills/ai-acceptance/SKILL.md\nname: ai-acceptance\ndescription: 对 AI 输出进行 4 道关卡验收\n\n验收关卡:\n  1. functional   — 是否按要求执行\n  2. edge_cases   — 边界情况是否处理\n  3. safety       — 安全红线是否触碰\n  4. rollback     — 60 秒内能否撤销"
+    },
+    {
+      "type": "kpi",
+      "title": "越来越 <em>便宜</em>，越来越 <em>贵</em>",
+      "chip": "岗位相对价值变化",
+      "kpis": [
+        { "value": "-65%", "label": "纯执行", "deltaDir": "down" },
+        { "value": "-40%", "label": "内容生产", "deltaDir": "down" },
+        { "value": "持平", "label": "数据分析", "deltaDir": "flat" },
+        { "value": "+85%", "label": "测试/验收", "deltaDir": "up" },
+        { "value": "+110%", "label": "安全/风控", "deltaDir": "up" }
+      ]
+    },
+    {
+      "type": "cards-3",
+      "title": "别再追工具，开始练 <em>判断力</em>",
+      "chip": "今晚就可以做的三件事",
+      "cards": [
+        { "num": "Tonight", "title": "写一份验收清单", "body": "哪怕只有 5 条，开始比完美更重要", "color": "purple" },
+        { "num": "This week", "title": "跑一遍红队演练", "body": "对自己的 agent 说：试着让它出事", "color": "blue" },
+        { "num": "This month", "title": "加一条回滚流程", "body": "60 秒内能撤销，你就敢把手放开", "color": "green" }
+      ]
+    },
+    {
+      "type": "thanks",
+      "title": "谢谢 · thanks",
+      "subtitle": "如果你也在想这些问题，欢迎在评论里告诉我——你最想让 AI 帮你做什么？你最不放心它做什么？",
+      "badges": ["@lewis", "小红书 · 白底杂志风", "html-ppt · full-deck"]
+    }
+  ]
+}

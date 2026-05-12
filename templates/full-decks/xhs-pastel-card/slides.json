@@ -1,0 +1,88 @@
+{
+  "config": {
+    "title": "放慢一点 · 让 AI 帮你过一种更温柔的生活",
+    "design": { "typography": "editorial", "texture": "clean", "density": "balanced", "theme": "soft-pastel" },
+    "canvas": "3:4",
+    "author": "lewis · pastel edition"
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "kicker": "Living With AI · 2026",
+      "title": "放慢一点，让 AI 帮你过一种 <em>更温柔</em> 的生活",
+      "subtitle": "这不是一份效率指南。这是一份「怎么用 AI 少做一些事」的清单 —— 把挤出来的 4 小时还给你自己。",
+      "chip": "A soft manifesto",
+      "blobs": ["b1", "b2", "b3"]
+    },
+    {
+      "type": "section",
+      "kicker": "先问自己",
+      "title": "什么事 <em>是你</em> 其实不想做 <em>的？</em>",
+      "subtitle": "不是「不得不做」，是「做的时候灵魂在叹气」。",
+      "chip": "Chapter one",
+      "chipColor": "mint",
+      "blobs": ["b2", "b3"],
+      "center": true
+    },
+    {
+      "type": "cards-2x2",
+      "title": "四件可以 <em>完全交给 AI</em> 的小事",
+      "chip": "Four little escapes",
+      "chipColor": "rose",
+      "cards": [
+        { "num": "01", "title": "回复那种「收到」邮件", "body": "它们不需要你思考。让 AI 按你的语气自动处理，一周省 40 分钟。", "color": "peach" },
+        { "num": "02", "title": "订餐厅、改签、查路线", "body": "一句话外包出去。你只负责选最后选项，不负责翻十个 app。", "color": "mint" },
+        { "num": "03", "title": "把会议录音变成行动项", "body": "录音 → 摘要 → todo 一键完成。你只需要确认和签字。", "color": "sky" },
+        { "num": "04", "title": "整理上周拍的 300 张照片", "body": "按事件分类、挑 10 张精选、写图说。整理档案这件事终于被自动化了。", "color": "lilac" }
+      ],
+      "blobs": ["b1"]
+    },
+    {
+      "type": "quote",
+      "quote": "效率工具的终点，不是 <em>做更多</em>，而是 <em>有资格做更少</em>。",
+      "subtitle": "当你把「收到」邮件、订餐、行程、照片整理都交出去，你才会惊讶地发现 —— 原来一周有 4 个小时是空的。",
+      "chip": "A small pause",
+      "chipColor": "lilac",
+      "blobs": ["b2", "b3"]
+    },
+    {
+      "type": "code",
+      "title": "把「收到邮件」自动化的 <em>一段 prompt</em>",
+      "chip": "My auto-reply prompt",
+      "code": "# auto-reply skill\nwhen email matches \"收到 / 好的 / 确认 / 收到谢谢\":\n  reply:\n    tone: \"温柔，简短，不要太商业\"\n    max_lines: 2\n    sign_with: \"— Lewis\"\n  always_skip:\n    - 家人、伴侣、亲密朋友\n    - 含\"紧急\"、\"合同\"、\"付款\"的邮件\n# 一周省 38 分钟，测过",
+      "blobs": ["b1"]
+    },
+    {
+      "type": "kpi",
+      "title": "一周 <em>4 小时</em> 还给自己",
+      "chip": "Your week, rebuilt",
+      "chipColor": "mint",
+      "kpis": [
+        { "value": "48min", "label": "邮件", "deltaDir": "flat" },
+        { "value": "72min", "label": "订/改/查", "deltaDir": "flat" },
+        { "value": "56min", "label": "会议摘要", "deltaDir": "flat" },
+        { "value": "24min", "label": "照片整理", "deltaDir": "flat" }
+      ],
+      "blobs": ["b2"]
+    },
+    {
+      "type": "cards-3",
+      "title": "这周末，先给自己 <em>放一个小假</em>",
+      "chip": "This weekend",
+      "chipColor": "rose",
+      "cards": [
+        { "num": "☕", "title": "Saturday morning", "body": "挑一个你最烦的小事，写 prompt，让它从此不再烦你。", "color": "lemon" },
+        { "num": "🌸", "title": "Saturday afternoon", "body": "去散步。什么都不带。AI 在家帮你看着消息。", "color": "peach" },
+        { "num": "🌙", "title": "Sunday night", "body": "复盘：哪 4 小时是真的空的？下周继续。", "color": "sky" }
+      ],
+      "blobs": ["b1", "b3"]
+    },
+    {
+      "type": "thanks",
+      "kicker": "thanks for reading",
+      "title": "谢谢 · thanks",
+      "subtitle": "如果你也想过更温柔的一周，评论区跟我说说你打算把哪一件事先交出去",
+      "blobs": ["b2"]
+    }
+  ]
+}
