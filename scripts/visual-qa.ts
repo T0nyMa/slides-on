@@ -257,7 +257,7 @@ async function checkOcclusion(page: any, slideIndex: number): Promise<Issue[]> {
     const issues: any[] = [];
 
     // Collect content elements + chrome elements separately
-    interface ElInfo { rect: DOMRect; area: number; label: string; isChrome: boolean; }
+    interface ElInfo { rect: DOMRect; area: number; label: string; isChrome: boolean; _el: Element; }
     const contentEls: ElInfo[] = [];
     const chromeEls: ElInfo[] = [];
 
@@ -276,16 +276,26 @@ async function checkOcclusion(page: any, slideIndex: number): Promise<Issue[]> {
         const clsShort = cls.split(" ").slice(0, 2).join(".") || "";
         (isChrome ? chromeEls : contentEls).push({
           rect, area: rect.width * rect.height,
-          label: clsShort ? `${tag}.${clsShort}` : tag, isChrome,
+          label: clsShort ? `${tag}.${clsShort}` : tag, isChrome, _el: el,
         });
       }
     };
     collect(args.contentSel, false);
+    // Chrome: skip elements already in contentEls (avoid self-overlap from selector overlap)
+    const contentElSet = new Set(contentEls.map(e => e._el));
     collect(args.chromeSel, true);
+    // Remove chrome entries that are already counted as content
+    for (let i = chromeEls.length - 1; i >= 0; i--) {
+      if (contentElSet.has(chromeEls[i]!._el)) chromeEls.splice(i, 1);
+    }
 
-    // ── 1. Content × Content overlap (existing) ──
+    const isAncestor = (a: ElInfo, b: ElInfo) =>
+      a._el.contains(b._el) || b._el.contains(a._el);
+
+    // ── 1. Content × Content overlap ──
     for (let i = 0; i < contentEls.length; i++) {
       for (let j = i + 1; j < contentEls.length; j++) {
+        if (isAncestor(contentEls[i]!, contentEls[j]!)) continue;
         const a = contentEls[i]!.rect, b = contentEls[j]!.rect;
         const ox = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
         const oy = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
@@ -303,6 +313,7 @@ async function checkOcclusion(page: any, slideIndex: number): Promise<Issue[]> {
     // ── 2. Chrome × Content overlap ──
     for (const chrome of chromeEls) {
       for (const content of contentEls) {
+        if (isAncestor(chrome, content)) continue;
         const ox = Math.max(0, Math.min(chrome.rect.right, content.rect.right) - Math.max(chrome.rect.left, content.rect.left));
         const oy = Math.max(0, Math.min(chrome.rect.bottom, content.rect.bottom) - Math.max(chrome.rect.top, content.rect.top));
         if (ox * oy === 0) continue;
@@ -984,13 +995,31 @@ async function checkDensity(page: any, slideIndex: number, portrait: boolean): P
     const slide = document.querySelector(".deck > .slide.is-active");
     if (!slide) return [];
 
+    // Sub-element classes that are always children of a parent component
+    const SUB_COMPONENTS = new Set([
+      "c-step-num", "c-step-content", "c-step-title", "c-step-body",
+      "c-connector", "c-connector-arrow", "c-connector-text", "c-connector-line",
+      "c-kpi-value", "c-kpi-label", "c-kpi-delta",
+      "c-card-num",
+      "c-icon-row-icon", "c-icon-row-text", "c-icon-row-title", "c-icon-row-body",
+      "c-terminal-dot", "c-terminal-topbar", "c-terminal-title", "c-terminal-body",
+      "c-note-icon", "c-note-content", "c-note-title", "c-note-body",
+      "c-warn-icon", "c-warn-content", "c-warn-title", "c-warn-body",
+      "c-example-label",
+      "c-table-wrap", // wrapper, not a standalone component
+      "c-hero-num-label",
+      "c-quote-attr",
+      "c-section-label",
+    ]);
+
     const componentClasses = new Set<string>();
     for (const el of slide.querySelectorAll("*")) {
       const cls = el.getAttribute("class") || "";
       for (const c of cls.split(/\s+/)) {
-        if (c.startsWith("c-") && !c.startsWith("c-spacer") && !c.startsWith("c-divider")) {
-          componentClasses.add(c);
-        }
+        if (!c.startsWith("c-")) continue;
+        if (c.startsWith("c-spacer") || c.startsWith("c-divider")) continue;
+        if (SUB_COMPONENTS.has(c)) continue;
+        componentClasses.add(c);
       }
     }
 
