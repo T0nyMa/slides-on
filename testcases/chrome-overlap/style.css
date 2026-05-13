@@ -1,0 +1,245 @@
+/* style.css — Agent View 终端仪表板 */
+
+/* ─── 全局：收紧水平 padding，防止 topbar/footer 溢出 ─── */
+.d-composed.portrait {
+  --slide-padding-x: 4cqi;
+  --slide-padding-y: 3cqi;
+}
+
+/* ─── 3:4 下保持 2 列网格 ─── */
+@container (max-width: 1000px) {
+  .d-composed .c-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ─── Chrome: 顶部渐变线 ─── */
+.d-composed .chr-topline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: .62cqi;
+  background: var(--grad);
+}
+
+/* ─── Topbar — 确保页码完整展示 ─── */
+.d-composed .chr-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  gap: 1cqi;
+}
+
+.d-composed .chr-chip {
+  font-size: 3cqi;
+  padding: 0.5cqi 1.5cqi;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.d-composed .chr-page {
+  font-size: 3.1cqi;
+  color: var(--text-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+/* ─── h2 页面标题 ─── */
+.d-composed .chr-heading {
+  font-size: 8.5cqi;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 2cqi;
+}
+
+/* ─── chr-sub 副标题/lede ─── */
+.d-composed .chr-sub {
+  font-size: 3.8cqi;
+  line-height: 1.45;
+  color: var(--text-2);
+}
+
+/* ─── 卡片增强 ─── */
+.d-composed .c-card h4 {
+  font-size: 3.6cqi;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.8cqi;
+}
+
+.d-composed .c-card p {
+  font-size: 2.7cqi;
+  line-height: 1.45;
+  color: var(--text-2);
+}
+
+.d-composed .chr-card-num {
+  font-size: 3.1cqi;
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0.5;
+  margin-bottom: 0.3cqi;
+}
+
+/* ─── c-card-warn / c-card-accent 定制 ─── */
+.d-composed .c-card-warn {
+  border-left: 4px solid var(--warn);
+  padding-left: 2.5cqi;
+}
+
+.d-composed .c-card-accent {
+  border-left: 4px solid var(--good);
+  padding-left: 2.5cqi;
+}
+
+/* ─── 卡片内部 label/main/desc 结构 ─── */
+.d-composed .chr-card-label {
+  font-size: 2.4cqi;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5cqi;
+}
+
+.d-composed .chr-card-main {
+  font-size: 3.8cqi;
+  font-weight: 700;
+  margin-bottom: 0.6cqi;
+}
+
+.d-composed .chr-card-desc {
+  font-size: 2.7cqi;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+/* ─── c-card chr-hero ─── */
+.d-composed .chr-hero {
+  background: var(--grad-soft);
+  border-radius: var(--radius-lg);
+}
+
+/* ─── c-quote ─── */
+.d-composed .c-quote {
+  font-size: 4cqi;
+  line-height: 1.5;
+  font-style: italic;
+  color: var(--text-2);
+}
+
+/* ─── 表格 ─── */
+.d-composed .c-table {
+  font-size: 3.1cqi;
+}
+
+.d-composed .c-table thead th {
+  font-size: 3.1cqi;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  padding: 1.5cqi 1.5cqi;
+}
+
+.d-composed .c-table tbody td {
+  font-size: 3.1cqi;
+  padding: 1.5cqi 1.5cqi;
+}
+
+/* ─── 步骤样式 ─── */
+.d-composed .c-step-num {
+  width: 4cqi;
+  height: 4cqi;
+  font-size: 3.1cqi;
+  font-weight: 700;
+}
+
+.d-composed .c-step-title {
+  font-size: 3cqi;
+  font-weight: 650;
+}
+
+.d-composed .c-step-body {
+  font-size: 2.7cqi;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+/* ─── badge 行 ─── */
+.d-composed .c-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1cqi;
+  justify-content: center;
+}
+
+.d-composed .c-badge {
+  font-size: 2.7cqi;
+  padding: 0.6cqi 1.4cqi;
+  border-radius: 999px;
+  background: #e8e8eb;
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+/* ─── cover 页 c-icon-row ─── */
+.d-composed .c-icon-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5cqi;
+  padding: 0.8cqi 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.d-composed .c-icon-row:last-child {
+  border-bottom: none;
+}
+
+.d-composed .c-icon-row-icon {
+  font-size: 3.3cqi;
+  font-weight: 800;
+  color: var(--accent);
+  opacity: 0.4;
+  min-width: 2.5cqi;
+}
+
+.d-composed .c-icon-row-title {
+  font-size: 3cqi;
+  font-weight: 650;
+}
+
+.d-composed .c-icon-row-body {
+  font-size: 2.4cqi;
+  color: var(--text-2);
+}
+
+/* ─── chr-note / c-note ─── */
+.d-composed .c-note {
+  padding: 1.5cqi 2cqi;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.d-composed .c-note-body {
+  font-size: 2.4cqi;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+/* ─── chr-footer ─── */
+.d-composed .chr-footer {
+  font-size: 3.1cqi;
+  color: var(--text-2);
+  padding: 1.5cqi 0 0.5cqi;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+}
