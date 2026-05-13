@@ -838,6 +838,7 @@
   /* ===== Keyboard ===== */
   document.addEventListener('keydown', function(e){
     if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (document.activeElement && document.activeElement.getAttribute('contenteditable') === 'true') return;
     switch(e.key) {
       case 'ArrowRight': case ' ': case 'PageDown': go(idx + 1); e.preventDefault(); break;
       case 'ArrowLeft':  case 'PageUp':   go(idx - 1); e.preventDefault(); break;
@@ -933,6 +934,7 @@
 
     document.addEventListener('keydown', function (e) {
       if (e.metaKey||e.ctrlKey||e.altKey) return;
+      if (document.activeElement && document.activeElement.getAttribute('contenteditable') === 'true') return;
       switch (e.key) {
         case 'ArrowRight': case ' ': case 'PageDown': case 'Enter': go(idx+1); e.preventDefault(); break;
         case 'ArrowLeft': case 'PageUp': case 'Backspace': go(idx-1); e.preventDefault(); break;
