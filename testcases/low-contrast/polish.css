@@ -1,1 +1,2 @@
-/* visual-qa: all checks passed — no corrections needed */
+/* Cover kicker contrast fix: #ff4d8b → #d6336c meets 4.5:1 on white */
+.chr-kicker { color: #d6336c; }
