@@ -242,6 +242,7 @@ slides-on/
 │   ├── validate-slides.ts          #   slides.json 质量验证（Schema + 预算 + 锚点）
 │   ├── qa-migrate.ts               #   迁移质量门禁（内容完整性 + class 合法性）
 │   ├── visual-qa.ts                 #   统一视觉 QA 引擎（Playwright，10 组检测：溢出/遮挡/留白/间距/对比度/字号/chrome/变量/密度）
+│   ├── editor-server.ts              #   可视化编辑服务器（Bun HTTP + 注入 editor.js）
 │   ├── qa.sh                        #   统一 QA 入口（L0 validate → L1 visual-qa）
 │   ├── assemble-deck.ts           #   HTML 组装入口（JSON → index.html）
 │   ├── new-deck.sh                 #   新建 deck 脚手架
@@ -470,6 +471,9 @@ bash scripts/qa.sh --all                 # 全部 deck
 bun scripts/visual-qa.ts --input <html>                  # 检测 + 生成 polish.css
 bun scripts/visual-qa.ts --input <html> --check-only     # 仅检测
 bun scripts/visual-qa.ts --input <html> --report r.json  # 输出 JSON 报告
+
+# 可视化编辑器
+bun scripts/editor-server.ts <html-file> [--port 3456]  # 启动编辑服务器，浏览器内按 E 进入编辑模式
 ```
 
 ## 画布尺寸
