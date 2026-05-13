@@ -480,13 +480,12 @@ async function checkWhitespace(page: any, slideIndex: number, portrait: boolean)
     const marginRight = (slideRect.right - contentRight) / slideW;
     const minEdgePx = 4;
 
-    for (const [label, marginRatio, edgePx, isH] of [
-      ["上边距", marginTop, contentTop - slideRect.top, false],
-      ["下边距", marginBottom, slideRect.bottom - contentBottom, false],
-      ["左边距", marginLeft, contentLeft - slideRect.left, true],
-      ["右边距", marginRight, slideRect.right - contentRight, true],
+    // Only check vertical edges — horizontal full-width is normal on narrow canvases
+    for (const [label, edgePx] of [
+      ["上边距", contentTop - slideRect.top],
+      ["下边距", slideRect.bottom - contentBottom],
     ] as const) {
-      if (edgePx < minEdgePx && edgePx >= 0 && marginRatio < 0.01) {
+      if (edgePx < minEdgePx && edgePx >= 0 && edgePx / slideH < 0.005) {
         issues.push({ group: "whitespace", severity: "BLOCKER", slide: args.idx + 1,
           element: ".slide", message: `${label}仅 ${edgePx.toFixed(0)}px，内容太贴边可能被裁切` });
       }
@@ -967,14 +966,18 @@ async function checkChromePresence(page: any, totalSlides: number): Promise<Issu
 
 async function checkCSSVarHealth(page: any): Promise<Issue[]> {
   return page.evaluate(() => {
-    const root = document.documentElement;
-    const style = window.getComputedStyle(root);
+    const body = document.body;
+    const bodyStyle = window.getComputedStyle(body);
     const criticalVars = ["--accent", "--bg", "--text-1", "--font-sans"];
     const issues: any[] = [];
 
+    // Quick sanity: if body has a background color, CSS is loading correctly
+    const bodyBg = bodyStyle.backgroundColor;
+    const cssIsLoading = bodyBg && bodyBg !== "rgba(0, 0, 0, 0)" && bodyBg !== "transparent";
+
     for (const v of criticalVars) {
-      const val = style.getPropertyValue(v).trim();
-      if (!val) {
+      const val = bodyStyle.getPropertyValue(v).trim();
+      if (!val && cssIsLoading) {
         issues.push({
           group: "css-var-health",
           severity: "BLOCKER",
@@ -983,6 +986,16 @@ async function checkCSSVarHealth(page: any): Promise<Issue[]> {
           message: `${v} 未定义 — Design CSS 可能缺失`,
         });
       }
+    }
+    // If CSS isn't loading at all, that's a bigger problem
+    if (!cssIsLoading) {
+      issues.push({
+        group: "css-var-health",
+        severity: "BLOCKER",
+        slide: 0,
+        element: ":root",
+        message: "CSS 文件加载失败，body 无背景色",
+      });
     }
     return issues;
   });

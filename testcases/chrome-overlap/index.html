@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code 推出 Agent View</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/components.css">
+<link rel="stylesheet" href="assets/themes/rainbow-gradient.css">
+<link rel="stylesheet" href="assets/layers/typography/editorial.css">
+<link rel="stylesheet" href="assets/layers/texture/clean.css">
+<link rel="stylesheet" href="assets/layers/density/balanced.css">
+<link rel="stylesheet" href="assets/base-design-chrome.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="polish.css">
+</head>
+<body class="d-composed portrait">
+<div class="deck">
+
+  <section class="slide is-active">
+    <div class="chr-topline"></div>
+    <div class="chr-topbar"><div class="chr-chip">研究预览版</div><div class="chr-page">01 / 07</div></div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:0 3cqi;">
+      <p class="chr-kicker" style="text-align:center">研究预览版</p>
+      <h1 class="chr-title" style="text-align:center;font-size:7.5cqi;line-height:1.15">Claude Code<br>推出 Agent View</h1>
+      <p class="chr-sub" style="text-align:center;margin-top:1.5cqi;font-size:2.4cqi">终端内的统一会话管理仪表板</p>
+      <div style="width:90%;max-height:30cqh;overflow:hidden;margin:2cqi 0;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.1)">
+        <img src="agent-view-list.png" style="width:100%;height:auto;display:block" alt="Agent View 会话列表">
+      </div>
+      <div class="c-spacer-sm"></div>
+      <div class="c-icon-row" style="width:100%;max-width:85%">
+        <div class="c-icon-row-icon">01</div>
+        <div class="c-icon-row-text"><div class="c-icon-row-title">核心功能</div><div class="c-icon-row-body">四项会话管理能力</div></div>
+      </div>
+      <div class="c-icon-row" style="width:100%;max-width:85%">
+        <div class="c-icon-row-icon">02</div>
+        <div class="c-icon-row-text"><div class="c-icon-row-title">使用方式</div><div class="c-icon-row-body">三种调度 + 键盘操作</div></div>
+      </div>
+      <div class="c-icon-row" style="width:100%;max-width:85%">
+        <div class="c-icon-row-icon">03</div>
+        <div class="c-icon-row-text"><div class="c-icon-row-title">可用性</div><div class="c-icon-row-body">版本 / 计划 / 配额</div></div>
+      </div>
+    </div>
+    <div class="chr-footer"><span>Agent View</span><span>cover</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="chr-topline"></div>
+    <div class="chr-topbar"><div class="chr-chip">背景</div><div class="chr-page">02 / 07</div></div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+      <h2 class="chr-heading">为什么需要 Agent View</h2>
+      <p class="chr-sub" style="margin-bottom:3cqi">多 Agent 并行已成常态，但会话管理碎片化</p>
+      <div class="c-stack">
+        <div class="c-card-warn" style="padding:2cqi 2cqi">
+          <div class="chr-card-label">痛点</div>
+          <div class="chr-card-main">会话分散，跟踪困难</div>
+          <div class="chr-card-desc">修 bug、审 PR、分析日志往往同时启动多个会话。此前这些会话分散在不同终端窗口或 tmux 分屏中，跟踪状态和进度需反复切换。</div>
+        </div>
+        <div class="c-card-accent" style="padding:2cqi 2cqi">
+          <div class="chr-card-label">解法</div>
+          <div class="chr-card-main">Agent View：一屏管理所有会话</div>
+          <div class="chr-card-desc">在一个界面中调度和管理多个 Claude Code 会话——展示每个会话正在执行什么、哪些需要输入；后台会话不依附终端独立运行，随时可返回查看或接管。</div>
+        </div>
+      </div>
+      <div class="c-badge-row" style="margin-top:2.5cqi">
+        <span class="c-badge">#会话管理</span>
+        <span class="c-badge">#多Agent</span>
+        <span class="c-badge">#效率工具</span>
+      </div>
+    </div>
+    <div class="chr-footer"><span>背景</span><span>02 / 07</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="chr-topline"></div>
+    <div class="chr-topbar"><div class="chr-chip">核心功能</div><div class="chr-page">03 / 07</div></div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+      <h2 class="chr-heading">四项核心能力</h2>
+      <p class="chr-sub" style="margin-bottom:3cqi">统一会话管理，四种方式掌控所有 Agent</p>
+      <div class="c-grid-2">
+        <div class="c-card mint" style="padding:2cqi 2cqi">
+          <div class="chr-card-num">01</div>
+          <h4>会话列表与三态标识</h4>
+          <p>所有活跃会话一览：working（执行中）、waiting on you（等待输入）、done（已完成）。无需切换窗口即可知晓全部状态。</p>
+        </div>
+        <div class="c-card accent" style="padding:2cqi 2cqi">
+          <div class="chr-card-num">02</div>
+          <h4>Peek &amp; Reply</h4>
+          <p>按空格键展开最新回复预览，预览窗口支持直接输入文本回复。快速确认 Agent 输出，不打断当前任务。Esc 退出预览。</p>
+        </div>
+        <div class="c-card peach" style="padding:2cqi 2cqi">
+          <div class="chr-card-num">03</div>
+          <h4>后台运行</h4>
+          <p>通过 supervisor 进程托管后台会话，不依附任何终端窗口。会话持续执行，无需保持终端打开，随时可返回查看进度或重新接入。</p>
+        </div>
+        <div class="c-card soft" style="padding:2cqi 2cqi">
+          <div class="chr-card-num">04</div>
+          <h4>无缝切换与会话隔离</h4>
+          <p>按 Enter 进入完整会话深度交互，按 Esc 返回列表视图。每个会话拥有独立的文件编辑上下文，多会话并行时互不干扰。</p>
+        </div>
+      </div>
+      <div class="c-badge-row" style="margin-top:2.5cqi">
+        <span class="c-badge">#三态标识</span>
+        <span class="c-badge">#PeekReply</span>
+        <span class="c-badge">#后台运行</span>
+        <span class="c-badge">#会话隔离</span>
+      </div>
+    </div>
+    <div class="chr-footer"><span>四项核心能力</span><span>03 / 07</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="chr-topline"></div>
+    <div class="chr-topbar"><div class="chr-chip">使用方式</div><div class="chr-page">04 / 07</div></div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+      <h2 class="chr-heading">三种调度方式</h2>
+      <p class="chr-sub" style="margin-bottom:3cqi">任意场景下都能快速启动后台 Agent</p>
+      <div class="c-steps">
+        <div class="c-step" style="padding:2cqi 0">
+          <div class="c-step-num">1</div>
+          <div class="c-step-content">
+            <div class="c-step-title">仪表板内直接输入</div>
+            <div class="c-step-body">在 Agent View 界面中输入任务描述，回车即创建新会话并开始执行</div>
+          </div>
+        </div>
+        <div class="c-connector"><div class="c-connector-line"></div></div>
+        <div class="c-step" style="padding:2cqi 0">
+          <div class="c-step-num">2</div>
+          <div class="c-step-content">
+            <div class="c-step-title">会话内 /bg 命令</div>
+            <div class="c-step-body">在任意活跃会话中输入 /bg "task"，将该任务作为独立后台会话启动</div>
+          </div>
+        </div>
+        <div class="c-connector"><div class="c-connector-line"></div></div>
+        <div class="c-step" style="padding:2cqi 0">
+          <div class="c-step-num">3</div>
+          <div class="c-step-content">
+            <div class="c-step-title">Shell 命令</div>
+            <div class="c-step-body">在终端执行 claude --bg "task"，直接从 shell 创建后台 Agent 会话</div>
+          </div>
+        </div>
+      </div>
+      <div class="c-card-soft" style="margin-top:2.5cqi">
+        <div class="chr-card-desc">三种入口进入仪表板：终端运行 claude agents / 任意会话按左方向键 / 会话内使用 /agents 命令</div>
+      </div>
+    </div>
+    <div class="chr-footer"><span>使用方式</span><span>04 / 07</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="chr-topline"></div>
+    <div class="chr-topbar"><div class="chr-chip">速查</div><div class="chr-page">05 / 07</div></div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+      <h2 class="chr-heading">四种键盘操作</h2>
+      <p class="chr-sub" style="margin-bottom:3cqi">Agent View 仪表板核心交互一览</p>
+      <div class="c-table-wrap">
+        <table class="c-table c-table-striped">
+          <thead><tr><th style="width:28%">操作</th><th class="center" style="width:22%">快捷键</th><th style="width:50%">效果</th></tr></thead>
+          <tbody>
+          <tr><td style="padding:2.8cqi 1.8cqi">预览会话</td><td class="center" style="padding:2.8cqi 1.8cqi">Space</td><td style="padding:2.8cqi 1.8cqi">展开最新回复，可内联回复</td></tr>
+          <tr><td style="padding:2.8cqi 1.8cqi">接入完整会话</td><td class="center" style="padding:2.8cqi 1.8cqi">Enter</td><td style="padding:2.8cqi 1.8cqi">进入该会话进行深度交互</td></tr>
+          <tr><td style="padding:2.8cqi 1.8cqi">退出 / 返回列表</td><td class="center" style="padding:2.8cqi 1.8cqi">Esc</td><td style="padding:2.8cqi 1.8cqi">从预览或完整会话返回列表视图</td></tr>
+          <tr><td style="padding:2.8cqi 1.8cqi">后台运行</td><td class="center" style="padding:2.8cqi 1.8cqi">/bg</td><td style="padding:2.8cqi 1.8cqi">将当前任务转为后台会话</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="c-card-soft" style="margin-top:2.5cqi">
+        <div class="chr-card-desc">三种入口进入仪表板：终端运行 claude agents / 任意会话按左方向键 / 会话内使用 /agents 命令</div>
+      </div>
+    </div>
+    <div class="chr-footer"><span>键盘操作</span><span>05 / 07</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="chr-topline"></div>
+    <div class="chr-topbar"><div class="chr-page">06 / 07</div></div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+      <h2 class="chr-heading">可用性与限制</h2>
+      <p class="chr-sub" style="margin-bottom:3cqi">研究预览版，功能持续迭代中</p>
+      <div class="c-grid-2">
+        <div class="c-card mint" style="padding:2cqi 2cqi">
+          <div class="chr-card-num">01</div>
+          <h4>版本要求</h4>
+          <p>Claude Code v2.1.139 及以上版本。可通过 claude --version 检查当前版本。</p>
+        </div>
+        <div class="c-card accent" style="padding:2cqi 2cqi">
+          <div class="chr-card-num">02</div>
+          <h4>计划支持</h4>
+          <p>Pro、Max、Team、Enterprise 及 API 计划均可使用。</p>
+        </div>
+        <div class="c-card peach" style="padding:2cqi 2cqi">
+          <div class="chr-card-num">03</div>
+          <h4>配额消耗</h4>
+          <p>每个 Agent View 会话独立消耗订阅配额，与普通会话规则相同。多会话并行时需注意总用量。</p>
+        </div>
+        <div class="c-card soft" style="padding:2cqi 2cqi">
+          <div class="chr-card-num">04</div>
+          <h4>管理员设置</h4>
+          <p>Team 和 Enterprise 计划管理员可通过 disableAgentView 设置在组织层面禁用该功能。</p>
+        </div>
+      </div>
+      <div class="c-note" style="margin-top:2.5cqi">
+        <div class="c-note-body">研究预览版说明：界面布局和快捷键可能在后续版本中调整或变更。</div>
+      </div>
+      <div class="c-badge-row" style="margin-top:2cqi">
+        <span class="c-badge">#v2.1.139+</span>
+        <span class="c-badge">#全计划支持</span>
+        <span class="c-badge">#独立配额</span>
+      </div>
+    </div>
+    <div class="chr-footer"><span>可用性与限制</span><span>06 / 07</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="chr-topline"></div>
+    <div class="chr-topbar"><div class="chr-chip">总结</div><div class="chr-page">07 / 07</div></div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+      <div class="c-card chr-hero" style="padding:4.5cqi 5cqi;text-align:center">
+        <h1 style="font-size:6cqi;text-align:center;margin-bottom:2cqi">Agent View</h1>
+        <div class="c-quote">不改变 Agent 的执行能力或输出质量，聚焦于多会话场景下的调度与管理</div>
+      </div>
+      <div class="c-card-soft" style="margin-top:2.5cqi;padding:3cqi 3.5cqi">
+        <div class="chr-card-desc">将分散在多个终端窗口中、依赖手动跟踪的会话，集中到一个可预览、可切换、可后台运行的统一界面。每个会话独立运行、独立消耗配额，通过 supervisor 进程托管实现不依附终端的后台执行。</div>
+      </div>
+      <div class="c-badge-row" style="margin-top:2cqi">
+        <span class="c-badge">#ClaudeCode</span>
+        <span class="c-badge">#AgentView</span>
+        <span class="c-badge">#效率工具</span>
+      </div>
+    </div>
+    <div class="chr-footer"><span>Agent View</span><span>07 / 07</span></div>
+  </section>
+
+</div>
+<script src="assets/runtime.js"></script>
+</body>
+</html>
+<style>
+.chr-topbar { top: 35% !important; }
+</style>
