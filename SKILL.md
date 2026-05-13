@@ -331,6 +331,9 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
 - `assets/layers/` — Layer CSS 系统（typography 5 + texture 5 + density 3），自由组合
 - `assets/base-design-chrome.css` — 自由组合模式的最简 chrome 默认样式
 - `assets/runtime.js` — 交互引擎（960行，slide 切换、键盘导航、presenter 模式）
+- `scripts/editor-server.ts` — 可视化编辑服务器（Bun HTTP + 注入 editor.js/editor.css）
+- `assets/editor.js` — 编辑器客户端（选中、编辑、浮动工具栏、CSS 积累、保存）
+- `assets/editor.css` — 编辑器 UI 样式（工具栏、选中框、画布外框）
 
 **参考文档**：
 - `references/authoring-guide.md` — HTML 编写指南
@@ -372,6 +375,34 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
    - 每页不超过 5 条 CSS 规则（避免过度润色）
    - 使用 `.slide:nth-child(N)` 限定作用域（避免跨页泄漏）
    - 颜色值优先使用 CSS 变量而非硬编码（保持 Design 可移植性）
+
+### Step 4c: 可视化编辑器（可选）
+
+当用户需要在浏览器中直接可视化微调时，启动编辑服务器：
+
+```bash
+bun scripts/editor-server.ts <html-file> [--port 3456]
+```
+
+浏览器自动打开，按 **E** 进入编辑模式：
+
+| 操作 | 方式 |
+|------|------|
+| 选中元素 | 点击（支持全部 c-*/chr-* 组件 + HTML 文本 + img/svg） |
+| 编辑文字 | 双击进入 contenteditable，Escape 退出 |
+| 字号/加粗/颜色 | 选中文本元素后使用浮动工具栏 |
+| 内距/背景色 | 选中容器元素后使用浮动工具栏 |
+| 间距 | 选中布局元素（c-row/c-grid）后使用浮动工具栏 |
+| 移动 | 浮动工具栏 ←→↑↓（每次 8px，transform: translate） |
+| 删除 | 浮动工具栏 ✕ 或 Delete 键 |
+| 翻页 | 方向键 ←→ |
+| 保存 | ⌘S（视觉调整 → polish.css，内容修改 → slides.json） |
+| 撤销 | ⌘Z（内存中最近 50 步） |
+| 退出编辑 | E 键 |
+
+**双轨保存**：CSS 类修改（字号、颜色、间距、位置）写入 `polish.css`；内容类修改（文字、删除）写入 `slides.json` 并重新组装 HTML。首次启动自动备份 `polish.css.bak` + `slides.json.bak`。
+
+**编辑日志**：所有操作记录到 `edit-log.jsonl`，供后续 skill 改进参考。
 
 ### Step 5: 导出
 
