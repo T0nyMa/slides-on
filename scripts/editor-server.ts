@@ -100,11 +100,13 @@ Bun.serve({
     if (pathname === "/_editor/editor.js") return serveFile(path.join(assetsDir, "editor.js"));
     if (pathname === "/_editor/editor.css") return serveFile(path.join(assetsDir, "editor.css"));
 
-    // HTML injection
+    // HTML injection (skip if editor.js already embedded by skeleton.ts)
     if (pathname === "/" || pathname === `/${htmlName}`) {
       let html = fs.readFileSync(htmlPath, "utf-8");
-      const injection = `<link rel="stylesheet" href="/_editor/editor.css">\n<script src="/_editor/editor.js" defer><\/script>`;
-      html = html.replace("</head>", `${injection}\n</head>`);
+      if (!html.includes('editor.js')) {
+        const injection = `<link rel="stylesheet" href="/_editor/editor.css">\n<script src="/_editor/editor.js" defer><\/script>`;
+        html = html.replace("</head>", `${injection}\n</head>`);
+      }
       return new Response(html, { headers: { "Content-Type": "text/html" } });
     }
 

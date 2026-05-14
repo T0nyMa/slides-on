@@ -18,7 +18,7 @@
   transition: transform 0.2s ease;
 }
 .editor-active .editor-toolbar { transform: translateY(0); }
-.editor-active .deck { margin-top: 40px; }
+body.editor-active .deck { margin-top: 40px; }
 
 .editor-toolbar .editor-label {
   background: #58a6ff;
@@ -62,6 +62,10 @@
   opacity: 0.85;
   transition: opacity 0.3s ease, transform 0.3s ease;
   box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  animation: editor-badge-autohide 0.5s ease-in-out 10s forwards;
+}
+@keyframes editor-badge-autohide {
+  to { opacity: 0; }
 }
 .editor-entry-badge kbd {
   background: rgba(255,255,255,0.12);
@@ -71,13 +75,14 @@
 }
 .editor-active .editor-entry-badge { opacity: 0; transform: translateX(-50%) translateY(-10px); }
 
-/* ── Canvas frame (editor-server only, not in export) ───── */
-body { background: #e5e5e5 !important; }
-.deck {
+/* ── Canvas frame (only visible in edit mode) ────────────── */
+body.editor-active { background: #e5e5e5 !important; }
+body.editor-active .deck {
   box-shadow: 0 2px 24px rgba(0,0,0,0.15);
   outline: 1px solid rgba(0,0,0,0.1);
 }
 .editor-canvas-label {
+  display: none;
   position: fixed;
   bottom: 12px; right: 16px;
   background: rgba(0,0,0,0.5);
@@ -88,6 +93,7 @@ body { background: #e5e5e5 !important; }
   z-index: 99998;
   pointer-events: none;
 }
+body.editor-active .editor-canvas-label { display: block; }
 
 /* ── Hover overlay ───────────────────────────────────────── */
 .editor-active .slide *:hover {

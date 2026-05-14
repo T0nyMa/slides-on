@@ -101,6 +101,7 @@ export function renderDeck(config: DeckConfig, slidesHTML: string[], assetDepth:
 ${designLinks}
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="polish.css">
+<link rel="stylesheet" href="${prefix}/editor.css">
 </head>
 <body class="${bodyClass}${canvasClass}">
 <div class="deck">
@@ -109,6 +110,7 @@ ${designLinks}
 
 </div>
 <script src="${prefix}/runtime.js"></script>
+<script src="${prefix}/editor.js" defer></script>
 </body>
 </html>
 `;

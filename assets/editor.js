@@ -1,6 +1,10 @@
-/* editor.js — visual slide editor (injected by editor-server.ts) */
+/* editor.js — visual slide editor (embedded in generated HTML) */
 (function () {
   'use strict';
+
+  // Guard against double-load (skeleton.ts + editor-server.ts both inject)
+  if (window.__editorLoaded) return;
+  window.__editorLoaded = true;
 
   let active = false;
   let selectedEl = null;
@@ -453,6 +457,66 @@
     }
   }
 
+  // ── File System Access API save ─────────────────────────
+  var directoryHandle = null;
+  var saveDialogEl = null;
+
+  function showSaveDialog() {
+    if (saveDialogEl) return;
+    saveDialogEl = document.createElement('div');
+    saveDialogEl.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100001;display:flex;align-items:center;justify-content:center;';
+    saveDialogEl.innerHTML =
+      '<div style="background:#1a1d24;color:#e6edf3;padding:24px 32px;border-radius:12px;text-align:center;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,0.5);font:14px/1.5 -apple-system,BlinkMacSystemFont,sans-serif;">' +
+      '<p style="margin:0 0 8px;">保存修改需要写入文件权限</p>' +
+      '<p style="margin:0 0 16px;font-size:12px;color:#8b949e;">请选择包含 index.html 的目录</p>' +
+      '<button id="editor-save-pick-dir" style="margin:0 6px;padding:8px 18px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);background:rgba(88,166,255,0.25);color:#e6edf3;font:13px -apple-system,BlinkMacSystemFont,sans-serif;cursor:pointer;">选择目录</button>' +
+      '<button id="editor-save-cancel" style="margin:0 6px;padding:8px 18px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#8b949e;font:13px -apple-system,BlinkMacSystemFont,sans-serif;cursor:pointer;">取消</button>' +
+      '</div>';
+    document.body.appendChild(saveDialogEl);
+  }
+
+  function hideSaveDialog() {
+    if (saveDialogEl) { saveDialogEl.remove(); saveDialogEl = null; }
+  }
+
+  async function getDirectoryHandle() {
+    if (directoryHandle) return directoryHandle;
+    try {
+      directoryHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+      return directoryHandle;
+    } catch (e) {
+      if (e.name === 'SecurityError') {
+        // Not called from user gesture — caller should handle
+        throw e;
+      }
+      throw e;
+    }
+  }
+
+  async function writeFileFSA(filename, content) {
+    var handle = await getDirectoryHandle();
+    var fileHandle = await handle.getFileHandle(filename, { create: true });
+    var writable = await fileHandle.createWritable();
+    await writable.write(content);
+    await writable.close();
+    return true;
+  }
+
+  function downloadFile(filename, content) {
+    var blob = new Blob([content], { type: 'text/css' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 100);
+  }
+
   // ── CSS accumulator ────────────────────────────────────────
   var cssRules = {};
   var originalPolishCss = '';
@@ -467,7 +531,7 @@
     markDirty();
   }
 
-  function flushCss() {
+  function buildCss() {
     var css = '';
     if (originalPolishCss) css += originalPolishCss + '\n';
 
@@ -478,11 +542,13 @@
       for (var p in props) decls.push(p + ': ' + props[p]);
       css += '\n/* [editor] */\n' + sel + ' { ' + decls.join('; ') + '; }\n';
     }
+    return css;
+  }
 
-    fetch('/api/save-css', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ css: css }),
+  function flushCss() {
+    writeFileFSA('polish.css', buildCss()).catch(function () {
+      // FSA failed (no handle or user cancelled), download instead
+      downloadFile('polish.css', buildCss());
     });
   }
 
@@ -504,28 +570,72 @@
         }
         originalPolishCss = kept.join('\n').trim();
       })
-      .catch(function () {});
+      .catch(function () {
+        // file:// or network error — start with empty polish CSS
+      });
   })();
 
-  // ── Logging ────────────────────────────────────────────────
+  // ── Logging (no-op without server) ───────────────────────
   function logEdit(entry) {
-    entry.ts = new Date().toISOString();
-    fetch('/api/log', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(entry),
-    });
+    // Edit logging requires editor-server. Skip silently.
   }
 
   // ── Save all (⌘S) ─────────────────────────────────────────
   function saveAll() {
-    if (dirty) flushCss();
+    if (!dirty) return;
+
+    // If no directory handle yet and FSA is available, need user gesture
+    if (!directoryHandle && typeof window.showDirectoryPicker === 'function') {
+      showSaveDialog();
+      var pickBtn = document.getElementById('editor-save-pick-dir');
+      var cancelBtn = document.getElementById('editor-save-cancel');
+      if (pickBtn) {
+        pickBtn.onclick = function () {
+          hideSaveDialog();
+          getDirectoryHandle().then(function () {
+            writeFileFSA('polish.css', buildCss());
+            dirty = false;
+            pendingJsonChanges = false;
+            showSaved('已保存');
+          }).catch(function () {
+            // User cancelled picker, download directly
+            downloadFile('polish.css', buildCss());
+            dirty = false;
+            pendingJsonChanges = false;
+            showSaved('已下载');
+          });
+        };
+      }
+      if (cancelBtn) {
+        cancelBtn.onclick = function () {
+          hideSaveDialog();
+          downloadFile('polish.css', buildCss());
+          dirty = false;
+          pendingJsonChanges = false;
+          showSaved('已下载');
+        };
+      }
+      return;
+    }
+
+    flushCss();
     dirty = false;
     pendingJsonChanges = false;
+    if (directoryHandle) {
+      showSaved('已保存');
+    } else {
+      showSaved('已下载');
+    }
+  }
+
+  function showSaved(msg) {
     var label = toolbar.querySelector('.editor-label');
-    if (label) label.textContent = '编辑中';
+    if (label) label.textContent = msg;
     toolbar.style.background = '#2ea043';
-    setTimeout(function () { toolbar.style.background = ''; }, 300);
+    setTimeout(function () {
+      toolbar.style.background = '';
+      if (label) label.textContent = '编辑中';
+    }, 1500);
   }
 
   function markDirty() {

@@ -15,7 +15,7 @@ description: >
 
 流水线：**内容分析 → 风格决策 → Review 验证 → HTML 渲染 → QA 门禁 → 可视化微调 → 导出**。
 
-可视化编辑器是核心功能——QA 通过后，`bun scripts/editor-server.ts <html>` 启动，浏览器中按 **E** 所见即所得地调字号、颜色、间距、位置，比手写 CSS 快得多。
+可视化编辑器是核心功能——生成的 HTML 自带编辑器，**直接浏览器打开**，按 **E** 所见即所得地调字号、颜色、间距、位置。保存通过 File System Access API 直接写文件，无需 server。
 
 ## 核心约束
 
@@ -243,13 +243,12 @@ description: >
    4. 修复后 `bun scripts/assemble-deck.ts --input slides.json --output index.html` 重新生成 → 再跑 QA
    5. 直到 BLOCKER = 0，进入可视化微调阶段
 
-QA 通过后，**启动可视化编辑器**进行微调（不是直接打开 HTML）：
+QA 通过后，**直接在浏览器打开 `index.html`** 即可微调。页面顶部会显示 "按 E 进入可视化编辑模式" 提示（10 秒后自动消失）。按 **E** 进入编辑模式。
 
-```bash
-bun scripts/editor-server.ts <index.html>
-```
-
-> **为什么必须 run server**：编辑器代码（editor.js/css）由 server 动态注入，直接打开 HTML 无法进入编辑模式。server 还提供保存 API（修改写回 polish.css / slides.json）。浏览器打开后页面顶部会显示 "按 E 进入可视化编辑模式" 入口提示。
+**保存机制**（无需 server）：
+- Chrome/Edge：首次 ⌘S 弹出对话框选择 deck 目录，之后自动写入 `polish.css`
+- Firefox/Safari：保存时自动下载 `polish.css`，手动替换即可
+- 如需编辑日志或 slides.json 回写，可启动 `bun scripts/editor-server.ts <index.html>`
 
 微调完成后，进入 Step 5 导出。
 
@@ -344,8 +343,8 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
 - `assets/base-design-chrome.css` — 自由组合模式的最简 chrome 默认样式
 - `assets/runtime.js` — 交互引擎（960行，slide 切换、键盘导航、presenter 模式）
 - `scripts/editor-server.ts` — 可视化编辑服务器（Bun HTTP + 注入 editor.js/editor.css）
-- `assets/editor.js` — 编辑器客户端（选中、编辑、浮动工具栏、CSS 积累、保存）
-- `assets/editor.css` — 编辑器 UI 样式（工具栏、选中框、画布外框）
+- `assets/editor.js` — 编辑器客户端（选中、编辑、浮动工具栏、CSS 积累、FSA 保存 / 下载兜底）
+- `assets/editor.css` — 编辑器 UI 样式（工具栏、选中框、画布外框，演示模式下自动隐藏）
 
 **参考文档**：
 - `references/authoring-guide.md` — HTML 编写指南
@@ -360,10 +359,15 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
 
 QA 通过（BLOCKER = 0）后，slides 已生成并可用，但通常需要微调。有两种方式，**优先使用可视化编辑器**：
 
-#### 方式 A：可视化编辑器（推荐）
+#### 方式 A：可视化编辑器（推荐，直接打开 HTML）
 
-所见即所得，比手写 CSS 快 10 倍：
+生成的 HTML 已内嵌编辑器，**直接在浏览器中打开 `index.html`**，按 **E** 进入编辑模式：
 
+- 首次保存时弹出对话框，选择包含 index.html 的目录授权写入（Chrome/Edge）
+- 之后 ⌘S 直接写入 `polish.css`，无需再次授权
+- 不支持 File System Access API 的浏览器（Firefox/Safari）自动下载文件
+
+如需 server 额外功能（编辑日志、slides.json 回写），可启动：
 ```bash
 bun scripts/editor-server.ts <html-file> [--port 3456]
 ```
