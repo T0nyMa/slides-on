@@ -138,6 +138,7 @@ function main(): void {
       fs.writeFileSync(outPath, html);
       const designLabel = typeof config.design === "string" ? config.design : JSON.stringify(config.design);
       console.log(`Written: ${outPath} (${slides.length} slides, design: ${designLabel}, canvas: ${config.canvas})`);
+      console.log(`💡 bun scripts/editor-server.ts ${outPath}  →  按 E 可视化编辑`);
 
       // Run visual QA if available
       try {

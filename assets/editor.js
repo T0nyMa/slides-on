@@ -47,6 +47,12 @@
     'img','svg',
   ].join(',');
 
+  // ── Entry badge (shown before entering edit mode) ──────────
+  var entryBadge = document.createElement('div');
+  entryBadge.className = 'editor-entry-badge';
+  entryBadge.innerHTML = '按 <kbd>E</kbd> 进入可视化编辑模式';
+  document.body.appendChild(entryBadge);
+
   // ── Build top toolbar ──────────────────────────────────────
   const toolbar = document.createElement('div');
   toolbar.className = 'editor-toolbar';

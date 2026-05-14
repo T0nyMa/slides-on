@@ -13,7 +13,9 @@ description: >
 
 # slides-on — 统一演示文稿制作
 
-五步流水线：**内容分析 → 风格决策 → Review 验证 → HTML 渲染 → 导出**。
+流水线：**内容分析 → 风格决策 → Review 验证 → HTML 渲染 → QA 门禁 → 可视化微调 → 导出**。
+
+可视化编辑器是核心功能——QA 通过后，`bun scripts/editor-server.ts <html>` 启动，浏览器中按 **E** 所见即所得地调字号、颜色、间距、位置，比手写 CSS 快得多。
 
 ## 核心约束
 
@@ -239,7 +241,17 @@ description: >
    2. S2（cascade 冲突）最常见：某个 `position: absolute` 被 `.slide > * { position: relative }` 覆盖 → 改选择器加 `.d-xxx .slide .` 前缀
    3. A3（密度超标）：拆页（>6 组件 → 分两页）或使用 dense density 层（`"density": "dense"`）
    4. 修复后 `bun scripts/assemble-deck.ts --input slides.json --output index.html` 重新生成 → 再跑 QA
-   5. 直到 BLOCKER = 0，进入 Step 5
+   5. 直到 BLOCKER = 0，进入可视化微调阶段
+
+QA 通过后，**启动可视化编辑器**进行微调（不是直接打开 HTML）：
+
+```bash
+bun scripts/editor-server.ts <index.html>
+```
+
+> **为什么必须 run server**：编辑器代码（editor.js/css）由 server 动态注入，直接打开 HTML 无法进入编辑模式。server 还提供保存 API（修改写回 polish.css / slides.json）。浏览器打开后页面顶部会显示 "按 E 进入可视化编辑模式" 入口提示。
+
+微调完成后，进入 Step 5 导出。
 
 **产出**：一个完整的 `index.html`（可浏览器打开交互演示）+ `polish.css`（`visual-qa.ts` 自动生成的视觉修正）+ QA 报告
 
@@ -344,9 +356,43 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
 - `references/prompt-construction.md` — AI 图片结构化 prompt 组装（三层结构 + Image-1 Anchor Chain）
 - `references/components.md` — 组件调色板（3:4 自由拼装）
 
-### Step 4b: AI 视觉抛光（可选）
+### Step 4 后续：可视化微调
 
-当自动生成的 deck 需要精细化视觉调整时，在 Step 4 后执行。AI 抛光与自动 QA 互补：
+QA 通过（BLOCKER = 0）后，slides 已生成并可用，但通常需要微调。有两种方式，**优先使用可视化编辑器**：
+
+#### 方式 A：可视化编辑器（推荐）
+
+所见即所得，比手写 CSS 快 10 倍：
+
+```bash
+bun scripts/editor-server.ts <html-file> [--port 3456]
+```
+
+浏览器自动打开，按 **E** 进入编辑模式：
+
+| 操作 | 方式 |
+|------|------|
+| 选中元素 | 点击（支持全部 c-*/chr-* 组件 + HTML 文本 + img/svg） |
+| 编辑文字 | 双击进入 contenteditable，Escape 退出 |
+| 字号/加粗/颜色 | 选中文本元素后使用浮动工具栏 |
+| 内距/背景色 | 选中容器元素后使用浮动工具栏 |
+| 间距 | 选中布局元素（c-row/c-grid）后使用浮动工具栏 |
+| 移动 | 浮动工具栏 ←→↑↓（每次 8px，transform: translate） |
+| 删除 | 浮动工具栏 ✕ 或 Delete 键 |
+| 翻页 | 方向键 ←→ |
+| 保存 | ⌘S（视觉调整 → polish.css，内容修改 → slides.json） |
+| 撤销 | ⌘Z（内存中最近 50 步） |
+| 退出编辑 | E 键 |
+
+**双轨保存**：CSS 类修改（字号、颜色、间距、位置）写入 `polish.css`；内容类修改（文字、删除）写入 `slides.json` 并重新组装 HTML。首次启动自动备份 `polish.css.bak` + `slides.json.bak`。
+
+**编辑日志**：所有操作记录到 `edit-log.jsonl`，供后续 skill 改进参考。
+
+**重要**：编辑器生成的 polish.css 规则标注 `/* [editor] */`，与 visual-qa.ts 自动生成的规则共存。
+
+#### 方式 B：AI 视觉抛光（备选）
+
+当编辑器不方便使用时，由 AI 逐页审视并手写 polish.css。AI 抛光与自动 QA 互补：
 - **自动 QA**（`visual-qa.ts`）：处理可量化的客观问题（溢出、对比度、密度、层级）
 - **AI 抛光**：处理主观审美问题（视觉平衡、强调权重、节奏感）
 
@@ -375,34 +421,6 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
    - 每页不超过 5 条 CSS 规则（避免过度润色）
    - 使用 `.slide:nth-child(N)` 限定作用域（避免跨页泄漏）
    - 颜色值优先使用 CSS 变量而非硬编码（保持 Design 可移植性）
-
-### Step 4c: 可视化编辑器（可选）
-
-当用户需要在浏览器中直接可视化微调时，启动编辑服务器：
-
-```bash
-bun scripts/editor-server.ts <html-file> [--port 3456]
-```
-
-浏览器自动打开，按 **E** 进入编辑模式：
-
-| 操作 | 方式 |
-|------|------|
-| 选中元素 | 点击（支持全部 c-*/chr-* 组件 + HTML 文本 + img/svg） |
-| 编辑文字 | 双击进入 contenteditable，Escape 退出 |
-| 字号/加粗/颜色 | 选中文本元素后使用浮动工具栏 |
-| 内距/背景色 | 选中容器元素后使用浮动工具栏 |
-| 间距 | 选中布局元素（c-row/c-grid）后使用浮动工具栏 |
-| 移动 | 浮动工具栏 ←→↑↓（每次 8px，transform: translate） |
-| 删除 | 浮动工具栏 ✕ 或 Delete 键 |
-| 翻页 | 方向键 ←→ |
-| 保存 | ⌘S（视觉调整 → polish.css，内容修改 → slides.json） |
-| 撤销 | ⌘Z（内存中最近 50 步） |
-| 退出编辑 | E 键 |
-
-**双轨保存**：CSS 类修改（字号、颜色、间距、位置）写入 `polish.css`；内容类修改（文字、删除）写入 `slides.json` 并重新组装 HTML。首次启动自动备份 `polish.css.bak` + `slides.json.bak`。
-
-**编辑日志**：所有操作记录到 `edit-log.jsonl`，供后续 skill 改进参考。
 
 ### Step 5: 导出
 
