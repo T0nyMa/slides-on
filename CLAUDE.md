@@ -474,7 +474,12 @@ bun scripts/visual-qa.ts --input <html> --report r.json  # 输出 JSON 报告
 
 # 可视化编辑器
 bun scripts/editor-server.ts <html-file> [--port 3456]  # 启动编辑服务器，浏览器内按 E 进入编辑模式
+
+# 发布
+bash scripts/package.sh  # 一键打包 slides-on.skill（自动排除 .git / docs / testcases / examples 等）
 ```
+
+> **不要直接调用 `package_skill.py`**，会打入 .git 等大量无关文件。统一用 `scripts/package.sh`。
 
 ## 画布尺寸
 
