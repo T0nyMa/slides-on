@@ -99,8 +99,8 @@ export function renderDeck(config: DeckConfig, slidesHTML: string[], assetDepth:
 <link rel="stylesheet" href="${prefix}/fonts.css">
 <link rel="stylesheet" href="${prefix}/base.css">${componentsLink}
 ${designLinks}
-<link rel="stylesheet" href="polish.css">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="polish.css">
 <link rel="stylesheet" href="${prefix}/editor.css">
 </head>
 <body class="${bodyClass}${canvasClass}">
