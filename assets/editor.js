@@ -519,7 +519,6 @@
 
   // ── CSS accumulator ────────────────────────────────────────
   var cssRules = {};
-  var originalPolishCss = '';
 
   var dirty = false;
 
@@ -531,11 +530,20 @@
     markDirty();
   }
 
-  function buildCss() {
-    var css = '';
-    if (originalPolishCss) css += originalPolishCss + '\n';
+  // Read file via FSA handle (for preserving non-editor polish.css rules)
+  async function readFileFSA(filename) {
+    var handle = await getDirectoryHandle();
+    try {
+      var fileHandle = await handle.getFileHandle(filename);
+      var file = await fileHandle.getFile();
+      return await file.text();
+    } catch (e) {
+      return ''; // file doesn't exist yet
+    }
+  }
 
-    css += '\n/* ── editor overrides ── */\n';
+  function buildEditorCss() {
+    var css = '\n/* ── editor overrides ── */\n';
     for (var sel in cssRules) {
       var props = cssRules[sel];
       var decls = [];
@@ -545,35 +553,30 @@
     return css;
   }
 
-  function flushCss() {
-    writeFileFSA('polish.css', buildCss()).catch(function () {
-      // FSA failed (no handle or user cancelled), download instead
-      downloadFile('polish.css', buildCss());
+  async function flushCss() {
+    var editorCss = buildEditorCss();
+    var finalCss = editorCss;
+
+    if (directoryHandle) {
+      try {
+        var content = await readFileFSA('polish.css');
+        // Strip prior editor overrides section, preserve non-editor rules
+        var editorIdx = content.indexOf('/* ── editor overrides ── */');
+        if (editorIdx !== -1) {
+          finalCss = content.substring(0, editorIdx).trim() + '\n' + editorCss;
+        } else if (content.trim()) {
+          finalCss = content.trim() + '\n' + editorCss;
+        }
+        await writeFileFSA('polish.css', finalCss);
+        return;
+      } catch (e) {}
+    }
+
+    // Fallback: write without reading existing (fresh file) or download
+    writeFileFSA('polish.css', finalCss).catch(function () {
+      downloadFile('polish.css', editorCss);
     });
   }
-
-  // Load existing polish.css (strip prior editor rules)
-  (function loadOriginalPolish() {
-    var link = document.querySelector('link[href*="polish.css"]');
-    if (!link) return;
-    fetch(link.getAttribute('href'))
-      .then(function (r) { return r.ok ? r.text() : ''; })
-      .then(function (text) {
-        var lines = text.split('\n');
-        var kept = [];
-        var skip = false;
-        for (var i = 0; i < lines.length; i++) {
-          if (lines[i].indexOf('/* [editor]') !== -1 || lines[i].indexOf('/* ── editor overrides') !== -1) { skip = true; continue; }
-          if (skip && lines[i].trim() === '') { skip = false; continue; }
-          if (skip) continue;
-          kept.push(lines[i]);
-        }
-        originalPolishCss = kept.join('\n').trim();
-      })
-      .catch(function () {
-        // file:// or network error — start with empty polish CSS
-      });
-  })();
 
   // ── Logging (no-op without server) ───────────────────────
   function logEdit(entry) {
@@ -593,15 +596,14 @@
         pickBtn.onclick = function () {
           hideSaveDialog();
           getDirectoryHandle().then(function () {
-            writeFileFSA('polish.css', buildCss());
-            dirty = false;
-            pendingJsonChanges = false;
+            return flushCss();
+          }).then(function () {
+            dirty = false; pendingJsonChanges = false;
             showSaved('已保存');
           }).catch(function () {
             // User cancelled picker, download directly
-            downloadFile('polish.css', buildCss());
-            dirty = false;
-            pendingJsonChanges = false;
+            downloadFile('polish.css', buildEditorCss());
+            dirty = false; pendingJsonChanges = false;
             showSaved('已下载');
           });
         };
@@ -609,23 +611,18 @@
       if (cancelBtn) {
         cancelBtn.onclick = function () {
           hideSaveDialog();
-          downloadFile('polish.css', buildCss());
-          dirty = false;
-          pendingJsonChanges = false;
+          downloadFile('polish.css', buildEditorCss());
+          dirty = false; pendingJsonChanges = false;
           showSaved('已下载');
         };
       }
       return;
     }
 
-    flushCss();
-    dirty = false;
-    pendingJsonChanges = false;
-    if (directoryHandle) {
-      showSaved('已保存');
-    } else {
-      showSaved('已下载');
-    }
+    flushCss().then(function () {
+      dirty = false; pendingJsonChanges = false;
+      showSaved(directoryHandle ? '已保存' : '已下载');
+    });
   }
 
   function showSaved(msg) {
