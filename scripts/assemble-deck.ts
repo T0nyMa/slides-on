@@ -121,7 +121,7 @@ function main(): void {
 
     // Render each slide
     const slidesHTML = slides.map((s, i) => {
-      return renderSlide(design, s, { page: i + 1, total });
+      return renderSlide(design, s, { page: i + 1, total, canvas: config.canvas as "16:9" | "3:4" });
     });
 
     // Wrap in deck skeleton (inline style.css if exists in output dir)

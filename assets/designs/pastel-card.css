@@ -78,8 +78,8 @@
   font-family: var(--font-sans);
 }
 /* Ensure slide content clears the fixed topbar */
-.d-pastel-card.portrait .slide { padding-top: 10cqi; }
-.d-pastel-card.landscape .slide { padding-top: 9cqi; }
+.d-pastel-card.portrait { --slide-pad-y: 10cqi; }
+.d-pastel-card.landscape { --slide-pad-y: 9cqi; }
 .d-pastel-card .chr-chip {
   display: inline-flex; align-items: center; gap: 1.23cqi;
   padding: .99cqi 2.22cqi; border-radius: 999px;
@@ -202,10 +202,9 @@
 .d-pastel-card .chr-codebox .st { color: #c8ecd8; }
 .d-pastel-card .chr-codebox .hl { color: #fcd0dd; font-weight: 700; }
 
-/* ── Container query overrides: preserve multi-column grids on 3:4 ── */
-@container (max-width: 1000px) {
-  .d-pastel-card .c-grid-2 { grid-template-columns: repeat(2, 1fr); }
-  .d-pastel-card .c-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.d-pastel-card.portrait {
+  --grid-cols-2: repeat(2, 1fr);
+  --grid-cols-3: repeat(3, 1fr);
 }
 
 /* Pill tag — used in thanks page badges */

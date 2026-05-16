@@ -73,7 +73,7 @@
   font-size: 11px; color: var(--text-2);
   letter-spacing: .18em; text-transform: uppercase;
 }
-.d-hermes-cyber-terminal.landscape .slide { padding-top: 80px; }
+.d-hermes-cyber-terminal.landscape { --slide-pad-y: 80px; }
 
 .d-hermes-cyber-terminal .chr-topbar .dots {
   display: flex; gap: 8px;
@@ -199,8 +199,7 @@
   letter-spacing: -.04em;
 }
 
-/* ── Container query: preserve multi-column on narrow canvas ── */
-@container (max-width: 1000px) {
-  .d-hermes-cyber-terminal .c-grid-2 { grid-template-columns: repeat(2, 1fr); }
-  .d-hermes-cyber-terminal .c-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.d-hermes-cyber-terminal.portrait {
+  --grid-cols-2: repeat(2, 1fr);
+  --grid-cols-3: repeat(3, 1fr);
 }

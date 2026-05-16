@@ -68,6 +68,53 @@
   --border-style: solid;
   --tbl-font: var(--body-size);
   --tbl-cell-pad: 0.6cqi 1.2cqi;
+
+  /* Sizing tokens — 16:9 defaults (overridden by .portrait / .landscape) */
+  --h1-size: 72px;
+  --h2-size: 54px;
+  --h3-size: 32px;
+  --h4-size: 22px;
+  --lede-size: 22px;
+  --kicker-size: 14px;
+  --eyebrow-size: 13px;
+  --body-font-size: 16px;
+  --slide-pad-x: 96px;
+  --slide-pad-y: 72px;
+  --slide-pad-bottom: 72px;
+  --card-pad: 26px 28px;
+  --grid-cols-2: repeat(2, 1fr);
+  --grid-cols-3: repeat(3, 1fr);
+  --grid-cols-4: repeat(4, 1fr);
+  --slide-justify: center;
+  --stack-gap-val: 14px;
+
+  /* Component sizing tokens — 16:9 defaults */
+  --c-title-size: 2.2cqi;
+  --c-subtitle-size: 1.5cqi;
+  --c-body-size: 1.2cqi;
+  --c-small-size: 0.95cqi;
+  --c-card-padding: 1.5cqi 1.8cqi;
+  --c-row-gap: 1.5cqi;
+  --c-grid-gap: 1.5cqi;
+  --c-section-padding: 1.8cqi;
+  --c-section-label-size: 1.3cqi;
+  --c-glass-padding: 1.8cqi;
+  --c-badge-size: 0.85cqi;
+  --c-kpi-value-size: 4.5cqi;
+  --c-kpi-label-size: 1.1cqi;
+  --c-quote-size: 2.2cqi;
+  --c-quote-mark-size: 5cqi;
+  --c-quote-mark-top: -1cqi;
+  --c-step-num-size: 3cqi;
+  --c-step-num-font: 1.3cqi;
+  --c-step-title-size: 1.6cqi;
+  --c-step-gap: 1.5cqi;
+  --c-icon-row-title-size: 1.5cqi;
+  --c-icon-row-gap: 1.5cqi;
+  --c-codebox-size: 1.4cqi;
+  --c-codebox-padding: 2.5cqi 3cqi;
+  --c-formula-size: 1.8cqi;
+  --c-stack-gap: 1.5cqi;
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -84,8 +131,8 @@ code,kbd,pre,samp{font-family:var(--font-mono)}
 .deck{position:relative;width:100vw;height:100vh;overflow:hidden;background:var(--bg);container-type:inline-size}
 .slide{
   position:absolute;inset:0;
-  display:flex;flex-direction:column;justify-content:center;
-  padding:72px 96px;
+  display:flex;flex-direction:column;justify-content:var(--slide-justify);
+  padding:var(--slide-pad-y) var(--slide-pad-x) var(--slide-pad-bottom);
   box-sizing:border-box;
   opacity:0;pointer-events:none;
   transition:opacity .5s var(--ease), transform .5s var(--ease);
@@ -99,13 +146,13 @@ code,kbd,pre,samp{font-family:var(--font-mono)}
 body.single .slide{position:relative;width:100vw;height:100vh;opacity:1;transform:none;pointer-events:auto}
 
 /* ================= TYPOGRAPHY ================= */
-.eyebrow{font-size:13px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
-.kicker{font-size:14px;font-weight:600;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
-h1.title,.h1{font-family:var(--font-display);font-size:72px;line-height:1.05;font-weight:800;letter-spacing:var(--letter-tight);margin:0 0 18px;color:var(--text-1)}
-h2.title,.h2{font-family:var(--font-display);font-size:54px;line-height:1.1;font-weight:700;letter-spacing:var(--letter-tight);margin:0 0 14px}
-h3,.h3{font-size:32px;line-height:1.2;font-weight:600;letter-spacing:var(--letter-normal);margin:0 0 10px}
-h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
-.lede{font-size:22px;line-height:1.55;color:var(--text-2);font-weight:300;max-width:62ch}
+.eyebrow{font-size:var(--eyebrow-size);font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+.kicker{font-size:var(--kicker-size);font-weight:600;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
+h1.title,.h1{font-family:var(--font-display);font-size:var(--h1-size);line-height:1.05;font-weight:800;letter-spacing:var(--letter-tight);margin:0 0 18px;color:var(--text-1)}
+h2.title,.h2{font-family:var(--font-display);font-size:var(--h2-size);line-height:1.1;font-weight:700;letter-spacing:var(--letter-tight);margin:0 0 14px}
+h3,.h3{font-size:var(--h3-size);line-height:1.2;font-weight:600;letter-spacing:var(--letter-normal);margin:0 0 10px}
+h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
+.lede{font-size:var(--lede-size);line-height:1.55;color:var(--text-2);font-weight:300;max-width:62ch}
 .dim{color:var(--text-2)}
 .dim2{color:var(--text-3)}
 .mono{font-family:var(--font-mono)}
@@ -113,13 +160,13 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
 .gradient-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
 
 /* ================= LAYOUT PRIMITIVES ================= */
-.stack>*+*{margin-top:14px}
+.stack>*+*{margin-top:var(--stack-gap-val)}
 .row{display:flex;gap:24px;align-items:center}
 .row.wrap{flex-wrap:wrap}
 .grid{display:grid;gap:24px}
-.g2{display:grid;grid-template-columns:repeat(2,1fr)}
-.g3{display:grid;grid-template-columns:repeat(3,1fr)}
-.g4{display:grid;grid-template-columns:repeat(4,1fr)}
+.g2{display:grid;grid-template-columns:var(--grid-cols-2)}
+.g3{display:grid;grid-template-columns:var(--grid-cols-3)}
+.g4{display:grid;grid-template-columns:var(--grid-cols-4)}
 .center{display:flex;align-items:center;justify-content:center;text-align:center}
 .fill{flex:1}
 .sp-t{padding-top:24px}.sp-b{padding-bottom:24px}
@@ -128,7 +175,7 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
 
 /* ================= CARDS ================= */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-  padding:26px 28px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  padding:var(--card-pad);box-shadow:var(--shadow);position:relative;overflow:hidden}
 .card-soft{background:var(--surface-2);border:1px solid var(--border)}
 .card-outline{background:transparent;border:1.5px solid var(--border-strong);box-shadow:none}
 .card-accent{background:var(--surface);border-top:3px solid var(--accent)}
@@ -208,19 +255,6 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
   .lede{ font-size: 18px; }
 }
 
-/* ── Primary: container query on deck width (overrides @media when deck is narrow) ── */
-@container (max-width: 1000px) {
-  .slide{ padding: 6cqi 5.5cqi; justify-content: flex-start; }
-  .g4, .g3{ grid-template-columns: repeat(2, 1fr); }
-  .g5, .g6{ grid-template-columns: repeat(3, 1fr); }
-  h1.title, .h1{ font-size: 7cqi; }
-  h2.title, .h2{ font-size: 5.2cqi; }
-  h3, .h3{ font-size: 3.7cqi; }
-  .lede{ font-size: 2.5cqi; }
-  .deck-header{ top: 3cqi; left: 5.5cqi; right: 5.5cqi; font-size: 1.5cqi; }
-  .deck-footer{ bottom: 3cqi; left: 5.5cqi; right: 5.5cqi; font-size: 1.5cqi; }
-}
-
 /* .narrow class — JS-driven or manual trigger (explicit opt-in) */
 .narrow .g4, .narrow .g3{ grid-template-columns: repeat(2, 1fr); }
 .narrow .g5, .narrow .g6{ grid-template-columns: repeat(3, 1fr); }
@@ -237,9 +271,52 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
   margin: auto; overflow: hidden;
   container-type: inline-size;
 }
-.portrait .slide {
-  padding: 4.5cqi 4.5cqi 3cqi;
-  justify-content: flex-start;
+.portrait {
+  --h1-size: 7cqi;
+  --h2-size: 5.2cqi;
+  --h3-size: 3.7cqi;
+  --h4-size: 2.5cqi;
+  --lede-size: 2.5cqi;
+  --kicker-size: 1.8cqi;
+  --eyebrow-size: 1.6cqi;
+  --body-font-size: 2cqi;
+  --slide-pad-x: 4.5cqi;
+  --slide-pad-y: 4.5cqi;
+  --slide-pad-bottom: 3cqi;
+  --card-pad: 2.5cqi 3cqi;
+  --grid-cols-2: 1fr;
+  --grid-cols-3: repeat(2, 1fr);
+  --grid-cols-4: repeat(2, 1fr);
+  --slide-justify: flex-start;
+  --stack-gap-val: 1.8cqi;
+
+  /* Component size boosters for narrow canvas */
+  --c-title-size: 3.5cqi;
+  --c-subtitle-size: 2.5cqi;
+  --c-body-size: 2cqi;
+  --c-small-size: 1.6cqi;
+  --c-card-padding: 2.5cqi 3cqi;
+  --c-row-gap: 2.5cqi;
+  --c-grid-gap: 2.5cqi;
+  --c-section-padding: 3cqi;
+  --c-section-label-size: 2.3cqi;
+  --c-glass-padding: 3cqi;
+  --c-badge-size: 1.5cqi;
+  --c-kpi-value-size: 8cqi;
+  --c-kpi-label-size: 2cqi;
+  --c-quote-size: 3.5cqi;
+  --c-quote-mark-size: 8cqi;
+  --c-quote-mark-top: -1.5cqi;
+  --c-step-num-size: 5cqi;
+  --c-step-num-font: 2.2cqi;
+  --c-step-title-size: 2.8cqi;
+  --c-step-gap: 2.5cqi;
+  --c-icon-row-title-size: 2.5cqi;
+  --c-icon-row-gap: 2.5cqi;
+  --c-codebox-size: 2.2cqi;
+  --c-codebox-padding: 3cqi 3.5cqi;
+  --c-formula-size: 3cqi;
+  --c-stack-gap: 2.5cqi;
 }
 
 /* .landscape class — 16:9 canvas (standard presentation) */
@@ -253,6 +330,32 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
   padding: 3.5cqi 5cqi;
   justify-content: center;
 }
+
+.landscape {
+  --h1-size: 72px;
+  --h2-size: 54px;
+  --h3-size: 32px;
+  --h4-size: 22px;
+  --lede-size: 22px;
+  --kicker-size: 14px;
+  --eyebrow-size: 13px;
+  --body-font-size: 16px;
+  --slide-pad-x: 96px;
+  --slide-pad-y: 72px;
+  --slide-pad-bottom: 72px;
+  --card-pad: 26px 28px;
+  --grid-cols-2: repeat(2, 1fr);
+  --grid-cols-3: repeat(3, 1fr);
+  --grid-cols-4: repeat(4, 1fr);
+  --slide-justify: center;
+  --stack-gap-val: 14px;
+}
+
+/* ================= VERTICAL DISTRIBUTION (3:4 fill strategies) ================= */
+.v-fill       { flex: 1; }
+.v-center     { margin: auto 0; }
+.v-bottom     { margin-top: auto; }
+.v-distribute { display: flex; flex-direction: column; justify-content: space-between; width: 100%; }
 
 /* ================= PRINT ================= */
 @media print{
@@ -270,15 +373,15 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
 
 /* Vertical stack: auto-spacing between children */
 .c-stack { display: flex; flex-direction: column; }
-.c-stack > * + * { margin-top: 1.5cqi; }
+.c-stack > * + * { margin-top: var(--c-stack-gap, 1.5cqi); }
 
 /* Horizontal row → auto-stacks vertically in 3:4 */
-.c-row { display: flex; gap: 1.5cqi; align-items: flex-start; }
+.c-row { display: flex; gap: var(--c-row-gap, 1.5cqi); align-items: flex-start; }
 .c-row > * { flex: 1; min-width: 0; }
 
 /* Grid 2/3 columns → auto-reduces in 3:4 */
-.c-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5cqi; }
-.c-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5cqi; }
+.c-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--c-grid-gap, 1.5cqi); }
+.c-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--c-grid-gap, 1.5cqi); }
 
 /* Divider */
 .c-divider { height: 1px; background: var(--border); width: 100%; }
@@ -294,10 +397,10 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
    ══════════════════════════════════════════════════════ */
 
 /* Component title — use inside c-card, c-section etc. */
-.c-title { font-size: 2.2cqi; font-weight: 800; line-height: 1.2; color: var(--text-1); margin: 0; }
-.c-subtitle { font-size: 1.5cqi; font-weight: 600; line-height: 1.3; color: var(--text-2); margin: 0; }
-.c-body { font-size: 1.2cqi; line-height: 1.55; color: var(--text-2); }
-.c-small { font-size: 0.95cqi; line-height: 1.45; color: var(--text-3); }
+.c-title { font-size: var(--c-title-size, 2.2cqi); font-weight: 800; line-height: 1.2; color: var(--text-1); margin: 0; }
+.c-subtitle { font-size: var(--c-subtitle-size, 1.5cqi); font-weight: 600; line-height: 1.3; color: var(--text-2); margin: 0; }
+.c-body { font-size: var(--c-body-size, 1.2cqi); line-height: 1.55; color: var(--text-2); }
+.c-small { font-size: var(--c-small-size, 0.95cqi); line-height: 1.45; color: var(--text-3); }
 
 /* Gradient text */
 .c-grad {
@@ -313,7 +416,7 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
 /* Basic card */
 .c-card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 1.5cqi 1.8cqi;
+  border-radius: var(--radius); padding: var(--c-card-padding, 1.5cqi 1.8cqi);
   box-shadow: var(--shadow); position: relative; overflow: hidden;
 }
 
@@ -321,29 +424,29 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
 .c-card-accent {
   background: var(--surface); border: 1px solid var(--border);
   border-top: 3px solid var(--accent); border-radius: var(--radius);
-  padding: 1.5cqi 1.8cqi; box-shadow: var(--shadow);
+  padding: var(--c-card-padding, 1.5cqi 1.8cqi); box-shadow: var(--shadow);
 }
 
 /* Card with left warning line */
 .c-card-warn {
   background: var(--surface); border: 1px solid var(--border);
   border-left: 4px solid var(--warn); border-radius: var(--radius);
-  padding: 1.5cqi 1.8cqi; box-shadow: var(--shadow);
+  padding: var(--c-card-padding, 1.5cqi 1.8cqi); box-shadow: var(--shadow);
 }
 
 /* Soft-surface card (less contrast) */
 .c-card-soft {
   background: var(--surface-2); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 1.5cqi 1.8cqi;
+  border-radius: var(--radius); padding: var(--c-card-padding, 1.5cqi 1.8cqi);
 }
 
 /* Section container — for grouping related content */
 .c-section {
   border: 1.5px solid var(--border-strong); border-radius: var(--radius-lg);
-  padding: 1.8cqi; position: relative;
+  padding: var(--c-section-padding, 1.8cqi); position: relative;
 }
 .c-section-label {
-  font-size: 1.3cqi; font-weight: 800; color: var(--text-1);
+  font-size: var(--c-section-label-size, 1.3cqi); font-weight: 800; color: var(--text-1);
   margin-bottom: 1cqi;
 }
 
@@ -352,7 +455,7 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
   background: color-mix(in srgb, var(--surface) 60%, transparent);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
-  border-radius: var(--radius-lg); padding: 1.8cqi;
+  border-radius: var(--radius-lg); padding: var(--c-glass-padding, 1.8cqi);
   box-shadow: var(--shadow-lg);
 }
 
@@ -362,7 +465,7 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
 
 .c-badge {
   display: inline-block; padding: 0.3cqi 0.9cqi; border-radius: 999px;
-  font-size: 0.85cqi; font-weight: 600; line-height: 1.4;
+  font-size: var(--c-badge-size, 0.85cqi); font-weight: 600; line-height: 1.4;
   background: var(--surface-2); color: var(--text-2);
   border: 1px solid var(--border);
 }
@@ -379,8 +482,8 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
    ══════════════════════════════════════════════════════ */
 
 .c-kpi { text-align: center; }
-.c-kpi-value { font-size: 4.5cqi; font-weight: 900; line-height: 1; color: var(--text-1); letter-spacing: var(--letter-tight); }
-.c-kpi-label { font-size: 1.1cqi; color: var(--text-2); margin-top: 0.4cqi; }
+.c-kpi-value { font-size: var(--c-kpi-value-size, 4.5cqi); font-weight: 900; line-height: 1; color: var(--text-1); letter-spacing: var(--letter-tight); }
+.c-kpi-label { font-size: var(--c-kpi-label-size, 1.1cqi); color: var(--text-2); margin-top: 0.4cqi; }
 .c-kpi-delta { font-size: 1cqi; font-weight: 700; margin-top: 0.2cqi; }
 .c-kpi-delta.up   { color: var(--good); }
 .c-kpi-delta.down { color: var(--bad); }
@@ -390,8 +493,8 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
    QUOTE
    ══════════════════════════════════════════════════════ */
 
-.c-quote { font-family: var(--font-serif); font-size: 2.2cqi; line-height: 1.4; font-style: italic; color: var(--text-1); position: relative; padding: 0 0 0 3cqi; }
-.c-quote::before { content: "\201C"; position: absolute; left: 0; top: -1cqi; font-size: 5cqi; color: var(--accent); font-style: normal; font-family: var(--font-serif); line-height: 1; opacity: .35; }
+.c-quote { font-family: var(--font-serif); font-size: var(--c-quote-size, 2.2cqi); line-height: 1.4; font-style: italic; color: var(--text-1); position: relative; padding: 0 0 0 3cqi; }
+.c-quote::before { content: "\201C"; position: absolute; left: 0; top: var(--c-quote-mark-top, -1cqi); font-size: var(--c-quote-mark-size, 5cqi); color: var(--accent); font-style: normal; font-family: var(--font-serif); line-height: 1; opacity: .35; }
 .c-quote-attr { font-size: 1cqi; color: var(--text-3); font-style: normal; margin-top: 0.8cqi; display: block; }
 
 /* ══════════════════════════════════════════════════════
@@ -399,15 +502,15 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
    ══════════════════════════════════════════════════════ */
 
 .c-steps { display: flex; flex-direction: column; gap: 0; }
-.c-step { display: flex; gap: 1.5cqi; align-items: flex-start; }
+.c-step { display: flex; gap: var(--c-step-gap, 1.5cqi); align-items: flex-start; }
 .c-step-num {
-  flex: none; width: 3cqi; height: 3cqi; border-radius: 50%;
+  flex: none; width: var(--c-step-num-size, 3cqi); height: var(--c-step-num-size, 3cqi); border-radius: 50%;
   background: var(--accent); color: #fff;
   display: flex; align-items: center; justify-content: center;
-  font-size: 1.3cqi; font-weight: 800;
+  font-size: var(--c-step-num-font, 1.3cqi); font-weight: 800;
 }
 .c-step-content { flex: 1; min-width: 0; }
-.c-step-title { font-size: 1.6cqi; font-weight: 800; color: var(--text-1); line-height: 1.3; margin-bottom: 0.3cqi; }
+.c-step-title { font-size: var(--c-step-title-size, 1.6cqi); font-weight: 800; color: var(--text-1); line-height: 1.3; margin-bottom: 0.3cqi; }
 .c-step-body { font-size: 1.1cqi; line-height: 1.5; color: var(--text-2); }
 
 /* Connector between steps */
@@ -419,7 +522,7 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
    ICON ROW
    ══════════════════════════════════════════════════════ */
 
-.c-icon-row { display: flex; gap: 1.5cqi; align-items: flex-start; }
+.c-icon-row { display: flex; gap: var(--c-icon-row-gap, 1.5cqi); align-items: flex-start; }
 .c-icon-row-icon {
   flex: none; width: 3cqi; height: 3cqi; border-radius: var(--radius-sm);
   background: var(--surface-2); border: 1px solid var(--border);
@@ -427,7 +530,7 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
   font-size: 1.4cqi;
 }
 .c-icon-row-text { flex: 1; min-width: 0; }
-.c-icon-row-title { font-size: 1.5cqi; font-weight: 800; color: var(--text-1); line-height: 1.3; margin-bottom: 0.3cqi; }
+.c-icon-row-title { font-size: var(--c-icon-row-title-size, 1.5cqi); font-weight: 800; color: var(--text-1); line-height: 1.3; margin-bottom: 0.3cqi; }
 .c-icon-row-body { font-size: 1.05cqi; line-height: 1.5; color: var(--text-2); }
 
 /* ══════════════════════════════════════════════════════
@@ -468,15 +571,6 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
 /* Striped variant */
 .c-table-striped tbody tr:nth-child(even) { background: var(--surface-2); }
 
-/* 3:4 narrow canvas */
-@container (max-width: 1000px) {
-  .c-table { --tbl-font: calc(var(--body-size, 2cqi) * 0.95); }
-  .c-table th, .c-table td { padding: 1.2cqi 1.5cqi; }
-  .c-table[data-rows="10"] { --tbl-font: calc(var(--body-size, 2cqi) * 0.78); }
-  .c-table[data-rows="12"] { --tbl-font: calc(var(--body-size, 2cqi) * 0.68); }
-  .c-table[data-rows="15"] { --tbl-font: calc(var(--body-size, 2cqi) * 0.6); }
-}
-
 /* ══════════════════════════════════════════════════════
    CODE & TERMINAL
    ══════════════════════════════════════════════════════ */
@@ -484,9 +578,9 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
 /* Code box — syntax-highlighted code block */
 .c-codebox {
   background: #1a1a1a; color: #e4e2d8;
-  border-radius: var(--radius); padding: 2.5cqi 3cqi;
+  border-radius: var(--radius); padding: var(--c-codebox-padding, 2.5cqi 3cqi);
   font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
-  font-size: 1.4cqi; line-height: 1.75; overflow: auto;
+  font-size: var(--c-codebox-size, 1.4cqi); line-height: 1.75; overflow: auto;
 }
 .c-codebox .cm { color: #6b6a62; font-style: italic; }  /* comment */
 .c-codebox .kw { color: #e8a87c; font-weight: 700; }     /* keyword */
@@ -537,7 +631,7 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
 .c-formula {
   border: 2px solid var(--border-strong); border-radius: var(--radius);
   padding: 1.2cqi 1.8cqi; text-align: center;
-  font-size: 1.8cqi; font-weight: 800; color: var(--text-1);
+  font-size: var(--c-formula-size, 1.8cqi); font-weight: 800; color: var(--text-1);
   background: var(--surface-2);
 }
 
@@ -570,76 +664,6 @@ h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
   font-size: 1.05cqi; line-height: 1.55; color: var(--text-2);
 }
 .c-example-label { font-size: 0.85cqi; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 0.5cqi; }
-
-/* ══════════════════════════════════════════════════════
-   3:4 CANVAS — container query overrides
-   Larger cqi multipliers so elements fill the narrow screen proportionally
-   ══════════════════════════════════════════════════════ */
-
-@container (max-width: 1000px) {
-  /* Layout containers: switch to vertical stacking */
-  .c-row { flex-direction: column; }
-  .c-row > * { flex: none; width: 100%; }
-  .c-grid-2 { grid-template-columns: 1fr; }
-  .c-grid-3 { grid-template-columns: repeat(2, 1fr); }
-
-  /* Boost cqi multipliers for proportional sizing on narrow canvas */
-  .c-title { font-size: 3.5cqi; }
-  .c-subtitle { font-size: 2.5cqi; }
-  .c-body { font-size: 2cqi; }
-  .c-small { font-size: 1.6cqi; }
-
-  .c-card, .c-card-accent, .c-card-warn, .c-card-soft { padding: 2.5cqi 3cqi; }
-  .c-section { padding: 3cqi; }
-  .c-section-label { font-size: 2.3cqi; }
-  .c-glass { padding: 3cqi; }
-
-  .c-badge { font-size: 1.5cqi; padding: 0.5cqi 1.2cqi; }
-  .c-badge-row { gap: 1cqi; }
-
-  .c-kpi-value { font-size: 8cqi; }
-  .c-kpi-label { font-size: 2cqi; margin-top: 0.6cqi; }
-  .c-kpi-delta { font-size: 1.8cqi; }
-
-  .c-quote { font-size: 3.5cqi; padding-left: 5cqi; }
-  .c-quote::before { font-size: 8cqi; top: -1.5cqi; }
-  .c-quote-attr { font-size: 1.8cqi; }
-
-  .c-step-num { width: 5cqi; height: 5cqi; font-size: 2.2cqi; }
-  .c-step { gap: 2.5cqi; }
-  .c-step-title { font-size: 2.8cqi; }
-  .c-step-body { font-size: 1.9cqi; }
-  .c-connector { padding-left: 2.5cqi; gap: 1.5cqi; }
-  .c-connector-arrow { font-size: 2.5cqi; }
-  .c-connector-text { font-size: 1.6cqi; }
-
-  .c-icon-row { gap: 2.5cqi; }
-  .c-icon-row-icon { width: 5cqi; height: 5cqi; font-size: 2.5cqi; border-radius: var(--radius); }
-  .c-icon-row-title { font-size: 2.5cqi; }
-  .c-icon-row-body { font-size: 1.8cqi; }
-
-  .c-formula { font-size: 3cqi; padding: 2cqi 2.5cqi; }
-  .c-warn { padding: 2cqi 2.5cqi; gap: 2cqi; }
-  .c-warn-icon { font-size: 3.5cqi; }
-  .c-warn-title { font-size: 2.3cqi; }
-  .c-warn-body { font-size: 1.8cqi; }
-  .c-note { padding: 2cqi 2.5cqi; gap: 2cqi; }
-  .c-note-icon { font-size: 3.5cqi; }
-  .c-note-title { font-size: 2.3cqi; }
-  .c-note-body { font-size: 1.8cqi; }
-  .c-example { padding: 2cqi 2.5cqi; font-size: 1.8cqi; }
-  .c-example-label { font-size: 1.5cqi; }
-
-  .c-codebox { font-size: 2.2cqi; padding: 3cqi 3.5cqi; }
-  .c-terminal-body { padding: 20px 24px; }
-  .c-hero-num { font-size: 24cqi; }
-  .c-hero-num-label { font-size: 2.5cqi; }
-
-  .c-stack > * + * { margin-top: 2.5cqi; }
-  .c-spacer-sm { height: 1.5cqi; }
-  .c-spacer-md { height: 3cqi; }
-  .c-spacer-lg { height: 5cqi; }
-}
 </style>
 <style>/* editor.css */
 /* editor.css — visual editor UI styles */
@@ -886,8 +910,8 @@ body.editor-active .editor-canvas-label { display: block; }
   font-family: var(--font-sans);
 }
 /* Ensure slide content clears the fixed topbar */
-.d-pastel-card.portrait .slide { padding-top: 10cqi; }
-.d-pastel-card.landscape .slide { padding-top: 9cqi; }
+.d-pastel-card.portrait { --slide-pad-y: 10cqi; }
+.d-pastel-card.landscape { --slide-pad-y: 9cqi; }
 .d-pastel-card .chr-chip {
   display: inline-flex; align-items: center; gap: 1.23cqi;
   padding: .99cqi 2.22cqi; border-radius: 999px;
@@ -1010,10 +1034,9 @@ body.editor-active .editor-canvas-label { display: block; }
 .d-pastel-card .chr-codebox .st { color: #c8ecd8; }
 .d-pastel-card .chr-codebox .hl { color: #fcd0dd; font-weight: 700; }
 
-/* ── Container query overrides: preserve multi-column grids on 3:4 ── */
-@container (max-width: 1000px) {
-  .d-pastel-card .c-grid-2 { grid-template-columns: repeat(2, 1fr); }
-  .d-pastel-card .c-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.d-pastel-card.portrait {
+  --grid-cols-2: repeat(2, 1fr);
+  --grid-cols-3: repeat(3, 1fr);
 }
 
 /* Pill tag — used in thanks page badges */
@@ -1228,10 +1251,12 @@ body.editor-active .editor-canvas-label { display: block; }
     <div class="chr-blob b2"></div>
     <div class="chr-blob b3"></div>
     <div class="chr-topbar"><div class="chr-chip">A soft manifesto</div><div class="chr-page">01 · 08</div></div>
-    <div class="chr-kicker">Living With AI · 2026</div>
-    <h1 class="chr-title">放慢一点，让 AI 帮你过一种 <em>更温柔</em> 的生活</h1>
-    <div class="chr-divider"></div>
-    <p class="chr-sub">这不是一份效率指南。这是一份「怎么用 AI 少做一些事」的清单 —— 把挤出来的 4 小时还给你自己。</p>
+    <div class="v-fill" style="display:flex;flex-direction:column;justify-content:center">
+      <div class="chr-kicker">Living With AI · 2026</div>
+      <h1 class="chr-title">放慢一点，让 AI 帮你过一种 <em>更温柔</em> 的生活</h1>
+      <div class="chr-divider"></div>
+      <p class="chr-sub">这不是一份效率指南。这是一份「怎么用 AI 少做一些事」的清单 —— 把挤出来的 4 小时还给你自己。</p>
+    </div>
     <div class="chr-footer"><span>这不是一份效率指南。这是一份「怎么用 AI 少做一些事」的清</span><span>cover</span></div>
   </section>
 
@@ -1239,7 +1264,7 @@ body.editor-active .editor-canvas-label { display: block; }
     <div class="chr-blob b2"></div>
     <div class="chr-blob b3"></div>
     <div class="chr-topbar"><div class="chr-chip mint">Chapter one</div><div class="chr-page">02 · 08</div></div>
-    <div style="margin:auto 0;text-align:center">
+    <div class="v-center" style="text-align:center">
       <div class="chr-kicker">先问自己</div>
       <h1 class="chr-title">什么事 <em>是你</em> 其实不想做 <em>的？</em></h1>
       <p class="chr-sub">不是「不得不做」，是「做的时候灵魂在叹气」。</p>
@@ -1251,7 +1276,7 @@ body.editor-active .editor-canvas-label { display: block; }
     <div class="chr-blob b1"></div>
     <div class="chr-topbar"><div class="chr-chip rose">Four little escapes</div><div class="chr-page">03 · 08</div></div>
     <h2 class="chr-heading">四件可以 <em>完全交给 AI</em> 的小事</h2>
-    <div class="c-grid-2">
+    <div class="c-grid-2 v-fill">
             <div class="c-card peach">
         <div class="chr-card-num">01</div>
         <h4>回复那种「收到」邮件</h4>
@@ -1280,7 +1305,7 @@ body.editor-active .editor-canvas-label { display: block; }
     <div class="chr-blob b2"></div>
     <div class="chr-blob b3"></div>
     <div class="chr-topbar"><div class="chr-chip lilac">A small pause</div><div class="chr-page">04 · 08</div></div>
-    <div class="c-card chr-hero" style="padding:4.94cqi 5.68cqi;margin-top:3.46cqi">
+    <div class="c-card chr-hero v-center" style="padding:4.94cqi 5.68cqi;">
       <div class="c-quote">效率工具的终点，不是 <em>做更多</em>，而是 <em>有资格做更少</em>。</div>
       <div class="chr-divider"></div>
       <p class="chr-sub">当你把「收到」邮件、订餐、行程、照片整理都交出去，你才会惊讶地发现 —— 原来一周有 4 个小时是空的。</p>
@@ -1292,7 +1317,8 @@ body.editor-active .editor-canvas-label { display: block; }
     <div class="chr-blob b1"></div>
     <div class="chr-topbar"><div class="chr-chip">My auto-reply prompt</div><div class="chr-page">05 · 08</div></div>
     <h2 class="chr-heading">把「收到邮件」自动化的 <em>一段 prompt</em></h2>
-    <pre class="chr-codebox"># auto-reply skill
+    <div class="v-fill" style="overflow:auto">
+      <pre class="chr-codebox"># auto-reply skill
 when email matches "收到 / 好的 / 确认 / 收到谢谢":
   reply:
     tone: "温柔，简短，不要太商业"
@@ -1302,6 +1328,7 @@ when email matches "收到 / 好的 / 确认 / 收到谢谢":
     - 家人、伴侣、亲密朋友
     - 含"紧急"、"合同"、"付款"的邮件
 # 一周省 38 分钟，测过</pre>
+    </div>
     <div class="chr-footer"><span>把「收到邮件」自动化的 <em>一段 prompt</em></span><span>content · code</span></div>
   </section>
 
@@ -1309,7 +1336,7 @@ when email matches "收到 / 好的 / 确认 / 收到谢谢":
     <div class="chr-blob b2"></div>
     <div class="chr-topbar"><div class="chr-chip mint">Your week, rebuilt</div><div class="chr-page">06 · 08</div></div>
     <h2 class="chr-heading">一周 <em>4 小时</em> 还给自己</h2>
-    <div class="c-row">
+    <div class="c-row v-fill">
       
       <div class="c-kpi">
         <div class="c-kpi-value">48min</div>
@@ -1340,7 +1367,7 @@ when email matches "收到 / 好的 / 确认 / 收到谢谢":
     <div class="chr-blob b3"></div>
     <div class="chr-topbar"><div class="chr-chip rose">This weekend</div><div class="chr-page">07 · 08</div></div>
     <h2 class="chr-heading">这周末，先给自己 <em>放一个小假</em></h2>
-    <div class="c-grid-3">
+    <div class="c-grid-3 v-fill">
             <div class="c-card lemon">
         <div class="chr-card-num">☕</div>
         <h4>Saturday morning</h4>
@@ -1363,9 +1390,9 @@ when email matches "收到 / 好的 / 确认 / 收到谢谢":
   <section class="slide">
     <div class="chr-blob b2"></div>
     <div class="chr-topbar"><div class="chr-page">08 · 08</div></div>
-    <div style="margin:auto 0;text-align:center">
+    <div class="v-center" style="text-align:center">
       <div class="chr-kicker" style="text-align:center">thanks for reading</div>
-      <h1 class="chr-title" style="font-size:160px;text-align:center">谢谢 · thanks</h1>
+      <h1 class="chr-title" style="font-size:8cqi;text-align:center">谢谢 · thanks</h1>
       <div class="chr-divider"></div>
       <p class="chr-sub" style="margin:0 auto">如果你也想过更温柔的一周，评论区跟我说说你打算把哪一件事先交出去</p>
       

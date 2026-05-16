@@ -10,6 +10,7 @@ import type { SlideData, DesignTemplate } from "./types";
 interface PageContext {
   page: number;
   total: number;
+  canvas: "16:9" | "3:4";
 }
 
 /** Escape HTML entities in text content, but preserve intentional HTML tags */
@@ -40,20 +41,27 @@ function chromeBottom(d: DesignTemplate, s: SlideData, ctx: PageContext, right: 
 // ─── Slide Renderers ──────────────────────────────────────────────────
 
 export function renderCover(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
+  const isPortrait = ctx.canvas === "3:4";
+  const wrapClass = isPortrait ? "v-fill" : "";
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <div class="${d.kickerClass}">${esc(s.kicker || "")}</div>
-    <${d.titleTag} class="${d.titleClass}">${s.title || ""}</${d.titleTag}>
-    ${d.dividerHTML()}
-    <p class="${d.subtitleClass}">${esc(s.subtitle || "")}</p>
+    <div class="${wrapClass}" style="${isPortrait ? "display:flex;flex-direction:column;justify-content:center" : ""}">
+      <div class="${d.kickerClass}">${esc(s.kicker || "")}</div>
+      <${d.titleTag} class="${d.titleClass}">${s.title || ""}</${d.titleTag}>
+      ${d.dividerHTML()}
+      <p class="${d.subtitleClass}">${esc(s.subtitle || "")}</p>
+    </div>
     ${chromeBottom(d, s, ctx, "cover")}
   </section>`;
 }
 
 export function renderSection(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
+  const isPortrait = ctx.canvas === "3:4";
+  const marginClass = s.center || isPortrait ? (isPortrait ? "v-center" : "") : "";
+  const style = s.center || isPortrait ? 'style="text-align:center"' : '';
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <div ${s.center ? 'style="margin:auto 0;text-align:center"' : 'style="margin:auto 0"'}>
+    <div class="${marginClass}" ${style}>
       <div class="${d.kickerClass}">${esc(s.kicker || "")}</div>
       <${d.titleTag} class="${d.titleClass}">${s.title || ""}</${d.titleTag}>
       ${s.subtitle ? `<p class="${d.subtitleClass}">${esc(s.subtitle)}</p>` : ""}
@@ -64,11 +72,12 @@ export function renderSection(d: DesignTemplate, s: SlideData, ctx: PageContext)
 
 export function renderCards(d: DesignTemplate, s: SlideData, ctx: PageContext, cols: 2 | 3): string {
   const gridClass = cols === 2 ? "c-grid-2" : "c-grid-3";
+  const isPortrait = ctx.canvas === "3:4";
   const cards = s.cards || [];
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
     <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
-    <div class="${gridClass}">
+    <div class="${gridClass}${isPortrait ? " v-fill" : ""}">
       ${cards.map((c) => "      " + d.cardHTML(c)).join("\n")}
     </div>
     ${chromeBottom(d, s, ctx, `content · ${cols}x${Math.ceil(cards.length / cols)}`)}
@@ -76,9 +85,10 @@ export function renderCards(d: DesignTemplate, s: SlideData, ctx: PageContext, c
 }
 
 export function renderQuote(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
+  const isPortrait = ctx.canvas === "3:4";
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <div class="c-card chr-hero" style="padding:4.94cqi 5.68cqi;margin-top:3.46cqi">
+    <div class="c-card chr-hero${isPortrait ? " v-center" : ""}" style="padding:4.94cqi 5.68cqi;${isPortrait ? "" : "margin-top:3.46cqi"}">
       ${d.quoteHTML(s.quote || "", s.quoteAttr)}
       ${d.dividerHTML()}
       <p class="${d.subtitleClass}">${esc(s.subtitle || "")}</p>
@@ -89,10 +99,12 @@ export function renderQuote(d: DesignTemplate, s: SlideData, ctx: PageContext): 
 
 export function renderSteps(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
   const steps = s.steps || [];
+  const isPortrait = ctx.canvas === "3:4";
+  const useDistribute = isPortrait && steps.length <= 4;
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
     <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
-    <div class="c-steps">
+    <div class="c-steps${useDistribute ? " v-distribute" : ""}">
       ${steps.map((st) => "      " + d.stepHTML(st)).join("\n")}
     </div>
     ${chromeBottom(d, s, ctx, "content · steps")}
@@ -100,21 +112,26 @@ export function renderSteps(d: DesignTemplate, s: SlideData, ctx: PageContext): 
 }
 
 export function renderCode(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
+  const isPortrait = ctx.canvas === "3:4";
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
     <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
-    ${d.codeHTML(s.code || "")}
+    <div class="${isPortrait ? "v-fill" : ""}" style="overflow:auto">
+      ${d.codeHTML(s.code || "")}
+    </div>
     ${chromeBottom(d, s, ctx, "content · code")}
   </section>`;
 }
 
 export function renderThanks(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
   const badges = s.badges || [];
+  const isPortrait = ctx.canvas === "3:4";
+  const titleSize = isPortrait ? "8cqi" : "160px";
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
-    <div style="margin:auto 0;text-align:center">
+    <div class="${isPortrait ? "v-center" : ""}" style="text-align:center">
       <div class="${d.kickerClass}" style="text-align:center">thanks for reading</div>
-      <${d.titleTag} class="${d.titleClass}" style="font-size:160px;text-align:center">${s.title || "谢谢 · thanks"}</${d.titleTag}>
+      <${d.titleTag} class="${d.titleClass}" style="font-size:${titleSize};text-align:center">${s.title || "谢谢 · thanks"}</${d.titleTag}>
       ${d.dividerHTML()}
       <p class="${d.subtitleClass}" style="margin:0 auto">${esc(s.subtitle || "")}</p>
       ${badges.length ? `
@@ -128,10 +145,11 @@ export function renderThanks(d: DesignTemplate, s: SlideData, ctx: PageContext):
 
 export function renderBullets(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
   const items = s.bullets || [];
+  const isPortrait = ctx.canvas === "3:4";
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
     <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
-    <div class="c-stack">
+    <div class="c-stack${isPortrait ? " v-fill" : ""}">
       ${items.map((item) => `
       <div class="c-icon-row">
         <div class="c-icon-row-icon">${esc(item.icon)}</div>
@@ -147,10 +165,11 @@ export function renderBullets(d: DesignTemplate, s: SlideData, ctx: PageContext)
 
 export function renderKpi(d: DesignTemplate, s: SlideData, ctx: PageContext): string {
   const kpis = s.kpis || [];
+  const isPortrait = ctx.canvas === "3:4";
   return `<section class="slide">
     ${chromeTop(d, s, ctx)}
     <h2 class="${d.titleClass === "chr-title" ? "chr-heading" : d.titleClass}">${s.title || ""}</h2>
-    <div class="c-row">
+    <div class="c-row${isPortrait ? " v-fill" : ""}">
       ${kpis.map((k) => `
       <div class="c-kpi">
         <div class="c-kpi-value">${esc(k.value)}</div>

@@ -319,6 +319,61 @@ function checkBudget(slide: any, design: string): CheckResult[] {
   return results;
 }
 
+function checkPortraitBudget(config: any, slides: any[]): CheckResult[] {
+  const results: CheckResult[] = [];
+  if (config.canvas !== "3:4") return results;
+
+  for (let i = 0; i < slides.length; i++) {
+    const s = slides[i];
+    const prefix = `portrait-budget.slide[${i}].${s.type}`;
+
+    // Cover/section title: max 15 chars
+    if ((s.type === "cover" || s.type === "section") && s.title && charCount(s.title) > 15) {
+      results.push(fail(prefix, `Title too long for 3:4: "${s.title.slice(0, 20)}..." (${charCount(s.title)} chars, max 15)`));
+    }
+
+    // H2 titles (cards, steps, code, kpi, bullets, table): max 10 chars
+    const headingTypes = ["cards-2x2", "cards-3", "steps", "code", "kpi", "bullets", "table"];
+    if (headingTypes.includes(s.type) && s.title && charCount(s.title) > 10) {
+      results.push(fail(prefix, `H2 title too long for 3:4: "${s.title.slice(0, 20)}..." (${charCount(s.title)} chars, max 10)`));
+    }
+
+    // Count total components (cards + steps + kpis + bullets)
+    let componentCount = 0;
+    if (s.cards) componentCount += s.cards.length;
+    if (s.steps) componentCount += s.steps.length;
+    if (s.kpis) componentCount += s.kpis.length;
+    if (s.bullets) componentCount += s.bullets.length;
+    if (componentCount > 6) {
+      results.push(fail(prefix, `Too many components for 3:4: ${componentCount} (max 6)`));
+    }
+
+    // Steps limit: max 5
+    if (s.steps && s.steps.length > 5) {
+      results.push(fail(prefix, `Too many steps for 3:4: ${s.steps.length} (max 5)`));
+    }
+
+    // KPI limit: max 4
+    if (s.kpis && s.kpis.length > 4) {
+      results.push(fail(prefix, `Too many KPIs for 3:4: ${s.kpis.length} (max 4)`));
+    }
+
+    // Card body length: max 60 chars
+    if (s.cards) {
+      s.cards.forEach((c: any, ci: number) => {
+        if (c.body && charCount(c.body) > 60) {
+          results.push(fail(prefix, `Card[${ci}] body too long for 3:4: ${charCount(c.body)} chars (max 60)`));
+        }
+      });
+    }
+  }
+
+  if (results.length === 0) {
+    results.push(pass("portrait-budget", "All 3:4 portrait budget rules passed"));
+  }
+  return results;
+}
+
 function checkAnchor(slide: any): CheckResult[] {
   const results: CheckResult[] = [];
 
@@ -507,6 +562,17 @@ function validate(input: any): ValidationReport {
       type: slide.type || "unknown",
       title: slide.title || "(untitled)",
       checks,
+    });
+  }
+
+  // Portrait budget (3:4 only)
+  const portraitChecks = checkPortraitBudget(config, slides);
+  if (portraitChecks.length > 0) {
+    slideResults.push({
+      index: -2,
+      type: "portrait-budget",
+      title: "3:4 Portrait Budget Rules",
+      checks: portraitChecks,
     });
   }
 
