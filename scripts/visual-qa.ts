@@ -1,7 +1,7 @@
 /**
  * visual-qa.ts — Unified visual quality engine (Playwright)
  *
- * Replaces polish.ts (static CSS analysis) + visual-diff.ts (browser checks).
+ * Unified visual QA engine — detects all issues in live browser context.
  * All detection runs inside Playwright via page.evaluate for accuracy.
  *
  * Detection groups:
@@ -69,7 +69,7 @@ Unified visual QA engine. Runs all checks inside Playwright for accuracy.
 
 Options:
   --input, -i     Path to index.html
-  --check-only    Report only, do not generate polish.css
+  --check-only    Report only, do not modify HTML
   --report, -r    Write JSON report to file
 
 Detection groups:
@@ -598,7 +598,7 @@ async function checkSpacing(page: any, slideIndex: number): Promise<Issue[]> {
           element: `.${type}`,
           message: `${type} ${direction === "vertical" ? "纵向" : "横向"}间距偏差 ${Math.round(devPercent)}%（最大 ${Math.round(maxDev)}px，平均 ${Math.round(avg)}px）`,
           fix: direction === "vertical"
-            ? `.slide:nth-child(${args.idx + 1}) .c-${type === "bullets" ? "stack > li + li" : type + " + .c-" + type} { margin-top: ${avg.toFixed(1)}px; }`
+            ? `.slide:nth-of-type(${args.idx + 1}) .c-${type === "bullets" ? "stack > li + li" : type + " + .c-" + type} { margin-top: ${avg.toFixed(1)}px; }`
             : undefined,
         });
       } else if (devPercent > 25) {
@@ -796,7 +796,7 @@ function analyzeFontHierarchy(allRecords: FontRecord[], slideWidth: number, port
         slide: slideNum,
         element: ".chr-heading",
         message: `h2 (${heading.toFixed(0)}px) 接近 h1 (${title.toFixed(0)}px)，层级不清晰`,
-        fix: `.slide:nth-child(${slideNum}) .chr-heading { font-size: ${(title * 0.7).toFixed(0)}px; }`,
+        fix: `.slide:nth-of-type(${slideNum}) .chr-heading { font-size: ${(title * 0.7).toFixed(0)}px; }`,
       });
     }
 
@@ -819,7 +819,7 @@ function analyzeFontHierarchy(allRecords: FontRecord[], slideWidth: number, port
           slide: slideNum,
           element: r.element,
           message: `字号 ${r.size.toFixed(0)}px 过小（最小 ${minSize}px）`,
-          fix: `.slide:nth-child(${slideNum}) ${r.element.split(".")[0]} { font-size: ${minSize}px; }`,
+          fix: `.slide:nth-of-type(${slideNum}) ${r.element.split(".")[0]} { font-size: ${minSize}px; }`,
         });
       }
     }
@@ -1078,7 +1078,7 @@ function generateFixes(issues: Issue[]): string {
       const ratio = data.clientHeight / data.scrollHeight;
       if (ratio > 0.8) {
         const newSize = Math.floor(data.fontSize * ratio);
-        const rule = `.slide:nth-child(${issue.slide}) ${issue.element.split(".")[0]} { font-size: ${newSize}px; }`;
+        const rule = `.slide:nth-of-type(${issue.slide}) ${issue.element.split(".")[0]} { font-size: ${newSize}px; }`;
         if (!seen.has(rule)) {
           seen.add(rule);
           css += `\n/* text-overflow auto-fix: shrink font */\n${rule}\n`;
@@ -1086,7 +1086,7 @@ function generateFixes(issues: Issue[]): string {
       }
     }
     if (issue.message.includes("横向")) {
-      const rule = `.slide:nth-child(${issue.slide}) ${issue.element.split(".")[0]} { word-break: break-word; min-width: 0; }`;
+      const rule = `.slide:nth-of-type(${issue.slide}) ${issue.element.split(".")[0]} { word-break: break-word; min-width: 0; }`;
       if (!seen.has(rule)) {
         seen.add(rule);
         css += `\n/* text-overflow auto-fix: word-break */\n${rule}\n`;
@@ -1101,7 +1101,7 @@ function generateFixes(issues: Issue[]): string {
       const textRgb = parseRGBString(data.textColor);
       if (textRgb) {
         const fixed = adjustColorForContrast(textRgb, data.bgLuminance);
-        const rule = `.slide:nth-child(${issue.slide}) ${issue.element.split(".")[0]} { color: ${fixed}; }`;
+        const rule = `.slide:nth-of-type(${issue.slide}) ${issue.element.split(".")[0]} { color: ${fixed}; }`;
         if (!seen.has(rule)) {
           seen.add(rule);
           css += `\n/* contrast auto-fix */\n${rule}\n`;
@@ -1231,11 +1231,25 @@ async function main(): Promise<void> {
   printReport(allIssues, totalSlides);
 
   if (!cli.checkOnly) {
-    const css = generateFixes(allIssues);
-    const outPath = path.join(htmlDir, "polish.css");
-    fs.writeFileSync(outPath, css);
-    const ruleCount = css.split("\n").filter(l => l.trim() && !l.startsWith("/*")).length;
-    console.log(`  Written: ${outPath} (${ruleCount} CSS rule(s))\n`);
+    const fixesCSS = generateFixes(allIssues);
+    const ruleCount = fixesCSS.split("\n").filter(l => l.trim() && !l.startsWith("/*")).length;
+
+    if (ruleCount > 0) {
+      // Embed fixes directly into HTML as <style id="qa-fixes">
+      let html = fs.readFileSync(htmlPath, "utf-8");
+      const tagStart = html.indexOf('id="editor-overrides"');
+      if (tagStart !== -1) {
+        // Insert QA fixes before editor overrides (editor takes precedence)
+        html = html.substring(0, tagStart) +
+          `<style id="qa-fixes">\n${fixesCSS}\n</style>\n` +
+          html.substring(tagStart);
+      } else {
+        // No editor-overrides tag — insert before </head>
+        html = html.replace("</head>", `<style id="qa-fixes">\n${fixesCSS}\n</style>\n</head>`);
+      }
+      fs.writeFileSync(htmlPath, html);
+      console.log(`  Written QA fixes to ${htmlPath} (${ruleCount} CSS rule(s))\n`);
+    }
   }
 
   if (cli.report) {

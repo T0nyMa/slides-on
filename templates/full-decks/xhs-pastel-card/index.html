@@ -3,142 +3,3020 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>XHS Pastel Card</title>
-<link rel="stylesheet" href="../../../assets/fonts.css">
-<link rel="stylesheet" href="../../../assets/base.css">
-<link rel="stylesheet" href="../../../assets/components.css">
-<link rel="stylesheet" href="../../../assets/designs/pastel-card.css">
+<title>放慢一点 · 让 AI 帮你过一种更温柔的生活</title>
+<style>/* fonts.css */
+/* slides-on :: system font stacks — no external dependencies */
+
+/* Sans-serif stack — maps to Inter + Noto Sans SC */
+/* macOS: SF Pro + PingFang SC | Windows: Segoe UI + Microsoft YaHei | Linux: Noto Sans + Noto Sans CJK */
+:root {
+  --font-sans: "SF Pro Display", "SF Pro Text", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Segoe UI", "Noto Sans", "Noto Sans CJK SC",
+    -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+
+  --font-serif: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC",
+    "SimSun", "Times New Roman", Georgia, "Liberation Serif", serif;
+
+  --font-mono: "SF Mono", "Cascadia Code", "Consolas", "Menlo",
+    "Noto Sans Mono CJK SC", "Source Code Pro", "Liberation Mono", monospace;
+
+  --font-display: var(--font-sans);
+}
+</style>
+<style>/* base.css */
+/* html-ppt :: base.css — reset + shared tokens + layout primitives */
+/* Default tokens. Themes in assets/themes/*.css override the :root block. */
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f7f7f8;
+  --surface: #ffffff;
+  --surface-2: #f2f2f4;
+  --border: rgba(0,0,0,.08);
+  --border-strong: rgba(0,0,0,.16);
+  --text-1: #111216;
+  --text-2: #55596a;
+  --text-3: #8a8f9e;
+  --accent: #3b6cff;
+  --accent-2: #7a5cff;
+  --accent-3: #ff5c8a;
+  --good: #1aaf6c;
+  --warn: #f5a524;
+  --bad:  #e0445a;
+  --grad: linear-gradient(135deg,#3b6cff,#7a5cff 55%,#ff5c8a);
+  --grad-soft: linear-gradient(135deg,#eef2ff,#f5ecff 55%,#ffeef5);
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-lg: 26px;
+  --shadow: 0 10px 30px rgba(18,24,40,.08), 0 2px 6px rgba(18,24,40,.04);
+  --shadow-lg: 0 24px 60px rgba(18,24,40,.14), 0 6px 16px rgba(18,24,40,.06);
+  --letter-tight: -.03em;
+  --letter-normal: -.01em;
+  --ease: cubic-bezier(.4,0,.2,1);
+
+  /* Layer system — dimension variables (overridden by assets/layers/) */
+  --body-size: 2cqi;
+  --slide-padding-y: 4cqi;
+  --slide-padding-x: 6cqi;
+  --card-pad-y: 1.5cqi;
+  --card-pad-x: 1.8cqi;
+  --card-gap: 1.5cqi;
+  --component-gap: 1.5cqi;
+  --bg-texture: none;
+  --bg-pattern: none;
+  --bg-pattern-size: 0;
+  --card-shadow: 0 2px 8px rgba(0,0,0,.08);
+  --border-style: solid;
+  --tbl-font: var(--body-size);
+  --tbl-cell-pad: 0.6cqi 1.2cqi;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text-1);
+  font-family:var(--font-sans);font-weight:400;line-height:1.6;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  letter-spacing:var(--letter-normal)}
+img,svg,video{max-width:100%;display:block}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code,kbd,pre,samp{font-family:var(--font-mono)}
+
+/* ================= SLIDE SYSTEM ================= */
+.deck{position:relative;width:100vw;height:100vh;overflow:hidden;background:var(--bg);container-type:inline-size}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:72px 96px;
+  box-sizing:border-box;
+  opacity:0;pointer-events:none;
+  transition:opacity .5s var(--ease), transform .5s var(--ease);
+  transform:translateX(30px);
+  overflow:hidden;
+}
+.slide.is-active{opacity:1;pointer-events:auto;transform:translateX(0);z-index:2}
+.slide.is-prev{transform:translateX(-30px)}
+
+/* single-page standalone (used when a layout file is opened directly) */
+body.single .slide{position:relative;width:100vw;height:100vh;opacity:1;transform:none;pointer-events:auto}
+
+/* ================= TYPOGRAPHY ================= */
+.eyebrow{font-size:13px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+.kicker{font-size:14px;font-weight:600;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
+h1.title,.h1{font-family:var(--font-display);font-size:72px;line-height:1.05;font-weight:800;letter-spacing:var(--letter-tight);margin:0 0 18px;color:var(--text-1)}
+h2.title,.h2{font-family:var(--font-display);font-size:54px;line-height:1.1;font-weight:700;letter-spacing:var(--letter-tight);margin:0 0 14px}
+h3,.h3{font-size:32px;line-height:1.2;font-weight:600;letter-spacing:var(--letter-normal);margin:0 0 10px}
+h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
+.lede{font-size:22px;line-height:1.55;color:var(--text-2);font-weight:300;max-width:62ch}
+.dim{color:var(--text-2)}
+.dim2{color:var(--text-3)}
+.mono{font-family:var(--font-mono)}
+.serif{font-family:var(--font-serif)}
+.gradient-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+
+/* ================= LAYOUT PRIMITIVES ================= */
+.stack>*+*{margin-top:14px}
+.row{display:flex;gap:24px;align-items:center}
+.row.wrap{flex-wrap:wrap}
+.grid{display:grid;gap:24px}
+.g2{display:grid;grid-template-columns:repeat(2,1fr)}
+.g3{display:grid;grid-template-columns:repeat(3,1fr)}
+.g4{display:grid;grid-template-columns:repeat(4,1fr)}
+.center{display:flex;align-items:center;justify-content:center;text-align:center}
+.fill{flex:1}
+.sp-t{padding-top:24px}.sp-b{padding-bottom:24px}
+.mt-s{margin-top:8px}.mt-m{margin-top:18px}.mt-l{margin-top:32px}
+.mb-s{margin-bottom:8px}.mb-m{margin-bottom:18px}.mb-l{margin-bottom:32px}
+
+/* ================= CARDS ================= */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:26px 28px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.card-soft{background:var(--surface-2);border:1px solid var(--border)}
+.card-outline{background:transparent;border:1.5px solid var(--border-strong);box-shadow:none}
+.card-accent{background:var(--surface);border-top:3px solid var(--accent)}
+.card-hover{transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.card-hover:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+
+.pill{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:500;
+  background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
+.pill-accent{background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent);border-color:color-mix(in srgb,var(--accent) 28%,transparent)}
+
+/* ================= BARS / DIVIDERS ================= */
+.divider{height:1px;background:var(--border);width:100%}
+.divider-accent{height:3px;width:72px;background:var(--accent);border-radius:2px}
+
+/* ================= CHROME (header/footer/progress) ================= */
+.deck-header{position:absolute;top:24px;left:40px;right:40px;display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;color:var(--text-3);letter-spacing:.12em;text-transform:uppercase;z-index:10;pointer-events:none}
+.deck-footer{position:absolute;bottom:24px;left:40px;right:40px;display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;color:var(--text-3);z-index:10;pointer-events:none}
+.slide-number::before{content:attr(data-current)}
+.slide-number::after{content:" / " attr(data-total)}
+.progress-bar{position:fixed;left:0;right:0;bottom:0;height:3px;background:transparent;z-index:20}
+.progress-bar > span{display:block;height:100%;width:0;background:var(--accent);transition:width .3s var(--ease)}
+
+/* ================= PRESENTER / OVERVIEW ================= */
+.notes{display:none!important}
+.notes-overlay{position:fixed;inset:auto 0 0 0;max-height:42vh;background:rgba(20,22,30,.95);color:#e8ebf4;
+  padding:20px 32px;font-size:16px;line-height:1.6;border-top:1px solid rgba(255,255,255,.1);transform:translateY(100%);
+  transition:transform .3s var(--ease);z-index:40;overflow:auto;font-family:var(--font-sans)}
+.notes-overlay.open{transform:translateY(0)}
+.overview{position:fixed;inset:0;background:rgba(10,12,18,.92);backdrop-filter:blur(12px);z-index:50;
+  display:none;padding:40px;overflow:auto}
+.overview.open{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-content:start}
+.overview .thumb{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  aspect-ratio:16/9;overflow:hidden;cursor:pointer;position:relative;color:var(--text-1);padding:16px;
+  font-size:11px;transition:transform .2s var(--ease)}
+.overview .thumb:hover{transform:scale(1.04)}
+.overview .thumb .n{position:absolute;top:8px;left:10px;font-weight:700;font-size:14px;color:var(--text-3)}
+.overview .thumb .t{position:absolute;bottom:10px;left:14px;right:14px;font-weight:600;color:var(--text-1)}
+
+/* ================= PRESENTER VIEW ================= */
+/* Presenter view opens in a separate popup window (S key).
+ * All presenter styles are self-contained in the popup HTML generated by runtime.js.
+ * The audience window (this file) is NOT affected — it stays as normal deck view.
+ * Only the .notes class below is needed to hide speaker notes from audience. */
+
+/* ================= UTILITY ================= */
+.hidden{display:none!important}
+.nowrap{white-space:nowrap}
+.tr{text-align:right}.tc{text-align:center}.tl{text-align:left}
+.uppercase{text-transform:uppercase;letter-spacing:.12em}
+
+/* ================= NARROW CANVAS ================= */
+/* Two-tier narrow handling:
+
+   1. @container — fires when DECK is narrow (3:4 portrait). Uses cqi units
+      for proportional sizing that fills the screen. This is the primary path
+      for intentionally-designed portrait decks (XHS, Stories, mobile posts).
+
+   2. @media — fallback when container queries aren't supported, or when the
+      VIEWPORT is narrow (small browser window). Shrinks fonts linearly.
+
+   Reference: 16:9 deck = 1920px (1cqi ≈ 19.2px), 3:4 deck = 810px (1cqi ≈ 8.1px)
+
+   On 3:4 canvas, the @container values below give:
+   h1 ≈ 57px, h2 ≈ 42px, h3 ≈ 30px, lede ≈ 20px
+   — larger than the @media narrow breakpoint, proportionally filling the screen. */
+
+/* ── Fallback: viewport width media query (lower priority) ── */
+@media (max-width: 900px) {
+  .slide{ padding: 48px 40px; }
+  .g4, .g3{ grid-template-columns: repeat(2, 1fr); }
+  .g5, .g6{ grid-template-columns: repeat(3, 1fr); }
+  h1.title, .h1{ font-size: 48px; }
+  h2.title, .h2{ font-size: 38px; }
+  h3, .h3{ font-size: 26px; }
+  .lede{ font-size: 18px; }
+}
+
+/* ── Primary: container query on deck width (overrides @media when deck is narrow) ── */
+@container (max-width: 1000px) {
+  .slide{ padding: 6cqi 5.5cqi; justify-content: flex-start; }
+  .g4, .g3{ grid-template-columns: repeat(2, 1fr); }
+  .g5, .g6{ grid-template-columns: repeat(3, 1fr); }
+  h1.title, .h1{ font-size: 7cqi; }
+  h2.title, .h2{ font-size: 5.2cqi; }
+  h3, .h3{ font-size: 3.7cqi; }
+  .lede{ font-size: 2.5cqi; }
+  .deck-header{ top: 3cqi; left: 5.5cqi; right: 5.5cqi; font-size: 1.5cqi; }
+  .deck-footer{ bottom: 3cqi; left: 5.5cqi; right: 5.5cqi; font-size: 1.5cqi; }
+}
+
+/* .narrow class — JS-driven or manual trigger (explicit opt-in) */
+.narrow .g4, .narrow .g3{ grid-template-columns: repeat(2, 1fr); }
+.narrow .g5, .narrow .g6{ grid-template-columns: repeat(3, 1fr); }
+.narrow h1.title, .narrow .h1{ font-size: 48px; }
+.narrow h2.title, .narrow .h2{ font-size: 38px; }
+.narrow h3, .narrow .h3{ font-size: 26px; }
+.narrow .lede{ font-size: 18px; }
+.narrow .slide{ padding: 48px 40px; }
+
+/* .portrait class — 3:4 portrait canvas (one class handles canvas + slide defaults) */
+.portrait .deck {
+  width: min(100vw, calc(100vh * 3 / 4));
+  height: min(100vh, calc(100vw * 4 / 3));
+  margin: auto; overflow: hidden;
+  container-type: inline-size;
+}
+.portrait .slide {
+  padding: 4.5cqi 4.5cqi 3cqi;
+  justify-content: flex-start;
+}
+
+/* .landscape class — 16:9 canvas (standard presentation) */
+.landscape .deck {
+  width: min(100vw, calc(100vh * 16 / 9));
+  height: min(100vh, calc(100vw * 9 / 16));
+  margin: auto; overflow: hidden;
+  container-type: inline-size;
+}
+.landscape .slide {
+  padding: 3.5cqi 5cqi;
+  justify-content: center;
+}
+
+/* ================= PRINT ================= */
+@media print{
+  .slide{position:relative;opacity:1!important;transform:none!important;page-break-after:always;height:100vh}
+  .deck-header,.deck-footer,.progress-bar,.notes-overlay,.overview{display:none!important}
+}
+</style>
+<style>/* components.css */
+/* slides-on :: components.css — shared responsive component library */
+/* All components use cqi units + CSS variables. Theme-agnostic. Zero layout assumptions. */
+
+/* ══════════════════════════════════════════════════════
+   LAYOUT CONTAINERS
+   ══════════════════════════════════════════════════════ */
+
+/* Vertical stack: auto-spacing between children */
+.c-stack { display: flex; flex-direction: column; }
+.c-stack > * + * { margin-top: 1.5cqi; }
+
+/* Horizontal row → auto-stacks vertically in 3:4 */
+.c-row { display: flex; gap: 1.5cqi; align-items: flex-start; }
+.c-row > * { flex: 1; min-width: 0; }
+
+/* Grid 2/3 columns → auto-reduces in 3:4 */
+.c-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5cqi; }
+.c-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5cqi; }
+
+/* Divider */
+.c-divider { height: 1px; background: var(--border); width: 100%; }
+.c-divider-accent { height: 2px; width: 5cqi; background: var(--accent); border-radius: 1px; }
+
+/* Spacers */
+.c-spacer-sm { height: 1cqi; }
+.c-spacer-md { height: 2cqi; }
+.c-spacer-lg { height: 3.5cqi; }
+
+/* ══════════════════════════════════════════════════════
+   TYPOGRAPHY COMPONENTS
+   ══════════════════════════════════════════════════════ */
+
+/* Component title — use inside c-card, c-section etc. */
+.c-title { font-size: 2.2cqi; font-weight: 800; line-height: 1.2; color: var(--text-1); margin: 0; }
+.c-subtitle { font-size: 1.5cqi; font-weight: 600; line-height: 1.3; color: var(--text-2); margin: 0; }
+.c-body { font-size: 1.2cqi; line-height: 1.55; color: var(--text-2); }
+.c-small { font-size: 0.95cqi; line-height: 1.45; color: var(--text-3); }
+
+/* Gradient text */
+.c-grad {
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+
+/* ══════════════════════════════════════════════════════
+   CONTENT CONTAINERS
+   ══════════════════════════════════════════════════════ */
+
+/* Basic card */
+.c-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.5cqi 1.8cqi;
+  box-shadow: var(--shadow); position: relative; overflow: hidden;
+}
+
+/* Card with top accent line */
+.c-card-accent {
+  background: var(--surface); border: 1px solid var(--border);
+  border-top: 3px solid var(--accent); border-radius: var(--radius);
+  padding: 1.5cqi 1.8cqi; box-shadow: var(--shadow);
+}
+
+/* Card with left warning line */
+.c-card-warn {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 4px solid var(--warn); border-radius: var(--radius);
+  padding: 1.5cqi 1.8cqi; box-shadow: var(--shadow);
+}
+
+/* Soft-surface card (less contrast) */
+.c-card-soft {
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.5cqi 1.8cqi;
+}
+
+/* Section container — for grouping related content */
+.c-section {
+  border: 1.5px solid var(--border-strong); border-radius: var(--radius-lg);
+  padding: 1.8cqi; position: relative;
+}
+.c-section-label {
+  font-size: 1.3cqi; font-weight: 800; color: var(--text-1);
+  margin-bottom: 1cqi;
+}
+
+/* Glassmorphism card */
+.c-glass {
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  border-radius: var(--radius-lg); padding: 1.8cqi;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ══════════════════════════════════════════════════════
+   BADGE / PILL
+   ══════════════════════════════════════════════════════ */
+
+.c-badge {
+  display: inline-block; padding: 0.3cqi 0.9cqi; border-radius: 999px;
+  font-size: 0.85cqi; font-weight: 600; line-height: 1.4;
+  background: var(--surface-2); color: var(--text-2);
+  border: 1px solid var(--border);
+}
+.c-badge.accent { background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent); border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
+.c-badge.good   { background: color-mix(in srgb, var(--good) 15%, transparent); color: var(--good); border-color: color-mix(in srgb, var(--good) 30%, transparent); }
+.c-badge.warn   { background: color-mix(in srgb, var(--warn) 15%, transparent); color: var(--warn); border-color: color-mix(in srgb, var(--warn) 30%, transparent); }
+.c-badge.bad    { background: color-mix(in srgb, var(--bad) 15%, transparent); color: var(--bad); border-color: color-mix(in srgb, var(--bad) 30%, transparent); }
+
+/* Badge row: horizontal list of badges */
+.c-badge-row { display: flex; flex-wrap: wrap; gap: 0.6cqi; align-items: center; }
+
+/* ══════════════════════════════════════════════════════
+   KPI / BIG NUMBER
+   ══════════════════════════════════════════════════════ */
+
+.c-kpi { text-align: center; }
+.c-kpi-value { font-size: 4.5cqi; font-weight: 900; line-height: 1; color: var(--text-1); letter-spacing: var(--letter-tight); }
+.c-kpi-label { font-size: 1.1cqi; color: var(--text-2); margin-top: 0.4cqi; }
+.c-kpi-delta { font-size: 1cqi; font-weight: 700; margin-top: 0.2cqi; }
+.c-kpi-delta.up   { color: var(--good); }
+.c-kpi-delta.down { color: var(--bad); }
+.c-kpi-delta.flat { color: var(--text-3); }
+
+/* ══════════════════════════════════════════════════════
+   QUOTE
+   ══════════════════════════════════════════════════════ */
+
+.c-quote { font-family: var(--font-serif); font-size: 2.2cqi; line-height: 1.4; font-style: italic; color: var(--text-1); position: relative; padding: 0 0 0 3cqi; }
+.c-quote::before { content: "\201C"; position: absolute; left: 0; top: -1cqi; font-size: 5cqi; color: var(--accent); font-style: normal; font-family: var(--font-serif); line-height: 1; opacity: .35; }
+.c-quote-attr { font-size: 1cqi; color: var(--text-3); font-style: normal; margin-top: 0.8cqi; display: block; }
+
+/* ══════════════════════════════════════════════════════
+   STEPS / PROCESS
+   ══════════════════════════════════════════════════════ */
+
+.c-steps { display: flex; flex-direction: column; gap: 0; }
+.c-step { display: flex; gap: 1.5cqi; align-items: flex-start; }
+.c-step-num {
+  flex: none; width: 3cqi; height: 3cqi; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3cqi; font-weight: 800;
+}
+.c-step-content { flex: 1; min-width: 0; }
+.c-step-title { font-size: 1.6cqi; font-weight: 800; color: var(--text-1); line-height: 1.3; margin-bottom: 0.3cqi; }
+.c-step-body { font-size: 1.1cqi; line-height: 1.5; color: var(--text-2); }
+
+/* Connector between steps */
+.c-connector { display: flex; align-items: center; gap: 0.8cqi; padding: 0.4cqi 0 0.4cqi 1.5cqi; }
+.c-connector-arrow { color: var(--accent); font-size: 1.5cqi; font-weight: 800; line-height: 1; }
+.c-connector-text { font-size: 0.95cqi; color: var(--accent); font-weight: 600; }
+
+/* ══════════════════════════════════════════════════════
+   ICON ROW
+   ══════════════════════════════════════════════════════ */
+
+.c-icon-row { display: flex; gap: 1.5cqi; align-items: flex-start; }
+.c-icon-row-icon {
+  flex: none; width: 3cqi; height: 3cqi; border-radius: var(--radius-sm);
+  background: var(--surface-2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4cqi;
+}
+.c-icon-row-text { flex: 1; min-width: 0; }
+.c-icon-row-title { font-size: 1.5cqi; font-weight: 800; color: var(--text-1); line-height: 1.3; margin-bottom: 0.3cqi; }
+.c-icon-row-body { font-size: 1.05cqi; line-height: 1.5; color: var(--text-2); }
+
+/* ══════════════════════════════════════════════════════
+   TABLE
+   ══════════════════════════════════════════════════════ */
+
+.c-table-wrap { overflow-x: auto; width: 100%; }
+
+.c-table {
+  width: 100%; border-collapse: collapse;
+  font-size: var(--tbl-font, var(--body-size, 1.8cqi));
+  line-height: 1.5;
+}
+.c-table thead { border-bottom: 2px solid var(--border-strong); }
+.c-table th {
+  font-family: var(--font-display); font-weight: 700;
+  text-align: left; padding: var(--tbl-cell-pad, 0.8cqi 1.2cqi);
+  color: var(--text-1); font-size: 1.05em;
+  white-space: nowrap;
+}
+.c-table tbody { border-bottom: 1px solid var(--border); }
+.c-table td {
+  padding: var(--tbl-cell-pad, 0.6cqi 1.2cqi);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-2); vertical-align: top;
+}
+.c-table .num {
+  text-align: right; font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono); font-size: .95em;
+}
+.c-table .center { text-align: center; }
+
+/* Row-count adaptive sizing */
+.c-table[data-rows="10"] { --tbl-font: calc(var(--body-size, 2cqi) * 0.82); }
+.c-table[data-rows="12"] { --tbl-font: calc(var(--body-size, 2cqi) * 0.72); }
+.c-table[data-rows="15"] { --tbl-font: calc(var(--body-size, 2cqi) * 0.64); }
+
+/* Striped variant */
+.c-table-striped tbody tr:nth-child(even) { background: var(--surface-2); }
+
+/* 3:4 narrow canvas */
+@container (max-width: 1000px) {
+  .c-table { --tbl-font: calc(var(--body-size, 2cqi) * 0.95); }
+  .c-table th, .c-table td { padding: 1.2cqi 1.5cqi; }
+  .c-table[data-rows="10"] { --tbl-font: calc(var(--body-size, 2cqi) * 0.78); }
+  .c-table[data-rows="12"] { --tbl-font: calc(var(--body-size, 2cqi) * 0.68); }
+  .c-table[data-rows="15"] { --tbl-font: calc(var(--body-size, 2cqi) * 0.6); }
+}
+
+/* ══════════════════════════════════════════════════════
+   CODE & TERMINAL
+   ══════════════════════════════════════════════════════ */
+
+/* Code box — syntax-highlighted code block */
+.c-codebox {
+  background: #1a1a1a; color: #e4e2d8;
+  border-radius: var(--radius); padding: 2.5cqi 3cqi;
+  font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  font-size: 1.4cqi; line-height: 1.75; overflow: auto;
+}
+.c-codebox .cm { color: #6b6a62; font-style: italic; }  /* comment */
+.c-codebox .kw { color: #e8a87c; font-weight: 700; }     /* keyword */
+.c-codebox .st { color: #a8c292; }                       /* string */
+.c-codebox .fn { color: #c9a0dc; }                       /* function */
+.c-codebox .hl { color: #e9c58a; font-weight: 700; background: rgba(255,255,255,.06); padding: 0 2px; border-radius: 3px; }  /* highlight */
+
+/* Terminal window — with traffic-light dots */
+.c-terminal {
+  background: #0f1117; color: #e4e2d8;
+  border: 1px solid #1f222c; border-radius: var(--radius-lg);
+  overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,.3);
+}
+.c-terminal-topbar {
+  display: flex; align-items: center; gap: 8px; padding: 12px 16px;
+  background: #16181f; border-bottom: 1px solid #1f222c;
+}
+.c-terminal-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.c-terminal-dot.red    { background: #ff5f57; }
+.c-terminal-dot.yellow { background: #febc2e; }
+.c-terminal-dot.green  { background: #28c840; }
+.c-terminal-title {
+  flex: 1; text-align: center; font-size: 12px; color: #666;
+  font-family: 'JetBrains Mono', monospace;
+}
+.c-terminal-body { padding: 16px 20px; }
+.c-terminal-body .prompt { color: #28c840; }  /* green $ prompt */
+.c-terminal-body .cursor { display: inline-block; width: 8px; height: 16px; background: #e4e2d8; vertical-align: text-bottom; animation: c-cursor-blink 1s step-end infinite; }
+@keyframes c-cursor-blink { 50% { opacity: 0; } }
+
+/* ══════════════════════════════════════════════════════
+   HERO NUMBER
+   ══════════════════════════════════════════════════════ */
+
+/* Hero-size number for stats/impact pages */
+.c-hero-num {
+  font-family: 'Playfair Display', Georgia, 'Noto Serif SC', serif;
+  font-size: 16cqi; font-weight: 900; line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+.c-hero-num-label { font-size: 1.5cqi; color: var(--text-3); margin-top: 0.5cqi; }
+
+/* ══════════════════════════════════════════════════════
+   SPECIAL BOXES
+   ══════════════════════════════════════════════════════ */
+
+/* Formula / concept highlight */
+.c-formula {
+  border: 2px solid var(--border-strong); border-radius: var(--radius);
+  padding: 1.2cqi 1.8cqi; text-align: center;
+  font-size: 1.8cqi; font-weight: 800; color: var(--text-1);
+  background: var(--surface-2);
+}
+
+/* Warning box */
+.c-warn {
+  border: 2px solid var(--bad); border-radius: var(--radius);
+  padding: 1.2cqi 1.5cqi; display: flex; gap: 1.2cqi; align-items: flex-start;
+  background: color-mix(in srgb, var(--bad) 4%, transparent);
+}
+.c-warn-icon { flex: none; font-size: 2cqi; line-height: 1; }
+.c-warn-content { flex: 1; min-width: 0; }
+.c-warn-title { font-size: 1.3cqi; font-weight: 800; color: var(--bad); margin-bottom: 0.3cqi; }
+.c-warn-body { font-size: 1cqi; line-height: 1.5; color: var(--text-2); }
+
+/* Note / tip box — positive/neutral callout */
+.c-note {
+  border: 2px solid color-mix(in srgb, var(--accent) 30%, transparent); border-radius: var(--radius);
+  padding: 1.2cqi 1.5cqi; display: flex; gap: 1.2cqi; align-items: flex-start;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+.c-note-icon { flex: none; font-size: 2cqi; line-height: 1; }
+.c-note-content { flex: 1; min-width: 0; }
+.c-note-title { font-size: 1.3cqi; font-weight: 800; color: var(--accent); margin-bottom: 0.3cqi; }
+.c-note-body { font-size: 1cqi; line-height: 1.5; color: var(--text-2); }
+
+/* Example box */
+.c-example {
+  border: 1.5px solid var(--border-strong); border-radius: var(--radius);
+  padding: 1.2cqi 1.5cqi; background: var(--surface-2);
+  font-size: 1.05cqi; line-height: 1.55; color: var(--text-2);
+}
+.c-example-label { font-size: 0.85cqi; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 0.5cqi; }
+
+/* ══════════════════════════════════════════════════════
+   3:4 CANVAS — container query overrides
+   Larger cqi multipliers so elements fill the narrow screen proportionally
+   ══════════════════════════════════════════════════════ */
+
+@container (max-width: 1000px) {
+  /* Layout containers: switch to vertical stacking */
+  .c-row { flex-direction: column; }
+  .c-row > * { flex: none; width: 100%; }
+  .c-grid-2 { grid-template-columns: 1fr; }
+  .c-grid-3 { grid-template-columns: repeat(2, 1fr); }
+
+  /* Boost cqi multipliers for proportional sizing on narrow canvas */
+  .c-title { font-size: 3.5cqi; }
+  .c-subtitle { font-size: 2.5cqi; }
+  .c-body { font-size: 2cqi; }
+  .c-small { font-size: 1.6cqi; }
+
+  .c-card, .c-card-accent, .c-card-warn, .c-card-soft { padding: 2.5cqi 3cqi; }
+  .c-section { padding: 3cqi; }
+  .c-section-label { font-size: 2.3cqi; }
+  .c-glass { padding: 3cqi; }
+
+  .c-badge { font-size: 1.5cqi; padding: 0.5cqi 1.2cqi; }
+  .c-badge-row { gap: 1cqi; }
+
+  .c-kpi-value { font-size: 8cqi; }
+  .c-kpi-label { font-size: 2cqi; margin-top: 0.6cqi; }
+  .c-kpi-delta { font-size: 1.8cqi; }
+
+  .c-quote { font-size: 3.5cqi; padding-left: 5cqi; }
+  .c-quote::before { font-size: 8cqi; top: -1.5cqi; }
+  .c-quote-attr { font-size: 1.8cqi; }
+
+  .c-step-num { width: 5cqi; height: 5cqi; font-size: 2.2cqi; }
+  .c-step { gap: 2.5cqi; }
+  .c-step-title { font-size: 2.8cqi; }
+  .c-step-body { font-size: 1.9cqi; }
+  .c-connector { padding-left: 2.5cqi; gap: 1.5cqi; }
+  .c-connector-arrow { font-size: 2.5cqi; }
+  .c-connector-text { font-size: 1.6cqi; }
+
+  .c-icon-row { gap: 2.5cqi; }
+  .c-icon-row-icon { width: 5cqi; height: 5cqi; font-size: 2.5cqi; border-radius: var(--radius); }
+  .c-icon-row-title { font-size: 2.5cqi; }
+  .c-icon-row-body { font-size: 1.8cqi; }
+
+  .c-formula { font-size: 3cqi; padding: 2cqi 2.5cqi; }
+  .c-warn { padding: 2cqi 2.5cqi; gap: 2cqi; }
+  .c-warn-icon { font-size: 3.5cqi; }
+  .c-warn-title { font-size: 2.3cqi; }
+  .c-warn-body { font-size: 1.8cqi; }
+  .c-note { padding: 2cqi 2.5cqi; gap: 2cqi; }
+  .c-note-icon { font-size: 3.5cqi; }
+  .c-note-title { font-size: 2.3cqi; }
+  .c-note-body { font-size: 1.8cqi; }
+  .c-example { padding: 2cqi 2.5cqi; font-size: 1.8cqi; }
+  .c-example-label { font-size: 1.5cqi; }
+
+  .c-codebox { font-size: 2.2cqi; padding: 3cqi 3.5cqi; }
+  .c-terminal-body { padding: 20px 24px; }
+  .c-hero-num { font-size: 24cqi; }
+  .c-hero-num-label { font-size: 2.5cqi; }
+
+  .c-stack > * + * { margin-top: 2.5cqi; }
+  .c-spacer-sm { height: 1.5cqi; }
+  .c-spacer-md { height: 3cqi; }
+  .c-spacer-lg { height: 5cqi; }
+}
+</style>
+<style>/* editor.css */
+/* editor.css — visual editor UI styles */
+
+/* ── Top toolbar ─────────────────────────────────────────── */
+.editor-toolbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 40px;
+  background: #1a1d24;
+  color: #e6edf3;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  font: 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  z-index: 99999;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  transform: translateY(-100%);
+  transition: transform 0.2s ease;
+}
+.editor-active .editor-toolbar { transform: translateY(0); }
+body.editor-active .deck { margin-top: 40px; }
+
+.editor-toolbar .editor-label {
+  background: #58a6ff;
+  color: #0d1117;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.editor-toolbar button {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #e6edf3;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.editor-toolbar button:hover { background: rgba(255,255,255,0.15); }
+.editor-toolbar .editor-spacer { flex: 1; }
+.editor-toolbar .editor-hint {
+  color: #8b949e;
+  font-size: 11px;
+}
+
+/* ── Entry hint badge (shown before entering edit mode) ── */
+.editor-entry-badge {
+  position: fixed;
+  top: 8px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(26, 29, 36, 0.9);
+  color: #e6edf3;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font: 12px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  z-index: 99997;
+  pointer-events: none;
+  opacity: 0.85;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  animation: editor-badge-autohide 0.5s ease-in-out 10s forwards;
+}
+@keyframes editor-badge-autohide {
+  to { opacity: 0; }
+}
+.editor-entry-badge kbd {
+  background: rgba(255,255,255,0.12);
+  padding: 1px 6px; border-radius: 3px;
+  font-family: "SF Mono", monospace; font-size: 11px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.editor-active .editor-entry-badge { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+
+/* ── Canvas frame (only visible in edit mode) ────────────── */
+body.editor-active { background: #e5e5e5 !important; }
+body.editor-active .deck {
+  box-shadow: 0 2px 24px rgba(0,0,0,0.15);
+  outline: 1px solid rgba(0,0,0,0.1);
+}
+.editor-canvas-label {
+  display: none;
+  position: fixed;
+  bottom: 12px; right: 16px;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font: 11px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  z-index: 99998;
+  pointer-events: none;
+}
+body.editor-active .editor-canvas-label { display: block; }
+
+/* ── Hover overlay ───────────────────────────────────────── */
+.editor-active .slide *:hover {
+  outline: 1px dashed rgba(88,166,255,0.4) !important;
+  outline-offset: 2px;
+}
+
+/* ── Selected element ────────────────────────────────────── */
+.editor-selected {
+  outline: 2px solid #58a6ff !important;
+  outline-offset: 2px;
+}
+
+/* ── Floating toolbar ────────────────────────────────────── */
+.editor-float-toolbar {
+  position: fixed;
+  background: #1a1d24;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  padding: 4px;
+  display: flex;
+  gap: 2px;
+  z-index: 100000;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  font: 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.editor-float-toolbar button {
+  background: transparent;
+  border: none;
+  color: #e6edf3;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+  transition: background 0.1s;
+}
+.editor-float-toolbar button:hover { background: rgba(255,255,255,0.12); }
+.editor-float-toolbar .sep {
+  width: 1px;
+  background: rgba(255,255,255,0.1);
+  margin: 2px 2px;
+}
+
+/* ── Contenteditable state ───────────────────────────────── */
+.editor-editing {
+  outline: 2px solid #3fb950 !important;
+  outline-offset: 2px;
+  cursor: text;
+  min-height: 1em;
+}
+
+/* ── Drag state ──────────────────────────────────────────── */
+.editor-dragging {
+  opacity: 0.8;
+  cursor: grabbing !important;
+}
+
+/* ── Color picker input (hidden but functional) ──────────── */
+.editor-color-input {
+  position: absolute;
+  opacity: 0;
+  width: 0; height: 0;
+  pointer-events: none;
+}
+</style>
+<style>/* designs/pastel-card.css */
+/* pastel-card — 柔和马卡龙大色块封面风 Design CSS */
+/* Usage: <body class="d-pastel-card portrait"> */
+
+.d-pastel-card {
+  /* ── Token overrides ── */
+  --bg: #fef8f1;
+  --surface: #ffffff;
+  --surface-2: #fef8f1;
+  --border: rgba(42, 35, 64, 0.08);
+  --border-strong: rgba(42, 35, 64, 0.16);
+  --text-1: #2a2340;
+  --text-2: #5b5470;
+  --text-3: #9089a8;
+  --accent: #f48b5c;
+  --accent-2: #c94673;
+  --accent-3: #2e9d70;
+  --radius: 28px;
+  --radius-sm: 16px;
+  --radius-lg: 36px;
+  --shadow: 0 14px 40px rgba(42, 35, 64, 0.08);
+  --shadow-lg: 0 20px 50px rgba(42, 35, 64, 0.1);
+  --letter-tight: -0.03em;
+  --font-display: 'Playfair Display', 'Noto Serif SC', serif;
+  --font-serif: 'Playfair Display', 'Noto Serif SC', serif;
+  --font-sans: 'Inter', 'Noto Sans SC', sans-serif;
+  --grad: linear-gradient(90deg, #f48b5c, #c94673);
+
+  /* Design-specific tokens */
+  --pc-peach: #ffd8c2;
+  --pc-peach-d: #f48b5c;
+  --pc-mint: #c8ecd8;
+  --pc-mint-d: #2e9d70;
+  --pc-sky: #c9dcfb;
+  --pc-sky-d: #4e7ed6;
+  --pc-lilac: #ddd0f5;
+  --pc-lilac-d: #7b5dc4;
+  --pc-lemon: #fdf0b2;
+  --pc-lemon-d: #c8910a;
+  --pc-rose: #fcd0dd;
+  --pc-rose-d: #c94673;
+  --pc-code-bg: #2a2340;
+
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-display);
+}
+
+/* ══════════════════════════════════════════════════════
+   CHROME — shared page shell elements
+   ══════════════════════════════════════════════════════ */
+
+/* Blobs — decorative gradient circles behind content */
+.d-pastel-card .chr-blob {
+  position: absolute; border-radius: 50%; filter: blur(2px);
+  opacity: .85; z-index: 0;
+}
+.d-pastel-card .chr-blob.b1 {
+  width: 51.85cqi; height: 51.85cqi;
+  background: radial-gradient(circle, var(--pc-peach), transparent 70%);
+  top: -8%; right: -6%;
+}
+.d-pastel-card .chr-blob.b2 {
+  width: 44.44cqi; height: 44.44cqi;
+  background: radial-gradient(circle, var(--pc-lilac), transparent 72%);
+  bottom: -10%; left: -8%;
+}
+.d-pastel-card .chr-blob.b3 {
+  width: 32.1cqi; height: 32.1cqi;
+  background: radial-gradient(circle, var(--pc-mint), transparent 72%);
+  top: 40%; right: 20%;
+}
+.d-pastel-card .slide > * { position: relative; z-index: 2; }
+
+/* Topbar — chip tag + page number (fixed position, never drifts) */
+.d-pastel-card .slide > .chr-topbar {
+  position: absolute; top: 4.94cqi; left: 11.11cqi; right: 11.11cqi; z-index: 3;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-sans);
+}
+/* Ensure slide content clears the fixed topbar */
+.d-pastel-card.portrait .slide { padding-top: 10cqi; }
+.d-pastel-card.landscape .slide { padding-top: 9cqi; }
+.d-pastel-card .chr-chip {
+  display: inline-flex; align-items: center; gap: 1.23cqi;
+  padding: .99cqi 2.22cqi; border-radius: 999px;
+  background: #fff; border: 1.5px solid var(--border);
+  font-size: 1.6cqi; font-weight: 600; letter-spacing: .08em;
+  color: var(--text-2); text-transform: uppercase;
+}
+.d-pastel-card .chr-chip::before {
+  content: ''; width: 1.11cqi; height: 1.11cqi; border-radius: 50%;
+  background: var(--pc-peach-d);
+}
+.d-pastel-card .chr-chip.mint::before  { background: var(--pc-mint-d); }
+.d-pastel-card .chr-chip.sky::before   { background: var(--pc-sky-d); }
+.d-pastel-card .chr-chip.lilac::before { background: var(--pc-lilac-d); }
+.d-pastel-card .chr-chip.rose::before  { background: var(--pc-rose-d); }
+
+.d-pastel-card .chr-page {
+  font-family: 'Inter', sans-serif; font-size: 1.6cqi;
+  color: var(--text-3); letter-spacing: .12em; font-weight: 600;
+}
+
+/* Kicker — small uppercase label above title */
+.d-pastel-card .chr-kicker {
+  font-family: var(--font-sans); font-size: 1.73cqi; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 1.73cqi;
+}
+
+/* Footer — bottom status bar */
+.d-pastel-card .chr-footer {
+  position: absolute; left: 11.11cqi; right: 11.11cqi; bottom: 4.94cqi;
+  display: flex; justify-content: space-between;
+  font-family: 'Inter', sans-serif; font-size: 1.48cqi;
+  color: var(--text-3); letter-spacing: .1em;
+}
+
+/* Divider — short gradient accent line */
+.d-pastel-card .chr-divider {
+  width: 11.11cqi; height: .49cqi;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: .25cqi; margin: 2.47cqi 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ══════════════════════════════════════════════════════ */
+
+.d-pastel-card .chr-title {
+  font-size: 11.85cqi; font-weight: 900; line-height: 1.05;
+  letter-spacing: -.25cqi; margin: 0 0 2.22cqi; color: var(--text-1);
+  font-family: var(--font-display);
+}
+.d-pastel-card .chr-title em { font-style: italic; color: var(--accent); }
+.d-pastel-card .chr-title .rose { color: var(--accent-2); font-style: italic; }
+.d-pastel-card .chr-title .mint { color: var(--accent-3); font-style: italic; }
+
+.d-pastel-card .chr-heading {
+  font-size: 7.41cqi; font-weight: 800; line-height: 1.1;
+  letter-spacing: -.12cqi; margin: 0 0 1.73cqi;
+  font-family: var(--font-display);
+}
+.d-pastel-card .chr-heading em { font-style: italic; color: var(--accent); }
+.d-pastel-card .chr-heading .rose { color: var(--accent-2); }
+.d-pastel-card .chr-heading .mint { color: var(--accent-3); }
+
+.d-pastel-card .chr-sub {
+  font-family: var(--font-sans); font-size: 2.59cqi; line-height: 1.6;
+  color: var(--text-2); max-width: 98.77cqi; font-weight: 400;
+}
+
+/* ══════════════════════════════════════════════════════
+   c-* EXTENSIONS — match original xp-* spacing & card styling
+   ══════════════════════════════════════════════════════ */
+
+/* Match original xp-card: no border, larger padding */
+.d-pastel-card .c-card {
+  border: none;
+  padding: 3.7cqi 4.2cqi;
+}
+
+/* Grid gaps match original xp-grid-2 / xp-grid-3 */
+.d-pastel-card .c-grid-2 { gap: 2.47cqi; margin-top: 3.21cqi; }
+.d-pastel-card .c-grid-3 { gap: 2.22cqi; margin-top: 3.21cqi; }
+
+/* Card color variants */
+.d-pastel-card .c-card.peach { background: var(--pc-peach); }
+.d-pastel-card .c-card.mint  { background: var(--pc-mint); }
+.d-pastel-card .c-card.sky   { background: var(--pc-sky); }
+.d-pastel-card .c-card.lilac { background: var(--pc-lilac); }
+.d-pastel-card .c-card.lemon { background: var(--pc-lemon); }
+.d-pastel-card .c-card.rose  { background: var(--pc-rose); }
+
+.d-pastel-card .c-card h4 {
+  font-size: 2.72cqi; font-weight: 800; margin: .99cqi 0;
+  font-family: var(--font-sans);
+}
+.d-pastel-card .c-card p {
+  font-family: var(--font-sans); font-size: 1.85cqi;
+  line-height: 1.55; color: var(--text-2);
+}
+
+/* Card accent number — big italic number/emoji on colored cards */
+.d-pastel-card .chr-card-num {
+  font-family: var(--font-display); font-size: 8.4cqi; font-weight: 900;
+  font-style: italic; line-height: 1; opacity: .85;
+}
+
+/* ══════════════════════════════════════════════════════
+   CODE BLOCK
+   ══════════════════════════════════════════════════════ */
+
+.d-pastel-card .chr-codebox {
+  background: var(--pc-code-bg); color: #fef8f1;
+  border-radius: 2.96cqi; padding: 3.21cqi 3.7cqi;
+  font-family: 'JetBrains Mono', monospace; font-size: 1.73cqi;
+  line-height: 1.85; margin-top: 2.72cqi;
+}
+.d-pastel-card .chr-codebox .cm { color: #9089a8; }
+.d-pastel-card .chr-codebox .kw { color: #ffc6a0; }
+.d-pastel-card .chr-codebox .st { color: #c8ecd8; }
+.d-pastel-card .chr-codebox .hl { color: #fcd0dd; font-weight: 700; }
+
+/* ── Container query overrides: preserve multi-column grids on 3:4 ── */
+@container (max-width: 1000px) {
+  .d-pastel-card .c-grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .d-pastel-card .c-grid-3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Pill tag — used in thanks page badges */
+.d-pastel-card .chr-pill {
+  display: inline-block; padding: .99cqi 2.22cqi; border-radius: 999px;
+  font-size: 1.73cqi; font-weight: 600; margin: 0 .74cqi .74cqi 0;
+  background: #fff; border: 1.5px solid var(--border); color: var(--text-2);
+}
+
+/* Hero card — emphasized card variant (used in quote page) */
+.d-pastel-card .chr-hero {
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+}
+
+/* Quote — match original xp-quote: block-level mark, larger text */
+.d-pastel-card .c-quote {
+  font-size: 4.94cqi;
+  padding-left: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+.d-pastel-card .c-quote::before {
+  position: static;
+  display: block;
+  font-size: 12.35cqi;
+  line-height: .8;
+  color: var(--accent);
+  opacity: .7;
+}
+</style>
+<style>/* themes/soft-pastel.css */
+/* theme: soft-pastel — 柔和马卡龙 */
+:root{
+  --bg:#fdf7fb;--bg-soft:#fbeef3;--surface:#ffffff;--surface-2:#fdf0f5;
+  --border:rgba(120,70,110,.12);--border-strong:rgba(120,70,110,.22);
+  --text-1:#3a1f33;--text-2:#6b4d62;--text-3:#a28a99;
+  --accent:#f49bb8;--accent-2:#b5d5f0;--accent-3:#f7d08a;
+  --good:#9dd9a3;--warn:#f7d08a;--bad:#ef9a9a;
+  --grad:linear-gradient(135deg,#f49bb8,#b5d5f0 55%,#c4a0e8);
+  --grad-soft:linear-gradient(135deg,#fbeef3,#eaf4fc);
+  --radius:24px;--radius-sm:16px;--radius-lg:32px;
+  --shadow:0 8px 28px rgba(244,155,184,.18);
+  --shadow-lg:0 24px 70px rgba(181,213,240,.3);
+  --font-sans:'Inter','Noto Sans SC',sans-serif;
+}
+</style>
+<style>/* layers/typography/editorial.css */
+/* typography: editorial — authoritative, classic serif for formal publications */
+:root {
+  --font-display: 'Playfair Display', 'Noto Serif SC', Georgia, serif;
+  --font-sans: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+  --font-serif: 'Noto Serif SC', 'Source Serif 4', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+</style>
+<style>/* layers/texture/clean.css */
+/* texture: clean — flat color, no visible texture, sharp edges */
+:root {
+  --bg-texture: none;
+  --bg-pattern: none;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+  --card-radius: 8px;
+  --border-style: solid;
+}
+</style>
+<style>/* layers/density/balanced.css */
+/* density: balanced — typical presentation density, 2-4 items per slide */
+:root {
+  --body-size: 2cqi;
+  --slide-padding-y: 4cqi;
+  --slide-padding-x: 6cqi;
+  --card-pad-y: 1.5cqi;
+  --card-pad-x: 1.8cqi;
+  --card-gap: 1.5cqi;
+  --component-gap: 1.5cqi;
+}
+</style>
+<style>/* base-design-chrome.css */
+/* base-design-chrome.css — minimal chrome defaults for free-form layer composition */
+/* Used when config.design is a { theme, typography, texture, density } object */
+/* Design CSS presets (pastel-card, etc.) override these with their own chrome */
+
+/* ── Topbar: chip + page number ── */
+.chr-topbar {
+  position: absolute; top: 4cqi; left: var(--slide-padding-x, 6cqi); right: var(--slide-padding-x, 6cqi); z-index: 3;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-sans);
+}
+
+/* ── Chip / tag ── */
+.chr-chip {
+  display: inline-flex; align-items: center; gap: 1cqi;
+  padding: .8cqi 1.8cqi; border-radius: 999px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  font-size: 1.4cqi; font-weight: 600; letter-spacing: .06em;
+  color: var(--text-2); text-transform: uppercase;
+}
+.chr-chip::before {
+  content: ''; width: 1cqi; height: 1cqi; border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ── Page number ── */
+.chr-page {
+  font-family: var(--font-mono); font-size: 1.4cqi;
+  color: var(--text-3); letter-spacing: .1em; font-weight: 600;
+}
+
+/* ── Kicker ── */
+.chr-kicker {
+  font-family: var(--font-sans); font-size: 1.6cqi; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 1.5cqi;
+}
+
+/* ── Footer ── */
+.chr-footer {
+  position: absolute; left: var(--slide-padding-x, 6cqi); right: var(--slide-padding-x, 6cqi); bottom: 4cqi;
+  display: flex; justify-content: space-between;
+  font-family: var(--font-sans); font-size: 1.3cqi;
+  color: var(--text-3); letter-spacing: .08em;
+}
+
+/* ── Titles ── */
+.chr-title {
+  font-family: var(--font-display); font-size: 10cqi; font-weight: 900; line-height: 1.05;
+  letter-spacing: -.02em; margin: 0 0 2cqi; color: var(--text-1);
+}
+.chr-heading {
+  font-family: var(--font-display); font-size: 6.5cqi; font-weight: 800; line-height: 1.1;
+  letter-spacing: -.01em; margin: 0 0 1.5cqi;
+}
+.chr-sub {
+  font-family: var(--font-sans); font-size: var(--body-size, 2cqi); line-height: 1.55;
+  color: var(--text-2); max-width: 100%;
+}
+
+/* ── Divider ── */
+.chr-divider {
+  width: 10cqi; height: .4cqi;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: .2cqi; margin: 2cqi 0;
+}
+
+/* ── Code block ── */
+.chr-codebox {
+  background: #1a1a1a; color: #e4e2d8;
+  border-radius: var(--radius); padding: 2.5cqi 3cqi;
+  font-family: var(--font-mono); font-size: 1.6cqi;
+  line-height: 1.75; overflow: auto; margin-top: 2cqi;
+}
+.chr-codebox .cm { color: #6b6a62; font-style: italic; }
+.chr-codebox .kw { color: #e8a87c; font-weight: 700; }
+.chr-codebox .st { color: #a8c292; }
+.chr-codebox .fn { color: #c9a0dc; }
+.chr-codebox .hl { color: #e9c58a; font-weight: 700; background: rgba(255,255,255,.06); padding: 0 2px; border-radius: 3px; }
+
+/* ── Hero card ── */
+.chr-hero {
+  box-shadow: var(--shadow-lg); border: 1px solid var(--border-strong);
+}
+
+/* ── Pill tag ── */
+.chr-pill {
+  display: inline-block; padding: .8cqi 1.8cqi; border-radius: 999px;
+  font-size: 1.5cqi; font-weight: 600; margin: 0 .6cqi .6cqi 0;
+  background: var(--surface); border: 1.5px solid var(--border); color: var(--text-2);
+}
+
+/* ── Slide z-index for chrome children ── */
+.slide > * { position: relative; z-index: 2; }
+
+/* ── Narrow canvas overrides ── */
+@container (max-width: 1000px) {
+  .chr-title { font-size: 12cqi; }
+  .chr-heading { font-size: 8cqi; }
+  .chr-sub { font-size: 3cqi; }
+  .chr-chip { font-size: 2cqi; }
+  .chr-page { font-size: 2cqi; }
+  .chr-footer { font-size: 1.8cqi; }
+  .chr-kicker { font-size: 2.2cqi; }
+  .chr-codebox { font-size: 2.2cqi; padding: 3cqi 3.5cqi; }
+}
+</style>
+<style>/* style.css */
+/* xhs-pastel-card — 3:4 portrait template */
+/*
+ * Architecture: Template × Design × Content
+ *
+ *   Template  = this index.html (chrome HTML + c-* components)
+ *   Design    = assets/designs/pastel-card.css (CSS variables + chrome styles)
+ *   Content   = c-* components (assets/components.css)
+ *
+ * The design CSS (pastel-card.css) sets all visual tokens on .d-pastel-card,
+ * styles chrome elements (chr-*), and extends c-* with color variants.
+ * Chrome elements: chr-blob, chr-topbar, chr-chip, chr-page, chr-kicker,
+ *   chr-footer, chr-divider, chr-title, chr-heading, chr-sub, chr-codebox.
+ *
+ * To create a new design, copy assets/designs/pastel-card.css, change the
+ * tokens, and adjust chrome styles. The same index.html chrome + c-* content
+ * works across designs — just swap the design CSS link.
+ */
+</style>
+<style id="editor-overrides"></style>
 </head>
 <body class="d-pastel-card portrait">
 <div class="deck">
 
-  <!-- 1. COVER -->
   <section class="slide is-active">
     <div class="chr-blob b1"></div>
     <div class="chr-blob b2"></div>
     <div class="chr-blob b3"></div>
     <div class="chr-topbar"><div class="chr-chip">A soft manifesto</div><div class="chr-page">01 · 08</div></div>
     <div class="chr-kicker">Living With AI · 2026</div>
-    <h1 class="chr-title">放慢一点，<br>让 <em>AI</em> 帮你<br>过一种 <span class="rose">更温柔</span><br>的生活</h1>
+    <h1 class="chr-title">放慢一点，让 AI 帮你过一种 <em>更温柔</em> 的生活</h1>
     <div class="chr-divider"></div>
     <p class="chr-sub">这不是一份效率指南。这是一份「怎么用 AI 少做一些事」的清单 —— 把挤出来的 4 小时还给你自己。</p>
-    <div class="chr-footer"><span>by lewis · pastel edition</span><span>cover</span></div>
+    <div class="chr-footer"><span>这不是一份效率指南。这是一份「怎么用 AI 少做一些事」的清</span><span>cover</span></div>
   </section>
 
-  <!-- 2. SECTION -->
   <section class="slide">
     <div class="chr-blob b2"></div>
     <div class="chr-blob b3"></div>
     <div class="chr-topbar"><div class="chr-chip mint">Chapter one</div><div class="chr-page">02 · 08</div></div>
-    <div style="margin:auto 0">
+    <div style="margin:auto 0;text-align:center">
       <div class="chr-kicker">先问自己</div>
-      <h1 class="chr-title" style="font-size:120px">什么事<br>是你 <span class="mint">其实不想做</span> 的？</h1>
+      <h1 class="chr-title">什么事 <em>是你</em> 其实不想做 <em>的？</em></h1>
       <p class="chr-sub">不是「不得不做」，是「做的时候灵魂在叹气」。</p>
     </div>
-    <div class="chr-footer"><span>section · chapter 1</span><span>02 · 08</span></div>
+    <div class="chr-footer"><span>不是「不得不做」，是「做的时候灵魂在叹气」。</span><span>section · Chapter one</span></div>
   </section>
 
-  <!-- 3. CONTENT 2x2 pastel cards -->
   <section class="slide">
     <div class="chr-blob b1"></div>
     <div class="chr-topbar"><div class="chr-chip rose">Four little escapes</div><div class="chr-page">03 · 08</div></div>
-    <h2 class="chr-heading">四件可以<br>完全交给 <em>AI</em> 的小事</h2>
+    <h2 class="chr-heading">四件可以 <em>完全交给 AI</em> 的小事</h2>
     <div class="c-grid-2">
-      <div class="c-card peach"><div class="chr-card-num">01</div><h4>回复那种「收到」邮件</h4><p>它们不需要你思考。让 AI 按你的语气自动处理，一周省 40 分钟。</p></div>
-      <div class="c-card mint"><div class="chr-card-num">02</div><h4>订餐厅、改签、查路线</h4><p>一句话外包出去。你只负责选最后选项，不负责翻十个 app。</p></div>
-      <div class="c-card sky"><div class="chr-card-num">03</div><h4>把会议录音变成行动项</h4><p>录音 → 摘要 → todo 一键完成。你只需要确认和签字。</p></div>
-      <div class="c-card lilac"><div class="chr-card-num">04</div><h4>整理上周拍的 300 张照片</h4><p>按事件分类、挑 10 张精选、写图说。整理档案这件事终于被自动化了。</p></div>
+            <div class="c-card peach">
+        <div class="chr-card-num">01</div>
+        <h4>回复那种「收到」邮件</h4>
+        <p>它们不需要你思考。让 AI 按你的语气自动处理，一周省 40 分钟。</p>
+      </div>
+      <div class="c-card mint">
+        <div class="chr-card-num">02</div>
+        <h4>订餐厅、改签、查路线</h4>
+        <p>一句话外包出去。你只负责选最后选项，不负责翻十个 app。</p>
+      </div>
+      <div class="c-card sky">
+        <div class="chr-card-num">03</div>
+        <h4>把会议录音变成行动项</h4>
+        <p>录音 → 摘要 → todo 一键完成。你只需要确认和签字。</p>
+      </div>
+      <div class="c-card lilac">
+        <div class="chr-card-num">04</div>
+        <h4>整理上周拍的 300 张照片</h4>
+        <p>按事件分类、挑 10 张精选、写图说。整理档案这件事终于被自动化了。</p>
+      </div>
     </div>
-    <div class="chr-footer"><span>content · 2x2</span><span>03 · 08</span></div>
+    <div class="chr-footer"><span>四件可以 <em>完全交给 AI</em> 的小事</span><span>content · 2x2</span></div>
   </section>
 
-  <!-- 4. QUOTE -->
   <section class="slide">
-    <div class="chr-blob b3"></div>
     <div class="chr-blob b2"></div>
+    <div class="chr-blob b3"></div>
     <div class="chr-topbar"><div class="chr-chip lilac">A small pause</div><div class="chr-page">04 · 08</div></div>
-    <div class="c-card" style="padding:4.94cqi 5.68cqi;margin-top:3.46cqi">
-      <div class="c-quote">效率工具的终点，不是<em> 做更多</em>，<br>而是 <em>有资格做更少</em>。</div>
+    <div class="c-card chr-hero" style="padding:4.94cqi 5.68cqi;margin-top:3.46cqi">
+      <div class="c-quote">效率工具的终点，不是 <em>做更多</em>，而是 <em>有资格做更少</em>。</div>
       <div class="chr-divider"></div>
       <p class="chr-sub">当你把「收到」邮件、订餐、行程、照片整理都交出去，你才会惊讶地发现 —— 原来一周有 4 个小时是空的。</p>
     </div>
-    <div class="chr-footer"><span>quote</span><span>04 · 08</span></div>
+    <div class="chr-footer"><span>当你把「收到」邮件、订餐、行程、照片整理都交出去，你才会惊讶</span><span>quote</span></div>
   </section>
 
-  <!-- 5. CODE / PROMPT -->
   <section class="slide">
     <div class="chr-blob b1"></div>
     <div class="chr-topbar"><div class="chr-chip">My auto-reply prompt</div><div class="chr-page">05 · 08</div></div>
-    <h2 class="chr-heading">把「<em>收到邮件</em>」<br>自动化的 <span class="rose">一段 prompt</span></h2>
-    <pre class="chr-codebox"><span class="cm"># auto-reply skill</span>
-<span class="kw">when</span> email matches <span class="st">"收到 / 好的 / 确认 / 收到谢谢"</span>:
+    <h2 class="chr-heading">把「收到邮件」自动化的 <em>一段 prompt</em></h2>
+    <pre class="chr-codebox"># auto-reply skill
+when email matches "收到 / 好的 / 确认 / 收到谢谢":
   reply:
-    tone: <span class="st">"温柔，简短，不要太商业"</span>
-    max_lines: <span class="hl">2</span>
-    sign_with: <span class="st">"— Lewis"</span>
-
-<span class="kw">always_skip</span>:
-  - from: [<span class="st">"家人"</span>, <span class="st">"伴侣"</span>, <span class="st">"亲密朋友"</span>]
-  - contains: [<span class="st">"紧急"</span>, <span class="st">"合同"</span>, <span class="st">"付款"</span>]
-
-<span class="cm"># 一周省 38 分钟，测过</span></pre>
-    <div class="chr-footer"><span>content · prompt</span><span>05 · 08</span></div>
+    tone: "温柔，简短，不要太商业"
+    max_lines: 2
+    sign_with: "— Lewis"
+  always_skip:
+    - 家人、伴侣、亲密朋友
+    - 含"紧急"、"合同"、"付款"的邮件
+# 一周省 38 分钟，测过</pre>
+    <div class="chr-footer"><span>把「收到邮件」自动化的 <em>一段 prompt</em></span><span>content · code</span></div>
   </section>
 
-  <!-- 6. CHART — time donut -->
   <section class="slide">
     <div class="chr-blob b2"></div>
     <div class="chr-topbar"><div class="chr-chip mint">Your week, rebuilt</div><div class="chr-page">06 · 08</div></div>
-    <h2 class="chr-heading">一周 4 小时 <span class="mint">还给自己</span></h2>
-    <div style="display:flex;align-items:center;gap:60px;margin-top:30px">
-      <svg viewBox="0 0 260 260" style="width:300px;flex-shrink:0">
-        <circle cx="130" cy="130" r="100" fill="none" stroke="#fef0e4" stroke-width="40"/>
-        <circle cx="130" cy="130" r="100" fill="none" stroke="#f48b5c" stroke-width="40" stroke-dasharray="75 628" stroke-dashoffset="0" transform="rotate(-90 130 130)"/>
-        <circle cx="130" cy="130" r="100" fill="none" stroke="#2e9d70" stroke-width="40" stroke-dasharray="113 628" stroke-dashoffset="-75" transform="rotate(-90 130 130)"/>
-        <circle cx="130" cy="130" r="100" fill="none" stroke="#4e7ed6" stroke-width="40" stroke-dasharray="88 628" stroke-dashoffset="-188" transform="rotate(-90 130 130)"/>
-        <circle cx="130" cy="130" r="100" fill="none" stroke="#7b5dc4" stroke-width="40" stroke-dasharray="38 628" stroke-dashoffset="-276" transform="rotate(-90 130 130)"/>
-        <text x="130" y="130" text-anchor="middle" font-family="Playfair Display" font-size="44" font-weight="900" fill="#2a2340">4h</text>
-        <text x="130" y="156" text-anchor="middle" font-family="Inter" font-size="12" fill="#9089a8">per week saved</text>
-      </svg>
-      <div style="flex:1">
-        <div style="display:flex;flex-direction:column;gap:12px">
-          <div class="c-card peach" style="padding:14px 20px;display:flex;align-items:center;gap:14px"><div style="width:14px;height:14px;border-radius:50%;background:var(--pc-peach-d)"></div><div><h4 style="margin:0;font-size:17px">48 min · 邮件</h4></div></div>
-          <div class="c-card mint" style="padding:14px 20px;display:flex;align-items:center;gap:14px"><div style="width:14px;height:14px;border-radius:50%;background:var(--pc-mint-d)"></div><div><h4 style="margin:0;font-size:17px">72 min · 订/改/查</h4></div></div>
-          <div class="c-card sky" style="padding:14px 20px;display:flex;align-items:center;gap:14px"><div style="width:14px;height:14px;border-radius:50%;background:var(--pc-sky-d)"></div><div><h4 style="margin:0;font-size:17px">56 min · 会议摘要</h4></div></div>
-          <div class="c-card lilac" style="padding:14px 20px;display:flex;align-items:center;gap:14px"><div style="width:14px;height:14px;border-radius:50%;background:var(--pc-lilac-d)"></div><div><h4 style="margin:0;font-size:17px">24 min · 照片整理</h4></div></div>
-        </div>
+    <h2 class="chr-heading">一周 <em>4 小时</em> 还给自己</h2>
+    <div class="c-row">
+      
+      <div class="c-kpi">
+        <div class="c-kpi-value">48min</div>
+        <div class="c-kpi-label">邮件</div>
+        
+      </div>
+      <div class="c-kpi">
+        <div class="c-kpi-value">72min</div>
+        <div class="c-kpi-label">订/改/查</div>
+        
+      </div>
+      <div class="c-kpi">
+        <div class="c-kpi-value">56min</div>
+        <div class="c-kpi-label">会议摘要</div>
+        
+      </div>
+      <div class="c-kpi">
+        <div class="c-kpi-value">24min</div>
+        <div class="c-kpi-label">照片整理</div>
+        
       </div>
     </div>
-    <div class="chr-footer"><span>chart · donut</span><span>06 · 08</span></div>
+    <div class="chr-footer"><span>一周 <em>4 小时</em> 还给自己</span><span>content · kpi</span></div>
   </section>
 
-  <!-- 7. CTA -->
   <section class="slide">
     <div class="chr-blob b1"></div>
     <div class="chr-blob b3"></div>
     <div class="chr-topbar"><div class="chr-chip rose">This weekend</div><div class="chr-page">07 · 08</div></div>
-    <h2 class="chr-heading">这周末，<br>先给自己 <em>放一个小假</em></h2>
+    <h2 class="chr-heading">这周末，先给自己 <em>放一个小假</em></h2>
     <div class="c-grid-3">
-      <div class="c-card lemon"><div class="chr-card-num">☕</div><h4>Saturday morning</h4><p>挑一个你最烦的小事，写 prompt，让它从此不再烦你。</p></div>
-      <div class="c-card peach"><div class="chr-card-num">🌸</div><h4>Saturday afternoon</h4><p>去散步。什么都不带。AI 在家帮你看着消息。</p></div>
-      <div class="c-card sky"><div class="chr-card-num">🌙</div><h4>Sunday night</h4><p>复盘：哪 4 小时是真的空的？下周继续。</p></div>
+            <div class="c-card lemon">
+        <div class="chr-card-num">☕</div>
+        <h4>Saturday morning</h4>
+        <p>挑一个你最烦的小事，写 prompt，让它从此不再烦你。</p>
+      </div>
+      <div class="c-card peach">
+        <div class="chr-card-num">🌸</div>
+        <h4>Saturday afternoon</h4>
+        <p>去散步。什么都不带。AI 在家帮你看着消息。</p>
+      </div>
+      <div class="c-card sky">
+        <div class="chr-card-num">🌙</div>
+        <h4>Sunday night</h4>
+        <p>复盘：哪 4 小时是真的空的？下周继续。</p>
+      </div>
     </div>
-    <div class="chr-footer"><span>cta</span><span>07 · 08</span></div>
+    <div class="chr-footer"><span>这周末，先给自己 <em>放一个小假</em></span><span>content · 3x1</span></div>
   </section>
 
-  <!-- 8. THANKS -->
   <section class="slide">
     <div class="chr-blob b2"></div>
+    <div class="chr-topbar"><div class="chr-page">08 · 08</div></div>
     <div style="margin:auto 0;text-align:center">
       <div class="chr-kicker" style="text-align:center">thanks for reading</div>
-      <h1 class="chr-title" style="font-size:160px;text-align:center">谢谢 <em>·</em> thanks</h1>
-      <div class="chr-divider" style="margin:24px auto"></div>
-      <p class="chr-sub" style="margin:0 auto">如果你也想过更温柔的一周，评论区跟我说说你打算把哪一件事先交出去 ♡</p>
+      <h1 class="chr-title" style="font-size:160px;text-align:center">谢谢 · thanks</h1>
+      <div class="chr-divider"></div>
+      <p class="chr-sub" style="margin:0 auto">如果你也想过更温柔的一周，评论区跟我说说你打算把哪一件事先交出去</p>
+      
     </div>
-    <div class="chr-footer"><span>end</span><span>08 · 08</span></div>
+    <div class="chr-footer"><span>如果你也想过更温柔的一周，评论区跟我说说你打算把哪一件事先交</span><span>end</span></div>
   </section>
 
 </div>
-<script src="../../../assets/runtime.js"></script>
+<script>/* runtime.js */
+/* html-ppt :: runtime.js
+ * Keyboard-driven deck runtime. Zero dependencies.
+ *
+ * Features:
+ *   ← → / space / PgUp PgDn / Home End  navigation
+ *   F  fullscreen
+ *   S  presenter mode (opens a NEW WINDOW with current/next slide preview + notes + timer)
+ *       The original window stays as audience view, synced via BroadcastChannel.
+ *       Slide previews use CSS transform:scale() at design resolution for pixel-perfect layout.
+ *   N  quick notes overlay (bottom drawer)
+ *   O  slide overview grid
+ *   T  cycle themes (reads data-themes on <html> or <body>)
+ *   A  cycle demo animation on current slide
+ *   URL hash #/N  deep-link to slide N (1-based)
+ *   Progress bar auto-managed
+ */
+(function () {
+  'use strict';
+
+  const ANIMS = ['fade-up','fade-down','fade-left','fade-right','rise-in','drop-in',
+    'zoom-pop','blur-in','glitch-in','typewriter','neon-glow','shimmer-sweep',
+    'gradient-flow','stagger-list','counter-up','path-draw','parallax-tilt',
+    'card-flip-3d','cube-rotate-3d','page-turn-3d','perspective-zoom',
+    'marquee-scroll','kenburns','confetti-burst','spotlight','morph-shape','ripple-reveal'];
+
+  function ready(fn){ if(document.readyState!='loading')fn(); else document.addEventListener('DOMContentLoaded',fn);}
+
+  /* ========== Parse URL for preview-only mode ==========
+   * When loaded as iframe.src = "index.html?preview=3", runtime enters a
+   * locked single-slide mode: only slide N is visible, no chrome, no keys,
+   * no hash updates. This is how the presenter window shows pixel-perfect
+   * previews — by loading the actual deck file in an iframe and telling it
+   * to display only a specific slide.
+   */
+  function getPreviewIdx() {
+    const m = /[?&]preview=(\d+)/.exec(location.search || '');
+    return m ? parseInt(m[1], 10) - 1 : -1;
+  }
+
+  ready(function () {
+    const deck = document.querySelector('.deck');
+    if (!deck) return;
+    const slides = Array.from(deck.querySelectorAll('.slide'));
+    if (!slides.length) return;
+
+    const previewOnlyIdx = getPreviewIdx();
+    const isPreviewMode = previewOnlyIdx >= 0 && previewOnlyIdx < slides.length;
+
+    /* ===== Preview-only mode: show one slide, hide everything else ===== */
+    if (isPreviewMode) {
+      function showSlide(i) {
+        slides.forEach((s, j) => {
+          const active = (j === i);
+          s.classList.toggle('is-active', active);
+          s.style.display = active ? '' : 'none';
+          if (active) {
+            s.style.opacity = '1';
+            s.style.transform = 'none';
+            s.style.pointerEvents = 'auto';
+          }
+        });
+      }
+      showSlide(previewOnlyIdx);
+      /* Hide chrome that the presenter shouldn't see in preview */
+      const hideSel = '.progress-bar, .notes-overlay, .overview, .notes, aside.notes, .speaker-notes';
+      document.querySelectorAll(hideSel).forEach(el => { el.style.display = 'none'; });
+      document.documentElement.setAttribute('data-preview', '1');
+      document.body.setAttribute('data-preview', '1');
+      /* Auto-detect theme base path for theme switching in preview mode */
+      function getPreviewThemeBase() {
+        const base = document.documentElement.getAttribute('data-theme-base');
+        if (base) return base;
+        const tl = document.getElementById('theme-link');
+        if (tl) {
+          const raw = tl.getAttribute('href') || '';
+          const ls = raw.lastIndexOf('/');
+          if (ls >= 0) return raw.substring(0, ls + 1);
+        }
+        return 'assets/themes/';
+      }
+      const previewThemeBase = getPreviewThemeBase();
+
+      /* Listen for postMessage from parent presenter window:
+       *  - preview-goto: switch visible slide WITHOUT reloading
+       *  - preview-theme: switch theme CSS link to match audience window */
+      window.addEventListener('message', function(e) {
+        if (!e.data) return;
+        if (e.data.type === 'preview-goto') {
+          const n = parseInt(e.data.idx, 10);
+          if (n >= 0 && n < slides.length) showSlide(n);
+        } else if (e.data.type === 'preview-theme' && e.data.name) {
+          let link = document.getElementById('theme-link');
+          if (!link) {
+            link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.id = 'theme-link';
+            document.head.appendChild(link);
+          }
+          link.href = previewThemeBase + e.data.name + '.css';
+          document.documentElement.setAttribute('data-theme', e.data.name);
+        }
+      });
+      /* Signal to parent that preview iframe is ready */
+      try { window.parent && window.parent.postMessage({ type: 'preview-ready' }, '*'); } catch(e) {}
+      return;
+    }
+
+    let idx = 0;
+    const total = slides.length;
+
+    /* ===== BroadcastChannel for presenter sync ===== */
+    const CHANNEL_NAME = 'html-ppt-presenter-' + location.pathname;
+    let bc;
+    try { bc = new BroadcastChannel(CHANNEL_NAME); } catch(e) { bc = null; }
+
+    // Are we running inside the presenter popup? (legacy flag, now unused)
+    const isPresenterWindow = false;
+
+    /* ===== progress bar ===== */
+    let bar = document.querySelector('.progress-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.className = 'progress-bar';
+      bar.innerHTML = '<span></span>';
+      document.body.appendChild(bar);
+    }
+    const barFill = bar.querySelector('span');
+
+    /* ===== notes overlay (N key) ===== */
+    let notes = document.querySelector('.notes-overlay');
+    if (!notes) {
+      notes = document.createElement('div');
+      notes.className = 'notes-overlay';
+      document.body.appendChild(notes);
+    }
+
+    /* ===== overview grid (O key) ===== */
+    let overview = document.querySelector('.overview');
+    if (!overview) {
+      overview = document.createElement('div');
+      overview.className = 'overview';
+      slides.forEach((s, i) => {
+        const t = document.createElement('div');
+        t.className = 'thumb';
+        // Force 16:9 aspect ratio robustly
+        t.style.padding = '0 0 56.25% 0';
+        t.style.height = '0';
+        t.style.position = 'relative';
+        t.style.overflow = 'hidden';
+
+        const title = s.getAttribute('data-title') ||
+          (s.querySelector('h1,h2,h3')||{}).textContent || ('Slide '+(i+1));
+        
+        // Create a container for the mini-slide
+        const mini = document.createElement('div');
+        mini.className = 'mini-slide';
+        mini.style.position = 'absolute';
+        mini.style.top = '0';
+        mini.style.left = '0';
+        mini.style.width = '1920px';
+        mini.style.height = '1080px';
+        mini.style.transformOrigin = 'top left';
+        mini.style.pointerEvents = 'none';
+        mini.style.background = 'var(--bg)';
+        
+        // Clone the slide content
+        const clone = s.cloneNode(true);
+        clone.className = 'slide is-active'; // force active styles
+        clone.style.position = 'absolute';
+        clone.style.inset = '0';
+        clone.style.transform = 'none';
+        clone.style.opacity = '1';
+        clone.style.padding = '72px 96px'; // ensure padding is kept
+        
+        mini.appendChild(clone);
+        t.appendChild(mini);
+
+        // Add the number and title overlay
+        const overlay = document.createElement('div');
+        overlay.style.position = 'absolute';
+        overlay.style.inset = '0';
+        overlay.style.background = 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.8) 100%)';
+        overlay.style.color = '#fff';
+        overlay.style.zIndex = '10';
+        overlay.style.pointerEvents = 'none';
+        
+        const n = document.createElement('div');
+        n.className = 'n';
+        n.textContent = i + 1;
+        n.style.position = 'absolute';
+        n.style.top = '12px';
+        n.style.left = '16px';
+        n.style.fontWeight = '700';
+        n.style.fontSize = '16px';
+        n.style.color = '#fff';
+        n.style.textShadow = '0 1px 4px rgba(0,0,0,0.8)';
+        
+        const text = document.createElement('div');
+        text.className = 't';
+        text.textContent = title.trim().slice(0,80);
+        text.style.position = 'absolute';
+        text.style.bottom = '12px';
+        text.style.left = '16px';
+        text.style.right = '16px';
+        text.style.fontWeight = '600';
+        text.style.fontSize = '14px';
+        text.style.color = '#fff';
+        text.style.textShadow = '0 1px 4px rgba(0,0,0,0.8)';
+        
+        overlay.appendChild(n);
+        overlay.appendChild(text);
+        t.appendChild(overlay);
+
+        t.addEventListener('click', () => { go(i); toggleOverview(false); });
+        overview.appendChild(t);
+      });
+      document.body.appendChild(overview);
+    }
+
+    /* ===== navigation ===== */
+    function go(n, fromRemote){
+      n = Math.max(0, Math.min(total-1, n));
+      slides.forEach((s,i) => {
+        s.classList.toggle('is-active', i===n);
+        s.classList.toggle('is-prev', i<n);
+      });
+      idx = n;
+      barFill.style.width = ((n+1)/total*100)+'%';
+      const numEl = document.querySelector('.slide-number');
+      if (numEl) { numEl.setAttribute('data-current', n+1); numEl.setAttribute('data-total', total); }
+
+      // notes (bottom overlay)
+      const note = slides[n].querySelector('.notes, aside.notes, .speaker-notes');
+      notes.innerHTML = note ? note.innerHTML : '';
+
+      // hash
+      const hashTarget = '#/'+(n+1);
+      if (location.hash !== hashTarget && !isPresenterWindow) {
+        history.replaceState(null,'', hashTarget);
+      }
+
+      // re-trigger entry animations
+      slides[n].querySelectorAll('[data-anim]').forEach(el => {
+        const a = el.getAttribute('data-anim');
+        el.classList.remove('anim-'+a);
+        void el.offsetWidth;
+        el.classList.add('anim-'+a);
+      });
+
+      // counter-up
+      slides[n].querySelectorAll('.counter').forEach(el => {
+        const target = parseFloat(el.getAttribute('data-to')||el.textContent);
+        const dur = parseInt(el.getAttribute('data-dur')||'1200',10);
+        const start = performance.now();
+        const from = 0;
+        function tick(now){
+          const t = Math.min(1,(now-start)/dur);
+          const v = from + (target-from)*(1-Math.pow(1-t,3));
+          el.textContent = (target % 1 === 0) ? Math.round(v) : v.toFixed(1);
+          if (t<1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+
+      // Broadcast to other window (audience ↔ presenter)
+      if (!fromRemote && bc) {
+        bc.postMessage({ type: 'go', idx: n });
+      }
+    }
+
+    /* ===== listen for remote navigation / theme changes ===== */
+    if (bc) {
+      bc.onmessage = function(e) {
+        if (!e.data) return;
+        if (e.data.type === 'go' && typeof e.data.idx === 'number') {
+          go(e.data.idx, true);
+        } else if (e.data.type === 'theme' && e.data.name) {
+          /* Sync theme across windows */
+          const i = themes.indexOf(e.data.name);
+          if (i >= 0) themeIdx = i;
+          applyTheme(e.data.name);
+        }
+      };
+    }
+
+    function toggleNotes(force){ notes.classList.toggle('open', force!==undefined?force:!notes.classList.contains('open')); }
+    function toggleOverview(force){
+      const isOpen = force!==undefined ? force : !overview.classList.contains('open');
+      overview.classList.toggle('open', isOpen);
+      if (isOpen) {
+        requestAnimationFrame(() => {
+          const thumbs = overview.querySelectorAll('.thumb');
+          if (thumbs.length) {
+            const scale = thumbs[0].clientWidth / 1920;
+            overview.querySelectorAll('.mini-slide').forEach(m => {
+              m.style.transform = 'scale(' + scale + ')';
+            });
+          }
+        });
+      }
+    }
+
+    /* ========== PRESENTER MODE — Magnetic-card popup window ========== */
+    /* Opens a new window with 4 draggable, resizable cards:
+     *   CURRENT  — iframe(?preview=N)   pixel-perfect preview of current slide
+     *   NEXT     — iframe(?preview=N+1) pixel-perfect preview of next slide
+     *   SCRIPT   — large speaker notes (逐字稿)
+     *   TIMER    — elapsed timer + page counter + controls
+     * Cards remember position/size in localStorage.
+     * Two windows sync via BroadcastChannel.
+     */
+    let presenterWin = null;
+
+    function openPresenterWindow() {
+      if (presenterWin && !presenterWin.closed) {
+        presenterWin.focus();
+        return;
+      }
+
+      // Build absolute URL of THIS deck file (without hash/query)
+      const deckUrl = location.protocol + '//' + location.host + location.pathname;
+
+      // Collect slide titles + notes (HTML strings)
+      const slideMeta = slides.map((s, i) => {
+        const note = s.querySelector('.notes, aside.notes, .speaker-notes');
+        return {
+          title: s.getAttribute('data-title') ||
+            (s.querySelector('h1,h2,h3')||{}).textContent || ('Slide '+(i+1)),
+          notes: note ? note.innerHTML : ''
+        };
+      });
+
+      /* Capture current theme so presenter previews match the audience */
+      const currentTheme = root.getAttribute('data-theme') || (themes[themeIdx] || '');
+      const presenterHTML = buildPresenterHTML(deckUrl, slideMeta, total, idx, CHANNEL_NAME, currentTheme);
+
+      presenterWin = window.open('', 'html-ppt-presenter', 'width=1280,height=820,menubar=no,toolbar=no');
+      if (!presenterWin) {
+        alert('请允许弹出窗口以使用演讲者视图');
+        return;
+      }
+      presenterWin.document.open();
+      presenterWin.document.write(presenterHTML);
+      presenterWin.document.close();
+    }
+
+    function buildPresenterHTML(deckUrl, slideMeta, total, startIdx, channelName, currentTheme) {
+      const metaJSON = JSON.stringify(slideMeta);
+      const deckUrlJSON = JSON.stringify(deckUrl);
+      const channelJSON = JSON.stringify(channelName);
+      const themeJSON = JSON.stringify(currentTheme || '');
+      const storageKey = 'html-ppt-presenter:' + location.pathname;
+
+      // Build the document as a single template string for clarity
+      return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Presenter View</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    background: #1a1d24;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(88,166,255,.04), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(188,140,255,.04), transparent 50%);
+    color: #e6edf3;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+  }
+  /* Stage: positioned area where cards live */
+  #stage { position: absolute; inset: 0; overflow: hidden; }
+
+  /* Magnetic card */
+  .pcard {
+    position: absolute;
+    background: #0d1117;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.02);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    min-width: 180px; min-height: 100px;
+    transition: box-shadow .2s, border-color .2s;
+  }
+  .pcard.dragging { box-shadow: 0 16px 48px rgba(0,0,0,.6), 0 0 0 2px rgba(88,166,255,.5); border-color: #58a6ff; transition: none; z-index: 9999; }
+  .pcard.resizing { box-shadow: 0 16px 48px rgba(0,0,0,.6), 0 0 0 2px rgba(63,185,80,.5); border-color: #3fb950; transition: none; z-index: 9999; }
+  .pcard:hover { border-color: rgba(88,166,255,.3); }
+
+  /* Card header (drag handle) */
+  .pcard-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,.04);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    cursor: move;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .pcard-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dot-color, #58a6ff); flex-shrink: 0; }
+  .pcard-title {
+    font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+    font-weight: 700; color: #8b949e; flex: 1;
+  }
+  .pcard-meta { font-size: 11px; color: #6e7681; }
+
+  /* Card body */
+  .pcard-body { flex: 1; position: relative; overflow: hidden; min-height: 0; }
+
+  /* Preview cards (CURRENT/NEXT) — iframe-based pixel-perfect render */
+  .pcard-preview .pcard-body { background: #000; }
+  .pcard-preview iframe {
+    position: absolute; top: 0; left: 0;
+    width: 1920px; height: 1080px;
+    border: none;
+    transform-origin: top left;
+    pointer-events: none;
+    background: transparent;
+  }
+  .pcard-preview .preview-end {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #484f58; font-size: 14px; letter-spacing: .12em;
+  }
+
+  /* Notes card */
+  .pcard-notes .pcard-body {
+    padding: 14px 18px;
+    overflow-y: auto;
+    font-size: 18px; line-height: 1.75;
+    color: #d0d7de;
+    font-family: "Noto Sans SC", -apple-system, sans-serif;
+  }
+  .pcard-notes .pcard-body p { margin: 0 0 .7em 0; }
+  .pcard-notes .pcard-body strong { color: #f0883e; }
+  .pcard-notes .pcard-body em { color: #58a6ff; font-style: normal; }
+  .pcard-notes .pcard-body code {
+    font-family: "SF Mono", monospace; font-size: .9em;
+    background: rgba(255,255,255,.08); padding: 1px 6px; border-radius: 4px;
+  }
+  .pcard-notes .empty { color: #484f58; font-style: italic; }
+
+  /* Timer card */
+  .pcard-timer .pcard-body {
+    display: flex; flex-direction: column; gap: 14px;
+    padding: 18px 20px; justify-content: center;
+  }
+  .timer-display {
+    font-family: "SF Mono", "JetBrains Mono", monospace;
+    font-size: 42px; font-weight: 700;
+    color: #3fb950;
+    letter-spacing: .04em;
+    line-height: 1;
+  }
+  .timer-row {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px; color: #8b949e;
+  }
+  .timer-row .label { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: #6e7681; }
+  .timer-row .val { color: #e6edf3; font-weight: 600; font-family: "SF Mono", monospace; }
+  .timer-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+  .timer-btn {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    color: #e6edf3;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .timer-btn:hover { background: rgba(88,166,255,.15); border-color: #58a6ff; }
+  .timer-btn:active { transform: translateY(1px); }
+
+  /* Resize handle */
+  .pcard-resize {
+    position: absolute; right: 0; bottom: 0;
+    width: 18px; height: 18px;
+    cursor: nwse-resize;
+    background: linear-gradient(135deg, transparent 50%, rgba(255,255,255,.25) 50%, rgba(255,255,255,.25) 60%, transparent 60%, transparent 70%, rgba(255,255,255,.25) 70%, rgba(255,255,255,.25) 80%, transparent 80%);
+    z-index: 5;
+  }
+  .pcard-resize:hover { background: linear-gradient(135deg, transparent 50%, #58a6ff 50%, #58a6ff 60%, transparent 60%, transparent 70%, #58a6ff 70%, #58a6ff 80%, transparent 80%); }
+
+  /* Bottom hint bar */
+  .hint-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,.6);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding: 6px 16px;
+    font-size: 11px; color: #8b949e;
+    display: flex; gap: 18px; align-items: center;
+    z-index: 1000;
+  }
+  .hint-bar kbd {
+    background: rgba(255,255,255,.08);
+    padding: 1px 6px; border-radius: 3px;
+    font-family: "SF Mono", monospace;
+    font-size: 10px;
+    border: 1px solid rgba(255,255,255,.1);
+    color: #e6edf3;
+  }
+  .hint-bar .reset-layout {
+    margin-left: auto;
+    background: transparent; border: 1px solid rgba(255,255,255,.15);
+    color: #8b949e; padding: 3px 10px; border-radius: 4px;
+    font-size: 11px; cursor: pointer; font-family: inherit;
+  }
+  .hint-bar .reset-layout:hover { background: rgba(248,81,73,.15); border-color: #f85149; color: #f85149; }
+
+  body.is-dragging-card * { user-select: none !important; }
+  body.is-dragging-card iframe { pointer-events: none !important; }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div class="pcard pcard-preview" id="card-cur" style="--dot-color:#58a6ff">
+    <div class="pcard-head" data-drag>
+      <span class="pcard-dot"></span>
+      <span class="pcard-title">CURRENT</span>
+      <span class="pcard-meta" id="cur-meta">—</span>
+    </div>
+    <div class="pcard-body"><iframe id="iframe-cur"></iframe></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+
+  <div class="pcard pcard-preview" id="card-nxt" style="--dot-color:#bc8cff">
+    <div class="pcard-head" data-drag>
+      <span class="pcard-dot"></span>
+      <span class="pcard-title">NEXT</span>
+      <span class="pcard-meta" id="nxt-meta">—</span>
+    </div>
+    <div class="pcard-body"><iframe id="iframe-nxt"></iframe></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+
+  <div class="pcard pcard-notes" id="card-notes" style="--dot-color:#f0883e">
+    <div class="pcard-head" data-drag>
+      <span class="pcard-dot"></span>
+      <span class="pcard-title">SPEAKER SCRIPT · 逐字稿</span>
+    </div>
+    <div class="pcard-body" id="notes-body"></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+
+  <div class="pcard pcard-timer" id="card-timer" style="--dot-color:#3fb950">
+    <div class="pcard-head" data-drag>
+      <span class="pcard-dot"></span>
+      <span class="pcard-title">TIMER</span>
+    </div>
+    <div class="pcard-body">
+      <div class="timer-display" id="timer-display">00:00</div>
+      <div class="timer-row">
+        <span class="label">Slide</span>
+        <span class="val" id="timer-count">1 / ${total}</span>
+      </div>
+      <div class="timer-controls">
+        <button class="timer-btn" id="btn-prev">← Prev</button>
+        <button class="timer-btn" id="btn-next">Next →</button>
+        <button class="timer-btn" id="btn-reset">⏱ Reset</button>
+      </div>
+    </div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+</div>
+
+<div class="hint-bar">
+  <span><kbd>← →</kbd> 翻页</span>
+  <span><kbd>R</kbd> 重置计时</span>
+  <span><kbd>Esc</kbd> 关闭</span>
+  <span style="color:#6e7681">拖动卡片头部移动 · 拖动右下角调整大小</span>
+  <button class="reset-layout" id="reset-layout">重置布局</button>
+</div>
+
+<script>
+(function(){
+  var slideMeta = ${metaJSON};
+  var total = ${total};
+  var idx = ${startIdx};
+  var deckUrl = ${deckUrlJSON};
+  var STORAGE_KEY = ${JSON.stringify(storageKey)};
+  var bc;
+  try { bc = new BroadcastChannel(${channelJSON}); } catch(e) {}
+
+  var iframeCur = document.getElementById('iframe-cur');
+  var iframeNxt = document.getElementById('iframe-nxt');
+  var notesBody = document.getElementById('notes-body');
+  var curMeta = document.getElementById('cur-meta');
+  var nxtMeta = document.getElementById('nxt-meta');
+  var timerDisplay = document.getElementById('timer-display');
+  var timerCount = document.getElementById('timer-count');
+
+  /* ===== Default card layout ===== */
+  function defaultLayout() {
+    var w = window.innerWidth;
+    var h = window.innerHeight - 36; /* leave room for hint bar */
+    return {
+      'card-cur':   { x: 16,        y: 16,            w: Math.round(w*0.55) - 24, h: Math.round(h*0.62) - 16 },
+      'card-nxt':   { x: Math.round(w*0.55) + 8, y: 16, w: w - Math.round(w*0.55) - 24, h: Math.round(h*0.42) - 16 },
+      'card-notes': { x: Math.round(w*0.55) + 8, y: Math.round(h*0.42) + 8, w: w - Math.round(w*0.55) - 24, h: h - Math.round(h*0.42) - 16 },
+      'card-timer': { x: 16,        y: Math.round(h*0.62) + 8, w: Math.round(w*0.55) - 24, h: h - Math.round(h*0.62) - 16 }
+    };
+  }
+
+  /* ===== Apply / save / restore layout ===== */
+  function applyLayout(layout) {
+    Object.keys(layout).forEach(function(id){
+      var el = document.getElementById(id);
+      var l = layout[id];
+      if (el && l) {
+        el.style.left = l.x + 'px';
+        el.style.top = l.y + 'px';
+        el.style.width = l.w + 'px';
+        el.style.height = l.h + 'px';
+      }
+    });
+    rescaleAll();
+  }
+  function readLayout() {
+    try {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) return JSON.parse(saved);
+    } catch(e) {}
+    return defaultLayout();
+  }
+  function saveLayout() {
+    var layout = {};
+    ['card-cur','card-nxt','card-notes','card-timer'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) {
+        layout[id] = {
+          x: parseInt(el.style.left,10) || 0,
+          y: parseInt(el.style.top,10) || 0,
+          w: parseInt(el.style.width,10) || 300,
+          h: parseInt(el.style.height,10) || 200
+        };
+      }
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(layout)); } catch(e) {}
+  }
+
+  /* ===== iframe rescale to fit card body ===== */
+  function rescaleIframe(iframe) {
+    if (!iframe || iframe.style.display === 'none') return;
+    var body = iframe.parentElement;
+    var cw = body.clientWidth, ch = body.clientHeight;
+    if (!cw || !ch) return;
+    var s = Math.min(cw / 1920, ch / 1080);
+    iframe.style.transform = 'scale(' + s + ')';
+    /* Center the scaled iframe in the body */
+    var sw = 1920 * s, sh = 1080 * s;
+    iframe.style.left = Math.max(0, (cw - sw) / 2) + 'px';
+    iframe.style.top = Math.max(0, (ch - sh) / 2) + 'px';
+  }
+  function rescaleAll() {
+    rescaleIframe(iframeCur);
+    rescaleIframe(iframeNxt);
+  }
+  window.addEventListener('resize', rescaleAll);
+
+  /* ===== Drag (move card by header) ===== */
+  document.querySelectorAll('[data-drag]').forEach(function(handle){
+    handle.addEventListener('mousedown', function(e){
+      if (e.button !== 0) return;
+      var card = handle.closest('.pcard');
+      if (!card) return;
+      e.preventDefault();
+      card.classList.add('dragging');
+      document.body.classList.add('is-dragging-card');
+      var startX = e.clientX, startY = e.clientY;
+      var startL = parseInt(card.style.left,10) || 0;
+      var startT = parseInt(card.style.top,10)  || 0;
+      function onMove(ev){
+        var nx = Math.max(0, Math.min(window.innerWidth - 100, startL + ev.clientX - startX));
+        var ny = Math.max(0, Math.min(window.innerHeight - 50, startT + ev.clientY - startY));
+        card.style.left = nx + 'px';
+        card.style.top = ny + 'px';
+      }
+      function onUp(){
+        card.classList.remove('dragging');
+        document.body.classList.remove('is-dragging-card');
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        saveLayout();
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+
+  /* ===== Resize (drag bottom-right corner) ===== */
+  document.querySelectorAll('[data-resize]').forEach(function(handle){
+    handle.addEventListener('mousedown', function(e){
+      if (e.button !== 0) return;
+      var card = handle.closest('.pcard');
+      if (!card) return;
+      e.preventDefault(); e.stopPropagation();
+      card.classList.add('resizing');
+      document.body.classList.add('is-dragging-card');
+      var startX = e.clientX, startY = e.clientY;
+      var startW = parseInt(card.style.width,10)  || card.offsetWidth;
+      var startH = parseInt(card.style.height,10) || card.offsetHeight;
+      function onMove(ev){
+        var nw = Math.max(180, startW + ev.clientX - startX);
+        var nh = Math.max(100, startH + ev.clientY - startY);
+        card.style.width = nw + 'px';
+        card.style.height = nh + 'px';
+        if (card.querySelector('iframe')) rescaleIframe(card.querySelector('iframe'));
+      }
+      function onUp(){
+        card.classList.remove('resizing');
+        document.body.classList.remove('is-dragging-card');
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        rescaleAll();
+        saveLayout();
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+
+  /* ===== Preview iframe ready tracking =====
+   * Each iframe loads the deck ONCE with ?preview=1 on init. Subsequent
+   * slide changes are sent via postMessage('preview-goto') so the iframe
+   * just toggles visibility of a different .slide — no reload, no flicker.
+   */
+  var iframeReady = { cur: false, nxt: false };
+  var currentTheme = ${themeJSON};
+  window.addEventListener('message', function(e) {
+    if (!e.data || e.data.type !== 'preview-ready') return;
+    var iframe = null;
+    if (e.source === iframeCur.contentWindow) {
+      iframeReady.cur = true;
+      iframe = iframeCur;
+      postPreviewGoto(iframeCur, idx);
+    } else if (e.source === iframeNxt.contentWindow) {
+      iframeReady.nxt = true;
+      iframe = iframeNxt;
+      postPreviewGoto(iframeNxt, idx + 1 < total ? idx + 1 : idx);
+    }
+    /* Sync current theme to the iframe */
+    if (iframe && currentTheme) {
+      try { iframe.contentWindow.postMessage({ type: 'preview-theme', name: currentTheme }, '*'); } catch(err) {}
+    }
+    if (iframe) rescaleIframe(iframe);
+  });
+
+  function postPreviewGoto(iframe, n) {
+    try {
+      iframe.contentWindow.postMessage({ type: 'preview-goto', idx: n }, '*');
+    } catch(e) {}
+  }
+
+  /* ===== Update content =====
+   * Smooth (no-reload) navigation: send postMessage to iframes instead of
+   * resetting src. Iframes stay loaded, just switch visible .slide.
+   */
+  function update(n) {
+    n = Math.max(0, Math.min(total - 1, n));
+    idx = n;
+
+    /* Current preview — postMessage (smooth) */
+    if (iframeReady.cur) postPreviewGoto(iframeCur, n);
+    curMeta.textContent = (n + 1) + '/' + total;
+
+    /* Next preview */
+    if (n + 1 < total) {
+      iframeNxt.style.display = '';
+      var endEl = document.querySelector('#card-nxt .preview-end');
+      if (endEl) endEl.remove();
+      if (iframeReady.nxt) postPreviewGoto(iframeNxt, n + 1);
+      nxtMeta.textContent = (n + 2) + '/' + total;
+    } else {
+      iframeNxt.style.display = 'none';
+      var body = document.querySelector('#card-nxt .pcard-body');
+      if (body && !body.querySelector('.preview-end')) {
+        var end = document.createElement('div');
+        end.className = 'preview-end';
+        end.textContent = '— END OF DECK —';
+        body.appendChild(end);
+      }
+      nxtMeta.textContent = 'END';
+    }
+
+    /* Notes */
+    var note = slideMeta[n].notes;
+    notesBody.innerHTML = note || '<span class="empty">（这一页还没有逐字稿）</span>';
+
+    /* Timer count */
+    timerCount.textContent = (n + 1) + ' / ' + total;
+  }
+
+  /* ===== Timer ===== */
+  var tStart = Date.now();
+  setInterval(function(){
+    var s = Math.floor((Date.now() - tStart) / 1000);
+    var mm = String(Math.floor(s/60)).padStart(2,'0');
+    var ss = String(s%60).padStart(2,'0');
+    timerDisplay.textContent = mm + ':' + ss;
+  }, 1000);
+  function resetTimer(){ tStart = Date.now(); timerDisplay.textContent = '00:00'; }
+
+  /* ===== BroadcastChannel sync ===== */
+  if (bc) {
+    bc.onmessage = function(e){
+      if (!e.data) return;
+      if (e.data.type === 'go') update(e.data.idx);
+      else if (e.data.type === 'theme' && e.data.name) {
+        currentTheme = e.data.name;
+        /* Forward theme change to preview iframes */
+        [iframeCur, iframeNxt].forEach(function(iframe){
+          try {
+            iframe.contentWindow.postMessage({ type: 'preview-theme', name: e.data.name }, '*');
+          } catch(err) {}
+        });
+      }
+    };
+  }
+  function go(n) {
+    update(n);
+    if (bc) bc.postMessage({ type: 'go', idx: idx });
+  }
+
+  /* ===== Buttons ===== */
+  document.getElementById('btn-prev').addEventListener('click', function(){ go(idx - 1); });
+  document.getElementById('btn-next').addEventListener('click', function(){ go(idx + 1); });
+  document.getElementById('btn-reset').addEventListener('click', resetTimer);
+  document.getElementById('reset-layout').addEventListener('click', function(){
+    if (confirm('恢复默认卡片布局？')) {
+      try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+      applyLayout(defaultLayout());
+    }
+  });
+
+  /* ===== Keyboard ===== */
+  document.addEventListener('keydown', function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (document.activeElement && document.activeElement.getAttribute('contenteditable') === 'true') return;
+    switch(e.key) {
+      case 'ArrowRight': case ' ': case 'PageDown': go(idx + 1); e.preventDefault(); break;
+      case 'ArrowLeft':  case 'PageUp':   go(idx - 1); e.preventDefault(); break;
+      case 'Home': go(0); break;
+      case 'End':  go(total - 1); break;
+      case 'r': case 'R': resetTimer(); break;
+      case 'Escape': window.close(); break;
+    }
+  });
+
+  /* ===== Iframe load → rescale (catches initial size) ===== */
+  iframeCur.addEventListener('load', function(){ rescaleIframe(iframeCur); });
+  iframeNxt.addEventListener('load', function(){ rescaleIframe(iframeNxt); });
+
+  /* ===== Init =====
+   * Load each iframe ONCE with the deck file. After they post
+   * 'preview-ready', all subsequent navigation is via postMessage
+   * (smooth, no reload, no flicker).
+   */
+  applyLayout(readLayout());
+  iframeCur.src = deckUrl + '?preview=' + (idx + 1);
+  if (idx + 1 < total) iframeNxt.src = deckUrl + '?preview=' + (idx + 2);
+  /* Initialize notes/timer/count without touching iframes */
+  notesBody.innerHTML = slideMeta[idx].notes || '<span class="empty">（这一页还没有逐字稿）</span>';
+  curMeta.textContent = (idx + 1) + '/' + total;
+  nxtMeta.textContent = (idx + 2) + '/' + total;
+  timerCount.textContent = (idx + 1) + ' / ' + total;
+})();
+</` + `script>
+</body></html>`;
+    }
+
+    function fullscreen(){ const el=document.documentElement;
+      if (!document.fullscreenElement) el.requestFullscreen&&el.requestFullscreen();
+      else document.exitFullscreen&&document.exitFullscreen();
+    }
+
+    // theme cycling
+    const root = document.documentElement;
+    const themesAttr = root.getAttribute('data-themes') || document.body.getAttribute('data-themes');
+    const themes = themesAttr ? themesAttr.split(',').map(s=>s.trim()).filter(Boolean) : [];
+    let themeIdx = 0;
+
+    // Auto-detect theme base path from existing <link id="theme-link">
+    let themeBase = root.getAttribute('data-theme-base');
+    if (!themeBase) {
+      const existingLink = document.getElementById('theme-link');
+      if (existingLink) {
+        // el.getAttribute('href') gives the raw relative path written in HTML
+        const rawHref = existingLink.getAttribute('href') || '';
+        const lastSlash = rawHref.lastIndexOf('/');
+        themeBase = lastSlash >= 0 ? rawHref.substring(0, lastSlash + 1) : 'assets/themes/';
+      } else {
+        themeBase = 'assets/themes/';
+      }
+    }
+
+    function applyTheme(name) {
+      let link = document.getElementById('theme-link');
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.id = 'theme-link';
+        document.head.appendChild(link);
+      }
+      link.href = themeBase + name + '.css';
+      root.setAttribute('data-theme', name);
+      const ind = document.querySelector('.theme-indicator');
+      if (ind) ind.textContent = name;
+    }
+    function cycleTheme(fromRemote){
+      if (!themes.length) return;
+      themeIdx = (themeIdx+1) % themes.length;
+      const name = themes[themeIdx];
+      applyTheme(name);
+      /* Broadcast to other window (audience ↔ presenter) */
+      if (!fromRemote && bc) bc.postMessage({ type: 'theme', name: name });
+    }
+
+    // animation cycling on current slide
+    let animIdx = 0;
+    function cycleAnim(){
+      animIdx = (animIdx+1) % ANIMS.length;
+      const a = ANIMS[animIdx];
+      const target = slides[idx].querySelector('[data-anim-target]') || slides[idx];
+      ANIMS.forEach(x => target.classList.remove('anim-'+x));
+      void target.offsetWidth;
+      target.classList.add('anim-'+a);
+      target.setAttribute('data-anim', a);
+      const ind = document.querySelector('.anim-indicator');
+      if (ind) ind.textContent = a;
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.metaKey||e.ctrlKey||e.altKey) return;
+      if (document.activeElement && document.activeElement.getAttribute('contenteditable') === 'true') return;
+      switch (e.key) {
+        case 'ArrowRight': case ' ': case 'PageDown': case 'Enter': go(idx+1); e.preventDefault(); break;
+        case 'ArrowLeft': case 'PageUp': case 'Backspace': go(idx-1); e.preventDefault(); break;
+        case 'Home': go(0); break;
+        case 'End': go(total-1); break;
+        case 'f': case 'F': fullscreen(); break;
+        case 's': case 'S': openPresenterWindow(); break;
+        case 'n': case 'N': toggleNotes(); break;
+        case 'o': case 'O': toggleOverview(); break;
+        case 't': case 'T': cycleTheme(); break;
+        case 'a': case 'A': cycleAnim(); break;
+        case 'Escape': toggleOverview(false); toggleNotes(false); break;
+      }
+    });
+
+    // hash deep-link
+    function fromHash(){
+      const m = /^#\/(\d+)/.exec(location.hash||'');
+      if (m) go(Math.max(0, parseInt(m[1],10)-1));
+    }
+    window.addEventListener('hashchange', fromHash);
+    fromHash();
+    go(idx);
+  });
+})();
+</script>
+<script>/* editor.js */
+/* editor.js — visual slide editor (embedded in generated HTML) */
+(function () {
+  'use strict';
+
+  // Guard against double-load (skeleton.ts + editor-server.ts both inject)
+  if (window.__editorLoaded) return;
+  window.__editorLoaded = true;
+
+  let active = false;
+  let selectedEl = null;
+  let floatToolbar = null;
+  let undoStack = [];
+  let pendingJsonChanges = false;
+
+  const SELECTABLE = [
+    // HTML text
+    'h1','h2','h3','h4','p','li','span',
+    // c-* containers
+    '.c-card','.c-card-soft','.c-card-accent','.c-card-warn',
+    '.c-step','.c-steps','.c-kpi','.c-quote','.c-note','.c-warn',
+    '.c-example','.c-codebox','.c-terminal','.c-table','.c-table-striped','.c-table-wrap',
+    '.c-section','.c-glass','.c-stack',
+    // c-* layout
+    '.c-row','.c-grid-2','.c-grid-3','.c-badge-row','.c-icon-row',
+    // c-* text / inline
+    '.c-badge','.c-title','.c-subtitle','.c-body','.c-small','.c-formula','.c-grad',
+    '.c-step-num','.c-step-title','.c-step-body','.c-step-content',
+    '.c-kpi-value','.c-kpi-label','.c-kpi-delta',
+    '.c-note-title','.c-note-body','.c-note-icon','.c-note-content',
+    '.c-warn-title','.c-warn-body','.c-warn-icon','.c-warn-content',
+    '.c-quote-attr','.c-example-label','.c-section-label',
+    '.c-icon-row-icon','.c-icon-row-title','.c-icon-row-body','.c-icon-row-text',
+    '.c-terminal-title','.c-terminal-topbar','.c-terminal-body',
+    '.c-connector','.c-connector-arrow','.c-connector-text',
+    '.c-hero-num','.c-hero-num-label',
+    // c-* decorative
+    '.c-divider','.c-divider-accent','.c-spacer-sm','.c-spacer-md','.c-spacer-lg',
+    // chr-* chrome text
+    '.chr-title','.chr-heading','.chr-sub','.chr-kicker','.chr-chip','.chr-page',
+    '.chr-card-label','.chr-card-desc','.chr-card-num',
+    '.chr-pill','.chr-stat','.chr-codebox',
+    '.chr-hc-big','.chr-hc-desc','.chr-hc-h3','.chr-hc-lbl','.chr-hc-prompt','.chr-hc-tag','.chr-hc-val',
+    // chr-* chrome containers
+    '.chr-footer','.chr-topbar','.chr-card-main','.chr-hero',
+    '.chr-avatar','.chr-big-emoji','.chr-heart','.chr-num-circle','.chr-page-dot','.chr-sticker',
+    '.chr-cover-highlight','.chr-focus','.chr-hc-grid',
+    // chr-* chrome decorative
+    '.chr-topline','.chr-divider','.chr-blob','.chr-grad',
+    '.chr-hc-cursor','.chr-hc-scanlines','.chr-hc-vignette',
+    // media
+    'img','svg',
+  ].join(',');
+
+  // ── Entry badge (shown before entering edit mode) ──────────
+  var entryBadge = document.createElement('div');
+  entryBadge.className = 'editor-entry-badge';
+  entryBadge.innerHTML = '按 <kbd>E</kbd> 进入可视化编辑模式';
+  document.body.appendChild(entryBadge);
+
+  // ── Build top toolbar ──────────────────────────────────────
+  const toolbar = document.createElement('div');
+  toolbar.className = 'editor-toolbar';
+  toolbar.innerHTML =
+    '<span class="editor-label">编辑中</span>' +
+    '<button data-action="save" title="⌘S">保存</button>' +
+    '<button data-action="undo" title="⌘Z">撤销</button>' +
+    '<span class="editor-spacer"></span>' +
+    '<span class="editor-hint">E 退出 · 点击选中 · 双击编辑文字</span>';
+  document.body.appendChild(toolbar);
+
+  // ── Canvas frame label ─────────────────────────────────────
+  var canvasLabel = document.createElement('div');
+  canvasLabel.className = 'editor-canvas-label';
+  var isPortrait = document.body.classList.contains('portrait');
+  var ratio = isPortrait ? '3:4' : '16:9';
+  var deck = document.querySelector('.deck');
+  if (deck) {
+    var w = deck.offsetWidth, h = deck.offsetHeight;
+    canvasLabel.textContent = ratio + '  ' + w + '×' + h;
+  } else {
+    canvasLabel.textContent = ratio;
+  }
+  document.body.appendChild(canvasLabel);
+
+  toolbar.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    if (btn.dataset.action === 'save') saveAll();
+    if (btn.dataset.action === 'undo') undo();
+  });
+
+  // ── Toggle edit mode ───────────────────────────────────────
+  function toggleEdit(force) {
+    active = force !== undefined ? force : !active;
+    document.body.classList.toggle('editor-active', active);
+    if (!active) {
+      deselect();
+      removeFloatToolbar();
+    }
+  }
+
+  // ── Get current slide index (1-based) ──────────────────────
+  function currentSlideIndex() {
+    var slides = document.querySelectorAll('.deck > .slide');
+    for (var i = 0; i < slides.length; i++) {
+      if (slides[i].classList.contains('is-active')) return i + 1;
+    }
+    return 1;
+  }
+
+  // ── Get CSS selector for element relative to its slide ─────
+  function selectorFor(el) {
+    var slide = el.closest('.slide');
+    if (!slide) return el.tagName.toLowerCase();
+
+    var parts = [];
+    var node = el;
+    while (node && node !== slide) {
+      var seg = node.tagName.toLowerCase();
+      var cls = node.getAttribute('class') || '';
+      var match = cls.match(/\b(c-[a-z0-9-]+|chr-[a-z0-9-]+)\b/);
+      if (match) seg = '.' + match[1];
+
+      var parent = node.parentElement;
+      if (parent && parent !== slide) {
+        // Count position among same-tag siblings (matches CSS :nth-of-type)
+        var sameTag = Array.from(parent.children).filter(function (s) {
+          return s.tagName === node.tagName;
+        });
+        if (sameTag.length > 1) {
+          seg += ':nth-of-type(' + (sameTag.indexOf(node) + 1) + ')';
+        }
+      }
+      parts.unshift(seg);
+      node = node.parentElement;
+    }
+    return parts.join(' > ');
+  }
+
+  // ── Selection ──────────────────────────────────────────────
+  function select(el) {
+    deselect();
+    selectedEl = el;
+    el.classList.add('editor-selected');
+    showFloatToolbar(el);
+  }
+
+  function deselect() {
+    if (selectedEl) {
+      selectedEl.classList.remove('editor-selected');
+      selectedEl = null;
+    }
+    removeFloatToolbar();
+  }
+
+  // ── Float toolbar ──────────────────────────────────────────
+  function showFloatToolbar(el) {
+    removeFloatToolbar();
+    floatToolbar = document.createElement('div');
+    floatToolbar.className = 'editor-float-toolbar';
+
+    var cls = el.getAttribute('class') || '';
+    var tag = el.tagName;
+    var isText = /^(H[1-4]|P|LI|SPAN)$/.test(tag) || /\b(chr-title|chr-heading|chr-sub|chr-kicker|chr-chip|chr-page|chr-pill|chr-stat|chr-codebox|chr-card-label|chr-card-desc|chr-card-num|chr-hc-big|chr-hc-desc|chr-hc-h3|chr-hc-lbl|chr-hc-prompt|chr-hc-tag|chr-hc-val|c-title|c-subtitle|c-body|c-small|c-formula|c-grad|c-badge|c-step-num|c-step-title|c-step-body|c-kpi-value|c-kpi-label|c-kpi-delta|c-note-title|c-note-body|c-note-icon|c-warn-title|c-warn-body|c-warn-icon|c-quote-attr|c-example-label|c-section-label|c-icon-row-icon|c-icon-row-title|c-icon-row-body|c-terminal-title|c-connector-text|c-connector-arrow|c-hero-num|c-hero-num-label)\b/.test(cls);
+    var isContainer = /\b(c-card|c-card-soft|c-card-accent|c-card-warn|c-step|c-steps|c-kpi|c-quote|c-note|c-warn|c-example|c-codebox|c-terminal|c-table|c-table-striped|c-table-wrap|c-section|c-glass|c-stack|c-step-content|c-note-content|c-warn-content|c-icon-row-text|c-terminal-topbar|c-terminal-body|c-connector|chr-topbar|chr-card-main|chr-hero|chr-footer|chr-avatar|chr-big-emoji|chr-heart|chr-num-circle|chr-page-dot|chr-sticker|chr-cover-highlight|chr-focus|chr-hc-grid)\b/.test(cls);
+    var isLayout = /\b(c-row|c-grid-2|c-grid-3|c-badge-row|c-icon-row)\b/.test(cls);
+    var isDecorative = /\b(chr-topline|chr-divider|chr-blob|chr-grad|chr-hc-cursor|chr-hc-scanlines|chr-hc-vignette|c-divider|c-divider-accent|c-spacer-sm|c-spacer-md|c-spacer-lg)\b/.test(cls);
+
+    var buttons = [];
+
+    if (isText) {
+      buttons.push({ label: 'A-', action: 'font-down' });
+      buttons.push({ label: 'A+', action: 'font-up' });
+      buttons.push({ label: 'B', action: 'bold' });
+      buttons.push({ label: '色', action: 'color' });
+    }
+    if (isContainer) {
+      buttons.push({ label: '内距-', action: 'pad-down' });
+      buttons.push({ label: '内距+', action: 'pad-up' });
+      buttons.push({ label: '背景', action: 'bg-color' });
+    }
+    if (isLayout) {
+      buttons.push({ label: '间距-', action: 'gap-down' });
+      buttons.push({ label: '间距+', action: 'gap-up' });
+    }
+    if (isDecorative) {
+      buttons.push({ label: '背景', action: 'bg-color' });
+    }
+
+    if (buttons.length) buttons.push({ sep: true });
+    buttons.push({ label: '←', action: 'move-left' });
+    buttons.push({ label: '→', action: 'move-right' });
+    buttons.push({ label: '↑', action: 'move-up' });
+    buttons.push({ label: '↓', action: 'move-down' });
+    buttons.push({ label: '✕', action: 'delete' });
+
+    buttons.forEach(function (b) {
+      if (b.sep) {
+        var sep = document.createElement('span');
+        sep.className = 'sep';
+        floatToolbar.appendChild(sep);
+        return;
+      }
+      var btn = document.createElement('button');
+      btn.textContent = b.label;
+      btn.dataset.action = b.action;
+      floatToolbar.appendChild(btn);
+    });
+
+    floatToolbar.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-action]');
+      if (btn) handleAction(btn.dataset.action, el);
+    });
+
+    document.body.appendChild(floatToolbar);
+    positionFloatToolbar(el);
+  }
+
+  function positionFloatToolbar(el) {
+    if (!floatToolbar) return;
+    var rect = el.getBoundingClientRect();
+    var top = rect.top - 44;
+    var left = rect.left;
+    if (top < 50) top = rect.bottom + 8;
+    left = Math.max(8, Math.min(left, window.innerWidth - floatToolbar.offsetWidth - 8));
+    floatToolbar.style.top = top + 'px';
+    floatToolbar.style.left = left + 'px';
+  }
+
+  function removeFloatToolbar() {
+    if (floatToolbar) { floatToolbar.remove(); floatToolbar = null; }
+  }
+
+  // ── Event listeners ────────────────────────────────────────
+  document.addEventListener('click', function (e) {
+    if (!active) return;
+    if (e.target.closest('.editor-toolbar') || e.target.closest('.editor-float-toolbar')) return;
+
+    var link = e.target.closest('a');
+    if (link) e.preventDefault();
+
+    var el = e.target.closest(SELECTABLE);
+    if (!el || !el.closest('.slide')) {
+      // Fallback: select the nearest div ancestor that is a direct child of .slide
+      var slide = e.target.closest('.slide');
+      if (slide) {
+        var node = e.target;
+        while (node && node.parentElement !== slide) node = node.parentElement;
+        if (node && node !== slide && node.tagName === 'DIV') el = node;
+      }
+    }
+    if (el && el.closest('.slide')) {
+      e.stopPropagation();
+      select(el);
+    } else {
+      deselect();
+    }
+  }, true);
+
+  document.addEventListener('dblclick', function (e) {
+    if (!active) return;
+    var el = e.target.closest(SELECTABLE);
+    if (!el || !el.closest('.slide')) return;
+
+    var tag = el.tagName;
+    var cls = el.getAttribute('class') || '';
+    var isTextEl = /^(H[1-4]|P|LI|SPAN)$/.test(tag) || /\b(chr-title|chr-heading|chr-sub|chr-kicker|chr-chip|chr-page|chr-pill|chr-stat|chr-codebox|chr-card-label|chr-card-desc|chr-card-num|chr-hc-big|chr-hc-desc|chr-hc-h3|chr-hc-lbl|chr-hc-prompt|chr-hc-tag|chr-hc-val|c-title|c-subtitle|c-body|c-small|c-formula|c-badge|c-step-num|c-step-title|c-step-body|c-kpi-value|c-kpi-label|c-kpi-delta|c-note-title|c-note-body|c-note-icon|c-warn-title|c-warn-body|c-warn-icon|c-quote-attr|c-example-label|c-section-label|c-icon-row-icon|c-icon-row-title|c-icon-row-body|c-terminal-title|c-connector-text|c-hero-num|c-hero-num-label)\b/.test(cls);
+    if (!isTextEl) return;
+
+    e.preventDefault();
+    enterContentEditable(el);
+  });
+
+  function enterContentEditable(el) {
+    var oldText = el.textContent;
+    el.setAttribute('contenteditable', 'true');
+    el.classList.add('editor-editing');
+    el.classList.remove('editor-selected');
+    removeFloatToolbar();
+    el.focus();
+
+    function exitEdit() {
+      el.removeAttribute('contenteditable');
+      el.classList.remove('editor-editing');
+      var newText = el.textContent;
+      if (newText !== oldText) {
+        logEdit({
+          slide: currentSlideIndex(),
+          target: selectorFor(el),
+          action: 'edit-text',
+          from: oldText,
+          to: newText,
+          output: 'slides.json',
+        });
+        pendingJsonChanges = true;
+      }
+      el.removeEventListener('blur', onBlur);
+      el.removeEventListener('keydown', onKey);
+    }
+
+    function onBlur() { setTimeout(exitEdit, 100); }
+    function onKey(e) { if (e.key === 'Escape') { e.preventDefault(); el.blur(); } }
+
+    el.addEventListener('blur', onBlur);
+    el.addEventListener('keydown', onKey);
+  }
+
+  // ── Keyboard ───────────────────────────────────────────────
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'e' || e.key === 'E') {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (document.activeElement && document.activeElement.getAttribute('contenteditable') === 'true') return;
+      toggleEdit();
+      e.preventDefault();
+      return;
+    }
+
+    if (!active) return;
+
+    if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+      e.preventDefault();
+      saveAll();
+      return;
+    }
+
+    if ((e.metaKey || e.ctrlKey) && e.key === 'z') {
+      e.preventDefault();
+      undo();
+      return;
+    }
+
+    if (e.key === 'Escape') {
+      if (selectedEl) deselect();
+      else toggleEdit(false);
+    }
+
+    if ((e.key === 'Delete' || e.key === 'Backspace') && selectedEl) {
+      if (document.activeElement && document.activeElement.getAttribute('contenteditable') === 'true') return;
+      e.preventDefault();
+      handleAction('delete', selectedEl);
+    }
+  });
+
+  // ── Actions ────────────────────────────────────────────────
+  function handleAction(action, el) {
+    var slide = currentSlideIndex();
+    var selector = selectorFor(el);
+    var cs = getComputedStyle(el);
+
+    switch (action) {
+      case 'font-up':
+      case 'font-down': {
+        var cur = parseFloat(cs.fontSize);
+        var delta = action === 'font-up' ? 2 : -2;
+        var next = Math.max(8, cur + delta) + 'px';
+        pushUndo(el, 'fontSize', el.style.fontSize);
+        el.style.fontSize = next;
+        saveCssRule(slide, selector, 'font-size', next);
+        logEdit({ slide: slide, target: selector, action: 'resize-font', from: cur + 'px', to: next, output: 'index.html' });
+        break;
+      }
+      case 'bold': {
+        var curW = cs.fontWeight;
+        var nextW = parseInt(curW) >= 600 ? '400' : '700';
+        pushUndo(el, 'fontWeight', el.style.fontWeight);
+        el.style.fontWeight = nextW;
+        saveCssRule(slide, selector, 'font-weight', nextW);
+        logEdit({ slide: slide, target: selector, action: 'toggle-bold', from: curW, to: nextW, output: 'index.html' });
+        break;
+      }
+      case 'color':
+      case 'bg-color': {
+        var input = document.createElement('input');
+        input.type = 'color';
+        input.className = 'editor-color-input';
+        var prop = action === 'color' ? 'color' : 'backgroundColor';
+        var cssProp = action === 'color' ? 'color' : 'background-color';
+        var originalVal = el.style[prop];
+        input.value = rgbToHex(action === 'color' ? cs.color : cs.backgroundColor);
+        document.body.appendChild(input);
+        pushUndo(el, prop, originalVal);
+        input.addEventListener('input', function () {
+          el.style[prop] = input.value;
+          saveCssRule(slide, selector, cssProp, input.value);
+        });
+        input.addEventListener('change', function () {
+          logEdit({ slide: slide, target: selector, action: 'change-color', from: originalVal, to: input.value, output: 'index.html' });
+          input.remove();
+        });
+        input.click();
+        break;
+      }
+      case 'pad-up':
+      case 'pad-down': {
+        var curP = parseFloat(cs.padding) || 16;
+        var deltaP = action === 'pad-up' ? 4 : -4;
+        var nextP = Math.max(0, curP + deltaP) + 'px';
+        pushUndo(el, 'padding', el.style.padding);
+        el.style.padding = nextP;
+        saveCssRule(slide, selector, 'padding', nextP);
+        logEdit({ slide: slide, target: selector, action: 'adjust-padding', from: curP + 'px', to: nextP, output: 'index.html' });
+        break;
+      }
+      case 'gap-up':
+      case 'gap-down': {
+        var curG = parseFloat(cs.gap) || 16;
+        var deltaG = action === 'gap-up' ? 4 : -4;
+        var nextG = Math.max(0, curG + deltaG) + 'px';
+        pushUndo(el, 'gap', el.style.gap);
+        el.style.gap = nextG;
+        saveCssRule(slide, selector, 'gap', nextG);
+        logEdit({ slide: slide, target: selector, action: 'adjust-gap', from: curG + 'px', to: nextG, output: 'index.html' });
+        break;
+      }
+      case 'move-up':
+      case 'move-down':
+      case 'move-left':
+      case 'move-right': {
+        var cur = parseTranslate(el.style.transform);
+        var dx = action === 'move-left' ? -8 : action === 'move-right' ? 8 : 0;
+        var dy = action === 'move-up' ? -8 : action === 'move-down' ? 8 : 0;
+        var nx = cur.x + dx, ny = cur.y + dy;
+        var val = 'translate(' + nx + 'px, ' + ny + 'px)';
+        pushUndo(el, 'transform', el.style.transform);
+        el.style.transform = val;
+        saveCssRule(slide, selector, 'transform', val);
+        logEdit({ slide: slide, target: selector, action: 'move', from: cur.x + ',' + cur.y, to: nx + ',' + ny, output: 'index.html' });
+        break;
+      }
+      case 'delete': {
+        var html = el.outerHTML.slice(0, 200);
+        pushUndo(el, '_delete', { parent: el.parentElement, next: el.nextSibling, html: el.outerHTML });
+        el.remove();
+        deselect();
+        logEdit({ slide: slide, target: selector, action: 'delete', from: html, to: null, output: 'slides.json' });
+        pendingJsonChanges = true;
+        break;
+      }
+    }
+    if (selectedEl) positionFloatToolbar(selectedEl);
+  }
+
+  // ── Undo stack (memory-only) ───────────────────────────────
+  function pushUndo(el, prop, oldVal) {
+    undoStack.push({ el: el, prop: prop, oldVal: oldVal });
+    if (undoStack.length > 50) undoStack.shift();
+  }
+
+  function undo() {
+    var entry = undoStack.pop();
+    if (!entry) return;
+    if (entry.prop === '_delete') {
+      var tmp = document.createElement('div');
+      tmp.innerHTML = entry.oldVal.html;
+      entry.oldVal.parent.insertBefore(tmp.firstElementChild, entry.oldVal.next);
+    } else {
+      entry.el.style[entry.prop] = entry.oldVal;
+    }
+  }
+
+  // ── File System Access API save ─────────────────────────
+  var directoryHandle = null;
+  var saveDialogEl = null;
+
+  function showSaveDialog() {
+    if (saveDialogEl) return;
+    saveDialogEl = document.createElement('div');
+    saveDialogEl.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100001;display:flex;align-items:center;justify-content:center;';
+    saveDialogEl.innerHTML =
+      '<div style="background:#1a1d24;color:#e6edf3;padding:24px 32px;border-radius:12px;text-align:center;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,0.5);font:14px/1.5 -apple-system,BlinkMacSystemFont,sans-serif;">' +
+      '<p style="margin:0 0 8px;">保存修改需要写入文件权限</p>' +
+      '<p style="margin:0 0 16px;font-size:12px;color:#8b949e;">请选择包含 index.html 的目录</p>' +
+      '<button id="editor-save-pick-dir" style="margin:0 6px;padding:8px 18px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);background:rgba(88,166,255,0.25);color:#e6edf3;font:13px -apple-system,BlinkMacSystemFont,sans-serif;cursor:pointer;">选择目录</button>' +
+      '<button id="editor-save-cancel" style="margin:0 6px;padding:8px 18px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#8b949e;font:13px -apple-system,BlinkMacSystemFont,sans-serif;cursor:pointer;">取消</button>' +
+      '</div>';
+    document.body.appendChild(saveDialogEl);
+  }
+
+  function hideSaveDialog() {
+    if (saveDialogEl) { saveDialogEl.remove(); saveDialogEl = null; }
+  }
+
+  async function getDirectoryHandle() {
+    if (directoryHandle) return directoryHandle;
+    try {
+      directoryHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+      return directoryHandle;
+    } catch (e) {
+      if (e.name === 'SecurityError') {
+        // Not called from user gesture — caller should handle
+        throw e;
+      }
+      throw e;
+    }
+  }
+
+  function downloadFile(filename, content, mimeType) {
+    var blob = new Blob([content], { type: mimeType || 'text/plain' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 100);
+  }
+
+  // ── CSS accumulator ────────────────────────────────────────
+  var cssRules = {};
+
+  var dirty = false;
+
+  function saveCssRule(slide, selector, prop, value) {
+    var key = '.slide:nth-of-type(' + slide + ') ' + selector;
+    if (!cssRules[key]) cssRules[key] = {};
+    cssRules[key][prop] = value;
+    dirty = true;
+    markDirty();
+  }
+
+  // Parse existing <style id="editor-overrides"> back into cssRules on load
+  (function loadOverrides() {
+    var styleEl = document.getElementById('editor-overrides');
+    if (!styleEl || !styleEl.textContent.trim()) return;
+    var text = styleEl.textContent;
+    var ruleRe = /\.slide:nth-of-type\(\d+\)\s+[^{]+\s*\{[^}]+\}/g;
+    var rules = text.match(ruleRe) || [];
+    rules.forEach(function(rule) {
+      var m = rule.match(/\.slide:nth-of-type\((\d+)\)\s+([^{]+)\s*\{([^}]+)\}/);
+      if (!m) return;
+      var key = '.slide:nth-of-type(' + m[1] + ') ' + m[2].trim();
+      if (!cssRules[key]) cssRules[key] = {};
+      m[3].split(';').forEach(function(d) {
+        var colon = d.indexOf(':');
+        if (colon > 0) {
+          cssRules[key][d.substring(0, colon).trim()] = d.substring(colon + 1).trim();
+        }
+      });
+    });
+  })();
+
+  function buildEditorCss() {
+    var css = '';
+    for (var sel in cssRules) {
+      var props = cssRules[sel];
+      var decls = [];
+      for (var p in props) decls.push(p + ': ' + props[p]);
+      css += sel + ' { ' + decls.join('; ') + '; }\n';
+    }
+    return css;
+  }
+
+  async function flushToHtml() {
+    var css = buildEditorCss();
+
+    if (directoryHandle) {
+      try {
+        var handle = await getDirectoryHandle();
+        var fileHandle = await handle.getFileHandle('index.html');
+        var file = await fileHandle.getFile();
+        var html = await file.text();
+
+        // Replace content of <style id="editor-overrides">...</style>
+        var tagStart = html.indexOf('id="editor-overrides"');
+        if (tagStart !== -1) {
+          var contentStart = html.indexOf('>', tagStart) + 1;
+          var contentEnd = html.indexOf('</style>', contentStart);
+          if (contentStart > 0 && contentEnd > contentStart) {
+            html = html.substring(0, contentStart) + '\n' + css + html.substring(contentEnd);
+          }
+        }
+
+        var writable = await fileHandle.createWritable();
+        await writable.write(html);
+        await writable.close();
+        return;
+      } catch (e) {}
+    }
+
+    // Fallback: download full HTML
+    downloadFile('index.html', htmlWithOverrides(css), 'text/html');
+  }
+
+  function htmlWithOverrides(css) {
+    // Find and replace editor-overrides in current DOM's HTML
+    var clone = document.documentElement.outerHTML;
+    var tagStart = clone.indexOf('id="editor-overrides"');
+    if (tagStart !== -1) {
+      var contentStart = clone.indexOf('>', tagStart) + 1;
+      var contentEnd = clone.indexOf('</style>', contentStart);
+      if (contentStart > 0 && contentEnd > contentStart) {
+        return clone.substring(0, contentStart) + '\n' + css + clone.substring(contentEnd);
+      }
+    }
+    return clone;
+  }
+
+  // ── Logging (no-op without server) ───────────────────────
+  function logEdit(entry) {
+    // Edit logging requires editor-server. Skip silently.
+  }
+
+  // ── Save all (⌘S) ─────────────────────────────────────────
+  function saveAll() {
+    if (!dirty) return;
+
+    // If no directory handle yet and FSA is available, need user gesture
+    if (!directoryHandle && typeof window.showDirectoryPicker === 'function') {
+      showSaveDialog();
+      var pickBtn = document.getElementById('editor-save-pick-dir');
+      var cancelBtn = document.getElementById('editor-save-cancel');
+      if (pickBtn) {
+        pickBtn.onclick = function () {
+          hideSaveDialog();
+          getDirectoryHandle().then(function () {
+            return flushToHtml();
+          }).then(function () {
+            dirty = false; pendingJsonChanges = false;
+            showSaved('已保存');
+          }).catch(function () {
+            downloadFile('index.html', htmlWithOverrides(buildEditorCss()), 'text/html');
+            dirty = false; pendingJsonChanges = false;
+            showSaved('已下载');
+          });
+        };
+      }
+      if (cancelBtn) {
+        cancelBtn.onclick = function () {
+          hideSaveDialog();
+          downloadFile('index.html', htmlWithOverrides(buildEditorCss()), 'text/html');
+          dirty = false; pendingJsonChanges = false;
+          showSaved('已下载');
+        };
+      }
+      return;
+    }
+
+    flushToHtml().then(function () {
+      dirty = false; pendingJsonChanges = false;
+      showSaved(directoryHandle ? '已保存' : '已下载');
+    });
+  }
+
+  function showSaved(msg) {
+    var label = toolbar.querySelector('.editor-label');
+    if (label) label.textContent = msg;
+    toolbar.style.background = '#2ea043';
+    setTimeout(function () {
+      toolbar.style.background = '';
+      if (label) label.textContent = '编辑中';
+    }, 1500);
+  }
+
+  function markDirty() {
+    var label = toolbar.querySelector('.editor-label');
+    if (label && dirty) label.textContent = '编辑中 *';
+  }
+
+  // ── Helpers ────────────────────────────────────────────────
+  function parseTranslate(transform) {
+    if (!transform) return { x: 0, y: 0 };
+    var m = transform.match(/translate\(\s*(-?[\d.]+)px\s*,\s*(-?[\d.]+)px\s*\)/);
+    return m ? { x: parseFloat(m[1]), y: parseFloat(m[2]) } : { x: 0, y: 0 };
+  }
+
+  function rgbToHex(rgb) {
+    if (rgb.startsWith('#')) return rgb;
+    var m = rgb.match(/\d+/g);
+    if (!m || m.length < 3) return '#000000';
+    return '#' + [m[0], m[1], m[2]].map(function (n) {
+      return parseInt(n).toString(16).padStart(2, '0');
+    }).join('');
+  }
+})();
+</script>
 </body>
 </html>

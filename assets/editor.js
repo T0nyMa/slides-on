@@ -123,11 +123,12 @@
 
       var parent = node.parentElement;
       if (parent && parent !== slide) {
-        var siblings = Array.from(parent.children).filter(function (s) {
-          return s.tagName === node.tagName || (match && (s.getAttribute('class') || '').includes(match[1]));
+        // Count position among same-tag siblings (matches CSS :nth-of-type)
+        var sameTag = Array.from(parent.children).filter(function (s) {
+          return s.tagName === node.tagName;
         });
-        if (siblings.length > 1) {
-          seg += ':nth-child(' + (siblings.indexOf(node) + 1) + ')';
+        if (sameTag.length > 1) {
+          seg += ':nth-of-type(' + (sameTag.indexOf(node) + 1) + ')';
         }
       }
       parts.unshift(seg);
@@ -355,7 +356,7 @@
         pushUndo(el, 'fontSize', el.style.fontSize);
         el.style.fontSize = next;
         saveCssRule(slide, selector, 'font-size', next);
-        logEdit({ slide: slide, target: selector, action: 'resize-font', from: cur + 'px', to: next, output: 'polish.css' });
+        logEdit({ slide: slide, target: selector, action: 'resize-font', from: cur + 'px', to: next, output: 'index.html' });
         break;
       }
       case 'bold': {
@@ -364,7 +365,7 @@
         pushUndo(el, 'fontWeight', el.style.fontWeight);
         el.style.fontWeight = nextW;
         saveCssRule(slide, selector, 'font-weight', nextW);
-        logEdit({ slide: slide, target: selector, action: 'toggle-bold', from: curW, to: nextW, output: 'polish.css' });
+        logEdit({ slide: slide, target: selector, action: 'toggle-bold', from: curW, to: nextW, output: 'index.html' });
         break;
       }
       case 'color':
@@ -383,7 +384,7 @@
           saveCssRule(slide, selector, cssProp, input.value);
         });
         input.addEventListener('change', function () {
-          logEdit({ slide: slide, target: selector, action: 'change-color', from: originalVal, to: input.value, output: 'polish.css' });
+          logEdit({ slide: slide, target: selector, action: 'change-color', from: originalVal, to: input.value, output: 'index.html' });
           input.remove();
         });
         input.click();
@@ -397,7 +398,7 @@
         pushUndo(el, 'padding', el.style.padding);
         el.style.padding = nextP;
         saveCssRule(slide, selector, 'padding', nextP);
-        logEdit({ slide: slide, target: selector, action: 'adjust-padding', from: curP + 'px', to: nextP, output: 'polish.css' });
+        logEdit({ slide: slide, target: selector, action: 'adjust-padding', from: curP + 'px', to: nextP, output: 'index.html' });
         break;
       }
       case 'gap-up':
@@ -408,7 +409,7 @@
         pushUndo(el, 'gap', el.style.gap);
         el.style.gap = nextG;
         saveCssRule(slide, selector, 'gap', nextG);
-        logEdit({ slide: slide, target: selector, action: 'adjust-gap', from: curG + 'px', to: nextG, output: 'polish.css' });
+        logEdit({ slide: slide, target: selector, action: 'adjust-gap', from: curG + 'px', to: nextG, output: 'index.html' });
         break;
       }
       case 'move-up':
@@ -423,7 +424,7 @@
         pushUndo(el, 'transform', el.style.transform);
         el.style.transform = val;
         saveCssRule(slide, selector, 'transform', val);
-        logEdit({ slide: slide, target: selector, action: 'move', from: cur.x + ',' + cur.y, to: nx + ',' + ny, output: 'polish.css' });
+        logEdit({ slide: slide, target: selector, action: 'move', from: cur.x + ',' + cur.y, to: nx + ',' + ny, output: 'index.html' });
         break;
       }
       case 'delete': {
@@ -493,17 +494,8 @@
     }
   }
 
-  async function writeFileFSA(filename, content) {
-    var handle = await getDirectoryHandle();
-    var fileHandle = await handle.getFileHandle(filename, { create: true });
-    var writable = await fileHandle.createWritable();
-    await writable.write(content);
-    await writable.close();
-    return true;
-  }
-
-  function downloadFile(filename, content) {
-    var blob = new Blob([content], { type: 'text/css' });
+  function downloadFile(filename, content, mimeType) {
+    var blob = new Blob([content], { type: mimeType || 'text/plain' });
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = url;
@@ -523,59 +515,88 @@
   var dirty = false;
 
   function saveCssRule(slide, selector, prop, value) {
-    var key = '.slide:nth-child(' + slide + ') ' + selector;
+    var key = '.slide:nth-of-type(' + slide + ') ' + selector;
     if (!cssRules[key]) cssRules[key] = {};
     cssRules[key][prop] = value;
     dirty = true;
     markDirty();
   }
 
-  // Read file via FSA handle (for preserving non-editor polish.css rules)
-  async function readFileFSA(filename) {
-    var handle = await getDirectoryHandle();
-    try {
-      var fileHandle = await handle.getFileHandle(filename);
-      var file = await fileHandle.getFile();
-      return await file.text();
-    } catch (e) {
-      return ''; // file doesn't exist yet
-    }
-  }
+  // Parse existing <style id="editor-overrides"> back into cssRules on load
+  (function loadOverrides() {
+    var styleEl = document.getElementById('editor-overrides');
+    if (!styleEl || !styleEl.textContent.trim()) return;
+    var text = styleEl.textContent;
+    var ruleRe = /\.slide:nth-of-type\(\d+\)\s+[^{]+\s*\{[^}]+\}/g;
+    var rules = text.match(ruleRe) || [];
+    rules.forEach(function(rule) {
+      var m = rule.match(/\.slide:nth-of-type\((\d+)\)\s+([^{]+)\s*\{([^}]+)\}/);
+      if (!m) return;
+      var key = '.slide:nth-of-type(' + m[1] + ') ' + m[2].trim();
+      if (!cssRules[key]) cssRules[key] = {};
+      m[3].split(';').forEach(function(d) {
+        var colon = d.indexOf(':');
+        if (colon > 0) {
+          cssRules[key][d.substring(0, colon).trim()] = d.substring(colon + 1).trim();
+        }
+      });
+    });
+  })();
 
   function buildEditorCss() {
-    var css = '\n/* ── editor overrides ── */\n';
+    var css = '';
     for (var sel in cssRules) {
       var props = cssRules[sel];
       var decls = [];
       for (var p in props) decls.push(p + ': ' + props[p]);
-      css += '\n/* [editor] */\n' + sel + ' { ' + decls.join('; ') + '; }\n';
+      css += sel + ' { ' + decls.join('; ') + '; }\n';
     }
     return css;
   }
 
-  async function flushCss() {
-    var editorCss = buildEditorCss();
-    var finalCss = editorCss;
+  async function flushToHtml() {
+    var css = buildEditorCss();
 
     if (directoryHandle) {
       try {
-        var content = await readFileFSA('polish.css');
-        // Strip prior editor overrides section, preserve non-editor rules
-        var editorIdx = content.indexOf('/* ── editor overrides ── */');
-        if (editorIdx !== -1) {
-          finalCss = content.substring(0, editorIdx).trim() + '\n' + editorCss;
-        } else if (content.trim()) {
-          finalCss = content.trim() + '\n' + editorCss;
+        var handle = await getDirectoryHandle();
+        var fileHandle = await handle.getFileHandle('index.html');
+        var file = await fileHandle.getFile();
+        var html = await file.text();
+
+        // Replace content of <style id="editor-overrides">...</style>
+        var tagStart = html.indexOf('id="editor-overrides"');
+        if (tagStart !== -1) {
+          var contentStart = html.indexOf('>', tagStart) + 1;
+          var contentEnd = html.indexOf('</style>', contentStart);
+          if (contentStart > 0 && contentEnd > contentStart) {
+            html = html.substring(0, contentStart) + '\n' + css + html.substring(contentEnd);
+          }
         }
-        await writeFileFSA('polish.css', finalCss);
+
+        var writable = await fileHandle.createWritable();
+        await writable.write(html);
+        await writable.close();
         return;
       } catch (e) {}
     }
 
-    // Fallback: write without reading existing (fresh file) or download
-    writeFileFSA('polish.css', finalCss).catch(function () {
-      downloadFile('polish.css', editorCss);
-    });
+    // Fallback: download full HTML
+    downloadFile('index.html', htmlWithOverrides(css), 'text/html');
+  }
+
+  function htmlWithOverrides(css) {
+    // Find and replace editor-overrides in current DOM's HTML
+    var clone = document.documentElement.outerHTML;
+    var tagStart = clone.indexOf('id="editor-overrides"');
+    if (tagStart !== -1) {
+      var contentStart = clone.indexOf('>', tagStart) + 1;
+      var contentEnd = clone.indexOf('</style>', contentStart);
+      if (contentStart > 0 && contentEnd > contentStart) {
+        return clone.substring(0, contentStart) + '\n' + css + clone.substring(contentEnd);
+      }
+    }
+    return clone;
   }
 
   // ── Logging (no-op without server) ───────────────────────
@@ -596,13 +617,12 @@
         pickBtn.onclick = function () {
           hideSaveDialog();
           getDirectoryHandle().then(function () {
-            return flushCss();
+            return flushToHtml();
           }).then(function () {
             dirty = false; pendingJsonChanges = false;
             showSaved('已保存');
           }).catch(function () {
-            // User cancelled picker, download directly
-            downloadFile('polish.css', buildEditorCss());
+            downloadFile('index.html', htmlWithOverrides(buildEditorCss()), 'text/html');
             dirty = false; pendingJsonChanges = false;
             showSaved('已下载');
           });
@@ -611,7 +631,7 @@
       if (cancelBtn) {
         cancelBtn.onclick = function () {
           hideSaveDialog();
-          downloadFile('polish.css', buildEditorCss());
+          downloadFile('index.html', htmlWithOverrides(buildEditorCss()), 'text/html');
           dirty = false; pendingJsonChanges = false;
           showSaved('已下载');
         };
@@ -619,7 +639,7 @@
       return;
     }
 
-    flushCss().then(function () {
+    flushToHtml().then(function () {
       dirty = false; pendingJsonChanges = false;
       showSaved(directoryHandle ? '已保存' : '已下载');
     });

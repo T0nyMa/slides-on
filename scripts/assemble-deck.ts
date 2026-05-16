@@ -24,7 +24,6 @@ interface CliArgs {
   input?: string;
   stdin?: boolean;
   output?: string;
-  assetDepth?: number;
 }
 
 function parseArgs(args: string[]): CliArgs {
@@ -37,8 +36,6 @@ function parseArgs(args: string[]): CliArgs {
         opts.stdin = true; break;
       case "--output": case "-o":
         opts.output = args[++i]; break;
-      case "--asset-depth":
-        const v = parseInt(args[++i]!, 10); opts.assetDepth = isNaN(v) ? 3 : v; break;
       case "--help": case "-h":
         console.log(`Usage: bun scripts/assemble-deck.ts --input slides.json [--output index.html]
        cat slides.json | bun scripts/assemble-deck.ts --stdin > index.html
@@ -118,7 +115,7 @@ function main(): void {
     // Validate
     if (!slides.length) throw new Error("No slides in input");
 
-    const designName = typeof config.design === "string" ? config.design : "base";
+    const designName = typeof config.design === "string" ? config.design : (config.design as DesignConfig).design || "base";
     const design = getDesignTemplate(designName);
     const total = slides.length;
 
@@ -127,9 +124,14 @@ function main(): void {
       return renderSlide(design, s, { page: i + 1, total });
     });
 
-    // Wrap in deck skeleton
-    const assetDepth = cli.assetDepth ?? 3;
-    const html = renderDeck(config, slidesHTML, assetDepth);
+    // Wrap in deck skeleton (inline style.css if exists in output dir)
+    let stylePath: string | undefined;
+    if (cli.output) {
+      const outDir = path.dirname(path.resolve(cli.output));
+      const candidate = path.join(outDir, "style.css");
+      if (fs.existsSync(candidate)) stylePath = candidate;
+    }
+    const html = renderDeck(config, slidesHTML, stylePath);
 
     // Output
     if (cli.output) {
@@ -138,7 +140,7 @@ function main(): void {
       fs.writeFileSync(outPath, html);
       const designLabel = typeof config.design === "string" ? config.design : JSON.stringify(config.design);
       console.log(`Written: ${outPath} (${slides.length} slides, design: ${designLabel}, canvas: ${config.canvas})`);
-      console.log(`💡 浏览器打开 ${outPath}  →  按 E 可视化编辑`);
+      console.log(`💡 直接打开 ${outPath}  →  按 E 可视化编辑（无需 server）`);
 
       // Run visual QA if available
       try {

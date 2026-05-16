@@ -134,7 +134,13 @@ function checkSchema(config: any, slides: any[]): CheckResult[] {
     } else if (d.density) {
       results.push(pass("schema.config.design.density", d.density));
     }
-    const keys = [d.typography && "typography", d.texture && "texture", d.density && "density", d.theme && "theme"].filter(Boolean);
+    if (d.design && !KNOWN_DESIGNS.includes(d.design)) {
+      results.push(fail("schema.config.design.design",
+        `Unknown design "${d.design}". Must be one of: ${KNOWN_DESIGNS.join(", ")}`));
+    } else if (d.design) {
+      results.push(pass("schema.config.design.design", d.design));
+    }
+    const keys = [d.design && "design", d.typography && "typography", d.texture && "texture", d.density && "density", d.theme && "theme"].filter(Boolean);
     results.push(pass("schema.config.design", `free-form: ${keys.join(", ")}`));
   } else {
     results.push(fail("schema.config.design", "design must be a string or object"));

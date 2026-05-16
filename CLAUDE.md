@@ -468,7 +468,7 @@ bash scripts/qa.sh <deck-name>           # 单个 deck（L0 validate + L1 visual
 bash scripts/qa.sh --all                 # 全部 deck
 
 # 视觉 QA（单独使用）
-bun scripts/visual-qa.ts --input <html>                  # 检测 + 生成 polish.css
+bun scripts/visual-qa.ts --input <html>                  # 检测 + 修改 HTML
 bun scripts/visual-qa.ts --input <html> --check-only     # 仅检测
 bun scripts/visual-qa.ts --input <html> --report r.json  # 输出 JSON 报告
 

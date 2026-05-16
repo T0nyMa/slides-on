@@ -94,6 +94,7 @@ export interface SlideData {
 // ─── Design Config (free-form composition) ───────────────────────────
 
 export interface DesignConfig {
+  design?: string;       // optional design CSS file e.g. "xhs-post" (chrome styles: stickers, blobs, etc.)
   theme?: string;        // theme CSS name e.g. "minimal-white"
   typography?: string;   // "geometric" | "editorial" | "humanist" | "handwritten" | "technical"
   texture?: string;      // "clean" | "paper" | "grid" | "organic" | "pixel"

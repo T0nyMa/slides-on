@@ -163,7 +163,9 @@ export function renderKpi(d: DesignTemplate, s: SlideData, ctx: PageContext): st
 }
 
 export function renderHtml(_d: DesignTemplate, s: SlideData, _ctx: PageContext): string {
-  return s.html || "";
+  const inner = s.html || "";
+  if (inner.includes("<section")) return inner; // already wrapped
+  return `<section class="slide">\n${inner}\n</section>`;
 }
 
 export function renderTable(d: DesignTemplate, s: SlideData, ctx: PageContext): string {

@@ -1,10 +1,16 @@
 /**
  * skeleton.ts — Deck HTML skeleton generator
  *
- * Wraps slide HTML fragments in a complete deck document.
+ * Generates self-contained HTML with all CSS and JS inlined.
+ * No external file references — single file, open anywhere.
  */
 
+import * as fs from "fs";
+import * as path from "path";
 import type { DeckConfig, DesignConfig } from "./types";
+
+const ROOT = path.resolve(import.meta.dir, "../..");
+const ASSETS = path.join(ROOT, "assets");
 
 const DESIGN_BODY_CLASS: Record<string, string> = {
   "pastel-card": "d-pastel-card",
@@ -13,77 +19,115 @@ const DESIGN_BODY_CLASS: Record<string, string> = {
   "hermes-cyber-terminal": "d-hermes-cyber-terminal",
 };
 
-/** Valid values for each layer dimension */
 const VALID_TYPOGRAPHY = ["geometric", "editorial", "humanist", "handwritten", "technical"];
 const VALID_TEXTURE = ["clean", "paper", "grid", "organic", "pixel"];
 const VALID_DENSITY = ["minimal", "balanced", "dense"];
 
-/**
- * Compute asset prefix based on output path depth from project root.
- * Depth 3 (templates/full-decks/XX/index.html) → "../../../assets"
- * Depth 2 (examples/XX/index.html) → "../../assets"
- */
-export function assetPrefix(depth: number): string {
-  return "../".repeat(depth) + "assets";
+function readCSS(filename: string): string {
+  const filePath = path.join(ASSETS, filename);
+  if (fs.existsSync(filePath)) {
+    return `<style>/* ${filename} */\n${fs.readFileSync(filePath, "utf-8").trim()}\n</style>`;
+  }
+  console.warn(`Warning: CSS file not found: ${filePath}`);
+  return `<!-- ${filename} not found -->`;
 }
 
-const DEFAULT_DEPTH = 3; // templates/full-decks/<name>/index.html
+function readDesignCSS(relPath: string): string {
+  const filePath = relPath.startsWith("/") ? relPath : path.join(ROOT, relPath);
+  if (fs.existsSync(filePath)) {
+    return `<style>/* ${path.basename(filePath)} */\n${fs.readFileSync(filePath, "utf-8").trim()}\n</style>`;
+  }
+  console.warn(`Warning: design CSS not found: ${filePath}`);
+  return `<!-- ${relPath} not found -->`;
+}
 
-/** Build CSS <link> tags based on design config type */
-function buildDesignLinks(prefix: string, design: string | DesignConfig): { links: string; bodyClass: string } {
+function buildInlineCSS(design: string | DesignConfig): string {
+  const blocks: string[] = [];
+
+  // Always needed
+  blocks.push(readCSS("fonts.css"));
+  blocks.push(readCSS("base.css"));
+  blocks.push(readCSS("components.css"));
+  blocks.push(readCSS("editor.css"));
+
   if (typeof design === "string") {
-    // Preset mode — single Design CSS file (backward compatible)
-    const bodyClass = DESIGN_BODY_CLASS[design] || `d-${design}`;
-    const designPath = design.startsWith("/") || design.startsWith(".")
-      ? design
-      : `${prefix}/designs/${design}.css`;
-    return { links: `<link rel="stylesheet" href="${designPath}">`, bodyClass };
+    if (design.startsWith("/") || design.startsWith(".")) {
+      blocks.push(readDesignCSS(design));
+    } else {
+      blocks.push(readCSS(`designs/${design}.css`));
+    }
+  } else {
+    // Free-form composition
+    const d = design as DesignConfig;
+    // Load design CSS first (chrome styles: stickers, blobs, etc.) — theme overrides it
+    if (d.design) {
+      if (d.design.startsWith("/") || d.design.startsWith(".")) {
+        blocks.push(readDesignCSS(d.design));
+      } else {
+        blocks.push(readCSS(`designs/${d.design}.css`));
+      }
+    }
+    if (d.theme) {
+      if (d.theme.startsWith("/") || d.theme.startsWith(".")) {
+        blocks.push(readDesignCSS(d.theme));
+      } else {
+        blocks.push(readCSS(`themes/${d.theme}.css`));
+      }
+    }
+    if (d.typography && VALID_TYPOGRAPHY.includes(d.typography)) {
+      blocks.push(readCSS(`layers/typography/${d.typography}.css`));
+    }
+    if (d.texture && VALID_TEXTURE.includes(d.texture)) {
+      blocks.push(readCSS(`layers/texture/${d.texture}.css`));
+    }
+    if (d.density && VALID_DENSITY.includes(d.density)) {
+      blocks.push(readCSS(`layers/density/${d.density}.css`));
+    }
+    blocks.push(readCSS("base-design-chrome.css"));
   }
 
-  // Free-form composition mode — layer CSS files + base chrome
-  const d = design as DesignConfig;
-  const links: string[] = [];
-
-  // Theme (color variables)
-  if (d.theme) {
-    const themePath = d.theme.startsWith("/") || d.theme.startsWith(".")
-      ? d.theme
-      : `${prefix}/themes/${d.theme}.css`;
-    links.push(`<link rel="stylesheet" href="${themePath}">`);
-  }
-
-  // Typography layer
-  if (d.typography && VALID_TYPOGRAPHY.includes(d.typography)) {
-    links.push(`<link rel="stylesheet" href="${prefix}/layers/typography/${d.typography}.css">`);
-  }
-
-  // Texture layer
-  if (d.texture && VALID_TEXTURE.includes(d.texture)) {
-    links.push(`<link rel="stylesheet" href="${prefix}/layers/texture/${d.texture}.css">`);
-  }
-
-  // Density layer
-  if (d.density && VALID_DENSITY.includes(d.density)) {
-    links.push(`<link rel="stylesheet" href="${prefix}/layers/density/${d.density}.css">`);
-  }
-
-  // Base chrome (minimal chr-* defaults for free-form composition)
-  links.push(`<link rel="stylesheet" href="${prefix}/base-design-chrome.css">`);
-
-  const bodyClass = "d-composed"; // neutral class for free-form
-  return { links: links.join("\n"), bodyClass };
+  return blocks.join("\n");
 }
 
-export function renderDeck(config: DeckConfig, slidesHTML: string[], assetDepth: number = DEFAULT_DEPTH): string {
-  const prefix = assetPrefix(assetDepth);
-  const { links: designLinks, bodyClass } = buildDesignLinks(prefix, config.design);
+function readJS(filename: string): string {
+  const filePath = path.join(ASSETS, filename);
+  if (fs.existsSync(filePath)) {
+    return `<script>/* ${filename} */\n${fs.readFileSync(filePath, "utf-8").trim()}\n</script>`;
+  }
+  console.warn(`Warning: JS file not found: ${filePath}`);
+  return `<!-- ${filename} not found -->`;
+}
+
+function buildInlineJS(): string {
+  return readJS("runtime.js") + "\n" + readJS("editor.js");
+}
+
+function getBodyClass(design: string | DesignConfig): string {
+  if (typeof design === "string") {
+    return DESIGN_BODY_CLASS[design] || `d-${design}`;
+  }
+  const d = design as DesignConfig;
+  if (d.design) {
+    return DESIGN_BODY_CLASS[d.design] || `d-${d.design}`;
+  }
+  return "d-composed";
+}
+
+export function renderDeck(config: DeckConfig, slidesHTML: string[], styleCSS?: string): string {
+  const inlineCSS = buildInlineCSS(config.design);
+  const inlineJS = buildInlineJS();
+  const bodyClass = getBodyClass(config.design);
+
+  // Deck-level style overrides (from template directory)
+  let deckStyleBlock = "";
+  if (styleCSS && fs.existsSync(styleCSS)) {
+    deckStyleBlock = `<style>/* style.css */\n${fs.readFileSync(styleCSS, "utf-8").trim()}\n</style>\n`;
+  }
 
   const isPortrait = config.canvas === "3:4";
   const canvasClass = isPortrait ? " portrait" : " landscape";
-  const componentsLink = `\n<link rel="stylesheet" href="${prefix}/components.css">`;
 
   const slidesStr = slidesHTML.map((html, i) => {
-    // Ensure first slide has is-active
     if (i === 0 && !html.includes("is-active")) {
       return html.replace('<section class="slide"', '<section class="slide is-active"');
     }
@@ -96,12 +140,8 @@ export function renderDeck(config: DeckConfig, slidesHTML: string[], assetDepth:
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escHtml(config.title)}</title>
-<link rel="stylesheet" href="${prefix}/fonts.css">
-<link rel="stylesheet" href="${prefix}/base.css">${componentsLink}
-${designLinks}
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="polish.css">
-<link rel="stylesheet" href="${prefix}/editor.css">
+${inlineCSS}
+${deckStyleBlock}<style id="editor-overrides"></style>
 </head>
 <body class="${bodyClass}${canvasClass}">
 <div class="deck">
@@ -109,8 +149,7 @@ ${designLinks}
   ${slidesStr}
 
 </div>
-<script src="${prefix}/runtime.js"></script>
-<script src="${prefix}/editor.js" defer></script>
+${inlineJS}
 </body>
 </html>
 `;

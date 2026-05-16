@@ -2,7 +2,7 @@
  * editor-server.ts — visual editor dev server
  *
  * Serves deck directory + injects editor.js/editor.css into HTML.
- * Handles save APIs for polish.css, slides.json, and edit-log.
+ * Handles save APIs for slides.json and edit-log.
  *
  * Usage:
  *   bun scripts/editor-server.ts <html-file> [--port 3456]
@@ -32,7 +32,7 @@ const scriptDir = path.dirname(path.resolve(__filename));
 const assetsDir = path.resolve(scriptDir, "../assets");
 
 // Backup on first launch
-for (const f of ["polish.css", "slides.json"]) {
+for (const f of ["slides.json"]) {
   const src = path.join(deckDir, f);
   const bak = src + ".bak";
   if (fs.existsSync(src) && !fs.existsSync(bak)) {
@@ -65,11 +65,6 @@ Bun.serve({
     // API endpoints
     if (req.method === "POST") {
       const body = await req.json();
-
-      if (pathname === "/api/save-css") {
-        fs.writeFileSync(path.join(deckDir, "polish.css"), body.css);
-        return Response.json({ ok: true });
-      }
 
       if (pathname === "/api/save-json") {
         const jsonPath = path.join(deckDir, "slides.json");

@@ -1,7 +1,7 @@
 {
   "config": {
     "title": "以后最贵的工作，是测试+安全",
-    "design": { "typography": "editorial", "texture": "clean", "density": "dense", "theme": "minimal-white" },
+    "design": { "design": "white-editorial", "typography": "editorial", "texture": "clean", "density": "dense", "theme": "minimal-white" },
     "canvas": "3:4",
     "author": "html-ppt · full-deck"
   },

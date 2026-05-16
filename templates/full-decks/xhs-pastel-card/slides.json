@@ -1,7 +1,7 @@
 {
   "config": {
     "title": "放慢一点 · 让 AI 帮你过一种更温柔的生活",
-    "design": { "typography": "editorial", "texture": "clean", "density": "balanced", "theme": "soft-pastel" },
+    "design": { "design": "pastel-card", "typography": "editorial", "texture": "clean", "density": "balanced", "theme": "soft-pastel" },
     "canvas": "3:4",
     "author": "lewis · pastel edition"
   },

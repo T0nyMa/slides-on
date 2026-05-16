@@ -144,7 +144,7 @@ description: >
    - 锚点检查：每页是否有视觉重心 → WARN
    - 色彩语义：warn 色卡片是否有对应 accent 色 → WARN
    - Design 兼容：blob/color/chipColor 是否被目标 Design 支持 → INFO（仅供参考）
-   > 所有 BLOCKER 项必须 0 才能进入 Step 4。JSON 阶段无法检测 CSS 级联冲突，由 Step 4 的 `polish.ts` 补检。
+   > 所有 BLOCKER 项必须 0 才能进入 Step 4。JSON 阶段无法检测 CSS 级联冲突，由 Step 4 的 `visual-qa.ts` 补检。
 2. **内容溢出检查** — 组件容量 < 内容量？
    - c-card 正文 > 60 字 → 精简或拆为 2 卡片
    - c-steps > 7 步 → 拆为两页
@@ -246,13 +246,13 @@ description: >
 QA 通过后，**直接在浏览器打开 `index.html`** 即可微调。页面顶部会显示 "按 E 进入可视化编辑模式" 提示（10 秒后自动消失）。按 **E** 进入编辑模式。
 
 **保存机制**（无需 server）：
-- Chrome/Edge：首次 ⌘S 弹出对话框选择 deck 目录，之后自动写入 `polish.css`
-- Firefox/Safari：保存时自动下载 `polish.css`，手动替换即可
+- Chrome/Edge：首次 ⌘S 弹出对话框选择 deck 目录，之后自动写入 `index.html`
+- Firefox/Safari：保存时自动下载 `index.html`，手动替换即可
 - 如需编辑日志或 slides.json 回写，可启动 `bun scripts/editor-server.ts <index.html>`
 
 微调完成后，进入 Step 5 导出。
 
-**产出**：一个完整的 `index.html`（可浏览器打开交互演示）+ `polish.css`（`visual-qa.ts` 自动生成的视觉修正）+ QA 报告
+**产出**：一个自包含的 `index.html`（所有 CSS/JS 内联，可直接浏览器打开交互演示和编辑）+ QA 报告
 
 **`slides.json` 格式示例**（完整类型定义见 `scripts/assemble/types.ts`）：
 ```json
@@ -331,7 +331,7 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
 - `scripts/assemble/types.ts` — SlideData、DeckConfig 类型定义
 - `scripts/assemble/designs.ts` — Design 模板注册表（per-design 渲染函数）
 - `scripts/assemble/slides.ts` — 10 个渲染函数（覆盖 11 种 slide 类型）
-- `scripts/assemble/skeleton.ts` — Deck HTML 骨架生成（CSS 加载顺序：fonts → base → components → design → style → polish）
+- `scripts/assemble/skeleton.ts` — Deck HTML 骨架生成（所有 CSS/JS 内联为自包含单文件）
 - `scripts/visual-qa.ts` — 统一视觉质量引擎（Playwright 10 项检测：溢出/遮挡/留白/间距/对比度/字体层级/Chrome 一致性/CSS 变量健康/组件密度）
 - `scripts/imagine/prompt-assembler.ts` — 三层结构化 prompt 组装引擎
 - `scripts/imagine/main.ts` — AI 图片生成入口
@@ -364,7 +364,7 @@ QA 通过（BLOCKER = 0）后，slides 已生成并可用，但通常需要微�
 生成的 HTML 已内嵌编辑器，**直接在浏览器中打开 `index.html`**，按 **E** 进入编辑模式：
 
 - 首次保存时弹出对话框，选择包含 index.html 的目录授权写入（Chrome/Edge）
-- 之后 ⌘S 直接写入 `polish.css`，无需再次授权
+- 之后 ⌘S 直接写入 `index.html`，无需再次授权
 - 不支持 File System Access API 的浏览器（Firefox/Safari）自动下载文件
 
 如需 server 额外功能（编辑日志、slides.json 回写），可启动：
@@ -384,19 +384,19 @@ bun scripts/editor-server.ts <html-file> [--port 3456]
 | 移动 | 浮动工具栏 ←→↑↓（每次 8px，transform: translate） |
 | 删除 | 浮动工具栏 ✕ 或 Delete 键 |
 | 翻页 | 方向键 ←→ |
-| 保存 | ⌘S（视觉调整 → polish.css，内容修改 → slides.json） |
+| 保存 | ⌘S（视觉调整 → index.html，内容修改 → slides.json） |
 | 撤销 | ⌘Z（内存中最近 50 步） |
 | 退出编辑 | E 键 |
 
-**双轨保存**：CSS 类修改（字号、颜色、间距、位置）写入 `polish.css`；内容类修改（文字、删除）写入 `slides.json` 并重新组装 HTML。首次启动自动备份 `polish.css.bak` + `slides.json.bak`。
+**双轨保存**：CSS 类修改（字号、颜色、间距、位置）写入 index.html 的 `<style id="editor-overrides">` 块；内容类修改（文字、删除）写入 `slides.json` 并重新组装 HTML。首次保存自动备份 `index.html.bak` + `slides.json.bak`。
 
 **编辑日志**：所有操作记录到 `edit-log.jsonl`，供后续 skill 改进参考。
 
-**重要**：编辑器生成的 polish.css 规则标注 `/* [editor] */`，与 visual-qa.ts 自动生成的规则共存。
+**重要**：编辑器生成的规则注入 `<style id="editor-overrides">`，标注 `/* [editor] */`，与 visual-qa.ts 自动生成的 `<style id="qa-fixes">` 规则共存。
 
 #### 方式 B：AI 视觉抛光（备选）
 
-当编辑器不方便使用时，由 AI 逐页审视并手写 polish.css。AI 抛光与自动 QA 互补：
+当编辑器不方便使用时，由 AI 逐页审视并直接在 index.html 中内联修改。AI 抛光与自动 QA 互补：
 - **自动 QA**（`visual-qa.ts`）：处理可量化的客观问题（溢出、对比度、密度、层级）
 - **AI 抛光**：处理主观审美问题（视觉平衡、强调权重、节奏感）
 
@@ -412,7 +412,7 @@ bun scripts/editor-server.ts <html-file> [--port 3456]
    | 颜色协调 | accent 色使用是否克制（≤3 处/页）？彩色卡片是否区分度足够？ |
    | 排版微调 | 中英文混排间距、标点悬挂、列表缩进是否舒适？ |
 
-2. **追加 polish.css**：所有调整以 CSS 追加到 `polish.css`，不修改 HTML 结构。例如：
+2. **修改 HTML**：所有调整直接写入 `index.html` 的 `<style id="editor-overrides">` 块，或直接修改 DOM 元素的 style 属性。例如：
    ```css
    /* slide 3: 右侧卡片过重，增加左边距平衡 */
    .slide:nth-child(3) .c-card:first-child { margin-right: 1cqi; }

@@ -1,7 +1,7 @@
 {
   "config": {
     "title": "每天只睡 6h 还能精神一整天的 3 个小习惯",
-    "design": { "typography": "humanist", "texture": "paper", "density": "minimal", "theme": "xiaohongshu-white" },
+    "design": { "design": "xhs-post", "typography": "humanist", "texture": "paper", "density": "minimal", "theme": "xiaohongshu-white" },
     "canvas": "3:4",
     "author": "@小熊不困了"
   },
