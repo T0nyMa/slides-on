@@ -1295,16 +1295,13 @@ body.editor-active .editor-canvas-label { display: block; }
 .d-pastel-card .c-badge       { color: #3a3555; }  /* default: darker for contrast */
 .d-pastel-card .c-badge-row .c-badge { color: #3a3555; }
 
-/* ── All badges and small text need sufficient contrast on warm bg ── */
-.d-pastel-card .c-badge-row span { color: #3a3555; }
-.d-pastel-card .c-badge { color: #3a3555; }
-.d-pastel-card span.c-badge { color: #3a3555; }
+/* ── Fix text-3 too light on warm pastel bg (#9089a8 on #fef8f1 = 3.15:1) ── */
+.d-pastel-card { --text-3: #6b5d80; }  /* was #9089a8, now 5.2:1 on #fef8f1 */
 
-/* ── Force badge text to use text-1 for contrast ── */
-.d-pastel-card .c-badge { color: var(--text-1) !important; }
-.d-pastel-card .c-badge.good  { color: #0a5e2e !important; }
-.d-pastel-card .c-badge.warn  { color: #8a5d00 !important; }
-.d-pastel-card .c-badge.bad   { color: #b5283a !important; }
+/* ── All badges and small text need sufficient contrast on warm bg ── */
+.d-pastel-card .c-badge-row span { color: var(--text-1); }
+.d-pastel-card .c-badge { color: var(--text-1); }
+.d-pastel-card span.c-badge { color: var(--text-1); }
 </style>
 <style id="editor-overrides"></style>
 </head>
@@ -1519,7 +1516,7 @@ body.editor-active .editor-canvas-label { display: block; }
 
   <section class="slide">
     <div class="chr-topbar"><div class="chr-page">07 · 07</div></div>
-    <div class="v-distribute" style="text-align:center;max-width:88%;margin-left:auto;margin-right:auto">
+    <div class="v-distribute" style="text-align:center;width:100%">
       <div>
         <div class="chr-kicker">END · blueprint v2</div>
         <h1 class="chr-title" style="font-size:8cqi">谢谢 <em>·</em> thanks</h1>

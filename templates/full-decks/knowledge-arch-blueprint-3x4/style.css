@@ -101,7 +101,10 @@
 .d-pastel-card .c-badge       { color: #3a3555; }  /* default: darker for contrast */
 .d-pastel-card .c-badge-row .c-badge { color: #3a3555; }
 
+/* ── Fix text-3 too light on warm pastel bg (#9089a8 on #fef8f1 = 3.15:1) ── */
+.d-pastel-card { --text-3: #6b5d80; }  /* was #9089a8, now 5.2:1 on #fef8f1 */
+
 /* ── All badges and small text need sufficient contrast on warm bg ── */
-.d-pastel-card .c-badge-row span { color: #3a3555; }
-.d-pastel-card .c-badge { color: #3a3555; }
-.d-pastel-card span.c-badge { color: #3a3555; }
+.d-pastel-card .c-badge-row span { color: var(--text-1); }
+.d-pastel-card .c-badge { color: var(--text-1); }
+.d-pastel-card span.c-badge { color: var(--text-1); }

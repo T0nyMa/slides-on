@@ -136,9 +136,9 @@ function adjustColorForContrast(rgb: [number, number, number], bgLuminance: numb
 
 // ─── Browser helpers ────────────────────────────────────────────────────
 
-async function loadPage(htmlPath: string) {
+async function loadPage(htmlPath: string, viewport?: { width: number; height: number }) {
   const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
+  const page = await browser.newPage(viewport ? { viewport } : {});
   await page.goto(`file://${htmlPath}`, { waitUntil: "networkidle" });
   await page.waitForSelector(".slide", { timeout: 5000 });
   await page.evaluate("window.__name = function(t) { return t; }");
@@ -1548,7 +1548,10 @@ async function main(): Promise<void> {
   console.log(`  Loading: ${htmlPath}`);
   console.log(`  Canvas: ${portrait ? "3:4 portrait" : "16:9 landscape"}`);
 
-  const { browser, page } = await loadPage(htmlPath);
+  // Set viewport to match canvas: portrait 810×1080, landscape 1920×1080
+  const viewport = portrait ? { width: 810, height: 1080 } : { width: 1920, height: 1080 };
+
+  const { browser, page } = await loadPage(htmlPath, viewport);
   const totalSlides = await getSlideCount(page);
   console.log(`  Slides: ${totalSlides}`);
 
