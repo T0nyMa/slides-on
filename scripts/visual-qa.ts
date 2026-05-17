@@ -25,6 +25,7 @@
 import { chromium } from "playwright";
 import * as fs from "fs";
 import * as path from "path";
+import { detectCanvas, PROFILES, type CanvasProfile } from "./qa/profiles.js";
 
 // ─── Types ──────────────────────────────────────────────────────────────
 
@@ -156,7 +157,7 @@ async function activateSlide(page: any, index: number): Promise<void> {
 }
 
 function isPortrait(html: string): boolean {
-  return /class="[^"]*portrait/.test(html) || /class='[^']*portrait/.test(html);
+  return detectCanvas(html) === "portrait";
 }
 
 // ─── Shared constants ───────────────────────────────────────────────────
@@ -351,8 +352,8 @@ async function checkOcclusion(page: any, slideIndex: number): Promise<Issue[]> {
 
 // ─── Group 3: Whitespace ────────────────────────────────────────────────
 
-async function checkWhitespace(page: any, slideIndex: number, portrait: boolean): Promise<Issue[]> {
-  return page.evaluate((args: { idx: number; selectors: string; decoClasses: string[]; portrait: boolean }) => {
+async function checkWhitespace(page: any, slideIndex: number, profile: CanvasProfile): Promise<Issue[]> {
+  return page.evaluate((args: { idx: number; selectors: string; decoClasses: string[]; profile: CanvasProfile }) => {
     const slide = document.querySelector(".deck > .slide.is-active");
     if (!slide) return [];
 
@@ -418,8 +419,8 @@ async function checkWhitespace(page: any, slideIndex: number, portrait: boolean)
     const issues: any[] = [];
 
     // ── Fill percent ──
-    const thresholdLow = args.portrait ? 18 : 15;
-    const thresholdWarn = args.portrait ? 35 : 30;
+    const thresholdLow = args.profile.fillMin * 100;
+    const thresholdWarn = Math.min(args.profile.fillMin + 0.15, 0.50) * 100;
     if (fillPercent < thresholdLow) {
       issues.push({ group: "whitespace", severity: "BLOCKER", slide: args.idx + 1,
         element: ".slide", message: `填充率仅 ${fillPercent}%（< ${thresholdLow}%），内容严重不足` });
@@ -449,7 +450,7 @@ async function checkWhitespace(page: any, slideIndex: number, portrait: boolean)
     if (centerOffset > 0.18) {
       const dir = contentMidY < 0.5 ? "偏上" : "偏下";
       issues.push({ group: "whitespace", severity: "WARN", slide: args.idx + 1,
-        element: ".slide", message: `内容重心${dir}（偏移 ${(centerOffset * 100).toFixed(0)}%），${args.portrait ? "3:4建议居中" : "建议调整分布"}` });
+        element: ".slide", message: `内容重心${dir}（偏移 ${(centerOffset * 100).toFixed(0)}%），${args.profile.fillMin > 0.40 ? "3:4建议居中" : "建议调整分布"}` });
     } else if (centerOffset > 0.12) {
       issues.push({ group: "whitespace", severity: "INFO", slide: args.idx + 1,
         element: ".slide", message: `内容重心略偏（偏移 ${(centerOffset * 100).toFixed(0)}%）` });
@@ -535,7 +536,7 @@ async function checkWhitespace(page: any, slideIndex: number, portrait: boolean)
     }
 
     return issues;
-  }, { idx: slideIndex, selectors: CONTENT_SELECTORS, decoClasses: DECORATIVE_CLASSES, portrait });
+  }, { idx: slideIndex, selectors: CONTENT_SELECTORS, decoClasses: DECORATIVE_CLASSES, profile });
 }
 
 // ─── Group 4: Spacing consistency ───────────────────────────────────────
@@ -1003,8 +1004,8 @@ async function checkCSSVarHealth(page: any): Promise<Issue[]> {
 
 // ─── Group 10: Component density ────────────────────────────────────────
 
-async function checkDensity(page: any, slideIndex: number, portrait: boolean): Promise<Issue[]> {
-  return page.evaluate((args: { idx: number; portrait: boolean }) => {
+async function checkDensity(page: any, slideIndex: number, profile: CanvasProfile): Promise<Issue[]> {
+  return page.evaluate((args: { idx: number; profile: CanvasProfile }) => {
     const slide = document.querySelector(".deck > .slide.is-active");
     if (!slide) return [];
 
@@ -1036,7 +1037,7 @@ async function checkDensity(page: any, slideIndex: number, portrait: boolean): P
       }
     }
 
-    const max = args.portrait ? 6 : 8;
+    const max = args.profile.componentMax;
     const count = componentClasses.size;
 
     if (count > max) {
@@ -1048,8 +1049,18 @@ async function checkDensity(page: any, slideIndex: number, portrait: boolean): P
         message: `${count} 个组件（最多 ${max}），建议拆页或精简`,
       }];
     }
+
+    if (args.profile.componentMin > 0 && count < args.profile.componentMin) {
+      return [{
+        group: "density",
+        severity: "WARN",
+        slide: args.idx + 1,
+        element: ".slide",
+        message: `仅 ${count} 个组件（最少 ${args.profile.componentMin}），${args.profile.componentMin > 3 ? "3:4 建议增加组件填充" : "内容稀疏"}`,
+      }];
+    }
     return [];
-  }, { idx: slideIndex, portrait });
+  }, { idx: slideIndex, profile });
 }
 
 // ─── Fix generation ─────────────────────────────────────────────────────
@@ -1172,6 +1183,7 @@ async function main(): Promise<void> {
 
   const html = fs.readFileSync(htmlPath, "utf-8");
   const portrait = isPortrait(html);
+  const profile = portrait ? PROFILES.portrait : PROFILES.landscape;
   const htmlDir = path.dirname(htmlPath);
 
   console.log(`  Loading: ${htmlPath}`);
@@ -1197,10 +1209,10 @@ async function main(): Promise<void> {
     const [overflow, occlusion, whitespace, spacing, contrast, density] = await Promise.all([
       checkTextOverflow(page, i),
       checkOcclusion(page, i),
-      checkWhitespace(page, i, portrait),
+      checkWhitespace(page, i, profile),
       checkSpacing(page, i),
       checkContrast(page, i),
-      checkDensity(page, i, portrait),
+      checkDensity(page, i, profile),
     ]);
 
     allIssues.push(...overflow, ...occlusion, ...whitespace, ...spacing, ...contrast, ...density);
