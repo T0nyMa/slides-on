@@ -4,3 +4,8 @@ examples/
 *.png
 .DS_Store
 bun.lock
+
+# QA baselines (large PNG files, reports)
+.qa/baselines/*.png
+.qa/baselines/*/
+.qa/reports/
