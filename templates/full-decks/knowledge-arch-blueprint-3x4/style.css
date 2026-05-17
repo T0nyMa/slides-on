@@ -8,6 +8,25 @@
   --grad: linear-gradient(135deg, #B5392A, #d45341 55%, #f08070);
 }
 
+/* ── Portrait: scale down oversized chr-* font sizes ── */
+/*    pastel-card.css defaults: chr-title 11.85cqi, chr-heading 7.41cqi
+      These dominate the narrow 3:4 canvas (96px / 60px at 810px) */
+.d-pastel-card.portrait .chr-title    { font-size: 8cqi; }      /* 96→65px — prominent but not overwhelming */
+.d-pastel-card.portrait .chr-heading  { font-size: 5.5cqi; }    /* 60→45px — slide title */
+.d-pastel-card.portrait .chr-sub      { font-size: 2.2cqi; }    /* 21→18px */
+.d-pastel-card.portrait .chr-kicker   { font-size: 2cqi; }      /* 13→16px — more readable */
+.d-pastel-card.portrait .chr-card-num { font-size: 2cqi; }      /* ~16px */
+.d-pastel-card.portrait .chr-card-label { font-size: 1.6cqi; }  /* ~13px */
+.d-pastel-card.portrait .chr-card-main  { font-size: 3cqi; }    /* ~24px */
+.d-pastel-card.portrait .chr-card-desc  { font-size: 1.8cqi; }  /* ~15px */
+
+/* ── Portrait chrome: line up with slide padding ── */
+.d-pastel-card.portrait .chr-topbar  { top: 4cqi; left: var(--slide-pad-x); right: var(--slide-pad-x); font-size: 1.6cqi; }
+.d-pastel-card.portrait .chr-page    { font-size: 1.6cqi; }
+.d-pastel-card.portrait .chr-chip    { font-size: 1.6cqi; }
+.d-pastel-card.portrait .chr-footer  { left: var(--slide-pad-x); right: var(--slide-pad-x); bottom: 3cqi; font-size: 1.6cqi; }
+.d-pastel-card.portrait .chr-blob    { display: none; } /* blobs add clutter on narrow canvas */
+
 /* ── Blueprint grid background (all slides) ── */
 .d-pastel-card.portrait .slide::before {
   content: '';
@@ -48,23 +67,18 @@
   margin: -0.5cqi 0 -0.5cqi -0.5cqi;
 }
 
-/* ── Chip should use accent ── */
+/* ── Chip uses accent ── */
 .d-pastel-card .chr-chip {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   color: var(--accent);
   border-color: color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
-/* ── Cover title spacing ── */
-.d-pastel-card.portrait .chr-title { margin-bottom: 2cqi; }
-
-/* ── Bump chrome font sizes for 3:4 readability ── */
-.d-pastel-card.portrait .chr-topbar { font-size: 1.6cqi; }
-.d-pastel-card.portrait .chr-page { font-size: 1.6cqi; }
-.d-pastel-card.portrait .chr-chip { font-size: 1.6cqi; }
-.d-pastel-card.portrait .chr-footer { font-size: 1.6cqi; }
-
-/* ── Ensure content fills vertical space ── */
+/* ── Cards fill vertical space in 3:4 ── */
 .d-pastel-card.portrait .c-grid-2,
 .d-pastel-card.portrait .c-steps,
 .d-pastel-card.portrait .c-row { flex: 1; }
+.d-pastel-card.portrait .c-grid-2 .c-card { display: flex; flex-direction: column; justify-content: center; }
+
+/* ── Section divider: add breathing room ── */
+.d-pastel-card.portrait .c-card.chr-hero { max-width: 90%; }
