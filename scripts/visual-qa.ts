@@ -1298,6 +1298,78 @@ async function checkChromeZIndex(page: any, slideIndex: number): Promise<Issue[]
   }, { idx: slideIndex });
 }
 
+// ─── Group 17: Font-container ratio ────────────────────────────────────────
+
+const FONT_CONTAINER_RATIOS: Record<string, { titleMin: number; titleMax: number; bodyMin: number; bodyMax: number }> = {
+  "c-card":       { titleMin: 0.06, titleMax: 0.10, bodyMin: 0.04, bodyMax: 0.07 },
+  "c-card-soft":  { titleMin: 0.06, titleMax: 0.10, bodyMin: 0.04, bodyMax: 0.07 },
+  "c-card-accent":{ titleMin: 0.06, titleMax: 0.10, bodyMin: 0.04, bodyMax: 0.07 },
+  "c-hero":       { titleMin: 0.08, titleMax: 0.14, bodyMin: 0,     bodyMax: 0 },
+  "c-hero-num":   { titleMin: 0.08, titleMax: 0.14, bodyMin: 0,     bodyMax: 0 },
+  "c-step":       { titleMin: 0.05, titleMax: 0.08, bodyMin: 0.03, bodyMax: 0.05 },
+  "c-codebox":    { titleMin: 0,     titleMax: 0,     bodyMin: 0.02, bodyMax: 0.03 },
+  "c-quote":      { titleMin: 0,     titleMax: 0,     bodyMin: 0.05, bodyMax: 0.08 },
+  "c-kpi":        { titleMin: 0.08, titleMax: 0.12, bodyMin: 0.03, bodyMax: 0.05 },
+};
+
+async function checkFontContainerRatio(page: any, slideIndex: number): Promise<Issue[]> {
+  return page.evaluate((args: { idx: number; ratios: Record<string, any> }) => {
+    const active = document.querySelector(".deck > .slide.is-active");
+    if (!active) return [];
+
+    const issues: any[] = [];
+
+    for (const [baseClass, zone] of Object.entries(args.ratios)) {
+      const components = active.querySelectorAll(`.${baseClass}`);
+      for (const comp of components) {
+        const compRect = comp.getBoundingClientRect();
+        const compWidth = compRect.width;
+        if (compWidth < 50) continue;
+
+        // Check title font ratio
+        if ((zone as any).titleMin > 0) {
+          const titleEl = comp.querySelector("h1, h2, h3, h4, .c-title, .chr-heading, .c-hero-num-value, .c-kpi-value");
+          if (titleEl) {
+            const fontSize = parseFloat(window.getComputedStyle(titleEl).fontSize);
+            const ratio = fontSize / compWidth;
+            if (ratio < (zone as any).titleMin) {
+              issues.push({
+                group: "font-container-ratio",
+                severity: "WARN",
+                slide: args.idx + 1,
+                element: `.${baseClass} title`,
+                message: `标题占容器 ${(ratio * 100).toFixed(1)}%（建议 ${((zone as any).titleMin * 100).toFixed(0)}-${((zone as any).titleMax * 100).toFixed(0)}%），字体偏小`,
+              });
+            }
+          }
+        }
+
+        // Check body font ratio
+        if ((zone as any).bodyMin > 0) {
+          const bodyEls = comp.querySelectorAll("p, .c-body, .c-sub, .c-step-body, .c-quote-text, .c-note-body");
+          for (const bodyEl of bodyEls) {
+            if (bodyEl.closest(`.${baseClass}`) !== comp) continue;
+            const fontSize = parseFloat(window.getComputedStyle(bodyEl).fontSize);
+            const ratio = fontSize / compWidth;
+            if (ratio < (zone as any).bodyMin) {
+              issues.push({
+                group: "font-container-ratio",
+                severity: "WARN",
+                slide: args.idx + 1,
+                element: `.${baseClass} body`,
+                message: `正文占容器 ${(ratio * 100).toFixed(1)}%（建议 ${((zone as any).bodyMin * 100).toFixed(0)}-${((zone as any).bodyMax * 100).toFixed(0)}%），字体偏小`,
+              });
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    return issues;
+  }, { idx: slideIndex, ratios: FONT_CONTAINER_RATIOS });
+}
+
 // ─── Group 14: CSS loading integrity ───────────────────────────────────────
 
 async function checkCSSLoadingIntegrity(page: any): Promise<Issue[]> {
@@ -1494,7 +1566,7 @@ async function main(): Promise<void> {
     await activateSlide(page, i);
 
     const [overflow, occlusion, whitespace, spacing, contrast, density,
-           chromeBoundary, canvasFill, fontUnit, gridCollapse, chromeZ] = await Promise.all([
+           chromeBoundary, canvasFill, fontUnit, gridCollapse, chromeZ, fontCR] = await Promise.all([
       checkTextOverflow(page, i),
       checkOcclusion(page, i),
       checkWhitespace(page, i, profile),
@@ -1506,10 +1578,11 @@ async function main(): Promise<void> {
       checkFontUnit(page, i, profile),
       checkGridCollapse(page, i, profile),
       checkChromeZIndex(page, i),
+      checkFontContainerRatio(page, i),
     ]);
 
     allIssues.push(...overflow, ...occlusion, ...whitespace, ...spacing, ...contrast, ...density,
-      ...chromeBoundary, ...canvasFill, ...fontUnit, ...gridCollapse, ...chromeZ);
+      ...chromeBoundary, ...canvasFill, ...fontUnit, ...gridCollapse, ...chromeZ, ...fontCR);
 
     // Collect font records for cross-slide analysis
     const fonts = await collectFontSizes(page, i);
