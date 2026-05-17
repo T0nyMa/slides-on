@@ -55,8 +55,6 @@
 
   /* Layer system — dimension variables (overridden by assets/layers/) */
   --body-size: 2cqi;
-  --slide-padding-y: 4cqi;
-  --slide-padding-x: 6cqi;
   --card-pad-y: 1.5cqi;
   --card-pad-x: 1.8cqi;
   --card-gap: 1.5cqi;
@@ -229,22 +227,12 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
 .uppercase{text-transform:uppercase;letter-spacing:.12em}
 
 /* ================= NARROW CANVAS ================= */
-/* Two-tier narrow handling:
+/* Narrow-grid fallback: viewport-based grid column reduction.
+   Font sizes, padding, and spacing are handled by the CSS token system
+   (.portrait / .landscape override --h1-size, --slide-pad-x, etc. in :root).
+   Reference: 16:9 deck = 1920px (1cqi ≈ 19.2px), 3:4 deck = 810px (1cqi ≈ 8.1px) */
 
-   1. @container — fires when DECK is narrow (3:4 portrait). Uses cqi units
-      for proportional sizing that fills the screen. This is the primary path
-      for intentionally-designed portrait decks (XHS, Stories, mobile posts).
-
-   2. @media — fallback when container queries aren't supported, or when the
-      VIEWPORT is narrow (small browser window). Shrinks fonts linearly.
-
-   Reference: 16:9 deck = 1920px (1cqi ≈ 19.2px), 3:4 deck = 810px (1cqi ≈ 8.1px)
-
-   On 3:4 canvas, the @container values below give:
-   h1 ≈ 57px, h2 ≈ 42px, h3 ≈ 30px, lede ≈ 20px
-   — larger than the @media narrow breakpoint, proportionally filling the screen. */
-
-/* ── Fallback: viewport width media query (lower priority) ── */
+/* ── Fallback: viewport width media query ── */
 @media (max-width: 900px) {
   .g4, .g3{ grid-template-columns: repeat(2, 1fr); }
   .g5, .g6{ grid-template-columns: repeat(3, 1fr); }
@@ -1097,8 +1085,8 @@ body.editor-active .editor-canvas-label { display: block; }
 /* density: balanced — typical presentation density, 2-4 items per slide */
 :root {
   --body-size: 2cqi;
-  --slide-padding-y: 4cqi;
-  --slide-padding-x: 6cqi;
+  --slide-pad-y: 4cqi;
+  --slide-pad-x: 6cqi;
   --card-pad-y: 1.5cqi;
   --card-pad-x: 1.8cqi;
   --card-gap: 1.5cqi;
@@ -1112,7 +1100,7 @@ body.editor-active .editor-canvas-label { display: block; }
 
 /* ── Topbar: chip + page number ── */
 .chr-topbar {
-  position: absolute; top: 4cqi; left: var(--slide-padding-x, 6cqi); right: var(--slide-padding-x, 6cqi); z-index: 3;
+  position: absolute; top: 4cqi; left: var(--slide-pad-x, 6cqi); right: var(--slide-pad-x, 6cqi); z-index: 3;
   display: flex; justify-content: space-between; align-items: center;
   font-family: var(--font-sans);
 }
@@ -1145,7 +1133,7 @@ body.editor-active .editor-canvas-label { display: block; }
 
 /* ── Footer ── */
 .chr-footer {
-  position: absolute; left: var(--slide-padding-x, 6cqi); right: var(--slide-padding-x, 6cqi); bottom: 4cqi;
+  position: absolute; left: var(--slide-pad-x, 6cqi); right: var(--slide-pad-x, 6cqi); bottom: 4cqi;
   display: flex; justify-content: space-between;
   font-family: var(--font-sans); font-size: 1.3cqi;
   color: var(--text-3); letter-spacing: .08em;
@@ -1200,17 +1188,8 @@ body.editor-active .editor-canvas-label { display: block; }
 /* ── Slide z-index for chrome children ── */
 .slide > * { position: relative; z-index: 2; }
 
-/* ── Narrow canvas overrides ── */
-@container (max-width: 1000px) {
-  .chr-title { font-size: 12cqi; }
-  .chr-heading { font-size: 8cqi; }
-  .chr-sub { font-size: 3cqi; }
-  .chr-chip { font-size: 2cqi; }
-  .chr-page { font-size: 2cqi; }
-  .chr-footer { font-size: 1.8cqi; }
-  .chr-kicker { font-size: 2.2cqi; }
-  .chr-codebox { font-size: 2.2cqi; padding: 3cqi 3.5cqi; }
-}
+/* Chr-* sizing is handled by design CSS (pastel-card, white-editorial, etc.)
+   or by the token system for free-form composition. */
 </style>
 <style>/* style.css */
 /* knowledge-arch-blueprint-3x4 — blueprint identity overrides */

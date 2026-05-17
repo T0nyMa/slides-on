@@ -29,8 +29,6 @@
 
   /* Layer system — dimension variables (overridden by assets/layers/) */
   --body-size: 2cqi;
-  --slide-padding-y: 4cqi;
-  --slide-padding-x: 6cqi;
   --card-pad-y: 1.5cqi;
   --card-pad-x: 1.8cqi;
   --card-gap: 1.5cqi;
@@ -203,22 +201,12 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
 .uppercase{text-transform:uppercase;letter-spacing:.12em}
 
 /* ================= NARROW CANVAS ================= */
-/* Two-tier narrow handling:
+/* Narrow-grid fallback: viewport-based grid column reduction.
+   Font sizes, padding, and spacing are handled by the CSS token system
+   (.portrait / .landscape override --h1-size, --slide-pad-x, etc. in :root).
+   Reference: 16:9 deck = 1920px (1cqi ≈ 19.2px), 3:4 deck = 810px (1cqi ≈ 8.1px) */
 
-   1. @container — fires when DECK is narrow (3:4 portrait). Uses cqi units
-      for proportional sizing that fills the screen. This is the primary path
-      for intentionally-designed portrait decks (XHS, Stories, mobile posts).
-
-   2. @media — fallback when container queries aren't supported, or when the
-      VIEWPORT is narrow (small browser window). Shrinks fonts linearly.
-
-   Reference: 16:9 deck = 1920px (1cqi ≈ 19.2px), 3:4 deck = 810px (1cqi ≈ 8.1px)
-
-   On 3:4 canvas, the @container values below give:
-   h1 ≈ 57px, h2 ≈ 42px, h3 ≈ 30px, lede ≈ 20px
-   — larger than the @media narrow breakpoint, proportionally filling the screen. */
-
-/* ── Fallback: viewport width media query (lower priority) ── */
+/* ── Fallback: viewport width media query ── */
 @media (max-width: 900px) {
   .g4, .g3{ grid-template-columns: repeat(2, 1fr); }
   .g5, .g6{ grid-template-columns: repeat(3, 1fr); }

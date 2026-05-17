@@ -1,8 +1,8 @@
 /* density: balanced — typical presentation density, 2-4 items per slide */
 :root {
   --body-size: 2cqi;
-  --slide-padding-y: 4cqi;
-  --slide-padding-x: 6cqi;
+  --slide-pad-y: 4cqi;
+  --slide-pad-x: 6cqi;
   --card-pad-y: 1.5cqi;
   --card-pad-x: 1.8cqi;
   --card-gap: 1.5cqi;
