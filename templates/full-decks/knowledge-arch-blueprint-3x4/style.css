@@ -1,0 +1,70 @@
+/* knowledge-arch-blueprint-3x4 — blueprint identity overrides */
+
+/* ── Brand token overrides ── */
+.d-pastel-card {
+  --accent: #B5392A;
+  --accent-2: #d45341;
+  --accent-3: #f08070;
+  --grad: linear-gradient(135deg, #B5392A, #d45341 55%, #f08070);
+}
+
+/* ── Blueprint grid background (all slides) ── */
+.d-pastel-card.portrait .slide::before {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 0; opacity: .25;
+  background-image:
+    linear-gradient(rgba(26,26,26,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,26,26,.05) 1px, transparent 1px);
+  background-size: 6cqi 6cqi;
+  mask-image: radial-gradient(ellipse at center, black 35%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 35%, transparent 80%);
+}
+
+/* ── Content sits above grid ── */
+.d-pastel-card.portrait .slide > * { position: relative; z-index: 1; }
+
+/* ── Card styling — blueprint border ── */
+.d-pastel-card .c-card {
+  border: 2px solid var(--border-strong);
+  border-radius: 12px;
+  box-shadow: none;
+}
+.d-pastel-card .c-card-accent {
+  border: 2px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+/* ── Step accent highlight for core step ── */
+.d-pastel-card .c-step:nth-of-type(3) .c-step-num {
+  background: var(--accent);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.d-pastel-card .c-step:nth-of-type(3) .c-step-content {
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  border-radius: 10px;
+  padding: 1cqi 1.5cqi;
+  margin: -0.5cqi 0 -0.5cqi -0.5cqi;
+}
+
+/* ── Chip should use accent ── */
+.d-pastel-card .chr-chip {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+/* ── Cover title spacing ── */
+.d-pastel-card.portrait .chr-title { margin-bottom: 2cqi; }
+
+/* ── Bump chrome font sizes for 3:4 readability ── */
+.d-pastel-card.portrait .chr-topbar { font-size: 1.6cqi; }
+.d-pastel-card.portrait .chr-page { font-size: 1.6cqi; }
+.d-pastel-card.portrait .chr-chip { font-size: 1.6cqi; }
+.d-pastel-card.portrait .chr-footer { font-size: 1.6cqi; }
+
+/* ── Ensure content fills vertical space ── */
+.d-pastel-card.portrait .c-grid-2,
+.d-pastel-card.portrait .c-steps,
+.d-pastel-card.portrait .c-row { flex: 1; }
