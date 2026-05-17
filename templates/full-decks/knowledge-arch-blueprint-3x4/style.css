@@ -41,7 +41,7 @@
 }
 
 /* ── Content sits above grid ── */
-.d-pastel-card.portrait .slide > * { position: relative; z-index: 1; }
+.d-pastel-card.portrait .slide > *:not(.chr-topbar):not(.chr-footer):not(.chr-blob):not(.chr-topline) { position: relative; z-index: 1; }
 
 /* ── Card styling — blueprint border ── */
 .d-pastel-card .c-card {
