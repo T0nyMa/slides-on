@@ -55,8 +55,6 @@
 
   /* Layer system — dimension variables (overridden by assets/layers/) */
   --body-size: 2cqi;
-  --slide-padding-y: 4cqi;
-  --slide-padding-x: 6cqi;
   --card-pad-y: 1.5cqi;
   --card-pad-x: 1.8cqi;
   --card-gap: 1.5cqi;
@@ -102,6 +100,7 @@
   --c-badge-size: 0.85cqi;
   --c-kpi-value-size: 4.5cqi;
   --c-kpi-label-size: 1.1cqi;
+  --c-kpi-delta-size: 1cqi;
   --c-quote-size: 2.2cqi;
   --c-quote-mark-size: 5cqi;
   --c-quote-mark-top: -1cqi;
@@ -109,6 +108,9 @@
   --c-step-num-font: 1.3cqi;
   --c-step-title-size: 1.6cqi;
   --c-step-gap: 1.5cqi;
+  --c-step-body-size: 1.1cqi;
+  --c-note-title-size: 1.3cqi;
+  --c-note-body-size: 1cqi;
   --c-icon-row-title-size: 1.5cqi;
   --c-icon-row-gap: 1.5cqi;
   --c-codebox-size: 1.4cqi;
@@ -229,40 +231,20 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
 .uppercase{text-transform:uppercase;letter-spacing:.12em}
 
 /* ================= NARROW CANVAS ================= */
-/* Two-tier narrow handling:
+/* Narrow-grid fallback: viewport-based grid column reduction.
+   Font sizes, padding, and spacing are handled by the CSS token system
+   (.portrait / .landscape override --h1-size, --slide-pad-x, etc. in :root).
+   Reference: 16:9 deck = 1920px (1cqi ≈ 19.2px), 3:4 deck = 810px (1cqi ≈ 8.1px) */
 
-   1. @container — fires when DECK is narrow (3:4 portrait). Uses cqi units
-      for proportional sizing that fills the screen. This is the primary path
-      for intentionally-designed portrait decks (XHS, Stories, mobile posts).
-
-   2. @media — fallback when container queries aren't supported, or when the
-      VIEWPORT is narrow (small browser window). Shrinks fonts linearly.
-
-   Reference: 16:9 deck = 1920px (1cqi ≈ 19.2px), 3:4 deck = 810px (1cqi ≈ 8.1px)
-
-   On 3:4 canvas, the @container values below give:
-   h1 ≈ 57px, h2 ≈ 42px, h3 ≈ 30px, lede ≈ 20px
-   — larger than the @media narrow breakpoint, proportionally filling the screen. */
-
-/* ── Fallback: viewport width media query (lower priority) ── */
+/* ── Fallback: viewport width media query ── */
 @media (max-width: 900px) {
-  .slide{ padding: 48px 40px; }
   .g4, .g3{ grid-template-columns: repeat(2, 1fr); }
   .g5, .g6{ grid-template-columns: repeat(3, 1fr); }
-  h1.title, .h1{ font-size: 48px; }
-  h2.title, .h2{ font-size: 38px; }
-  h3, .h3{ font-size: 26px; }
-  .lede{ font-size: 18px; }
 }
 
 /* .narrow class — JS-driven or manual trigger (explicit opt-in) */
 .narrow .g4, .narrow .g3{ grid-template-columns: repeat(2, 1fr); }
 .narrow .g5, .narrow .g6{ grid-template-columns: repeat(3, 1fr); }
-.narrow h1.title, .narrow .h1{ font-size: 48px; }
-.narrow h2.title, .narrow .h2{ font-size: 38px; }
-.narrow h3, .narrow .h3{ font-size: 26px; }
-.narrow .lede{ font-size: 18px; }
-.narrow .slide{ padding: 48px 40px; }
 
 /* .portrait class — 3:4 portrait canvas (one class handles canvas + slide defaults) */
 .portrait .deck {
@@ -274,48 +256,53 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
 .portrait {
   --h1-size: 7cqi;
   --h2-size: 5.2cqi;
-  --h3-size: 3.7cqi;
-  --h4-size: 2.5cqi;
-  --lede-size: 2.5cqi;
-  --kicker-size: 1.8cqi;
-  --eyebrow-size: 1.6cqi;
-  --body-font-size: 2cqi;
-  --slide-pad-x: 4.5cqi;
-  --slide-pad-y: 4.5cqi;
-  --slide-pad-bottom: 3cqi;
+  --h3-size: 5cqi;
+  --h4-size: 3.5cqi;
+  --lede-size: 4cqi;
+  --kicker-size: 2.5cqi;
+  --eyebrow-size: 2.2cqi;
+  --body-font-size: 4cqi;
+	  --body-size: 4cqi;
+  --slide-pad-x: 6cqi;
+  --slide-pad-y: 5cqi;
+  --slide-pad-bottom: 4cqi;
   --card-pad: 2.5cqi 3cqi;
   --grid-cols-2: 1fr;
   --grid-cols-3: repeat(2, 1fr);
   --grid-cols-4: repeat(2, 1fr);
   --slide-justify: flex-start;
-  --stack-gap-val: 1.8cqi;
+  --stack-gap-val: 2cqi;
 
-  /* Component size boosters for narrow canvas */
-  --c-title-size: 3.5cqi;
-  --c-subtitle-size: 2.5cqi;
-  --c-body-size: 2cqi;
-  --c-small-size: 1.6cqi;
+  /* Component size boosters for narrow canvas — 3:4 "大一倍" 规范 */
+  --c-title-size: 5cqi;
+  --c-subtitle-size: 4cqi;
+  --c-body-size: 4cqi;
+  --c-small-size: 2.6cqi;
   --c-card-padding: 2.5cqi 3cqi;
   --c-row-gap: 2.5cqi;
   --c-grid-gap: 2.5cqi;
   --c-section-padding: 3cqi;
-  --c-section-label-size: 2.3cqi;
+  --c-section-label-size: 3cqi;
   --c-glass-padding: 3cqi;
-  --c-badge-size: 1.5cqi;
+  --c-badge-size: 2.5cqi;
   --c-kpi-value-size: 8cqi;
-  --c-kpi-label-size: 2cqi;
-  --c-quote-size: 3.5cqi;
+  --c-kpi-label-size: 3cqi;
+	  --c-kpi-delta-size: 2.2cqi;
+  --c-quote-size: 5cqi;
   --c-quote-mark-size: 8cqi;
   --c-quote-mark-top: -1.5cqi;
   --c-step-num-size: 5cqi;
-  --c-step-num-font: 2.2cqi;
-  --c-step-title-size: 2.8cqi;
+  --c-step-num-font: 3.5cqi;
+  --c-step-title-size: 4.5cqi;
   --c-step-gap: 2.5cqi;
-  --c-icon-row-title-size: 2.5cqi;
+	  --c-step-body-size: 3cqi;
+	  --c-note-title-size: 3.5cqi;
+	  --c-note-body-size: 3cqi;
+  --c-icon-row-title-size: 4cqi;
   --c-icon-row-gap: 2.5cqi;
-  --c-codebox-size: 2.2cqi;
+  --c-codebox-size: 3.5cqi;
   --c-codebox-padding: 3cqi 3.5cqi;
-  --c-formula-size: 3cqi;
+  --c-formula-size: 4.5cqi;
   --c-stack-gap: 2.5cqi;
 }
 
@@ -484,7 +471,7 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
 .c-kpi { text-align: center; }
 .c-kpi-value { font-size: var(--c-kpi-value-size, 4.5cqi); font-weight: 900; line-height: 1; color: var(--text-1); letter-spacing: var(--letter-tight); }
 .c-kpi-label { font-size: var(--c-kpi-label-size, 1.1cqi); color: var(--text-2); margin-top: 0.4cqi; }
-.c-kpi-delta { font-size: 1cqi; font-weight: 700; margin-top: 0.2cqi; }
+.c-kpi-delta { font-size: var(--c-kpi-delta-size, 1cqi); font-weight: 700; margin-top: 0.2cqi; }
 .c-kpi-delta.up   { color: var(--good); }
 .c-kpi-delta.down { color: var(--bad); }
 .c-kpi-delta.flat { color: var(--text-3); }
@@ -511,7 +498,7 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
 }
 .c-step-content { flex: 1; min-width: 0; }
 .c-step-title { font-size: var(--c-step-title-size, 1.6cqi); font-weight: 800; color: var(--text-1); line-height: 1.3; margin-bottom: 0.3cqi; }
-.c-step-body { font-size: 1.1cqi; line-height: 1.5; color: var(--text-2); }
+.c-step-body { font-size: var(--c-step-body-size, 1.1cqi); line-height: 1.5; color: var(--text-2); }
 
 /* Connector between steps */
 .c-connector { display: flex; align-items: center; gap: 0.8cqi; padding: 0.4cqi 0 0.4cqi 1.5cqi; }
@@ -654,8 +641,8 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
 }
 .c-note-icon { flex: none; font-size: 2cqi; line-height: 1; }
 .c-note-content { flex: 1; min-width: 0; }
-.c-note-title { font-size: 1.3cqi; font-weight: 800; color: var(--accent); margin-bottom: 0.3cqi; }
-.c-note-body { font-size: 1cqi; line-height: 1.5; color: var(--text-2); }
+.c-note-title { font-size: var(--c-note-title-size, 1.3cqi); font-weight: 800; color: var(--accent); margin-bottom: 0.3cqi; }
+.c-note-body { font-size: var(--c-note-body-size, 1cqi); line-height: 1.5; color: var(--text-2); }
 
 /* Example box */
 .c-example {
@@ -905,7 +892,7 @@ body.editor-active .editor-canvas-label { display: block; }
 
 /* Topbar — chip tag + page number (fixed position, never drifts) */
 .d-pastel-card .slide > .chr-topbar {
-  position: absolute; top: 4.94cqi; left: var(--slide-pad-x); right: var(--slide-pad-x); z-index: 3;
+  position: absolute; top: 4.94cqi; left: 11.11cqi; right: 11.11cqi; z-index: 3;
   display: flex; justify-content: space-between; align-items: center;
   font-family: var(--font-sans);
 }
@@ -942,7 +929,7 @@ body.editor-active .editor-canvas-label { display: block; }
 
 /* Footer — bottom status bar */
 .d-pastel-card .chr-footer {
-  position: absolute; left: var(--slide-pad-x); right: var(--slide-pad-x); bottom: 4.94cqi;
+  position: absolute; left: 11.11cqi; right: 11.11cqi; bottom: 4.94cqi;
   display: flex; justify-content: space-between;
   font-family: 'Inter', sans-serif; font-size: 1.48cqi;
   color: var(--text-3); letter-spacing: .1em;

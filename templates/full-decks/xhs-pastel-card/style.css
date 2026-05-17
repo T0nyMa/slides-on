@@ -15,3 +15,7 @@
  * tokens, and adjust chrome styles. The same index.html chrome + c-* content
  * works across designs — just swap the design CSS link.
  */
+
+/* ── 3:4 portrait: text-3 contrast fix (was #9089a8 on #fef8f1 = 3.15:1) ── */
+.d-pastel-card.portrait { --text-3: #6b5d80; }
+.d-pastel-card.portrait .c-badge { color: var(--text-1); }

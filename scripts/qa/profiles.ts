@@ -16,7 +16,7 @@ export interface CanvasProfile {
 
 export const PROFILES: Record<string, CanvasProfile> = {
   portrait: {
-    fillMin: 0.50,
+    fillMin: 0.45,
     fillMax: 0.85,
     componentMin: 3,          // 2x 字体下每页 3-6 组件即可
     componentMax: 6,
