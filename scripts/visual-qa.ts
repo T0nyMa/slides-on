@@ -1222,6 +1222,82 @@ async function checkFontUnit(page: any, slideIndex: number, profile: CanvasProfi
   }, { idx: slideIndex, bodyMinCqi: profile.bodyMinCqi });
 }
 
+// ─── Group 15: Grid collapse (portrait: g3/g4 must collapse) ───────────────
+
+async function checkGridCollapse(page: any, slideIndex: number, profile: CanvasProfile): Promise<Issue[]> {
+  if (profile.gridMaxCols <= 0) return [];
+
+  return page.evaluate((args: { idx: number; gridMaxCols: number }) => {
+    const active = document.querySelector(".deck > .slide.is-active");
+    if (!active) return [];
+
+    const issues: any[] = [];
+    const gridSelectors = [".g3", ".g4", ".c-grid-3", ".c-grid-4"];
+
+    for (const sel of gridSelectors) {
+      for (const grid of active.querySelectorAll(sel)) {
+        const style = window.getComputedStyle(grid);
+        const cols = style.gridTemplateColumns.split(" ").length;
+        if (cols > args.gridMaxCols) {
+          issues.push({
+            group: "grid-collapse",
+            severity: "WARN",
+            slide: args.idx + 1,
+            element: sel,
+            message: `${sel} 网格 ${cols} 列 > ${args.gridMaxCols} 列（3:4 最大），窄画布需减少列数`,
+          });
+        }
+      }
+    }
+
+    return issues;
+  }, { idx: slideIndex, gridMaxCols: profile.gridMaxCols });
+}
+
+// ─── Group 16: Chrome z-index ──────────────────────────────────────────────
+
+async function checkChromeZIndex(page: any, slideIndex: number): Promise<Issue[]> {
+  return page.evaluate((args: { idx: number }) => {
+    const active = document.querySelector(".deck > .slide.is-active");
+    if (!active) return [];
+
+    const issues: any[] = [];
+
+    for (const el of active.querySelectorAll("[class*='chr-']")) {
+      const style = window.getComputedStyle(el);
+      if (style.position === "absolute" || style.position === "fixed") {
+        const parent = el.parentElement;
+        if (parent && parent.classList.contains("slide")) {
+          // Check if a global .slide > * { position: relative } rule
+          // is overriding the chr-* position
+          for (const sibling of parent.children) {
+            if (sibling === el) continue;
+            const sibCls = sibling.getAttribute("class") || "";
+            if (!sibCls.includes("chr-")) {
+              const sibStyle = window.getComputedStyle(sibling);
+              if (sibStyle.position === "relative") {
+                // Verify chr-* still has absolute (shouldn't be overridden)
+                if (style.position !== "absolute" && style.position !== "fixed") {
+                  issues.push({
+                    group: "chrome-z-index",
+                    severity: "BLOCKER",
+                    slide: args.idx + 1,
+                    element: el.getAttribute("class")?.split(" ")[0] || "chr-*",
+                    message: `Chrome 元素 position 被覆盖为 ${style.position}（应为 absolute），检查全局 CSS 规则`,
+                  });
+                }
+              }
+              break; // only need to check one non-chrome sibling
+            }
+          }
+        }
+      }
+    }
+
+    return issues;
+  }, { idx: slideIndex });
+}
+
 // ─── Group 14: CSS loading integrity ───────────────────────────────────────
 
 async function checkCSSLoadingIntegrity(page: any): Promise<Issue[]> {
@@ -1418,7 +1494,7 @@ async function main(): Promise<void> {
     await activateSlide(page, i);
 
     const [overflow, occlusion, whitespace, spacing, contrast, density,
-           chromeBoundary, canvasFill, fontUnit] = await Promise.all([
+           chromeBoundary, canvasFill, fontUnit, gridCollapse, chromeZ] = await Promise.all([
       checkTextOverflow(page, i),
       checkOcclusion(page, i),
       checkWhitespace(page, i, profile),
@@ -1428,10 +1504,12 @@ async function main(): Promise<void> {
       checkChromeContentBoundary(page, i),
       checkCanvasFill(page, i, profile),
       checkFontUnit(page, i, profile),
+      checkGridCollapse(page, i, profile),
+      checkChromeZIndex(page, i),
     ]);
 
     allIssues.push(...overflow, ...occlusion, ...whitespace, ...spacing, ...contrast, ...density,
-      ...chromeBoundary, ...canvasFill, ...fontUnit);
+      ...chromeBoundary, ...canvasFill, ...fontUnit, ...gridCollapse, ...chromeZ);
 
     // Collect font records for cross-slide analysis
     const fonts = await collectFontSizes(page, i);
