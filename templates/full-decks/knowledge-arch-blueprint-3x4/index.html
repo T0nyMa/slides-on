@@ -1332,25 +1332,13 @@ body.editor-active .editor-canvas-label { display: block; }
         <span class="c-badge">→</span>
         <span class="c-badge good">反馈</span>
       </div>
-      <div class="c-grid-2" style="gap:1.5cqi">
-        <div class="c-kpi" style="text-align:center;padding:1.5cqi">
-          <div class="c-kpi-value" style="color:var(--accent);font-size:6cqi">−62%</div>
-          <div class="c-kpi-label">幻觉率降低</div>
-          <div class="c-kpi-delta down">反馈回路运行 6 个月后</div>
-        </div>
-        <div class="c-kpi" style="text-align:center;padding:1.5cqi">
-          <div class="c-kpi-value" style="color:var(--accent);font-size:6cqi">227</div>
-          <div class="c-kpi-label">自动修订条数</div>
-          <div class="c-kpi-delta up">189 条审批通过</div>
-        </div>
-      </div>
     </div>
     <div class="chr-footer"><span>Blueprint · v2 · 2026.04</span><span>01 / 07</span></div>
   </section>
 
   <section class="slide">
     <div class="chr-topbar"><div class="chr-page">02 · 07</div></div>
-    <div class="v-distribute" style="text-align:center;max-width:88%;margin-left:auto;margin-right:auto">
+    <div class="v-center" style="text-align:center;max-width:88%;margin-left:auto;margin-right:auto">
       <div>
         <div class="chr-kicker">Chapter One</div>
         <h1 class="chr-title">为什么 <em>笔记</em><br>不够用了</h1>
@@ -1366,10 +1354,6 @@ body.editor-active .editor-canvas-label { display: block; }
           <div class="c-title" style="font-size:5.6cqi">🔄 矛盾螺旋</div>
           <div class="c-body" style="font-size:4cqi;margin-top:1cqi">同主题平均 <b>3.2 篇矛盾笔记</b>。65% 用户分不清哪篇可信。</div>
         </div>
-      </div>
-      <div class="c-card c-card-accent" style="text-align:left">
-        <div class="c-badge accent" style="margin-bottom:1cqi">SOLUTION</div>
-        <div class="c-body" style="font-size:4cqi">不是存更多，而是<b>连接更多</b>。Wikipedia 的模式——每个页面都是一张图里的一个节点，关系比内容更重要。</div>
       </div>
     </div>
     <div class="chr-footer"><span>Section · Chapter 1</span><span>02 / 07</span></div>
@@ -1453,7 +1437,7 @@ body.editor-active .editor-canvas-label { display: block; }
 <span style="color:#e8a87c;font-weight:700">trigger</span>: <span style="color:#b3d1bc">"after every retrieval"</span>
 
 <span style="color:#e8a87c;font-weight:700">on_hit</span>:     record(<span style="color:#b3d1bc">query, path, used=true</span>)
-<span style="color:#e8a87c;font-weight:700">on_miss</span>:    record(<span style="color:#b3d1bc">query, reason=</span><span style="color:var(--accent)">"not-in-vault"</span>)
+<span style="color:#e8a87c;font-weight:700">on_miss</span>:    record(<span style="color:#b3d1bc">query, reason=</span><span style="color:#ff8a7a">"not-in-vault"</span>)
 <span style="color:#e8a87c;font-weight:700">on_wrong</span>:   record(<span style="color:#b3d1bc">query, correction, path</span>)
 
 <span style="color:#e8a87c;font-weight:700">nightly</span>:
@@ -1484,29 +1468,29 @@ body.editor-active .editor-canvas-label { display: block; }
     <h2 class="chr-heading">升级版 <em>跑了半年</em></h2>
     <div class="v-fill" style="display:flex;flex-direction:column;gap:1.5cqi">
       <div style="text-align:center;padding:2cqi 0">
-        <div class="c-hero-num" style="color:var(--accent);font-size:20cqi">13</div>
+        <div class="c-hero-num" style="color:#ff8a7a;font-size:20cqi">13</div>
         <div class="c-hero-num-label" style="font-size:3.6cqi">关键优化项 · 全部落地</div>
       </div>
       <div class="c-grid-2">
         <div class="c-kpi" style="text-align:center;padding:2cqi">
-          <div class="c-kpi-value" style="color:var(--accent)">−62%</div>
+          <div class="c-kpi-value" style="color:#ff8a7a">−62%</div>
           <div class="c-kpi-label">幻觉率</div>
           <div class="c-kpi-delta down">vs 无反馈回路版本</div>
         </div>
         <div class="c-kpi" style="text-align:center;padding:2cqi">
-          <div class="c-kpi-value" style="color:var(--accent)">+4.1×</div>
+          <div class="c-kpi-value" style="color:#ff8a7a">+4.1×</div>
           <div class="c-kpi-label">检索命中率</div>
           <div class="c-kpi-delta up">单次检索精准匹配</div>
         </div>
       </div>
       <div class="c-grid-2">
         <div class="c-card">
-          <div class="c-kpi-value" style="font-size:3.5cqi;color:var(--accent)">227</div>
+          <div class="c-kpi-value" style="font-size:3.5cqi;color:#ff8a7a">227</div>
           <div class="c-kpi-label">自动修订条数</div>
           <div class="c-body" style="margin-top:0.5cqi">189 条审批合并 · 38 条拒绝归档</div>
         </div>
         <div class="c-card">
-          <div class="c-kpi-value" style="font-size:3.5cqi;color:var(--accent)">412</div>
+          <div class="c-kpi-value" style="font-size:3.5cqi;color:#ff8a7a">412</div>
           <div class="c-kpi-label">新增笔记篇数</div>
           <div class="c-body" style="margin-top:0.5cqi">从 miss 日志聚类生成 · 篇篇有来源追溯</div>
         </div>
@@ -1517,7 +1501,7 @@ body.editor-active .editor-canvas-label { display: block; }
 
   <section class="slide">
     <div class="chr-topbar"><div class="chr-page">07 · 07</div></div>
-    <div class="v-distribute" style="text-align:center;width:100%">
+    <div class="v-center" style="text-align:center;width:100%">
       <div>
         <div class="chr-kicker">END · blueprint v2</div>
         <h1 class="chr-title" style="font-size:8cqi">谢谢 <em>·</em> thanks</h1>

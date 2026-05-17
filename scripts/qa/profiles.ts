@@ -17,8 +17,8 @@ export const PROFILES: Record<string, CanvasProfile> = {
   portrait: {
     fillMin: 0.50,
     fillMax: 0.85,
-    componentMin: 4,
-    componentMax: 8,
+    componentMin: 3,          // 2x 字体下每页 3-6 组件即可
+    componentMax: 6,
     bottomEmptyMaxRatio: 0.25,
     gridMaxCols: 2,
     bodyMinCqi: 3.5,          // 3:4 正文至少 3.5cqi (28px at 810px) — "大一倍" 规范
