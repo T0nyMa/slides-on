@@ -82,3 +82,26 @@
 
 /* ── Section divider: add breathing room ── */
 .d-pastel-card.portrait .c-card.chr-hero { max-width: 90%; }
+
+/* ── Footer clearance: content padding stops above footer ── */
+.d-pastel-card.portrait { --slide-pad-bottom: 8cqi; }
+
+/* ── Badge font boost in 3:4 ── */
+.d-pastel-card.portrait .c-badge { font-size: 1.8cqi; }
+.d-pastel-card.portrait .c-badge-row { font-size: 1.8cqi; }
+
+/* ── Body text boost ── */
+.d-pastel-card.portrait .c-body { font-size: 2.2cqi; }
+.d-pastel-card.portrait .c-small { font-size: 1.8cqi; }
+
+/* ── Contrast fixes: badge colors need 4.5:1 on warm pastel bg (#fef8f1) ── */
+.d-pastel-card .c-badge.good  { color: #0a5e2e; background: #b8e8c8; }
+.d-pastel-card .c-badge.warn  { color: #8a5d00; background: #fde8b0; }
+.d-pastel-card .c-badge.bad   { color: #b5283a; background: #fdd4d9; }
+.d-pastel-card .c-badge       { color: #3a3555; }  /* default: darker for contrast */
+.d-pastel-card .c-badge-row .c-badge { color: #3a3555; }
+
+/* ── All badges and small text need sufficient contrast on warm bg ── */
+.d-pastel-card .c-badge-row span { color: #3a3555; }
+.d-pastel-card .c-badge { color: #3a3555; }
+.d-pastel-card span.c-badge { color: #3a3555; }

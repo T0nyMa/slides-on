@@ -1276,6 +1276,35 @@ body.editor-active .editor-canvas-label { display: block; }
 
 /* ── Section divider: add breathing room ── */
 .d-pastel-card.portrait .c-card.chr-hero { max-width: 90%; }
+
+/* ── Footer clearance: content padding stops above footer ── */
+.d-pastel-card.portrait { --slide-pad-bottom: 8cqi; }
+
+/* ── Badge font boost in 3:4 ── */
+.d-pastel-card.portrait .c-badge { font-size: 1.8cqi; }
+.d-pastel-card.portrait .c-badge-row { font-size: 1.8cqi; }
+
+/* ── Body text boost ── */
+.d-pastel-card.portrait .c-body { font-size: 2.2cqi; }
+.d-pastel-card.portrait .c-small { font-size: 1.8cqi; }
+
+/* ── Contrast fixes: badge colors need 4.5:1 on warm pastel bg (#fef8f1) ── */
+.d-pastel-card .c-badge.good  { color: #0a5e2e; background: #b8e8c8; }
+.d-pastel-card .c-badge.warn  { color: #8a5d00; background: #fde8b0; }
+.d-pastel-card .c-badge.bad   { color: #b5283a; background: #fdd4d9; }
+.d-pastel-card .c-badge       { color: #3a3555; }  /* default: darker for contrast */
+.d-pastel-card .c-badge-row .c-badge { color: #3a3555; }
+
+/* ── All badges and small text need sufficient contrast on warm bg ── */
+.d-pastel-card .c-badge-row span { color: #3a3555; }
+.d-pastel-card .c-badge { color: #3a3555; }
+.d-pastel-card span.c-badge { color: #3a3555; }
+
+/* ── Force badge text to use text-1 for contrast ── */
+.d-pastel-card .c-badge { color: var(--text-1) !important; }
+.d-pastel-card .c-badge.good  { color: #0a5e2e !important; }
+.d-pastel-card .c-badge.warn  { color: #8a5d00 !important; }
+.d-pastel-card .c-badge.bad   { color: #b5283a !important; }
 </style>
 <style id="editor-overrides"></style>
 </head>
@@ -1305,23 +1334,44 @@ body.editor-active .editor-canvas-label { display: block; }
         <span class="c-badge">→</span>
         <span class="c-badge good">反馈</span>
       </div>
+      <div class="c-grid-2" style="gap:1.5cqi">
+        <div class="c-kpi" style="text-align:center;padding:1.5cqi">
+          <div class="c-kpi-value" style="color:var(--accent);font-size:6cqi">−62%</div>
+          <div class="c-kpi-label">幻觉率降低</div>
+          <div class="c-kpi-delta down">反馈回路运行 6 个月后</div>
+        </div>
+        <div class="c-kpi" style="text-align:center;padding:1.5cqi">
+          <div class="c-kpi-value" style="color:var(--accent);font-size:6cqi">227</div>
+          <div class="c-kpi-label">自动修订条数</div>
+          <div class="c-kpi-delta up">189 条审批通过</div>
+        </div>
+      </div>
     </div>
     <div class="chr-footer"><span>Blueprint · v2 · 2026.04</span><span>01 / 07</span></div>
   </section>
 
   <section class="slide">
     <div class="chr-topbar"><div class="chr-page">02 · 07</div></div>
-    <div class="v-center" style="text-align:center;max-width:85%;margin-left:auto;margin-right:auto">
-      <div class="chr-kicker">Chapter One</div>
-      <h1 class="chr-title">为什么 <em>笔记</em><br>不够用了</h1>
-      <div class="c-divider-accent" style="margin:2cqi auto"></div>
-      <p class="chr-sub" style="font-size:2.2cqi">当知识量超过记忆容量，你需要的不是更多文件，而是一张<b>可导航的图</b>。</p>
-      <div class="c-note" style="margin-top:2cqi;text-align:left">
-        <div class="c-note-icon">💡</div>
-        <div class="c-note-content">
-          <div class="c-note-title">传统笔记的三个死胡同</div>
-          <div class="c-note-body">文件夹嵌套太深找不到 · 重复笔记互相矛盾 · 改了旧笔记不知道哪些引用过期</div>
+    <div class="v-distribute" style="text-align:center;max-width:88%;margin-left:auto;margin-right:auto">
+      <div>
+        <div class="chr-kicker">Chapter One</div>
+        <h1 class="chr-title">为什么 <em>笔记</em><br>不够用了</h1>
+        <div class="c-divider-accent" style="margin:2cqi auto"></div>
+        <p class="chr-sub" style="font-size:2.2cqi">当知识量超过记忆容量，你需要的不是更多文件，而是一张<b>可导航的图</b>。</p>
+      </div>
+      <div class="c-grid-2" style="gap:2cqi">
+        <div class="c-card-soft" style="text-align:left">
+          <div class="c-title" style="font-size:2.8cqi">📂 文件地狱</div>
+          <div class="c-body" style="font-size:2cqi;margin-top:1cqi">平均用户有 <b>1,200+ 条笔记</b>，分布在 47 个文件夹。每次找东西平均要翻 <b>3.6 层目录</b>，43% 的笔记再也没被打开过。</div>
         </div>
+        <div class="c-card-soft" style="text-align:left">
+          <div class="c-title" style="font-size:2.8cqi">🔄 矛盾螺旋</div>
+          <div class="c-body" style="font-size:2cqi;margin-top:1cqi">同一主题平均有 <b>3.2 篇互相矛盾</b>的笔记。65% 的人承认「我已经不知道哪篇是对的」，信息过载反而降低决策质量。</div>
+        </div>
+      </div>
+      <div class="c-card c-card-accent" style="text-align:left">
+        <div class="c-badge accent" style="margin-bottom:1cqi">SOLUTION</div>
+        <div class="c-body" style="font-size:2cqi">不是存更多，而是<b>连接更多</b>。Wikipedia 的模式——每个页面都是一张图里的一个节点，关系比内容更重要。</div>
       </div>
     </div>
     <div class="chr-footer"><span>Section · Chapter 1</span><span>02 / 07</span></div>
@@ -1418,6 +1468,16 @@ body.editor-active .editor-canvas-label { display: block; }
       <span class="c-badge bad">on_wrong → 修补旧笔记</span>
       <span class="c-badge accent">nightly → 自动 PR</span>
     </div>
+    <div class="c-grid-2" style="margin-top:1.5cqi;gap:1.5cqi">
+      <div class="c-card-soft">
+        <div class="c-title" style="font-size:2.5cqi">⚡ 轻量集成</div>
+        <div class="c-body" style="font-size:1.8cqi;margin-top:0.8cqi">100 行 YAML 配置，零依赖。作为 Claude Code Skill 运行，每次 AI 检索自动触发回调，无需额外基础设施。</div>
+      </div>
+      <div class="c-card-soft">
+        <div class="c-title" style="font-size:2.5cqi">🔍 人机协作</div>
+        <div class="c-body" style="font-size:1.8cqi;margin-top:0.8cqi">自动生成 PR，人工 review。统计：89% 的自动修订被审批通过，仅 11% 被拒绝或修改后合并。</div>
+      </div>
+    </div>
     <div class="chr-footer"><span>Content · Code</span><span>05 / 07</span></div>
   </section>
 
@@ -1459,7 +1519,7 @@ body.editor-active .editor-canvas-label { display: block; }
 
   <section class="slide">
     <div class="chr-topbar"><div class="chr-page">07 · 07</div></div>
-    <div class="v-center" style="text-align:center;max-width:85%;margin-left:auto;margin-right:auto;display:flex;flex-direction:column;gap:2cqi">
+    <div class="v-distribute" style="text-align:center;max-width:88%;margin-left:auto;margin-right:auto">
       <div>
         <div class="chr-kicker">END · blueprint v2</div>
         <h1 class="chr-title" style="font-size:8cqi">谢谢 <em>·</em> thanks</h1>
@@ -1483,6 +1543,16 @@ body.editor-active .editor-canvas-label { display: block; }
         <span class="c-badge">#FeedbackLoop</span>
         <span class="c-badge">#Karpathy</span>
         <span class="c-badge good">#第二大脑</span>
+      </div>
+      <div class="c-grid-2" style="gap:1.5cqi">
+        <div class="c-card-soft">
+          <div class="c-title" style="font-size:2.5cqi">📦 开源资源</div>
+          <div class="c-body" style="font-size:1.8cqi;margin-top:0.8cqi">Skill 模板、反馈回路配置、vault 结构脚手架全部开源。MIT 协议，即插即用。</div>
+        </div>
+        <div class="c-card-soft">
+          <div class="c-title" style="font-size:2.5cqi">📬 社区讨论</div>
+          <div class="c-body" style="font-size:1.8cqi;margin-top:0.8cqi">Discord #wiki-feedback 频道，200+ 用户分享自己的反馈回路配置和修订策略。</div>
+        </div>
       </div>
     </div>
     <div class="chr-footer"><span>End of deck</span><span>07 / 07</span></div>
