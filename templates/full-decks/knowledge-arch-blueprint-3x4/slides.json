@@ -7,65 +7,32 @@
   },
   "slides": [
     {
-      "type": "cover",
-      "kicker": "Karpathy Stack · 架构图 v2",
-      "title": "LLM <em>知识库</em> 的<br>工程化蓝图",
-      "subtitle": "从「乱贴笔记」到「可审计、可纠错、可复用」的第二大脑 —— 读完 Karpathy 的分享后画的一张系统图。",
-      "chip": "Blueprint v2 · 2026",
-      "blobs": ["b1"]
+      "type": "html",
+      "html": "<section class=\"slide is-active\">\n    <div class=\"chr-topbar\"><div class=\"chr-chip\">Blueprint v2 · 2026</div><div class=\"chr-page\">01 · 07</div></div>\n    <div class=\"v-fill\" style=\"display:flex;flex-direction:column;justify-content:center;gap:2.5cqi\">\n      <div>\n        <div class=\"chr-kicker\">Karpathy Stack · 架构图 v2</div>\n        <h1 class=\"chr-title\">LLM <em>知识库</em> 的<br>工程化蓝图</h1>\n      </div>\n      <p class=\"chr-sub\">从「乱贴笔记」到「可审计、可纠错、可复用」的第二大脑 —— 读完 Karpathy 的分享后画的一张系统图。</p>\n      <div class=\"c-card c-card-accent\">\n        <div class=\"c-badge accent\" style=\"margin-bottom:1cqi\">KEY INSIGHT</div>\n        <p class=\"c-body\" style=\"font-size:1.8cqi\">Karpathy 原版缺一块：<b>反馈闭环</b>让错误能回流纠正。不只是存起来，而是越用越准。</p>\n      </div>\n      <div class=\"c-badge-row\">\n        <span class=\"c-badge accent\">采集</span>\n        <span class=\"c-badge\">→</span>\n        <span class=\"c-badge\">去噪</span>\n        <span class=\"c-badge\">→</span>\n        <span class=\"c-badge accent\">Wiki 化</span>\n        <span class=\"c-badge\">→</span>\n        <span class=\"c-badge\">使用</span>\n        <span class=\"c-badge\">→</span>\n        <span class=\"c-badge good\">反馈</span>\n      </div>\n    </div>\n    <div class=\"chr-footer\"><span>Blueprint · v2 · 2026.04</span><span>01 / 07</span></div>\n  </section>"
     },
     {
-      "type": "section",
-      "kicker": "Chapter One",
-      "title": "为什么 <em>笔记</em> 不够用了",
-      "subtitle": "当知识量超过记忆容量，你需要的不是更多文件，而是一张可导航的图。",
-      "chip": "Section · 02",
-      "center": true
+      "type": "html",
+      "html": "<section class=\"slide\">\n    <div class=\"chr-topbar\"><div class=\"chr-page\">02 · 07</div></div>\n    <div class=\"v-center\" style=\"text-align:center;max-width:85%;margin-left:auto;margin-right:auto\">\n      <div class=\"chr-kicker\">Chapter One</div>\n      <h1 class=\"chr-title\">为什么 <em>笔记</em><br>不够用了</h1>\n      <div class=\"c-divider-accent\" style=\"margin:2cqi auto\"></div>\n      <p class=\"chr-sub\" style=\"font-size:2.2cqi\">当知识量超过记忆容量，你需要的不是更多文件，而是一张<b>可导航的图</b>。</p>\n      <div class=\"c-note\" style=\"margin-top:2cqi;text-align:left\">\n        <div class=\"c-note-icon\">💡</div>\n        <div class=\"c-note-content\">\n          <div class=\"c-note-title\">传统笔记的三个死胡同</div>\n          <div class=\"c-note-body\">文件夹嵌套太深找不到 · 重复笔记互相矛盾 · 改了旧笔记不知道哪些引用过期</div>\n        </div>\n      </div>\n    </div>\n    <div class=\"chr-footer\"><span>Section · Chapter 1</span><span>02 / 07</span></div>\n  </section>"
     },
     {
-      "type": "steps",
-      "title": "四步 <em>流水线</em>",
-      "chip": "Pipeline · End-to-end",
-      "steps": [
-        { "num": "01", "title": "采集", "body": "浏览器剪藏、PDF、Podcast 转写、聊天记录" },
-        { "num": "02", "title": "去噪", "body": "清洗导航栏、广告、重复段落、低信噪素材" },
-        { "num": "03", "title": "Wiki 化 · CORE", "body": "结构化成双链笔记，实体、关系、属性全在一起" },
-        { "num": "04", "title": "使用", "body": "Agent 随时检索、回答、再写入" }
-      ]
+      "type": "html",
+      "html": "<section class=\"slide\">\n    <div class=\"chr-topbar\"><div class=\"chr-chip\">Pipeline · End-to-end</div><div class=\"chr-page\">03 · 07</div></div>\n    <h2 class=\"chr-heading\">四步 <em>流水线</em></h2>\n    <div class=\"c-steps v-fill\">\n      <div class=\"c-step\">\n        <div class=\"c-step-num\">01</div>\n        <div class=\"c-step-content\">\n          <div class=\"c-step-title\">采集</div>\n          <div class=\"c-step-body\">浏览器剪藏、PDF 导入、Podcast 转写、聊天记录导出 — 所有信息源一键收入</div>\n        </div>\n      </div>\n      <div class=\"c-step\">\n        <div class=\"c-step-num\">02</div>\n        <div class=\"c-step-content\">\n          <div class=\"c-step-title\">去噪</div>\n          <div class=\"c-step-body\">自动清洗导航栏、广告、重复段落、低信噪素材，只保留可引用的原文</div>\n        </div>\n      </div>\n      <div class=\"c-step\">\n        <div class=\"c-step-num\" style=\"background:var(--accent);box-shadow:0 4px 16px color-mix(in srgb,var(--accent) 40%,transparent)\">03</div>\n        <div class=\"c-step-content\">\n          <div class=\"c-step-title\">Wiki 化 <span style=\"font-size:0.7em;opacity:.6;font-weight:600\">CORE</span></div>\n          <div class=\"c-step-body\">结构化成双链笔记，实体、关系、属性全部关联。这是整个流水线的核心——把碎片变成知识图谱</div>\n        </div>\n      </div>\n      <div class=\"c-step\">\n        <div class=\"c-step-num\">04</div>\n        <div class=\"c-step-content\">\n          <div class=\"c-step-title\">使用 + 反馈</div>\n          <div class=\"c-step-body\">Agent 随时检索、回答、再写入。每次使用自动记录 hit/miss/wrong，回流修正源文件</div>\n        </div>\n      </div>\n    </div>\n    <div class=\"c-note\" style=\"margin-top:1.5cqi\">\n      <div class=\"c-note-icon\">🔄</div>\n      <div class=\"c-note-content\">\n        <div class=\"c-note-body\">Step 04 的反馈回路是 Karpathy 原版缺失的关键环节——让知识库从「静态仓库」变成「活的系统」</div>\n      </div>\n    </div>\n    <div class=\"chr-footer\"><span>Pipeline · Steps</span><span>03 / 07</span></div>\n  </section>"
     },
     {
-      "type": "cards-2x2",
-      "title": "原版 vs <em>升级版</em>",
-      "chip": "Problem · Solution",
-      "cards": [
-        { "num": "原版", "title": "一次性写入", "body": "采集 → 转写 → 存档，错了就错了。没有回路，没有修正机制，笔记越多越混乱。" },
-        { "num": "升级 v2", "title": "反馈闭环", "body": "AI 使用知识库时记录每次 miss / 幻觉 / 过期事实，自动回灌到源文件，让笔记会自我修正。", "color": "accent" }
-      ]
+      "type": "html",
+      "html": "<section class=\"slide\">\n    <div class=\"chr-topbar\"><div class=\"chr-chip\">Problem · Solution</div><div class=\"chr-page\">04 · 07</div></div>\n    <h2 class=\"chr-heading\">原版 vs <em>升级版</em></h2>\n    <div class=\"c-grid-2 v-fill\">\n      <div class=\"c-card\">\n        <div class=\"c-badge\" style=\"margin-bottom:1cqi\">原版 Karpathy</div>\n        <div class=\"c-title\">一次性写入</div>\n        <div class=\"c-body\" style=\"margin-top:0.8cqi\">采集 → 转写 → 存档。错了就错了，没有回路，没有修正机制。笔记越多，矛盾越多，信任越低。</div>\n        <div class=\"c-divider\" style=\"margin:1.5cqi 0\"></div>\n        <div class=\"c-small\">⚠️ 典型症状：同一主题有 5 篇互相矛盾的笔记，不知道信哪个</div>\n      </div>\n      <div class=\"c-card c-card-accent\">\n        <div class=\"c-badge accent\" style=\"margin-bottom:1cqi\">升级 v2 · 反馈闭环</div>\n        <div class=\"c-title\">自我修正</div>\n        <div class=\"c-body\" style=\"margin-top:0.8cqi\">AI 使用知识库时记录每次 miss / 幻觉 / 过期事实，自动回灌到源文件。笔记会<b>自我修正</b>，越用越准。</div>\n        <div class=\"c-divider\" style=\"margin:1.5cqi 0\"></div>\n        <div class=\"c-small\">✅ 效果：227 条自动修订，189 条审批通过，幻觉率 −62%</div>\n      </div>\n    </div>\n    <div class=\"c-badge-row\" style=\"margin-top:1.5cqi\">\n      <span class=\"c-badge\"><span style=\"display:inline-block;width:1cqi;height:1cqi;border:2px solid var(--border-strong);border-radius:3px;vertical-align:middle;margin-right:0.5cqi\"></span>普通节点</span>\n      <span class=\"c-badge accent\"><span style=\"display:inline-block;width:1cqi;height:1cqi;background:var(--accent);border-radius:3px;vertical-align:middle;margin-right:0.5cqi\"></span>反馈回路入口</span>\n      <span class=\"c-badge\" style=\"font-size:1.3cqi\">—— 数据流 &nbsp; ┈┈ 反馈回路</span>\n    </div>\n    <div class=\"chr-footer\"><span>Content · Compare</span><span>04 / 07</span></div>\n  </section>"
     },
     {
-      "type": "code",
-      "title": "反馈回路 <em>怎么实现</em>",
-      "chip": "Implementation · Skill Manifest",
-      "code": "# skills/wiki-feedback/SKILL.md\nname: wiki-feedback\ntrigger: \"after every retrieval\"\n\non_hit:     record(query, path, used=true)\non_miss:    record(query, reason=\"not-in-vault\")\non_wrong:   record(query, correction, path)\n\nnightly:\n  - aggregate misses → suggest new notes\n  - aggregate wrongs → diff-patch old notes\n  - commit to git, open PR for human review"
+      "type": "html",
+      "html": "<section class=\"slide\">\n    <div class=\"chr-topbar\"><div class=\"chr-chip\">Implementation</div><div class=\"chr-page\">05 · 07</div></div>\n    <h2 class=\"chr-heading\">反馈回路 <em>怎么实现</em></h2>\n    <p class=\"chr-sub\" style=\"font-size:2cqi;margin-bottom:1.5cqi\">一个 100 行的 Agent Skill，把「AI 用得顺不顺」自动回写成 vault 修订记录。跑在 nightly cron，每天生成 PR 等人审。</p>\n    <div class=\"c-codebox v-fill\" style=\"font-size:1.5cqi;line-height:1.8\"><span style=\"color:#7a766c\"># skills/wiki-feedback/SKILL.md</span>\n<span style=\"color:#e8a87c;font-weight:700\">name</span>: wiki-feedback\n<span style=\"color:#e8a87c;font-weight:700\">trigger</span>: <span style=\"color:#b3d1bc\">\"after every retrieval\"</span>\n\n<span style=\"color:#e8a87c;font-weight:700\">on_hit</span>:     record(<span style=\"color:#b3d1bc\">query, path, used=true</span>)\n<span style=\"color:#e8a87c;font-weight:700\">on_miss</span>:    record(<span style=\"color:#b3d1bc\">query, reason=</span><span style=\"color:var(--accent)\">\"not-in-vault\"</span>)\n<span style=\"color:#e8a87c;font-weight:700\">on_wrong</span>:   record(<span style=\"color:#b3d1bc\">query, correction, path</span>)\n\n<span style=\"color:#e8a87c;font-weight:700\">nightly</span>:\n  - <span style=\"color:#b3d1bc\">aggregate misses → suggest new notes</span>\n  - <span style=\"color:#b3d1bc\">aggregate wrongs → diff-patch old notes</span>\n  - <span style=\"color:#b3d1bc\">commit to git, open PR for human review</span></div>\n    <div class=\"c-badge-row\" style=\"margin-top:1.5cqi\">\n      <span class=\"c-badge good\">on_hit → 记录</span>\n      <span class=\"c-badge warn\">on_miss → 建议新建</span>\n      <span class=\"c-badge bad\">on_wrong → 修补旧笔记</span>\n      <span class=\"c-badge accent\">nightly → 自动 PR</span>\n    </div>\n    <div class=\"chr-footer\"><span>Content · Code</span><span>05 / 07</span></div>\n  </section>"
     },
     {
-      "type": "kpi",
-      "title": "升级版 <em>跑了半年</em> 的数据",
-      "chip": "After 6 Months",
-      "kpis": [
-        { "value": "13", "label": "关键优化项 · 全部落地" },
-        { "value": "−62%", "label": "幻觉率（vs 无反馈回路）", "deltaDir": "down" },
-        { "value": "+4.1×", "label": "单次检索命中率", "deltaDir": "up" },
-        { "value": "227 条", "label": "自动修订 · 189 批准合并" },
-        { "value": "412 篇", "label": "新增笔记 · 来源可追溯" }
-      ]
+      "type": "html",
+      "html": "<section class=\"slide\">\n    <div class=\"chr-topbar\"><div class=\"chr-chip\">After 6 Months</div><div class=\"chr-page\">06 · 07</div></div>\n    <h2 class=\"chr-heading\">升级版 <em>跑了半年</em></h2>\n    <div class=\"v-fill\" style=\"display:flex;flex-direction:column;gap:1.5cqi\">\n      <div style=\"text-align:center;padding:2cqi 0\">\n        <div class=\"c-hero-num\" style=\"color:var(--accent);font-size:20cqi\">13</div>\n        <div class=\"c-hero-num-label\" style=\"font-size:1.8cqi\">关键优化项 · 全部落地</div>\n      </div>\n      <div class=\"c-grid-2\">\n        <div class=\"c-kpi\" style=\"text-align:center;padding:2cqi\">\n          <div class=\"c-kpi-value\" style=\"color:var(--accent)\">−62%</div>\n          <div class=\"c-kpi-label\">幻觉率</div>\n          <div class=\"c-kpi-delta down\">vs 无反馈回路版本</div>\n        </div>\n        <div class=\"c-kpi\" style=\"text-align:center;padding:2cqi\">\n          <div class=\"c-kpi-value\" style=\"color:var(--accent)\">+4.1×</div>\n          <div class=\"c-kpi-label\">检索命中率</div>\n          <div class=\"c-kpi-delta up\">单次检索精准匹配</div>\n        </div>\n      </div>\n      <div class=\"c-grid-2\">\n        <div class=\"c-card\">\n          <div class=\"c-kpi-value\" style=\"font-size:3.5cqi;color:var(--accent)\">227</div>\n          <div class=\"c-kpi-label\">自动修订条数</div>\n          <div class=\"c-body\" style=\"margin-top:0.5cqi\">189 条审批合并 · 38 条拒绝归档</div>\n        </div>\n        <div class=\"c-card\">\n          <div class=\"c-kpi-value\" style=\"font-size:3.5cqi;color:var(--accent)\">412</div>\n          <div class=\"c-kpi-label\">新增笔记篇数</div>\n          <div class=\"c-body\" style=\"margin-top:0.5cqi\">从 miss 日志聚类生成 · 篇篇有来源追溯</div>\n        </div>\n      </div>\n    </div>\n    <div class=\"chr-footer\"><span>Content · Stats</span><span>06 / 07</span></div>\n  </section>"
     },
     {
-      "type": "thanks",
-      "kicker": "END · blueprint v2",
-      "title": "谢谢 · thanks",
-      "subtitle": "图纸、Skill、笔记模板都在 github.com/lewis/karpathy-wiki-v2",
-      "badges": ["装 Skill → 跑 7 天 → 第一次审 PR → 开始信它"]
+      "type": "html",
+      "html": "<section class=\"slide\">\n    <div class=\"chr-topbar\"><div class=\"chr-page\">07 · 07</div></div>\n    <div class=\"v-center\" style=\"text-align:center;max-width:85%;margin-left:auto;margin-right:auto;display:flex;flex-direction:column;gap:2cqi\">\n      <div>\n        <div class=\"chr-kicker\">END · blueprint v2</div>\n        <h1 class=\"chr-title\" style=\"font-size:8cqi\">谢谢 <em>·</em> thanks</h1>\n        <div class=\"c-divider-accent\" style=\"margin:2cqi auto\"></div>\n        <p class=\"chr-sub\" style=\"font-size:2cqi\">图纸、Skill、笔记模板都在<br><b>github.com/lewis/karpathy-wiki-v2</b></p>\n      </div>\n      <div class=\"c-note\">\n        <div class=\"c-note-icon\">🚀</div>\n        <div class=\"c-note-content\">\n          <div class=\"c-note-title\">三步开始你自己的 Wiki v2</div>\n          <div class=\"c-note-body\">\n            <b>Tonight</b> — 装 Skill，接一条反馈回路<br>\n            <b>Week 1</b> — 跑 7 天，观察 miss log 自动累积<br>\n            <b>Day 8</b> — 花 15 分钟 review 第一篇自动 PR<br>\n            一个月后，你的 vault 会变成活的。\n          </div>\n        </div>\n      </div>\n      <div class=\"c-badge-row\" style=\"justify-content:center\">\n        <span class=\"c-badge accent\">#WikiV2</span>\n        <span class=\"c-badge\">#FeedbackLoop</span>\n        <span class=\"c-badge\">#Karpathy</span>\n        <span class=\"c-badge good\">#第二大脑</span>\n      </div>\n    </div>\n    <div class=\"chr-footer\"><span>End of deck</span><span>07 / 07</span></div>\n  </section>"
     }
   ]
 }
