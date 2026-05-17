@@ -1178,6 +1178,102 @@ async function checkCanvasFill(page: any, slideIndex: number, profile: CanvasPro
   }, { idx: slideIndex, bottomEmptyMaxRatio: profile.bottomEmptyMaxRatio });
 }
 
+// ─── Group 13: Font unit check (portrait: no px font-size) ─────────────────
+
+async function checkFontUnit(page: any, slideIndex: number, profile: CanvasProfile): Promise<Issue[]> {
+  if (!profile.fontNoPx) return [];
+
+  return page.evaluate((args: { idx: number; bodyMinCqi: number }) => {
+    const active = document.querySelector(".deck > .slide.is-active");
+    if (!active) return [];
+
+    const issues: any[] = [];
+    const contentSelectors = [
+      "h1", "h2", "h3", "h4", "p", "li", "span",
+      ".c-card", ".c-card-soft", ".c-step", ".c-kpi",
+      ".c-note", ".c-quote", ".c-badge",
+      ".chr-title", ".chr-heading", ".chr-sub",
+    ];
+
+    for (const sel of contentSelectors) {
+      for (const el of active.querySelectorAll(sel)) {
+        const style = window.getComputedStyle(el);
+        const fontSize = style.fontSize;
+        if (fontSize.endsWith("px")) {
+          const px = parseFloat(fontSize);
+          const activeSlide = document.querySelector(".deck > .slide.is-active");
+          const slideW = activeSlide ? activeSlide.getBoundingClientRect().width : 810;
+          const approxCqi = (px / slideW) * 100;
+          if (args.bodyMinCqi > 0 && approxCqi < args.bodyMinCqi) {
+            const cls = (el.getAttribute("class") || el.tagName.toLowerCase()).split(" ")[0];
+            issues.push({
+              group: "font-unit",
+              severity: "WARN",
+              slide: args.idx + 1,
+              element: cls,
+              message: `字号 ${px}px（≈${approxCqi.toFixed(1)}cqi）< ${args.bodyMinCqi}cqi 最小值，建议使用 --c-* token 或 cqi 单位`,
+            });
+          }
+        }
+      }
+    }
+
+    return issues;
+  }, { idx: slideIndex, bodyMinCqi: profile.bodyMinCqi });
+}
+
+// ─── Group 14: CSS loading integrity ───────────────────────────────────────
+
+async function checkCSSLoadingIntegrity(page: any): Promise<Issue[]> {
+  return page.evaluate(() => {
+    const issues: any[] = [];
+    const body = document.body;
+    const bodyClass = body.getAttribute("class") || "";
+
+    // Check: body has d-xxx class but corresponding design CSS not found
+    const designMatch = bodyClass.match(/d-([a-z-]+)/);
+    if (designMatch) {
+      const designName = designMatch[1];
+      const styleTags = document.querySelectorAll("style");
+      let foundDesignCSS = false;
+      for (const tag of styleTags) {
+        const content = tag.textContent || "";
+        if (content.includes(`.d-${designName}`)) {
+          foundDesignCSS = true;
+          break;
+        }
+      }
+      if (!foundDesignCSS) {
+        issues.push({
+          group: "css-loading-integrity",
+          severity: "BLOCKER",
+          slide: 0,
+          element: "body",
+          message: `body class "d-${designName}" 但未找到对应 design CSS，设计样式可能缺失`,
+        });
+      }
+    }
+
+    // Check: portrait class consistency
+    const hasPortrait = bodyClass.includes("portrait");
+    const deckEl = document.querySelector(".deck");
+    if (deckEl && hasPortrait) {
+      const deckWidth = deckEl.getBoundingClientRect().width;
+      if (deckWidth > 1200) {
+        issues.push({
+          group: "css-loading-integrity",
+          severity: "WARN",
+          slide: 0,
+          element: ".deck",
+          message: `body.portrait 但 deck 宽度 ${deckWidth.toFixed(0)}px（> 1200px），canvas 可能未正确应用`,
+        });
+      }
+    }
+
+    return issues;
+  });
+}
+
 // ─── Fix generation ─────────────────────────────────────────────────────
 
 function generateFixes(issues: Issue[]): string {
@@ -1322,7 +1418,7 @@ async function main(): Promise<void> {
     await activateSlide(page, i);
 
     const [overflow, occlusion, whitespace, spacing, contrast, density,
-           chromeBoundary, canvasFill] = await Promise.all([
+           chromeBoundary, canvasFill, fontUnit] = await Promise.all([
       checkTextOverflow(page, i),
       checkOcclusion(page, i),
       checkWhitespace(page, i, profile),
@@ -1331,10 +1427,11 @@ async function main(): Promise<void> {
       checkDensity(page, i, profile),
       checkChromeContentBoundary(page, i),
       checkCanvasFill(page, i, profile),
+      checkFontUnit(page, i, profile),
     ]);
 
     allIssues.push(...overflow, ...occlusion, ...whitespace, ...spacing, ...contrast, ...density,
-      ...chromeBoundary, ...canvasFill);
+      ...chromeBoundary, ...canvasFill, ...fontUnit);
 
     // Collect font records for cross-slide analysis
     const fonts = await collectFontSizes(page, i);
@@ -1345,12 +1442,13 @@ async function main(): Promise<void> {
   allIssues.push(...analyzeFontHierarchy(allFontRecords, slideWidth, portrait));
 
   // ── Cross-slide checks (Groups 7-9) ──
-  const [chromePos, chromePresence, cssVars] = await Promise.all([
+  const [chromePos, chromePresence, cssVars, cssLoading] = await Promise.all([
     checkChromePositions(page, totalSlides),
     checkChromePresence(page, totalSlides),
     checkCSSVarHealth(page),
+    checkCSSLoadingIntegrity(page),
   ]);
-  allIssues.push(...chromePos, ...chromePresence, ...cssVars);
+  allIssues.push(...chromePos, ...chromePresence, ...cssVars, ...cssLoading);
 
   await browser.close();
 
