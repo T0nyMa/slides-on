@@ -112,13 +112,13 @@ Usage:
   bun scripts/qa.ts --baseline update   更新基线
 
 Profiles:
-  Portrait 3:4  — fill 50-85%, 4-8 comp, bottom 25% check, no px, grid ≤2 cols
+  Portrait 3:4  — fill 50-85%, 3-6 comp, bottom 25% check, no px, grid ≤2 cols
   Landscape 16:9 — fill 20-85%, 2-6 comp, relaxed rules
 
-Detection: 17 groups (text-overflow, occlusion, whitespace, spacing, contrast,
+Detection: 18 groups (text-overflow, occlusion, whitespace, spacing, contrast,
   font-hierarchy, chrome-position, chrome-presence, css-var-health, density,
   chrome-content-boundary, canvas-fill, font-unit, css-loading-integrity,
-  grid-collapse, chrome-z-index, font-container-ratio)`);
+  grid-collapse, chrome-z-index, font-container-ratio, inline-row-wrap)`);
     process.exit(0);
   }
 

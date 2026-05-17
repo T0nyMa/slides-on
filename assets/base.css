@@ -74,6 +74,7 @@
   --c-badge-size: 0.85cqi;
   --c-kpi-value-size: 4.5cqi;
   --c-kpi-label-size: 1.1cqi;
+  --c-kpi-delta-size: 1cqi;
   --c-quote-size: 2.2cqi;
   --c-quote-mark-size: 5cqi;
   --c-quote-mark-top: -1cqi;
@@ -260,6 +261,7 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
   --c-badge-size: 2.5cqi;
   --c-kpi-value-size: 8cqi;
   --c-kpi-label-size: 3cqi;
+	  --c-kpi-delta-size: 2.2cqi;
   --c-quote-size: 5cqi;
   --c-quote-mark-size: 8cqi;
   --c-quote-mark-top: -1.5cqi;

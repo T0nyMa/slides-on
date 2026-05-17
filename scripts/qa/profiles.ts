@@ -5,7 +5,8 @@ export interface CanvasProfile {
   componentMax: number;
   bottomEmptyMaxRatio: number;
   gridMaxCols: number;
-  bodyMinCqi: number;
+  bodyMinCqi: number;         // 正文最小 cqi（p, c-body, c-step-body 等）
+  uiTextMinCqi: number;       // UI 文本最小 cqi（c-badge, c-kpi-label 等）
   fontNoPx: boolean;
   h1MinCqi: number;
   h1MaxCqi: number;
@@ -21,7 +22,8 @@ export const PROFILES: Record<string, CanvasProfile> = {
     componentMax: 6,
     bottomEmptyMaxRatio: 0.25,
     gridMaxCols: 2,
-    bodyMinCqi: 3.5,          // 3:4 正文至少 3.5cqi (28px at 810px) — "大一倍" 规范
+    bodyMinCqi: 3.0,          // 3:4 正文至少 3cqi (24px) — "大一倍" 规范，step/note body 3cqi 可接受
+    uiTextMinCqi: 2.2,        // UI 文本 (badge/label) 至少 2.2cqi (18px)
     fontNoPx: true,
     h1MinCqi: 5,
     h1MaxCqi: 9,
@@ -36,6 +38,7 @@ export const PROFILES: Record<string, CanvasProfile> = {
     bottomEmptyMaxRatio: 0,
     gridMaxCols: 0,
     bodyMinCqi: 0,
+    uiTextMinCqi: 0,
     fontNoPx: false,
     h1MinCqi: 0,
     h1MaxCqi: 0,

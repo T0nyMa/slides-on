@@ -100,6 +100,7 @@
   --c-badge-size: 0.85cqi;
   --c-kpi-value-size: 4.5cqi;
   --c-kpi-label-size: 1.1cqi;
+  --c-kpi-delta-size: 1cqi;
   --c-quote-size: 2.2cqi;
   --c-quote-mark-size: 5cqi;
   --c-quote-mark-top: -1cqi;
@@ -286,6 +287,7 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
   --c-badge-size: 2.5cqi;
   --c-kpi-value-size: 8cqi;
   --c-kpi-label-size: 3cqi;
+	  --c-kpi-delta-size: 2.2cqi;
   --c-quote-size: 5cqi;
   --c-quote-mark-size: 8cqi;
   --c-quote-mark-top: -1.5cqi;
@@ -469,7 +471,7 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
 .c-kpi { text-align: center; }
 .c-kpi-value { font-size: var(--c-kpi-value-size, 4.5cqi); font-weight: 900; line-height: 1; color: var(--text-1); letter-spacing: var(--letter-tight); }
 .c-kpi-label { font-size: var(--c-kpi-label-size, 1.1cqi); color: var(--text-2); margin-top: 0.4cqi; }
-.c-kpi-delta { font-size: 1cqi; font-weight: 700; margin-top: 0.2cqi; }
+.c-kpi-delta { font-size: var(--c-kpi-delta-size, 1cqi); font-weight: 700; margin-top: 0.2cqi; }
 .c-kpi-delta.up   { color: var(--good); }
 .c-kpi-delta.down { color: var(--bad); }
 .c-kpi-delta.flat { color: var(--text-3); }

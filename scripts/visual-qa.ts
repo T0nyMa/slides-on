@@ -1183,43 +1183,58 @@ async function checkCanvasFill(page: any, slideIndex: number, profile: CanvasPro
 async function checkFontUnit(page: any, slideIndex: number, profile: CanvasProfile): Promise<Issue[]> {
   if (!profile.fontNoPx) return [];
 
-  return page.evaluate((args: { idx: number; bodyMinCqi: number }) => {
+  return page.evaluate((args: { idx: number; bodyMinCqi: number; uiTextMinCqi: number }) => {
     const active = document.querySelector(".deck > .slide.is-active");
     if (!active) return [];
 
     const issues: any[] = [];
-    const contentSelectors = [
-      "h1", "h2", "h3", "h4", "p", "li", "span",
-      ".c-card", ".c-card-soft", ".c-step", ".c-kpi",
-      ".c-note", ".c-quote", ".c-badge",
+    const activeSlide = document.querySelector(".deck > .slide.is-active");
+    const slideW = activeSlide ? activeSlide.getBoundingClientRect().width : 810;
+
+    // Body text selectors — must meet bodyMinCqi
+    const bodySelectors = [
+      "h1", "h2", "h3", "h4", "p", "li",
+      ".c-body", ".c-step-body", ".c-note-body",
+      ".c-quote", ".c-quote-text",
       ".chr-title", ".chr-heading", ".chr-sub",
     ];
 
-    for (const sel of contentSelectors) {
-      for (const el of active.querySelectorAll(sel)) {
-        const style = window.getComputedStyle(el);
-        const fontSize = style.fontSize;
-        if (fontSize.endsWith("px")) {
-          const px = parseFloat(fontSize);
-          const activeSlide = document.querySelector(".deck > .slide.is-active");
-          const slideW = activeSlide ? activeSlide.getBoundingClientRect().width : 810;
-          const approxCqi = (px / slideW) * 100;
-          if (args.bodyMinCqi > 0 && approxCqi < args.bodyMinCqi) {
-            const cls = (el.getAttribute("class") || el.tagName.toLowerCase()).split(" ")[0];
-            issues.push({
-              group: "font-unit",
-              severity: "WARN",
-              slide: args.idx + 1,
-              element: cls,
-              message: `字号 ${px}px（≈${approxCqi.toFixed(1)}cqi）< ${args.bodyMinCqi}cqi 最小值，建议使用 --c-* token 或 cqi 单位`,
-            });
+    // UI text selectors — must meet uiTextMinCqi (lower bar)
+    const uiSelectors = [
+      ".c-badge", ".c-badge-row span", ".c-kpi-label", ".c-kpi-delta",
+      ".c-step-num", ".c-note-title", ".c-small", ".c-hero-num-label",
+      ".c-section-label",
+    ];
+
+    const checkSelectors = (selectors: string[], minCqi: number, label: string) => {
+      if (minCqi <= 0) return;
+      for (const sel of selectors) {
+        for (const el of active.querySelectorAll(sel)) {
+          const style = window.getComputedStyle(el);
+          const fontSize = style.fontSize;
+          if (fontSize.endsWith("px")) {
+            const px = parseFloat(fontSize);
+            const approxCqi = (px / slideW) * 100;
+            if (approxCqi < minCqi) {
+              const cls = (el.getAttribute("class") || el.tagName.toLowerCase()).split(" ")[0];
+              issues.push({
+                group: "font-unit",
+                severity: "WARN",
+                slide: args.idx + 1,
+                element: cls,
+                message: `${label}字号 ${px}px（≈${approxCqi.toFixed(1)}cqi）< ${minCqi}cqi 最小值，建议使用 --c-* token`,
+              });
+            }
           }
         }
       }
-    }
+    };
+
+    checkSelectors(bodySelectors, args.bodyMinCqi, "正文");
+    checkSelectors(uiSelectors, args.uiTextMinCqi, "UI ");
 
     return issues;
-  }, { idx: slideIndex, bodyMinCqi: profile.bodyMinCqi });
+  }, { idx: slideIndex, bodyMinCqi: profile.bodyMinCqi, uiTextMinCqi: profile.uiTextMinCqi });
 }
 
 // ─── Group 15: Grid collapse (portrait: g3/g4 must collapse) ───────────────
