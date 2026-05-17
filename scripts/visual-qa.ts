@@ -15,6 +15,8 @@
  *   8. Chrome presence    — topbar/footer per-slide presence (WARN) [migrated]
  *   9. CSS var health     — critical vars defined (BLOCKER) [migrated]
  *  10. Component density  — max components per slide (WARN) [migrated]
+ *  11. Chrome-content boundary — topbar/footer overlap with content (BLOCKER)
+ *  12. Canvas fill         — portrait bottom emptiness ratio (BLOCKER/WARN)
  *
  * Usage:
  *   bun scripts/visual-qa.ts --input index.html
@@ -1063,6 +1065,119 @@ async function checkDensity(page: any, slideIndex: number, profile: CanvasProfil
   }, { idx: slideIndex, profile });
 }
 
+// ─── Group 11: Chrome-content boundary ────────────────────────────────────
+
+async function checkChromeContentBoundary(page: any, slideIndex: number): Promise<Issue[]> {
+  return page.evaluate((args: { idx: number }) => {
+    const active = document.querySelector(".deck > .slide.is-active");
+    if (!active) return [];
+
+    const issues: any[] = [];
+    const slideRect = active.getBoundingClientRect();
+
+    const topbar = active.querySelector(".chr-topbar") as HTMLElement | null;
+    const footer = active.querySelector(".chr-footer") as HTMLElement | null;
+
+    const contentChildren: Element[] = [];
+    for (const el of active.children) {
+      const cls = el.getAttribute("class") || "";
+      if (cls.includes("chr-topbar") || cls.includes("chr-footer") ||
+          cls.includes("chr-blob") || cls.includes("bg-") || cls.includes("chr-hc-")) continue;
+      const style = window.getComputedStyle(el);
+      if (style.display === "none" || style.visibility === "hidden") continue;
+      if (style.position === "absolute" || style.position === "fixed") continue;
+      contentChildren.push(el);
+    }
+
+    if (topbar) {
+      const tbRect = topbar.getBoundingClientRect();
+      const tbBottom = tbRect.bottom - slideRect.top;
+
+      for (const child of contentChildren) {
+        const childRect = child.getBoundingClientRect();
+        const childTop = childRect.top - slideRect.top;
+        const overlap = tbBottom - childTop;
+        if (overlap > 5) {
+          issues.push({
+            group: "chrome-content-boundary",
+            severity: "BLOCKER",
+            slide: args.idx + 1,
+            element: ".chr-topbar",
+            message: `chr-topbar 与内容重叠 ${overlap.toFixed(0)}px，建议增加间距或调整 padding-top`,
+          });
+          break;
+        }
+      }
+    }
+
+    if (footer) {
+      const ftRect = footer.getBoundingClientRect();
+      const ftTop = ftRect.top - slideRect.top;
+
+      let maxBottom = 0;
+      for (const child of contentChildren) {
+        const childRect = child.getBoundingClientRect();
+        const childBottom = childRect.bottom - slideRect.top;
+        if (childBottom > maxBottom) maxBottom = childBottom;
+      }
+
+      const overlap = maxBottom - ftTop;
+      if (overlap > 5) {
+        issues.push({
+          group: "chrome-content-boundary",
+          severity: "BLOCKER",
+          slide: args.idx + 1,
+          element: ".chr-footer",
+          message: `chr-footer 与内容重叠 ${overlap.toFixed(0)}px`,
+        });
+      }
+    }
+
+    return issues;
+  }, { idx: slideIndex });
+}
+
+// ─── Group 12: Canvas fill (portrait bottom emptiness) ─────────────────────
+
+async function checkCanvasFill(page: any, slideIndex: number, profile: CanvasProfile): Promise<Issue[]> {
+  if (profile.bottomEmptyMaxRatio <= 0) return [];
+
+  return page.evaluate((args: { idx: number; bottomEmptyMaxRatio: number }) => {
+    const active = document.querySelector(".deck > .slide.is-active");
+    if (!active) return [];
+
+    const slideRect = active.getBoundingClientRect();
+    const slideH = slideRect.height;
+    const issues: any[] = [];
+
+    let lowestBottom = 0;
+    for (const el of active.children) {
+      const cls = el.getAttribute("class") || "";
+      if (cls.includes("chr-topbar") || cls.includes("chr-footer") ||
+          cls.includes("chr-blob") || cls.includes("bg-") || cls.includes("chr-hc-")) continue;
+      const style = window.getComputedStyle(el);
+      if (style.display === "none" || style.visibility === "hidden") continue;
+      if (style.position === "absolute" || style.position === "fixed") continue;
+      const rect = el.getBoundingClientRect();
+      const relBottom = (rect.bottom - slideRect.top) / slideH;
+      if (relBottom > lowestBottom) lowestBottom = relBottom;
+    }
+
+    const bottomEmpty = 1 - lowestBottom;
+    if (bottomEmpty > args.bottomEmptyMaxRatio) {
+      issues.push({
+        group: "canvas-fill",
+        severity: (bottomEmpty > args.bottomEmptyMaxRatio * 1.5) ? "BLOCKER" : "WARN",
+        slide: args.idx + 1,
+        element: ".slide",
+        message: `底部 ${(bottomEmpty * 100).toFixed(0)}% 空白（阈值 ${(args.bottomEmptyMaxRatio * 100).toFixed(0)}%），建议增加组件或使用 .v-distribute`,
+      });
+    }
+
+    return issues;
+  }, { idx: slideIndex, bottomEmptyMaxRatio: profile.bottomEmptyMaxRatio });
+}
+
 // ─── Fix generation ─────────────────────────────────────────────────────
 
 function generateFixes(issues: Issue[]): string {
@@ -1202,20 +1317,24 @@ async function main(): Promise<void> {
     return slide ? slide.getBoundingClientRect().width : 810;
   });
 
-  // ── Per-slide checks (Groups 1-6, 10) ──
+  // ── Per-slide checks (Groups 1-6, 10-12) ──
   for (let i = 0; i < totalSlides; i++) {
     await activateSlide(page, i);
 
-    const [overflow, occlusion, whitespace, spacing, contrast, density] = await Promise.all([
+    const [overflow, occlusion, whitespace, spacing, contrast, density,
+           chromeBoundary, canvasFill] = await Promise.all([
       checkTextOverflow(page, i),
       checkOcclusion(page, i),
       checkWhitespace(page, i, profile),
       checkSpacing(page, i),
       checkContrast(page, i),
       checkDensity(page, i, profile),
+      checkChromeContentBoundary(page, i),
+      checkCanvasFill(page, i, profile),
     ]);
 
-    allIssues.push(...overflow, ...occlusion, ...whitespace, ...spacing, ...contrast, ...density);
+    allIssues.push(...overflow, ...occlusion, ...whitespace, ...spacing, ...contrast, ...density,
+      ...chromeBoundary, ...canvasFill);
 
     // Collect font records for cross-slide analysis
     const fonts = await collectFontSizes(page, i);
