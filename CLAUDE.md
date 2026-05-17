@@ -539,3 +539,55 @@ Container Query 自动启用，`cqi` 单位等比缩放。所有 3:4 模板（xh
 | html-ppt-skill | 36 themes、31 layouts、15 deck 模板、27+20 动画、base.css、runtime.js | `github.com/lewislulu/html-ppt-skill` |
 | baoyu-skills | 17 presets、21 信息图布局、22 视觉风格、10 AI 图片 Provider | `github.com/JimLiu/baoyu-skills` |
 | academic-pptx-skill | 学术演示规范（Action Titles、Ghost Deck Test、一页一观点） | — |
+
+## QA Pipeline
+
+所有代码变更必须通过 QA Pipeline 验证。统一入口：`bun scripts/qa.ts`
+
+### 开发流程中的 QA 集成
+
+1. **改代码前**：`bun scripts/qa.ts --plan` 生成 Test Plan，了解影响范围
+2. **改代码后**：`bun scripts/qa.ts --check` 快速验证（L0+L1），0 BLOCKER 才能提交
+3. **重大重构前**：`bun scripts/qa.ts --baseline init` 建立截图基线
+4. **重大重构后**：`bun scripts/qa.ts --regress` 完整回归（含截图对比）
+
+### Superpowers 集成
+
+当使用 subagent-driven-development 时：
+- **Implementer subagent** 完成后自动运行 `bun scripts/qa.ts --check`，QA 报告附在 self-review 中
+- **Spec reviewer subagent** 验证 QA 报告，BLOCKER 数量不能增加
+- **Code reviewer subagent** 关注 font-container-ratio、canvas-fill 等 WARN 是否恶化
+- **finishing-a-development-branch** 前运行 `bun scripts/qa.ts --check`，0 BLOCKER 才能合入
+
+### QA 命令速查
+
+```bash
+bun scripts/qa.ts --plan              # 变更感知 → Test Plan
+bun scripts/qa.ts --check             # L0+L1 快速检查（所有 deck）
+bun scripts/qa.ts --check --deck xxx  # 单个 deck
+bun scripts/qa.ts --regress           # L0+L1+L2 完整回归
+bun scripts/qa.ts --baseline init     # 建立截图基线
+bash scripts/qa.sh --all              # 兼容旧入口
+```
+
+### 检测组（17 组）
+
+| # | 检测组 | Portrait (3:4) | Landscape (16:9) |
+|---|--------|---------------|------------------|
+| 1 | text-overflow | ✅ | ✅ |
+| 2 | occlusion | ✅ | ✅ |
+| 3 | whitespace | fill 50-85% | fill 20-85% |
+| 4 | spacing | ✅ | ✅ |
+| 5 | contrast | WCAG AA | WCAG AA |
+| 6 | font-hierarchy | h1 5-9cqi, body 1.5-2.5cqi | h1 72px, body 16px |
+| 7 | chrome-position | ✅ | ✅ |
+| 8 | chrome-presence | ✅ | ✅ |
+| 9 | css-var-health | ✅ | ✅ |
+| 10 | density | 4-8 组件 | 2-6 组件 |
+| 11 | chrome-content-boundary | ✅ BLOCKER | ✅ |
+| 12 | canvas-fill | 底部 25% 检查 | — |
+| 13 | font-unit | 禁止 px | — |
+| 14 | css-loading-integrity | ✅ | ✅ |
+| 15 | grid-collapse | ≤ 2 列 | — |
+| 16 | chrome-z-index | ✅ | ✅ |
+| 17 | font-container-ratio | ✅ | ✅ |
