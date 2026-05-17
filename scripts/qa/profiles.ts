@@ -21,12 +21,12 @@ export const PROFILES: Record<string, CanvasProfile> = {
     componentMax: 8,
     bottomEmptyMaxRatio: 0.25,
     gridMaxCols: 2,
-    bodyMinCqi: 1.4,
+    bodyMinCqi: 3.5,          // 3:4 正文至少 3.5cqi (28px at 810px) — "大一倍" 规范
     fontNoPx: true,
     h1MinCqi: 5,
     h1MaxCqi: 9,
-    bodyMinCqiAbs: 1.4,
-    bodyMaxCqi: 2.5,
+    bodyMinCqiAbs: 3.0,       // 绝对最小 3cqi (24px) — 警告
+    bodyMaxCqi: 5.5,          // 正文上限
   },
   landscape: {
     fillMin: 0.20,

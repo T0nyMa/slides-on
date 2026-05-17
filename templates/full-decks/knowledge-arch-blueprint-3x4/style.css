@@ -13,18 +13,18 @@
       These dominate the narrow 3:4 canvas (96px / 60px at 810px) */
 .d-pastel-card.portrait .chr-title    { font-size: 8cqi; }      /* 96→65px — prominent but not overwhelming */
 .d-pastel-card.portrait .chr-heading  { font-size: 5.5cqi; }    /* 60→45px — slide title */
-.d-pastel-card.portrait .chr-sub      { font-size: 2.2cqi; }    /* 21→18px */
-.d-pastel-card.portrait .chr-kicker   { font-size: 2cqi; }      /* 13→16px — more readable */
-.d-pastel-card.portrait .chr-card-num { font-size: 2cqi; }      /* ~16px */
+.d-pastel-card.portrait .chr-sub      { font-size: 4.4cqi; }    /* 21→18px */
+.d-pastel-card.portrait .chr-kicker   { font-size: 4cqi; }      /* 13→16px — more readable */
+.d-pastel-card.portrait .chr-card-num { font-size: 4cqi; }      /* ~16px */
 .d-pastel-card.portrait .chr-card-label { font-size: 1.6cqi; }  /* ~13px */
 .d-pastel-card.portrait .chr-card-main  { font-size: 3cqi; }    /* ~24px */
-.d-pastel-card.portrait .chr-card-desc  { font-size: 1.8cqi; }  /* ~15px */
+.d-pastel-card.portrait .chr-card-desc  { font-size: 2.8cqi; }  /* ~15px */
 
 /* ── Portrait chrome: line up with slide padding ── */
 .d-pastel-card.portrait .chr-topbar  { top: 4cqi; left: var(--slide-pad-x); right: var(--slide-pad-x); font-size: 1.6cqi; }
 .d-pastel-card.portrait .chr-page    { font-size: 1.6cqi; }
 .d-pastel-card.portrait .chr-chip    { font-size: 1.6cqi; }
-.d-pastel-card.portrait .chr-footer  { left: var(--slide-pad-x); right: var(--slide-pad-x); bottom: 3cqi; font-size: 1.6cqi; }
+.d-pastel-card.portrait .chr-footer  { left: var(--slide-pad-x); right: var(--slide-pad-x); bottom: 5cqi; font-size: 1.6cqi; }
 .d-pastel-card.portrait .chr-blob    { display: none; } /* blobs add clutter on narrow canvas */
 
 /* ── Blueprint grid background (all slides) ── */
@@ -84,15 +84,15 @@
 .d-pastel-card.portrait .c-card.chr-hero { max-width: 90%; }
 
 /* ── Footer clearance: content padding stops above footer ── */
-.d-pastel-card.portrait { --slide-pad-bottom: 8cqi; }
+.d-pastel-card.portrait { --slide-pad-bottom: 16cqi; }
 
 /* ── Badge font boost in 3:4 ── */
-.d-pastel-card.portrait .c-badge { font-size: 1.8cqi; }
-.d-pastel-card.portrait .c-badge-row { font-size: 1.8cqi; }
+.d-pastel-card.portrait .c-badge { font-size: 2.8cqi; }
+.d-pastel-card.portrait .c-badge-row { font-size: 2.8cqi; }
 
 /* ── Body text boost ── */
-.d-pastel-card.portrait .c-body { font-size: 2.2cqi; }
-.d-pastel-card.portrait .c-small { font-size: 1.8cqi; }
+.d-pastel-card.portrait .c-body { font-size: 4.4cqi; }
+.d-pastel-card.portrait .c-small { font-size: 2.8cqi; }
 
 /* ── Contrast fixes: badge colors need 4.5:1 on warm pastel bg (#fef8f1) ── */
 .d-pastel-card .c-badge.good  { color: #0a5e2e; background: #b8e8c8; }

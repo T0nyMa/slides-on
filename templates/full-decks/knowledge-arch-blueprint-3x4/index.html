@@ -252,12 +252,13 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
 .portrait {
   --h1-size: 7cqi;
   --h2-size: 5.2cqi;
-  --h3-size: 3.7cqi;
-  --h4-size: 2.5cqi;
-  --lede-size: 2.5cqi;
-  --kicker-size: 1.8cqi;
-  --eyebrow-size: 1.6cqi;
-  --body-font-size: 2cqi;
+  --h3-size: 5cqi;
+  --h4-size: 3.5cqi;
+  --lede-size: 4cqi;
+  --kicker-size: 2.5cqi;
+  --eyebrow-size: 2.2cqi;
+  --body-font-size: 4cqi;
+	  --body-size: 4cqi;
   --slide-pad-x: 4.5cqi;
   --slide-pad-y: 4.5cqi;
   --slide-pad-bottom: 3cqi;
@@ -266,34 +267,34 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
   --grid-cols-3: repeat(2, 1fr);
   --grid-cols-4: repeat(2, 1fr);
   --slide-justify: flex-start;
-  --stack-gap-val: 1.8cqi;
+  --stack-gap-val: 2cqi;
 
-  /* Component size boosters for narrow canvas */
-  --c-title-size: 3.5cqi;
-  --c-subtitle-size: 2.5cqi;
-  --c-body-size: 2cqi;
-  --c-small-size: 1.6cqi;
+  /* Component size boosters for narrow canvas — 3:4 "大一倍" 规范 */
+  --c-title-size: 5cqi;
+  --c-subtitle-size: 4cqi;
+  --c-body-size: 4cqi;
+  --c-small-size: 2.6cqi;
   --c-card-padding: 2.5cqi 3cqi;
   --c-row-gap: 2.5cqi;
   --c-grid-gap: 2.5cqi;
   --c-section-padding: 3cqi;
-  --c-section-label-size: 2.3cqi;
+  --c-section-label-size: 3cqi;
   --c-glass-padding: 3cqi;
-  --c-badge-size: 1.5cqi;
+  --c-badge-size: 2.5cqi;
   --c-kpi-value-size: 8cqi;
-  --c-kpi-label-size: 2cqi;
-  --c-quote-size: 3.5cqi;
+  --c-kpi-label-size: 3cqi;
+  --c-quote-size: 5cqi;
   --c-quote-mark-size: 8cqi;
   --c-quote-mark-top: -1.5cqi;
   --c-step-num-size: 5cqi;
-  --c-step-num-font: 2.2cqi;
-  --c-step-title-size: 2.8cqi;
+  --c-step-num-font: 3.5cqi;
+  --c-step-title-size: 4.5cqi;
   --c-step-gap: 2.5cqi;
-  --c-icon-row-title-size: 2.5cqi;
+  --c-icon-row-title-size: 4cqi;
   --c-icon-row-gap: 2.5cqi;
-  --c-codebox-size: 2.2cqi;
+  --c-codebox-size: 3.5cqi;
   --c-codebox-padding: 3cqi 3.5cqi;
-  --c-formula-size: 3cqi;
+  --c-formula-size: 4.5cqi;
   --c-stack-gap: 2.5cqi;
 }
 
@@ -1207,18 +1208,18 @@ body.editor-active .editor-canvas-label { display: block; }
       These dominate the narrow 3:4 canvas (96px / 60px at 810px) */
 .d-pastel-card.portrait .chr-title    { font-size: 8cqi; }      /* 96→65px — prominent but not overwhelming */
 .d-pastel-card.portrait .chr-heading  { font-size: 5.5cqi; }    /* 60→45px — slide title */
-.d-pastel-card.portrait .chr-sub      { font-size: 2.2cqi; }    /* 21→18px */
-.d-pastel-card.portrait .chr-kicker   { font-size: 2cqi; }      /* 13→16px — more readable */
-.d-pastel-card.portrait .chr-card-num { font-size: 2cqi; }      /* ~16px */
+.d-pastel-card.portrait .chr-sub      { font-size: 4.4cqi; }    /* 21→18px */
+.d-pastel-card.portrait .chr-kicker   { font-size: 4cqi; }      /* 13→16px — more readable */
+.d-pastel-card.portrait .chr-card-num { font-size: 4cqi; }      /* ~16px */
 .d-pastel-card.portrait .chr-card-label { font-size: 1.6cqi; }  /* ~13px */
 .d-pastel-card.portrait .chr-card-main  { font-size: 3cqi; }    /* ~24px */
-.d-pastel-card.portrait .chr-card-desc  { font-size: 1.8cqi; }  /* ~15px */
+.d-pastel-card.portrait .chr-card-desc  { font-size: 2.8cqi; }  /* ~15px */
 
 /* ── Portrait chrome: line up with slide padding ── */
 .d-pastel-card.portrait .chr-topbar  { top: 4cqi; left: var(--slide-pad-x); right: var(--slide-pad-x); font-size: 1.6cqi; }
 .d-pastel-card.portrait .chr-page    { font-size: 1.6cqi; }
 .d-pastel-card.portrait .chr-chip    { font-size: 1.6cqi; }
-.d-pastel-card.portrait .chr-footer  { left: var(--slide-pad-x); right: var(--slide-pad-x); bottom: 3cqi; font-size: 1.6cqi; }
+.d-pastel-card.portrait .chr-footer  { left: var(--slide-pad-x); right: var(--slide-pad-x); bottom: 5cqi; font-size: 1.6cqi; }
 .d-pastel-card.portrait .chr-blob    { display: none; } /* blobs add clutter on narrow canvas */
 
 /* ── Blueprint grid background (all slides) ── */
@@ -1278,15 +1279,15 @@ body.editor-active .editor-canvas-label { display: block; }
 .d-pastel-card.portrait .c-card.chr-hero { max-width: 90%; }
 
 /* ── Footer clearance: content padding stops above footer ── */
-.d-pastel-card.portrait { --slide-pad-bottom: 8cqi; }
+.d-pastel-card.portrait { --slide-pad-bottom: 16cqi; }
 
 /* ── Badge font boost in 3:4 ── */
-.d-pastel-card.portrait .c-badge { font-size: 1.8cqi; }
-.d-pastel-card.portrait .c-badge-row { font-size: 1.8cqi; }
+.d-pastel-card.portrait .c-badge { font-size: 2.8cqi; }
+.d-pastel-card.portrait .c-badge-row { font-size: 2.8cqi; }
 
 /* ── Body text boost ── */
-.d-pastel-card.portrait .c-body { font-size: 2.2cqi; }
-.d-pastel-card.portrait .c-small { font-size: 1.8cqi; }
+.d-pastel-card.portrait .c-body { font-size: 4.4cqi; }
+.d-pastel-card.portrait .c-small { font-size: 2.8cqi; }
 
 /* ── Contrast fixes: badge colors need 4.5:1 on warm pastel bg (#fef8f1) ── */
 .d-pastel-card .c-badge.good  { color: #0a5e2e; background: #b8e8c8; }
@@ -1318,7 +1319,7 @@ body.editor-active .editor-canvas-label { display: block; }
       <p class="chr-sub">从「乱贴笔记」到「可审计、可纠错、可复用」的第二大脑 —— 读完 Karpathy 的分享后画的一张系统图。</p>
       <div class="c-card c-card-accent">
         <div class="c-badge accent" style="margin-bottom:1cqi">KEY INSIGHT</div>
-        <p class="c-body" style="font-size:1.8cqi">Karpathy 原版缺一块：<b>反馈闭环</b>让错误能回流纠正。不只是存起来，而是越用越准。</p>
+        <p class="c-body" style="font-size:3.6cqi">Karpathy 原版缺一块：<b>反馈闭环</b>让错误能回流纠正。不只是存起来，而是越用越准。</p>
       </div>
       <div class="c-badge-row">
         <span class="c-badge accent">采集</span>
@@ -1354,21 +1355,21 @@ body.editor-active .editor-canvas-label { display: block; }
         <div class="chr-kicker">Chapter One</div>
         <h1 class="chr-title">为什么 <em>笔记</em><br>不够用了</h1>
         <div class="c-divider-accent" style="margin:2cqi auto"></div>
-        <p class="chr-sub" style="font-size:2.2cqi">当知识量超过记忆容量，你需要的不是更多文件，而是一张<b>可导航的图</b>。</p>
+        <p class="chr-sub" style="font-size:4.4cqi">当知识量超过记忆容量，你需要的不是更多文件，而是一张<b>可导航的图</b>。</p>
       </div>
       <div class="c-grid-2" style="gap:2cqi">
         <div class="c-card-soft" style="text-align:left">
-          <div class="c-title" style="font-size:2.8cqi">📂 文件地狱</div>
-          <div class="c-body" style="font-size:2cqi;margin-top:1cqi">平均用户有 <b>1,200+ 条笔记</b>，分布在 47 个文件夹。每次找东西平均要翻 <b>3.6 层目录</b>，43% 的笔记再也没被打开过。</div>
+          <div class="c-title" style="font-size:5.6cqi">📂 文件地狱</div>
+          <div class="c-body" style="font-size:4cqi;margin-top:1cqi">人均 <b>1,200+ 条笔记</b>，43% 再也没被打开。文件夹越深，检索越慢。</div>
         </div>
         <div class="c-card-soft" style="text-align:left">
-          <div class="c-title" style="font-size:2.8cqi">🔄 矛盾螺旋</div>
-          <div class="c-body" style="font-size:2cqi;margin-top:1cqi">同一主题平均有 <b>3.2 篇互相矛盾</b>的笔记。65% 的人承认「我已经不知道哪篇是对的」，信息过载反而降低决策质量。</div>
+          <div class="c-title" style="font-size:5.6cqi">🔄 矛盾螺旋</div>
+          <div class="c-body" style="font-size:4cqi;margin-top:1cqi">同主题平均 <b>3.2 篇矛盾笔记</b>。65% 用户分不清哪篇可信。</div>
         </div>
       </div>
       <div class="c-card c-card-accent" style="text-align:left">
         <div class="c-badge accent" style="margin-bottom:1cqi">SOLUTION</div>
-        <div class="c-body" style="font-size:2cqi">不是存更多，而是<b>连接更多</b>。Wikipedia 的模式——每个页面都是一张图里的一个节点，关系比内容更重要。</div>
+        <div class="c-body" style="font-size:4cqi">不是存更多，而是<b>连接更多</b>。Wikipedia 的模式——每个页面都是一张图里的一个节点，关系比内容更重要。</div>
       </div>
     </div>
     <div class="chr-footer"><span>Section · Chapter 1</span><span>02 / 07</span></div>
@@ -1438,7 +1439,7 @@ body.editor-active .editor-canvas-label { display: block; }
     <div class="c-badge-row" style="margin-top:1.5cqi">
       <span class="c-badge"><span style="display:inline-block;width:1cqi;height:1cqi;border:2px solid var(--border-strong);border-radius:3px;vertical-align:middle;margin-right:0.5cqi"></span>普通节点</span>
       <span class="c-badge accent"><span style="display:inline-block;width:1cqi;height:1cqi;background:var(--accent);border-radius:3px;vertical-align:middle;margin-right:0.5cqi"></span>反馈回路入口</span>
-      <span class="c-badge" style="font-size:1.3cqi">—— 数据流 &nbsp; ┈┈ 反馈回路</span>
+      <span class="c-badge" style="font-size:2.6cqi">—— 数据流 &nbsp; ┈┈ 反馈回路</span>
     </div>
     <div class="chr-footer"><span>Content · Compare</span><span>04 / 07</span></div>
   </section>
@@ -1446,8 +1447,8 @@ body.editor-active .editor-canvas-label { display: block; }
   <section class="slide">
     <div class="chr-topbar"><div class="chr-chip">Implementation</div><div class="chr-page">05 · 07</div></div>
     <h2 class="chr-heading">反馈回路 <em>怎么实现</em></h2>
-    <p class="chr-sub" style="font-size:2cqi;margin-bottom:1.5cqi">一个 100 行的 Agent Skill，把「AI 用得顺不顺」自动回写成 vault 修订记录。跑在 nightly cron，每天生成 PR 等人审。</p>
-    <div class="c-codebox v-fill" style="font-size:1.5cqi;line-height:1.8"><span style="color:#7a766c"># skills/wiki-feedback/SKILL.md</span>
+    <p class="chr-sub" style="font-size:4cqi;margin-bottom:1.5cqi">一个 100 行的 Agent Skill，把「AI 用得顺不顺」自动回写成 vault 修订记录。跑在 nightly cron，每天生成 PR 等人审。</p>
+    <div class="c-codebox v-fill" style="font-size:3cqi;line-height:1.8"><span style="color:#7a766c"># skills/wiki-feedback/SKILL.md</span>
 <span style="color:#e8a87c;font-weight:700">name</span>: wiki-feedback
 <span style="color:#e8a87c;font-weight:700">trigger</span>: <span style="color:#b3d1bc">"after every retrieval"</span>
 
@@ -1467,12 +1468,12 @@ body.editor-active .editor-canvas-label { display: block; }
     </div>
     <div class="c-grid-2" style="margin-top:1.5cqi;gap:1.5cqi">
       <div class="c-card-soft">
-        <div class="c-title" style="font-size:2.5cqi">⚡ 轻量集成</div>
-        <div class="c-body" style="font-size:1.8cqi;margin-top:0.8cqi">100 行 YAML 配置，零依赖。作为 Claude Code Skill 运行，每次 AI 检索自动触发回调，无需额外基础设施。</div>
+        <div class="c-title" style="font-size:5cqi">⚡ 轻量集成</div>
+        <div class="c-body" style="font-size:3.6cqi;margin-top:0.8cqi">100 行 YAML 配置，零依赖。作为 Claude Code Skill 运行，每次 AI 检索自动触发回调，无需额外基础设施。</div>
       </div>
       <div class="c-card-soft">
-        <div class="c-title" style="font-size:2.5cqi">🔍 人机协作</div>
-        <div class="c-body" style="font-size:1.8cqi;margin-top:0.8cqi">自动生成 PR，人工 review。统计：89% 的自动修订被审批通过，仅 11% 被拒绝或修改后合并。</div>
+        <div class="c-title" style="font-size:5cqi">🔍 人机协作</div>
+        <div class="c-body" style="font-size:3.6cqi;margin-top:0.8cqi">自动生成 PR，人工 review。统计：89% 的自动修订被审批通过，仅 11% 被拒绝或修改后合并。</div>
       </div>
     </div>
     <div class="chr-footer"><span>Content · Code</span><span>05 / 07</span></div>
@@ -1484,7 +1485,7 @@ body.editor-active .editor-canvas-label { display: block; }
     <div class="v-fill" style="display:flex;flex-direction:column;gap:1.5cqi">
       <div style="text-align:center;padding:2cqi 0">
         <div class="c-hero-num" style="color:var(--accent);font-size:20cqi">13</div>
-        <div class="c-hero-num-label" style="font-size:1.8cqi">关键优化项 · 全部落地</div>
+        <div class="c-hero-num-label" style="font-size:3.6cqi">关键优化项 · 全部落地</div>
       </div>
       <div class="c-grid-2">
         <div class="c-kpi" style="text-align:center;padding:2cqi">
@@ -1521,7 +1522,7 @@ body.editor-active .editor-canvas-label { display: block; }
         <div class="chr-kicker">END · blueprint v2</div>
         <h1 class="chr-title" style="font-size:8cqi">谢谢 <em>·</em> thanks</h1>
         <div class="c-divider-accent" style="margin:2cqi auto"></div>
-        <p class="chr-sub" style="font-size:2cqi">图纸、Skill、笔记模板都在<br><b>github.com/lewis/karpathy-wiki-v2</b></p>
+        <p class="chr-sub" style="font-size:4cqi">图纸、Skill、笔记模板都在<br><b>github.com/lewis/karpathy-wiki-v2</b></p>
       </div>
       <div class="c-note">
         <div class="c-note-icon">🚀</div>
@@ -1543,12 +1544,12 @@ body.editor-active .editor-canvas-label { display: block; }
       </div>
       <div class="c-grid-2" style="gap:1.5cqi">
         <div class="c-card-soft">
-          <div class="c-title" style="font-size:2.5cqi">📦 开源资源</div>
-          <div class="c-body" style="font-size:1.8cqi;margin-top:0.8cqi">Skill 模板、反馈回路配置、vault 结构脚手架全部开源。MIT 协议，即插即用。</div>
+          <div class="c-title" style="font-size:5cqi">📦 开源资源</div>
+          <div class="c-body" style="font-size:3.6cqi;margin-top:0.8cqi">Skill 模板、反馈回路配置、vault 结构脚手架全部开源。MIT 协议，即插即用。</div>
         </div>
         <div class="c-card-soft">
-          <div class="c-title" style="font-size:2.5cqi">📬 社区讨论</div>
-          <div class="c-body" style="font-size:1.8cqi;margin-top:0.8cqi">Discord #wiki-feedback 频道，200+ 用户分享自己的反馈回路配置和修订策略。</div>
+          <div class="c-title" style="font-size:5cqi">📬 社区讨论</div>
+          <div class="c-body" style="font-size:3.6cqi;margin-top:0.8cqi">Discord #wiki-feedback 频道，200+ 用户分享自己的反馈回路配置和修订策略。</div>
         </div>
       </div>
     </div>

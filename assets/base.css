@@ -226,12 +226,13 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
 .portrait {
   --h1-size: 7cqi;
   --h2-size: 5.2cqi;
-  --h3-size: 3.7cqi;
-  --h4-size: 2.5cqi;
-  --lede-size: 2.5cqi;
-  --kicker-size: 1.8cqi;
-  --eyebrow-size: 1.6cqi;
-  --body-font-size: 2cqi;
+  --h3-size: 5cqi;
+  --h4-size: 3.5cqi;
+  --lede-size: 4cqi;
+  --kicker-size: 2.5cqi;
+  --eyebrow-size: 2.2cqi;
+  --body-font-size: 4cqi;
+	  --body-size: 4cqi;
   --slide-pad-x: 4.5cqi;
   --slide-pad-y: 4.5cqi;
   --slide-pad-bottom: 3cqi;
@@ -240,34 +241,34 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
   --grid-cols-3: repeat(2, 1fr);
   --grid-cols-4: repeat(2, 1fr);
   --slide-justify: flex-start;
-  --stack-gap-val: 1.8cqi;
+  --stack-gap-val: 2cqi;
 
-  /* Component size boosters for narrow canvas */
-  --c-title-size: 3.5cqi;
-  --c-subtitle-size: 2.5cqi;
-  --c-body-size: 2cqi;
-  --c-small-size: 1.6cqi;
+  /* Component size boosters for narrow canvas — 3:4 "大一倍" 规范 */
+  --c-title-size: 5cqi;
+  --c-subtitle-size: 4cqi;
+  --c-body-size: 4cqi;
+  --c-small-size: 2.6cqi;
   --c-card-padding: 2.5cqi 3cqi;
   --c-row-gap: 2.5cqi;
   --c-grid-gap: 2.5cqi;
   --c-section-padding: 3cqi;
-  --c-section-label-size: 2.3cqi;
+  --c-section-label-size: 3cqi;
   --c-glass-padding: 3cqi;
-  --c-badge-size: 1.5cqi;
+  --c-badge-size: 2.5cqi;
   --c-kpi-value-size: 8cqi;
-  --c-kpi-label-size: 2cqi;
-  --c-quote-size: 3.5cqi;
+  --c-kpi-label-size: 3cqi;
+  --c-quote-size: 5cqi;
   --c-quote-mark-size: 8cqi;
   --c-quote-mark-top: -1.5cqi;
   --c-step-num-size: 5cqi;
-  --c-step-num-font: 2.2cqi;
-  --c-step-title-size: 2.8cqi;
+  --c-step-num-font: 3.5cqi;
+  --c-step-title-size: 4.5cqi;
   --c-step-gap: 2.5cqi;
-  --c-icon-row-title-size: 2.5cqi;
+  --c-icon-row-title-size: 4cqi;
   --c-icon-row-gap: 2.5cqi;
-  --c-codebox-size: 2.2cqi;
+  --c-codebox-size: 3.5cqi;
   --c-codebox-padding: 3cqi 3.5cqi;
-  --c-formula-size: 3cqi;
+  --c-formula-size: 4.5cqi;
   --c-stack-gap: 2.5cqi;
 }
 
