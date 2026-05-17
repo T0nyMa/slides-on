@@ -236,9 +236,9 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
   --eyebrow-size: 2.2cqi;
   --body-font-size: 4cqi;
 	  --body-size: 4cqi;
-  --slide-pad-x: 4.5cqi;
-  --slide-pad-y: 4.5cqi;
-  --slide-pad-bottom: 3cqi;
+  --slide-pad-x: 6cqi;
+  --slide-pad-y: 5cqi;
+  --slide-pad-bottom: 4cqi;
   --card-pad: 2.5cqi 3cqi;
   --grid-cols-2: 1fr;
   --grid-cols-3: repeat(2, 1fr);
