@@ -145,7 +145,7 @@
 }
 .c-step-content { flex: 1; min-width: 0; }
 .c-step-title { font-size: var(--c-step-title-size, 1.6cqi); font-weight: 800; color: var(--text-1); line-height: 1.3; margin-bottom: 0.3cqi; }
-.c-step-body { font-size: 1.1cqi; line-height: 1.5; color: var(--text-2); }
+.c-step-body { font-size: var(--c-step-body-size, 1.1cqi); line-height: 1.5; color: var(--text-2); }
 
 /* Connector between steps */
 .c-connector { display: flex; align-items: center; gap: 0.8cqi; padding: 0.4cqi 0 0.4cqi 1.5cqi; }
@@ -288,8 +288,8 @@
 }
 .c-note-icon { flex: none; font-size: 2cqi; line-height: 1; }
 .c-note-content { flex: 1; min-width: 0; }
-.c-note-title { font-size: 1.3cqi; font-weight: 800; color: var(--accent); margin-bottom: 0.3cqi; }
-.c-note-body { font-size: 1cqi; line-height: 1.5; color: var(--text-2); }
+.c-note-title { font-size: var(--c-note-title-size, 1.3cqi); font-weight: 800; color: var(--accent); margin-bottom: 0.3cqi; }
+.c-note-body { font-size: var(--c-note-body-size, 1cqi); line-height: 1.5; color: var(--text-2); }
 
 /* Example box */
 .c-example {

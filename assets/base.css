@@ -81,6 +81,9 @@
   --c-step-num-font: 1.3cqi;
   --c-step-title-size: 1.6cqi;
   --c-step-gap: 1.5cqi;
+  --c-step-body-size: 1.1cqi;
+  --c-note-title-size: 1.3cqi;
+  --c-note-body-size: 1cqi;
   --c-icon-row-title-size: 1.5cqi;
   --c-icon-row-gap: 1.5cqi;
   --c-codebox-size: 1.4cqi;
@@ -264,6 +267,9 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
   --c-step-num-font: 3.5cqi;
   --c-step-title-size: 4.5cqi;
   --c-step-gap: 2.5cqi;
+	  --c-step-body-size: 3cqi;
+	  --c-note-title-size: 3.5cqi;
+	  --c-note-body-size: 3cqi;
   --c-icon-row-title-size: 4cqi;
   --c-icon-row-gap: 2.5cqi;
   --c-codebox-size: 3.5cqi;
