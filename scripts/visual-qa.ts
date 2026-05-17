@@ -1370,6 +1370,49 @@ async function checkFontContainerRatio(page: any, slideIndex: number): Promise<I
   }, { idx: slideIndex, ratios: FONT_CONTAINER_RATIOS });
 }
 
+// ─── Group 18: Inline row wrap detection ──────────────────────────────────
+
+async function checkInlineRowWrap(page: any, slideIndex: number): Promise<Issue[]> {
+  return page.evaluate((args: { idx: number }) => {
+    const active = document.querySelector(".deck > .slide.is-active");
+    if (!active) return [];
+
+    const issues: any[] = [];
+    // Components that should stay single-line: badge-rows, icon-rows, etc.
+    const rowSelectors = [".c-badge-row", ".c-icon-row"];
+
+    for (const sel of rowSelectors) {
+      for (const row of active.querySelectorAll(sel)) {
+        const children = row.children;
+        if (children.length < 2) continue;
+
+        const firstTop = children[0].getBoundingClientRect().top;
+        let wrapped = false;
+
+        for (let i = 1; i < children.length; i++) {
+          const childTop = children[i].getBoundingClientRect().top;
+          if (Math.abs(childTop - firstTop) > 2) {
+            wrapped = true;
+            break;
+          }
+        }
+
+        if (wrapped) {
+          issues.push({
+            group: "inline-row-wrap",
+            severity: "WARN",
+            slide: args.idx + 1,
+            element: sel,
+            message: `${sel} 内容换行（${children.length} 项），建议缩小字号、缩短文字或使用 nowrap`,
+          });
+        }
+      }
+    }
+
+    return issues;
+  }, { idx: slideIndex });
+}
+
 // ─── Group 14: CSS loading integrity ───────────────────────────────────────
 
 async function checkCSSLoadingIntegrity(page: any): Promise<Issue[]> {
@@ -1569,7 +1612,7 @@ async function main(): Promise<void> {
     await activateSlide(page, i);
 
     const [overflow, occlusion, whitespace, spacing, contrast, density,
-           chromeBoundary, canvasFill, fontUnit, gridCollapse, chromeZ, fontCR] = await Promise.all([
+           chromeBoundary, canvasFill, fontUnit, gridCollapse, chromeZ, fontCR, rowWrap] = await Promise.all([
       checkTextOverflow(page, i),
       checkOcclusion(page, i),
       checkWhitespace(page, i, profile),
@@ -1582,10 +1625,11 @@ async function main(): Promise<void> {
       checkGridCollapse(page, i, profile),
       checkChromeZIndex(page, i),
       checkFontContainerRatio(page, i),
+      checkInlineRowWrap(page, i),
     ]);
 
     allIssues.push(...overflow, ...occlusion, ...whitespace, ...spacing, ...contrast, ...density,
-      ...chromeBoundary, ...canvasFill, ...fontUnit, ...gridCollapse, ...chromeZ, ...fontCR);
+      ...chromeBoundary, ...canvasFill, ...fontUnit, ...gridCollapse, ...chromeZ, ...fontCR, ...rowWrap);
 
     // Collect font records for cross-slide analysis
     const fonts = await collectFontSizes(page, i);
