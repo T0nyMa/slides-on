@@ -26,7 +26,8 @@ export type SlideType =
   | "bullets"
   | "kpi"
   | "table"
-  | "html";
+  | "html"
+  | "layout";
 
 export interface CardItem {
   num?: string;
@@ -83,6 +84,7 @@ export interface SlideData {
   bullets?: BulletItem[];
   kpis?: KpiItem[];
   badges?: string[];
+  slots?: Record<string, string>;
   html?: string;
   // Table type
   tableColumns?: TableColumn[];
@@ -124,4 +126,36 @@ export interface DesignTemplate {
   stepHTML(step: StepItem): string;
   codeHTML(code: string): string;
   quoteHTML(quote: string, attr?: string): string;
+}
+
+// ─── Design Manifest (replaces DesignTemplate) ──────────────────────────
+
+export interface DesignManifest {
+  name: string;
+  css: string | null;
+  classes: {
+    title: string;
+    subtitle: string;
+    kicker: string;
+    body: string;
+    titleTag: string;
+  };
+  chrome: {
+    topbar: "standard" | "dot-badge" | "terminal" | null;
+    footer: boolean;
+    footerTag: "span" | "div";
+    divider: boolean;
+    decorations: string[];
+    pageFormat: "dot" | "slash";
+  };
+  variants: {
+    card: "standard" | "editorial" | "terminal" | "handdrawn";
+    step: "standard" | "editorial" | "card-as-step" | "terminal";
+    code: "standard" | "card-wrapped";
+  };
+  qa: {
+    decorativeClasses: string[];
+    chromeSelectors: string[];
+    cardColors: string[];
+  };
 }
