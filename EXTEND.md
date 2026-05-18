@@ -135,7 +135,7 @@ Design CSS 结构：
 }
 ```
 
-详见 `assets/designs/` 中的三个实现（pastel-card.css, white-editorial.css, xhs-post.css）和 `references/content-rules-portrait.md`。
+详见 `assets/designs/` 中的实现（pastel-card.css, white-editorial.css, xhs-post.css, hermes-cyber-terminal.css）和 `scripts/assemble/design-manifests/` 中的 DesignManifest JSON 定义。
 
 ## custom_layouts
 

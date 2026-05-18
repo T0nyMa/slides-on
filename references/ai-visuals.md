@@ -80,6 +80,23 @@ bun scripts/svg-to-png.ts <input.svg>
 </div>
 ```
 
+### 图片嵌入 slides.json（推荐）
+
+AI 生成的 PNG 图片可通过 SlideData 的 `image` 字段直接引用，无需手写 HTML。支持三种模式：
+
+```json
+// Slide 级 — hero 图（封面/章节页大图）
+{ "type": "cover", "title": "...", "image": { "src": "imgs/hero.png", "alt": "..." }, "imageMode": "hero" }
+
+// Slide 级 — 背景图（全页背景）
+{ "type": "quote", "quote": "...", "image": { "src": "imgs/bg.png", "fit": "cover" }, "imageMode": "background" }
+
+// Card/Step/Bullet 级 — 内联图
+{ "type": "steps", "steps": [{ "num": "1", "title": "...", "image": "imgs/step1.png" }] }
+```
+
+图片样式由 DesignManifest 的 `image` variant 自动控制（圆角、阴影、边框），保持与 design 一致。
+
 ## AI 图片生成（Imagine）
 
 ### 提供内容

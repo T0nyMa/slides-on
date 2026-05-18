@@ -4,7 +4,7 @@
  * Replaces designs.ts by switching on manifest.variants.*
  * Each function takes a DesignManifest + data, returns an HTML string.
  */
-import type { DesignManifest, CardItem, StepItem } from "./types";
+import type { DesignManifest, CardItem, StepItem, SlideImage } from "./types";
 
 function p(n: number, total: number): string {
   return `${String(n).padStart(2, "0")} · ${String(total).padStart(2, "0")}`;
@@ -16,32 +16,65 @@ function pageStr(fmt: "dot" | "slash", n: number, total: number): string {
   return fmt === "slash" ? pageDiv(n, total) : p(n, total);
 }
 
+// ─── Image ──────────────────────────────────────────────────────────────
+
+function imageStyle(m: DesignManifest): string {
+  const img = m.image;
+  if (!img) return "";
+  const parts: string[] = [`border-radius:${img.radius}`];
+  if (img.shadow && img.shadow !== "none") parts.push(`box-shadow:${img.shadow}`);
+  if (img.border) parts.push(`border:${img.border}`);
+  return parts.join(";");
+}
+
+function renderImage(m: DesignManifest, image: SlideImage, mode: "hero" | "background"): string {
+  const fit = image.fit || "cover";
+  const alt = image.alt ? ` alt="${image.alt}"` : "";
+  const istyle = imageStyle(m);
+  const imgTag = `<img src="${image.src}"${alt} style="width:100%;height:100%;object-fit:${fit};${istyle}">`;
+
+  if (mode === "background") {
+    return `<div class="c-image-bg">${imgTag}</div>`;
+  }
+  return `<div class="c-image-hero">${imgTag}</div>`;
+}
+
+function renderInlineImage(m: DesignManifest, src: string, alt?: string): string {
+  const istyle = imageStyle(m);
+  const altAttr = alt ? ` alt="${alt}"` : "";
+  return `<div class="c-image-inline"><img src="${src}"${altAttr} style="width:100%;height:100%;object-fit:cover;${istyle}"></div>`;
+}
+
 // ─── Card ───────────────────────────────────────────────────────────────
 
 function renderCard(m: DesignManifest, card: CardItem): string {
   const color = card.color ? ` ${card.color}` : "";
+  const img = card.image ? renderInlineImage(m, card.image) : "";
   switch (m.variants.card) {
     case "editorial":
       return `<div class="c-card${color}">
+        ${img}
         <div class="chr-card-label">${card.num || ""}</div>
         <div class="chr-card-main">${card.title}</div>
         <div class="chr-card-desc">${card.body}</div>
       </div>`;
     case "terminal":
       return `<div class="c-card${color}">
+        ${img}
         <div class="chr-hc-lbl">${card.num || ""}</div>
         <div class="chr-hc-val">${card.title}</div>
         <div class="chr-hc-desc">${card.body}</div>
       </div>`;
     case "handdrawn":
       return `<div class="c-card">
+        ${img}
         <b>${card.num ? card.num + " " : ""}${card.title}</b>
         <p class="dim">${card.body}</p>
       </div>`;
     default: // "standard"
       const num = card.num ? `<div class="chr-card-num">${card.num}</div>\n        ` : "";
       return `<div class="c-card${color}">
-        ${num}<h4>${card.title}</h4>
+        ${img}${num}<h4>${card.title}</h4>
         <p>${card.body}</p>
       </div>`;
   }
@@ -50,22 +83,26 @@ function renderCard(m: DesignManifest, card: CardItem): string {
 // ─── Step ───────────────────────────────────────────────────────────────
 
 function renderStep(m: DesignManifest, step: StepItem): string {
+  const img = step.image ? renderInlineImage(m, step.image) : "";
   switch (m.variants.step) {
     case "editorial":
       return `<div class="c-step">
         <div class="c-step-num">${step.num}</div>
+        ${img}
         <div class="c-step-content">
           <div class="c-step-title">${step.title}</div>
         </div>
       </div>`;
     case "card-as-step":
       return `<div class="c-card">
+        ${img}
         <b>${step.num}. ${step.title}</b>
         ${step.body ? `<p class="dim">${step.body}</p>` : ""}
       </div>`;
     case "terminal":
       return `<div class="c-step">
         <div class="chr-hc-val">${step.num}</div>
+        ${img}
         <div class="c-step-content">
           <div class="c-step-title">${step.title}</div>
           ${step.body ? `<div class="c-step-body">${step.body}</div>` : ""}
@@ -74,6 +111,7 @@ function renderStep(m: DesignManifest, step: StepItem): string {
     default: // "standard"
       return `<div class="c-step">
         <div class="c-step-num">${step.num}</div>
+        ${img}
         <div class="c-step-content">
           <div class="c-step-title">${step.title}</div>
           ${step.body ? `<div class="c-step-body">${step.body}</div>` : ""}
@@ -133,4 +171,4 @@ function renderDivider(m: DesignManifest): string {
   return m.chrome.divider ? `<div class="chr-divider"></div>` : "";
 }
 
-export { renderCard, renderStep, renderCode, renderQuote, renderTopbar, renderFooter, renderDecorations, renderDivider };
+export { renderCard, renderStep, renderCode, renderQuote, renderTopbar, renderFooter, renderDecorations, renderDivider, renderImage, renderInlineImage };

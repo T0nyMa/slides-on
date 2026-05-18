@@ -29,23 +29,32 @@ export type SlideType =
   | "html"
   | "layout";
 
+export interface SlideImage {
+  src: string;
+  alt?: string;
+  fit?: "cover" | "contain";
+}
+
 export interface CardItem {
   num?: string;
   title: string;
   body: string;
   color?: string;
+  image?: string;
 }
 
 export interface StepItem {
   num: string;
   title: string;
   body?: string;
+  image?: string;
 }
 
 export interface BulletItem {
   icon: string;
   title: string;
   body: string;
+  image?: string;
 }
 
 export interface KpiItem {
@@ -90,6 +99,9 @@ export interface SlideData {
   // Table type
   tableColumns?: TableColumn[];
   tableRows?: string[][];
+  // Image
+  image?: SlideImage;
+  imageMode?: "hero" | "background";
   // Design-specific overrides
   designOverrides?: Record<string, unknown>;
 }
@@ -128,6 +140,11 @@ export interface DesignManifest {
     card: "standard" | "editorial" | "terminal" | "handdrawn";
     step: "standard" | "editorial" | "card-as-step" | "terminal";
     code: "standard" | "card-wrapped";
+  };
+  image?: {
+    radius: string;
+    shadow?: string;
+    border?: string;
   };
   qa: {
     decorativeClasses: string[];

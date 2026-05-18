@@ -271,13 +271,15 @@ QA 通过后，**直接在浏览器打开 `index.html`** 即可微调。页面�
       "kicker": "标签文字",
       "chip": "01",
       "chipColor": "mint",
-      "blobs": ["b1", "b2"]
+      "blobs": ["b1", "b2"],
+      "image": { "src": "imgs/hero.png", "alt": "封面插图" },
+      "imageMode": "hero"
     },
     {
       "type": "cards-2x2",
       "title": "核心观点",
       "cards": [
-        { "num": "01", "title": "卡片标题", "body": "卡片内容说明", "color": "peach" },
+        { "num": "01", "title": "卡片标题", "body": "卡片内容说明", "color": "peach", "image": "imgs/card1.png" },
         { "num": "02", "title": "卡片标题", "body": "卡片内容说明", "color": "mint" }
       ]
     },
@@ -285,7 +287,7 @@ QA 通过后，**直接在浏览器打开 `index.html`** 即可微调。页面�
       "type": "steps",
       "title": "实施路径",
       "steps": [
-        { "num": "1", "title": "第一步", "body": "具体描述" },
+        { "num": "1", "title": "第一步", "body": "具体描述", "image": "imgs/step1.png" },
         { "num": "2", "title": "第二步", "body": "具体描述" }
       ]
     },
@@ -323,14 +325,28 @@ QA 通过后，**直接在浏览器打开 `index.html`** 即可微调。页面�
   }
 }
 ```
-Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps` | `code` | `thanks` | `bullets` | `kpi` | `table` | `html`
+Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps` | `code` | `thanks` | `bullets` | `kpi` | `table` | `html` | `layout`
+
+**图片支持**：SlideData 原生支持图片，无需 `type: "html"` 手写 `<img>`：
+
+| 层级 | 字段 | 说明 |
+|------|------|------|
+| Slide 级 | `image` + `imageMode: "hero"` | 封面/章节页大图，占 40-55% 内容区，在标题与副标题之间 |
+| Slide 级 | `image` + `imageMode: "background"` | 全页背景图，绝对定位在内容后面 |
+| Card 内 | `card.image` | 渲染在卡片标题上方，Design 感知样式（圆角/阴影/边框） |
+| Step 内 | `step.image` | 渲染在步骤号和内容之间 |
+| Bullet 内 | `bullet.image` | 替代文本 icon，渲染为图片 |
+
+`SlideImage` 类型：`{ src: string; alt?: string; fit?: "cover" | "contain" }`。各 Design 的 `image` variant 控制图片圆角、阴影、边框（如 pastel-card 大圆角 + 阴影，hermes-cyber-terminal 无圆角 + 终端边框）。
 
 **关键文件**：
 - `scripts/validate-slides.ts` — slides.json 质量验证（Step 3 自动检查）
 - `scripts/assemble-deck.ts` — HTML 组装入口（JSON → index.html）
 - `scripts/assemble/types.ts` — SlideData、DeckConfig 类型定义
-- `scripts/assemble/designs.ts` — Design 模板注册表（per-design 渲染函数）
-- `scripts/assemble/slides.ts` — 10 个渲染函数（覆盖 11 种 slide 类型）
+- `scripts/assemble/design-manifests/` — DesignManifest JSON 定义（5 个：base, pastel-card, white-editorial, xhs-post, hermes-cyber-terminal）
+- `scripts/assemble/manifest-loader.ts` — DesignManifest 加载与校验
+- `scripts/assemble/design-renderer.ts` — 泛型 variant 渲染器（card/step/code/quote/chrome/image）
+- `scripts/assemble/slides.ts` — 12 个渲染函数（覆盖 13 种 slide 类型）
 - `scripts/assemble/skeleton.ts` — Deck HTML 骨架生成（所有 CSS/JS 内联为自包含单文件）
 - `scripts/visual-qa.ts` — 统一视觉质量引擎（Playwright 18 项检测，dual profile）
 - `scripts/qa.ts` — 统一 QA CLI（--plan / --check / --regress / --baseline）

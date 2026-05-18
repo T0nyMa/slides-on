@@ -4,5 +4,6 @@
   "classes": { "title": "chr-title", "subtitle": "chr-sub", "kicker": "chr-kicker", "body": "chr-sub", "titleTag": "h1" },
   "chrome": { "topbar": "standard", "footer": true, "footerTag": "span", "divider": false, "decorations": ["chr-topline"], "pageFormat": "slash" },
   "variants": { "card": "editorial", "step": "editorial", "code": "standard" },
+  "image": { "radius": "0", "shadow": "none" },
   "qa": { "decorativeClasses": ["chr-topline"], "chromeSelectors": [], "cardColors": ["purple", "pink", "blue", "green", "orange"] }
 }
