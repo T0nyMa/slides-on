@@ -12,7 +12,7 @@
 
 import * as fs from "fs";
 import * as path from "path";
-import { DESIGN_TEMPLATES } from "./assemble/designs";
+import { getKnownDesigns, loadAllManifests } from "./assemble/manifest-loader";
 
 // ─── Types ────────────────────────────────────────────────────────────────
 
@@ -45,17 +45,22 @@ interface ValidationReport {
 
 // ─── Design Capability Matrix ─────────────────────────────────────────────
 
-const KNOWN_DESIGNS = Object.keys(DESIGN_TEMPLATES);
+const KNOWN_DESIGNS = getKnownDesigns();
 
 const VALID_TYPOGRAPHIES = ["geometric", "editorial", "humanist", "handwritten", "technical"];
 const VALID_TEXTURES = ["clean", "paper", "grid", "organic", "pixel"];
 const VALID_DENSITIES = ["minimal", "balanced", "dense"];
 
-const DESIGN_COLORS: Record<string, string[]> = {
-  "pastel-card": ["peach", "mint", "sky", "lilac", "lemon", "rose"],
-  "white-editorial": ["purple", "pink", "blue", "green", "orange"],
-  "xhs-post": [], // no card color variants
-};
+const DESIGN_COLORS: Record<string, string[]> = {};
+
+function getDesignColors(): Record<string, string[]> {
+  if (Object.keys(DESIGN_COLORS).length === 0) {
+    for (const m of loadAllManifests()) {
+      DESIGN_COLORS[m.name] = m.qa.cardColors;
+    }
+  }
+  return DESIGN_COLORS;
+}
 
 const WARN_COLORS = new Set(["peach", "rose", "pink", "orange"]);
 const ACCENT_COLORS = new Set(["mint", "green", "blue", "purple", "sky", "lilac", "lemon"]);
@@ -501,7 +506,7 @@ function checkDesignCompat(slide: any, design: string): CheckResult[] {
 
   // Validate card colors against design
   if (slide.cards && typeof design === "string" && design !== "xhs-post") {
-    const validColors = DESIGN_COLORS[design] || [];
+    const validColors = getDesignColors()[design] || [];
     for (let i = 0; i < slide.cards.length; i++) {
       const color = slide.cards[i].color;
       if (color && !validColors.includes(color)) {

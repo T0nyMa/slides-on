@@ -103,32 +103,7 @@ export interface DesignConfig {
   density?: string;      // "minimal" | "balanced" | "dense"
 }
 
-// ─── Design Template ──────────────────────────────────────────────────
-
-/** Per-design rendering functions for slide sub-elements */
-export interface DesignTemplate {
-  // CSS class mapping
-  titleTag: string;        // "h1" or "h2", which HTML tag for the main title
-  titleClass: string;      // "chr-title" or "chr-heading"
-  subtitleClass: string;   // "chr-sub" or base class
-  kickerClass: string;     // "chr-kicker"
-  bodyClass: string;       // for general body text
-
-  // Chrome generators — return HTML string
-  topbarHTML(chip: string, chipColor: string, page: number, total: number): string;
-  footerHTML(left: string, right: string): string;
-  blobHTML(blobs: string[]): string;
-  dividerHTML(): string;
-
-  // Content generators
-  cardHTML(card: CardItem): string;
-  cardNumHTML(num: string): string;
-  stepHTML(step: StepItem): string;
-  codeHTML(code: string): string;
-  quoteHTML(quote: string, attr?: string): string;
-}
-
-// ─── Design Manifest (replaces DesignTemplate) ──────────────────────────
+// ─── Design Manifest ────────────────────────────────────────────────────
 
 export interface DesignManifest {
   name: string;
