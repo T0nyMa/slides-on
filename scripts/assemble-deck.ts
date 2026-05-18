@@ -14,7 +14,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import type { DeckConfig, SlideData, DesignConfig } from "./assemble/types";
-import { getDesignTemplate } from "./assemble/designs";
+import { loadManifest } from "./assemble/manifest-loader";
 import { renderSlide } from "./assemble/slides";
 import { renderDeck } from "./assemble/skeleton";
 
@@ -116,12 +116,12 @@ function main(): void {
     if (!slides.length) throw new Error("No slides in input");
 
     const designName = typeof config.design === "string" ? config.design : (config.design as DesignConfig).design || "base";
-    const design = getDesignTemplate(designName);
+    const manifest = loadManifest(designName);
     const total = slides.length;
 
     // Render each slide
     const slidesHTML = slides.map((s, i) => {
-      return renderSlide(design, s, { page: i + 1, total, canvas: config.canvas as "16:9" | "3:4" });
+      return renderSlide(manifest, s, { page: i + 1, total, canvas: config.canvas as "16:9" | "3:4" });
     });
 
     // Wrap in deck skeleton (inline style.css if exists in output dir)

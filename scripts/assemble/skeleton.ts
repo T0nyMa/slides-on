@@ -8,16 +8,11 @@
 import * as fs from "fs";
 import * as path from "path";
 import type { DeckConfig, DesignConfig } from "./types";
+import { getDesignBodyClass } from "./manifest-loader";
 
 const ROOT = path.resolve(import.meta.dir, "../..");
 const ASSETS = path.join(ROOT, "assets");
 
-const DESIGN_BODY_CLASS: Record<string, string> = {
-  "pastel-card": "d-pastel-card",
-  "white-editorial": "d-white-editorial",
-  "xhs-post": "d-xhs-post",
-  "hermes-cyber-terminal": "d-hermes-cyber-terminal",
-};
 
 const VALID_TYPOGRAPHY = ["geometric", "editorial", "humanist", "handwritten", "technical"];
 const VALID_TEXTURE = ["clean", "paper", "grid", "organic", "pixel"];
@@ -104,11 +99,11 @@ function buildInlineJS(): string {
 
 function getBodyClass(design: string | DesignConfig): string {
   if (typeof design === "string") {
-    return DESIGN_BODY_CLASS[design] || `d-${design}`;
+    return getDesignBodyClass(design);
   }
   const d = design as DesignConfig;
   if (d.design) {
-    return DESIGN_BODY_CLASS[d.design] || `d-${d.design}`;
+    return getDesignBodyClass(d.design);
   }
   return "d-composed";
 }
