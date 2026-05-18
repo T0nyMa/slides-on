@@ -91,7 +91,8 @@ async function verifyDeck(deck: string): Promise<DiffResult[]> {
   console.log(`\n📸 ${deck}`);
 
   // Determine viewport
-  const isPortrait = deck.includes("xhs");
+  const htmlContent = fs.readFileSync(path.join(ROOT, "templates", "full-decks", deck, "index.html"), "utf-8");
+  const isPortrait = /class="[^"]*portrait/.test(htmlContent) || /class='[^']*portrait/.test(htmlContent);
   const viewport = isPortrait
     ? { width: 810, height: 1080 }
     : { width: 1920, height: 1080 };

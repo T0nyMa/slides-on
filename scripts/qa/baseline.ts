@@ -17,8 +17,7 @@
 import { chromium } from "playwright";
 import * as fs from "node:fs";
 import * as path from "node:path";
-
-const ROOT = path.resolve(import.meta.dir, "../..");
+import { getAllDecks, isPortraitDeck, getViewport, ROOT } from "./utils.ts";
 const BASELINE_DIR = path.join(ROOT, ".qa", "baselines");
 const REPORT_DIR = path.join(ROOT, ".qa", "reports");
 
@@ -28,16 +27,6 @@ const REPORT_DIR = path.join(ROOT, ".qa", "reports");
 
 function getDeckHtmlPath(deckName: string): string {
   return path.join(ROOT, "templates", "full-decks", deckName, "index.html");
-}
-
-function isPortraitDeck(html: string): boolean {
-  return /class="[^"]*portrait/.test(html) || /class='[^']*portrait/.test(html);
-}
-
-function getViewport(portrait: boolean) {
-  return portrait
-    ? { width: 810, height: 1080 }
-    : { width: 1920, height: 1080 };
 }
 
 // ---------------------------------------------------------------------------
@@ -206,7 +195,7 @@ async function main() {
   const args = process.argv.slice(2);
   const cmd = args[0];
 
-  if (cmd === "init") {
+  if (cmd === "init" || cmd === "update") {
     const deckIdx = args.indexOf("--deck");
 
     if (deckIdx >= 0) {
@@ -216,18 +205,7 @@ async function main() {
       console.log(`  ${files.length} slides saved`);
     } else {
       // Init all decks
-      const deckDir = path.join(ROOT, "templates", "full-decks");
-      const decks = fs.readdirSync(deckDir).filter((d) => {
-        const p = path.join(deckDir, d);
-        try {
-          return (
-            fs.statSync(p).isDirectory() &&
-            fs.existsSync(path.join(p, "index.html"))
-          );
-        } catch {
-          return false;
-        }
-      });
+      const decks = getAllDecks();
 
       console.log(`Initializing baselines for ${decks.length} decks...`);
       for (const deck of decks) {
@@ -297,8 +275,9 @@ async function main() {
     }
   } else {
     console.log(`Usage:
-  bun scripts/qa/baseline.ts init [--deck <name>]   # Capture baselines
-  bun scripts/qa/baseline.ts compare --deck <name>  # Regression compare`);
+  bun scripts/qa/baseline.ts init [--deck <name>]     # Capture baselines
+  bun scripts/qa/baseline.ts update [--deck <name>]   # Re-capture (alias for init)
+  bun scripts/qa/baseline.ts compare --deck <name>    # Regression compare`);
     process.exit(1);
   }
 }

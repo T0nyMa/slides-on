@@ -570,7 +570,7 @@ bun scripts/qa.ts --baseline init     # 建立截图基线
 bash scripts/qa.sh --all              # 兼容旧入口
 ```
 
-### 检测组（17 组）
+### 检测组（18 组）
 
 | # | 检测组 | Portrait (3:4) | Landscape (16:9) |
 |---|--------|---------------|------------------|

@@ -11,6 +11,7 @@
 
 import * as path from "node:path";
 import * as fs from "node:fs";
+import { getAllDecks } from "./qa/utils.ts";
 
 const ROOT = path.resolve(import.meta.dir, "..");
 
@@ -36,17 +37,6 @@ function parseArgs(args: string[]): CliArgs {
     }
   }
   return opts;
-}
-
-function getAllDecks(): string[] {
-  const deckDir = path.join(ROOT, "templates", "full-decks");
-  try {
-    return fs.readdirSync(deckDir).filter(d => {
-      const p = path.join(deckDir, d);
-      try { return fs.statSync(p).isDirectory() && fs.existsSync(path.join(p, "index.html")); }
-      catch { return false; }
-    });
-  } catch { return []; }
 }
 
 async function runCheck(decks: string[]): Promise<{ passed: number; failed: number }> {
@@ -159,21 +149,23 @@ Detection: 18 groups (text-overflow, occlusion, whitespace, spacing, contrast,
     const landscapeDecks = decks.filter(d => !portraitDecks.includes(d));
     const sample = [...portraitDecks.slice(0, 3), ...landscapeDecks.slice(0, 2)];
 
+    let l2Failures = 0;
     for (const deck of sample) {
       console.log(`\n  Comparing: ${deck}`);
       const proc = Bun.spawnSync(["bun", path.join(ROOT, "scripts/qa/baseline.ts"), "compare", "--deck", deck]);
       console.log(new TextDecoder().decode(proc.stdout));
       if (proc.exitCode !== 0) {
         console.log(`  ⚠️  ${deck}: regression detected`);
+        l2Failures++;
       }
     }
 
-    process.exit(failed > 0 ? 1 : 0);
+    process.exit((failed + l2Failures) > 0 ? 1 : 0);
   }
 
   // --baseline: baseline management
   if (cli.baseline) {
-    const args = ["init"];
+    const args = [cli.baseline];
     if (cli.deck) args.push("--deck", cli.deck);
     const proc = Bun.spawnSync(["bun", path.join(ROOT, "scripts/qa/baseline.ts"), ...args], {
       stdio: ["inherit", "inherit", "inherit"],

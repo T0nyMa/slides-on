@@ -18,6 +18,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { getAllDecks } from "./utils.ts";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -154,29 +155,6 @@ const RULES: ChangeRule[] = [
  * Enumerate all deck directories under templates/full-decks/ that contain
  * an index.html file.
  */
-function getAllDecks(): string[] {
-  const decks: string[] = [];
-  try {
-    const entries = fs.readdirSync(FULL_DECKS_DIR);
-    for (const entry of entries) {
-      const deckPath = path.join(FULL_DECKS_DIR, entry);
-      try {
-        if (
-          fs.statSync(deckPath).isDirectory() &&
-          fs.existsSync(path.join(deckPath, "index.html"))
-        ) {
-          decks.push(entry);
-        }
-      } catch {
-        // Skip entries that can't be stat'd (permissions, etc.)
-      }
-    }
-  } catch {
-    // FULL_DECKS_DIR does not exist or is unreadable
-  }
-  return decks;
-}
-
 // ---------------------------------------------------------------------------
 // Core analysis
 // ---------------------------------------------------------------------------

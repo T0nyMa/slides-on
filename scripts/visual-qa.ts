@@ -342,7 +342,7 @@ async function checkOcclusion(page: any, slideIndex: number): Promise<Issue[]> {
       if (dirs.length > 0) {
         const isChrome = el.isChrome;
         issues.push({ group: "occlusion",
-          severity: isChrome ? "BLOCKER" : "BLOCKER", slide: args.idx + 1,
+          severity: isChrome ? "BLOCKER" : "WARN", slide: args.idx + 1,
           element: el.label,
           message: `${isChrome ? "Chrome" : "内容"}元素溢出 slide 边界（${dirs.join("，")}），可能被 overflow:hidden 裁切` });
       }
@@ -1280,32 +1280,15 @@ async function checkChromeZIndex(page: any, slideIndex: number): Promise<Issue[]
 
     for (const el of active.querySelectorAll("[class*='chr-']")) {
       const style = window.getComputedStyle(el);
-      if (style.position === "absolute" || style.position === "fixed") {
-        const parent = el.parentElement;
-        if (parent && parent.classList.contains("slide")) {
-          // Check if a global .slide > * { position: relative } rule
-          // is overriding the chr-* position
-          for (const sibling of parent.children) {
-            if (sibling === el) continue;
-            const sibCls = sibling.getAttribute("class") || "";
-            if (!sibCls.includes("chr-")) {
-              const sibStyle = window.getComputedStyle(sibling);
-              if (sibStyle.position === "relative") {
-                // Verify chr-* still has absolute (shouldn't be overridden)
-                if (style.position !== "absolute" && style.position !== "fixed") {
-                  issues.push({
-                    group: "chrome-z-index",
-                    severity: "BLOCKER",
-                    slide: args.idx + 1,
-                    element: el.getAttribute("class")?.split(" ")[0] || "chr-*",
-                    message: `Chrome 元素 position 被覆盖为 ${style.position}（应为 absolute），检查全局 CSS 规则`,
-                  });
-                }
-              }
-              break; // only need to check one non-chrome sibling
-            }
-          }
-        }
+      // chr-* elements must be absolute or fixed positioned
+      if (style.position !== "absolute" && style.position !== "fixed") {
+        issues.push({
+          group: "chrome-z-index",
+          severity: "WARN",
+          slide: args.idx + 1,
+          element: el.getAttribute("class")?.split(" ")[0] || "chr-*",
+          message: `Chrome 元素 position 为 ${style.position}（应为 absolute 或 fixed），检查全局 CSS 规则`,
+        });
       }
     }
 
