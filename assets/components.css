@@ -216,7 +216,7 @@
   font-family: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
   font-size: var(--c-codebox-size, 1.4cqi); line-height: 1.75; overflow: auto;
 }
-.c-codebox .cm { color: #6b6a62; font-style: italic; }  /* comment */
+.c-codebox .cm { color: #909088; font-style: italic; }  /* comment — lightened for 4.5:1 on #1a1a1a */
 .c-codebox .kw { color: #e8a87c; font-weight: 700; }     /* keyword */
 .c-codebox .st { color: #a8c292; }                       /* string */
 .c-codebox .fn { color: #c9a0dc; }                       /* function */

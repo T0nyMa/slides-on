@@ -1,5 +1,5 @@
 /* white-editorial — 白底杂志风 Design CSS */
-/* Usage: <body class="d-white-editorial portrait"> */
+/* Usage: body.d-white-editorial.portrait activates 3:4 canvas */
 
 .d-white-editorial {
   /* ── Token overrides ── */

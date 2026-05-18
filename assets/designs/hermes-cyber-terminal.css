@@ -166,29 +166,29 @@
   font-family: 'JetBrains Mono', monospace; font-size: 0.73cqi; line-height: 1.85;
   color: #d8d4c8; box-shadow: inset 0 0 3.13cqi rgba(126,211,164,.04);
 }
-.d-hermes-cyber-terminal .chr-codebox .cm { color: #5a6068; }
+.d-hermes-cyber-terminal .chr-codebox .cm { color: #809098; } /* lightened for 4.5:1 on #0c0d12 */
 .d-hermes-cyber-terminal .chr-codebox .kw { color: var(--accent-3); }
 .d-hermes-cyber-terminal .chr-codebox .st { color: var(--accent); }
 .d-hermes-cyber-terminal .chr-codebox .fn { color: var(--accent-2); }
 .d-hermes-cyber-terminal .chr-codebox .var { color: var(--hc-rose); }
 .d-hermes-cyber-terminal .chr-codebox .hl {
-  color: #fff; background: rgba(126,211,164,.15); padding: 0 0.21cqi; border-radius: 0.16cqi;
+  color: var(--accent); background: #0c1a14; padding: 0 0.21cqi; border-radius: 0.16cqi;
 }
 
 /* ── Terminal tags ── */
 .d-hermes-cyber-terminal .chr-hc-tag {
   display: inline-block; font-family: 'JetBrains Mono', monospace;
-  font-size: 0.57cqi; padding: 0.16cqi 0.52cqi; border: 1px solid var(--border);
-  border-radius: 0.21cqi; color: var(--accent); background: rgba(126,211,164,.04);
+  font-size: 0.57cqi; padding: 0.16cqi 0.52cqi; border: 1px solid var(--border-strong);
+  border-radius: 0.21cqi; color: var(--accent); background: var(--bg);
   margin: 0.10cqi 0.31cqi 0.10cqi 0; text-transform: uppercase; letter-spacing: .1em;
 }
 .d-hermes-cyber-terminal .chr-hc-tag.amber {
-  color: var(--accent-3); border-color: rgba(233,197,138,.2);
-  background: rgba(233,197,138,.04);
+  color: var(--accent-3); border-color: rgba(233,197,138,.35);
+  background: var(--bg);
 }
 .d-hermes-cyber-terminal .chr-hc-tag.red {
-  color: var(--bad); border-color: rgba(255,107,107,.25);
-  background: rgba(255,107,107,.05);
+  color: var(--bad); border-color: rgba(255,107,107,.35);
+  background: var(--bg);
 }
 
 /* ── Big number ── */

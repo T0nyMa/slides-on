@@ -1,5 +1,5 @@
 /* pastel-card — 柔和马卡龙大色块封面风 Design CSS */
-/* Usage: <body class="d-pastel-card portrait"> */
+/* Usage: body.d-pastel-card.portrait activates 3:4 canvas */
 
 .d-pastel-card {
   /* ── Token overrides ── */

@@ -1,5 +1,5 @@
 /* xhs-post — 小红书手绘涂鸦风 Design CSS */
-/* Usage: <body class="d-xhs-post portrait"> */
+/* Usage: body.d-xhs-post.portrait activates 3:4 canvas */
 
 .d-xhs-post {
   /* ── Token overrides ── */

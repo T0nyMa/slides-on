@@ -142,3 +142,11 @@
 
 .deck .slide > * { position: relative; z-index: 1; }
 .deck .deck-footer { color: var(--text-3); }
+
+/* Fix chrome positioning to match 88px 112px slide padding */
+.deck .chr-topbar {
+  left: 112px; right: 112px; top: 24px;
+}
+.deck .chr-footer {
+  left: 112px; right: 112px; bottom: 24px;
+}
