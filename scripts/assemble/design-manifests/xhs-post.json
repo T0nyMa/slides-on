@@ -1,0 +1,8 @@
+{
+  "name": "xhs-post",
+  "css": "assets/designs/xhs-post.css",
+  "classes": { "title": "h1", "subtitle": "lede", "kicker": "lede", "body": "lede", "titleTag": "h1" },
+  "chrome": { "topbar": "dot-badge", "footer": true, "footerTag": "div", "divider": false, "decorations": [], "pageFormat": "dot" },
+  "variants": { "card": "handdrawn", "step": "card-as-step", "code": "card-wrapped" },
+  "qa": { "decorativeClasses": [], "chromeSelectors": [".chr-page-dot"], "cardColors": [] }
+}

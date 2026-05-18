@@ -1,0 +1,8 @@
+{
+  "name": "hermes-cyber-terminal",
+  "css": "assets/designs/hermes-cyber-terminal.css",
+  "classes": { "title": "chr-title", "subtitle": "chr-sub", "kicker": "chr-hc-prompt", "body": "chr-sub", "titleTag": "h1" },
+  "chrome": { "topbar": "terminal", "footer": true, "footerTag": "span", "divider": false, "decorations": ["chr-hc-grid", "chr-hc-scanlines"], "pageFormat": "dot" },
+  "variants": { "card": "terminal", "step": "terminal", "code": "standard" },
+  "qa": { "decorativeClasses": ["chr-hc-grid", "chr-hc-scanlines", "chr-hc-vignette"], "chromeSelectors": [".chr-hc-tag"], "cardColors": [] }
+}
