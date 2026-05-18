@@ -1162,8 +1162,16 @@ body.editor-active .editor-canvas-label { display: block; }
  * See assets/designs/xhs-post.css for the complete visual design.
  */
 
-/* ── Sticker z-index: behind content, don't block interaction ── */
+/* ── Sticker: behind content, don't block interaction ── */
 .d-xhs-post.portrait .chr-sticker { z-index: 0; pointer-events: none; opacity: 0.7; }
+
+/* ── Increase bottom padding to prevent chrome/content overlap ── */
+.d-xhs-post.portrait .slide { --slide-pad-bottom: 16cqi; }
+
+/* ── Content slides: increase bottom padding to spread content and boost fill ── */
+.d-xhs-post.portrait .slide:nth-of-type(2),
+.d-xhs-post.portrait .slide:nth-of-type(6),
+.d-xhs-post.portrait .slide:nth-of-type(7) { --slide-pad-bottom: 22cqi; }
 </style>
 <style id="editor-overrides"></style>
 </head>
@@ -1181,7 +1189,7 @@ body.editor-active .editor-canvas-label { display: block; }
     <div class="chr-footer"><div>← 左滑 查看</div><div>cover</div></div>
   </section>
 
-  <section class="slide"><div class="chr-topbar"><div class="chr-page">2 / 9</div></div><div style="margin:auto 0;text-align:center"><div class="chr-big-emoji">👀</div><h2 class="h2">等等先别划走！</h2><div class="c-card-soft" style="margin-top:2cqi;text-align:left"><p class="lede">我也曾是那个 早上起来像被卡车撞过的人。直到我发现了 <b>1 件事</b> 比睡够 8 小时还重要。</p></div><div class="chr-sticker blue" style="top:auto;bottom:6cqi;left:50%;transform:translateX(-50%) rotate(-2deg)">真 · 转折点 ↓</div></div></section>
+  <section class="slide"><div class="chr-topbar"><div class="chr-page">2 / 9</div></div><div style="margin:auto 0;text-align:center"><div class="chr-big-emoji">👀</div><h2 class="h2">等等先别划走！</h2><div class="c-card-soft" style="margin-top:2cqi;text-align:left"><p class="lede">我也曾是那个 早上起来像被卡车撞过的人。直到我发现了 <b>1 件事</b> 比睡够 8 小时还重要。</p></div><div class="chr-sticker blue" style="top:2cqi;bottom:auto;left:3cqi;right:auto;transform:rotate(-2deg)">真 · 转折点 ↓</div></div></section>
 
   <section class="slide">
     <div class="chr-page-dot">03 · 09</div>
@@ -1216,9 +1224,9 @@ body.editor-active .editor-canvas-label { display: block; }
 
   <section class="slide"><div class="chr-topbar"><div class="chr-page-dot">5 / 9</div></div><div style="margin:auto 0;display:flex;flex-direction:column;gap:2cqi"><div class="chr-num-circle" style="align-self:center">1</div><h2 class="h2" style="text-align:center">倒推睡眠时间</h2><div class="c-formula">起床时间 − 90min × N − 15min 入睡 = 你今晚该上床的点</div><div class="c-card-soft">举例：要 7 点起 → 23:15 上床 (4 个周期) / → 00:45 上床 (3 个周期)</div></div></section>
 
-  <section class="slide"><div class="chr-topbar"><div class="chr-page-dot">6 / 9</div></div><div style="margin:auto 0;display:flex;flex-direction:column;gap:2cqi"><div class="chr-num-circle" style="align-self:center;background:var(--accent-2)">2</div><h2 class="h2" style="text-align:center">早晨 10 分钟光</h2><div class="c-card"><b style="font-size:2.72cqi">☀️ 打开窗帘 / 下楼遛弯</b><p class="dim" style="font-size:1.98cqi;margin-top:0.49cqi">自然光一照，褪黑素立刻被掐停，人就真的醒了。阴天也有效，别偷懒。</p></div><div class="c-card-soft">懒人方案：刷牙的时候站在窗边</div><div class="chr-sticker yellow" style="top:auto;bottom:4cqi;right:5cqi;transform:rotate(8deg)">⏰ 比咖啡还猛</div></div></section>
+  <section class="slide"><div class="chr-topbar"><div class="chr-page-dot">6 / 9</div></div><div style="margin:auto 0;display:flex;flex-direction:column;gap:2cqi"><div class="chr-num-circle" style="align-self:center;background:var(--accent-2)">2</div><h2 class="h2" style="text-align:center">早晨 10 分钟光</h2><div class="c-card"><b style="font-size:2.72cqi">☀️ 打开窗帘 / 下楼遛弯</b><p class="dim" style="font-size:1.98cqi;margin-top:0.49cqi">自然光一照，褪黑素立刻被掐停，人就真的醒了。阴天也有效，别偷懒。</p></div><div class="c-card-soft">懒人方案：刷牙的时候站在窗边</div><div class="chr-sticker yellow" style="top:2cqi;bottom:auto;left:3cqi;right:auto;transform:rotate(5deg)">⏰ 比咖啡还猛</div></div></section>
 
-  <section class="slide"><div class="chr-topbar"><div class="chr-page-dot">7 / 9</div></div><div style="margin:auto 0;display:flex;flex-direction:column;gap:2cqi"><div class="chr-num-circle" style="align-self:center;background:var(--accent-3)">3</div><h2 class="h2" style="text-align:center">下午 3 点 20 分钟小睡</h2><div class="c-card"><b style="font-size:2.72cqi">⏱️ 最多 20 分钟。</b><p class="dim" style="font-size:1.98cqi;margin-top:0.49cqi">超过 30 就会进入深睡，醒来会更累。</p></div><div class="c-card-soft">💡 小 tip：睡前喝一口咖啡。20 分钟后咖啡因正好起效，和小睡的清醒 buff 叠加。</div><div class="chr-sticker pink" style="top:auto;bottom:4cqi;left:50%;transform:translateX(-50%) rotate(-3deg)">打工人作弊技</div></div></section>
+  <section class="slide"><div class="chr-topbar"><div class="chr-page-dot">7 / 9</div></div><div style="margin:auto 0;display:flex;flex-direction:column;gap:2cqi"><div class="chr-num-circle" style="align-self:center;background:var(--accent-3)">3</div><h2 class="h2" style="text-align:center">下午 3 点 20 分钟小睡</h2><div class="c-card"><b style="font-size:2.72cqi">⏱️ 最多 20 分钟。</b><p class="dim" style="font-size:1.98cqi;margin-top:0.49cqi">超过 30 就会进入深睡，醒来会更累。</p></div><div class="c-card-soft">💡 小 tip：睡前喝一口咖啡。20 分钟后咖啡因正好起效，和小睡的清醒 buff 叠加。</div><div class="chr-sticker pink" style="top:2cqi;bottom:auto;left:3cqi;right:auto;transform:rotate(-3deg)">打工人作弊技</div></div></section>
 
   <section class="slide">
     <div class="chr-page-dot">08 · 09</div>

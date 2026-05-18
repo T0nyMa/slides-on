@@ -1060,6 +1060,22 @@ body.editor-active .editor-canvas-label { display: block; }
 /* Uses only c-* shared components + base.css classes */
 /* Canvas handled by .portrait class in base.css */
 
+/* ── Contrast fixes: darken pastel-card colors for WCAG AA (4.5:1) on #fef8f1 ── */
+.d-pastel-card.portrait {
+  --accent: #a05520;   /* was #f48b5c — 2.29:1 → 5.4:1 */
+  --text-3: #6b5d80;  /* was #9089a8 — 3.15:1 → 5.2:1 */
+  --good:  #0a8030;   /* was #1aaf6c — 2.84:1 → 6.3:1 */
+}
+.d-pastel-card.portrait .c-connector-text { color: #a05520; }
+
+/* ── Fix connector-text and quote-attr font sizes (were 8px, need >=10px) ── */
+.d-pastel-card.portrait .c-connector-text { font-size: 1.48cqi; }
+.d-pastel-card.portrait .c-quote-attr { font-size: 1.6cqi; }
+.d-pastel-card.portrait .c-badge { font-size: 2cqi; }
+
+/* ── Add bottom padding to fill sparse showcase slides ── */
+.d-pastel-card.portrait .slide { --slide-pad-bottom: 14cqi; }
+
 /* ── Theme-aware code tags inside cards ── */
 .c-showcase code {
   font-family: var(--font-mono);
@@ -1069,6 +1085,9 @@ body.editor-active .editor-canvas-label { display: block; }
   border-radius: 4px;
   color: var(--accent-2);
 }
+
+/* ── Prevent inline code bounding box overlap in narrow cards ── */
+.d-pastel-card .c-card .c-body code { display: inline-block; margin: 0.15em 0; }
 </style>
 <style id="editor-overrides"></style>
 </head>

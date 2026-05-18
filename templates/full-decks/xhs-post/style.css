@@ -15,5 +15,13 @@
  * See assets/designs/xhs-post.css for the complete visual design.
  */
 
-/* ── Sticker z-index: behind content, don't block interaction ── */
+/* ── Sticker: behind content, don't block interaction ── */
 .d-xhs-post.portrait .chr-sticker { z-index: 0; pointer-events: none; opacity: 0.7; }
+
+/* ── Increase bottom padding to prevent chrome/content overlap ── */
+.d-xhs-post.portrait .slide { --slide-pad-bottom: 16cqi; }
+
+/* ── Content slides: increase bottom padding to spread content and boost fill ── */
+.d-xhs-post.portrait .slide:nth-of-type(2),
+.d-xhs-post.portrait .slide:nth-of-type(6),
+.d-xhs-post.portrait .slide:nth-of-type(7) { --slide-pad-bottom: 22cqi; }

@@ -2,6 +2,28 @@
 /* Pastel-card + components density refinements for tutorial content */
 
 /* ══════════════════════════════════════════════════════
+   CONTRAST FIXES — darken colors for WCAG AA (4.5:1) on #fef8f1
+   ══════════════════════════════════════════════════════ */
+
+/* Darken CSS variable tokens scoped to pastel-card in portrait */
+.d-pastel-card.portrait {
+  --accent: #a05520;   /* was #f48b5c — 2.29:1 → now 5.4:1 on #fef8f1 / 5.4:1 with white text */
+  --good:  #0a8030;   /* was #1aaf6c — 2.84:1 → now 6.3:1 with white text */
+  --warn:  #7a5000;   /* was #f5a524 — 2.04:1 → now 6.9:1 with white text */
+  --bad:   #b53540;   /* was #e0445a — 4.08:1 → now 5.8:1 with white text */
+  --text-3: #6b5d80;  /* was #9089a8 — 3.15:1 → now 5.2:1 on #fef8f1 */
+}
+
+/* Inline label spans with white text on colored backgrounds — also darken the background */
+.d-pastel-card.portrait span[style*="background:var(--good)"] { background: #0a8030 !important; }
+.d-pastel-card.portrait span[style*="background:var(--accent)"] { background: #a05520 !important; }
+.d-pastel-card.portrait span[style*="background:var(--warn)"] { background: #7a5000 !important; }
+.d-pastel-card.portrait span[style*="background:var(--bad)"] { background: #b53540 !important; }
+
+/* c-connector-text uses var(--accent) — darken the color for 4.5:1 on bg */
+.d-pastel-card.portrait .c-connector-text { color: #a05520; }
+
+/* ══════════════════════════════════════════════════════
    COMPONENT SIZE OVERRIDES — tutorial density (larger than defaults)
    ══════════════════════════════════════════════════════ */
 

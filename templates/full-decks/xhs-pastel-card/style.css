@@ -19,3 +19,6 @@
 /* ── 3:4 portrait: text-3 contrast fix (was #9089a8 on #fef8f1 = 3.15:1) ── */
 .d-pastel-card.portrait { --text-3: #6b5d80; }
 .d-pastel-card.portrait .c-badge { color: var(--text-1); }
+
+/* ── Footer clearance: prevent chr-footer from overlapping content ── */
+.d-pastel-card.portrait { --slide-pad-bottom: 18cqi; }

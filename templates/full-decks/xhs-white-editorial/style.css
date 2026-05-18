@@ -12,3 +12,6 @@
 /* ── 3:4 portrait: text-3 contrast fix ── */
 .d-white-editorial.portrait { --text-3: #5a6070; }
 .d-white-editorial.portrait .c-badge { color: var(--text-1); }
+
+/* ── Footer clearance: prevent chr-footer from overlapping content ── */
+.d-white-editorial.portrait { --slide-pad-bottom: 18cqi; --slide-pad-y: 10cqi; }
