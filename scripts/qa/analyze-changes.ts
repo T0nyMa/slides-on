@@ -145,6 +145,20 @@ const RULES: ChangeRule[] = [
     profiles: [],
     checklist: [],
   },
+  {
+    pattern: /scripts\/assemble\/design-manifests\//,
+    decks: "ALL",
+    risk: "medium",
+    profiles: ["portrait", "landscape"],
+    checklist: ["css-loading-integrity", "chrome-presence", "density"],
+  },
+  {
+    pattern: /scripts\/assemble\/design-renderer\.ts/,
+    decks: "ALL",
+    risk: "high",
+    profiles: ["portrait", "landscape"],
+    checklist: ["density", "whitespace", "canvas-fill", "chrome-content-boundary", "font-container-ratio"],
+  },
 ];
 
 // ---------------------------------------------------------------------------
