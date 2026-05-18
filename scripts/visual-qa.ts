@@ -28,6 +28,7 @@ import { chromium } from "playwright";
 import * as fs from "fs";
 import * as path from "path";
 import { detectCanvas, PROFILES, type CanvasProfile } from "./qa/profiles.js";
+import { buildSelectorRegistry } from "./qa/selectors";
 
 // ─── Types ──────────────────────────────────────────────────────────────
 
@@ -164,30 +165,11 @@ function isPortrait(html: string): boolean {
 
 // ─── Shared constants ───────────────────────────────────────────────────
 
-const DECORATIVE_CLASSES = [
-  "chr-blob", "bg-glow", "bg-grid", "chr-hc-grid",
-  "chr-hc-scanlines", "chr-hc-vignette",
-];
-
-const CHROME_SELECTORS = [
-  ".chr-topbar", ".chr-footer", ".chr-page", ".chr-page-dot",
-  ".chr-chip", ".chr-sticker", ".chr-kicker",
-].join(", ");
-
-const TEXT_SELECTORS = [
-  "h1", "h2", "h3", "h4", "p", "li", "span",
-  ".c-card", ".c-card-soft", ".c-step", ".c-kpi",
-  ".c-note", ".c-quote", ".c-badge",
-  ".chr-title", ".chr-heading", ".chr-sub",
-].join(", ");
-
-const CONTENT_SELECTORS = [
-  "h1", "h2", "h3", "h4", "p", "li", "img", "svg", "pre", "code",
-  ".c-card", ".c-card-soft", ".c-step", ".c-kpi", ".c-row", ".c-grid",
-  ".c-note", ".c-quote", ".c-badge", ".c-badge-row",
-  ".c-stack", ".c-steps", ".c-divider",
-  ".chr-title", ".chr-heading", ".chr-sub",
-].join(", ");
+const registry = buildSelectorRegistry();
+const DECORATIVE_CLASSES = registry.decorative;
+const CHROME_SELECTORS = registry.chrome;
+const TEXT_SELECTORS = registry.text;
+const CONTENT_SELECTORS = registry.content;
 
 // ─── Group 1: Text overflow ─────────────────────────────────────────────
 
