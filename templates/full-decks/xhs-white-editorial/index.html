@@ -340,6 +340,7 @@ h4,.h4{font-size:var(--h4-size);line-height:1.3;font-weight:600;margin:0 0 8px}
 
 /* ================= VERTICAL DISTRIBUTION (3:4 fill strategies) ================= */
 .v-fill       { flex: 1; }
+.v-half       { flex: 1; max-height: 55%; }           /* portrait: grid/row at most half height */
 .v-center     { margin: auto 0; }
 .v-bottom     { margin-top: auto; }
 .v-distribute { display: flex; flex-direction: column; justify-content: space-between; width: 100%; }
@@ -1172,8 +1173,8 @@ body.editor-active .editor-canvas-label { display: block; }
   background: var(--surface); border: 1.5px solid var(--border); color: var(--text-2);
 }
 
-/* ── Slide z-index for chrome children ── */
-.slide > * { position: relative; z-index: 2; }
+/* ── Slide z-index for content children (not chrome) ── */
+.slide > :not([class*="chr-"]) { position: relative; z-index: 2; }
 
 /* Chr-* sizing is handled by design CSS (pastel-card, white-editorial, etc.)
    or by the token system for free-form composition. */
@@ -1229,7 +1230,7 @@ body.editor-active .editor-canvas-label { display: block; }
     <div class="chr-topline"></div>
     <div class="chr-topbar"><div class="chr-chip">越来越多的事会交给 AI</div><div class="chr-page">03 / 08</div></div>
     <h2 class="chr-heading">未来 3 年，这些事都会 <em>自动跑</em></h2>
-    <div class="c-grid-2 v-fill">
+    <div class="c-grid-2 v-half">
             <div class="c-card pink">
         <div class="chr-card-label">内容</div>
         <div class="chr-card-main">写文案 · 写方案 · 写脚本</div>
@@ -1251,6 +1252,7 @@ body.editor-active .editor-canvas-label { display: block; }
         <div class="chr-card-desc">决策支持层彻底向下延伸</div>
       </div>
     </div>
+    
     <div class="chr-footer"><span>未来 3 年，这些事都会 <em>自动跑</em></span><span>content · 2x2</span></div>
   </section>
 
@@ -1258,6 +1260,7 @@ body.editor-active .editor-canvas-label { display: block; }
     <div class="chr-topline"></div>
     <div class="chr-topbar"><div class="chr-chip">为什么会这样</div><div class="chr-page">04 / 08</div></div>
     <h2 class="chr-heading">AI 越强，<em>判断对错</em> 越值钱</h2>
+    
     <div class="c-steps v-distribute">
             <div class="c-step">
         <div class="c-step-num">1</div>
@@ -1291,6 +1294,7 @@ body.editor-active .editor-canvas-label { display: block; }
     <div class="chr-topline"></div>
     <div class="chr-topbar"><div class="chr-chip">一段你今晚就能跑的验收 Skill</div><div class="chr-page">05 / 08</div></div>
     <h2 class="chr-heading">不是写 prompt，是写 <em>验收清单</em></h2>
+    
     <div class="v-fill" style="overflow:auto">
       <pre class="chr-codebox"># skills/ai-acceptance/SKILL.md
 name: ai-acceptance
@@ -1309,7 +1313,8 @@ description: 对 AI 输出进行 4 道关卡验收
     <div class="chr-topline"></div>
     <div class="chr-topbar"><div class="chr-chip">岗位相对价值变化</div><div class="chr-page">06 / 08</div></div>
     <h2 class="chr-heading">越来越 <em>便宜</em>，越来越 <em>贵</em></h2>
-    <div class="c-row v-fill">
+    
+    <div class="c-row v-half">
       
       <div class="c-kpi">
         <div class="c-kpi-value">-65%</div>
@@ -1337,6 +1342,7 @@ description: 对 AI 输出进行 4 道关卡验收
         
       </div>
     </div>
+    
     <div class="chr-footer"><span>越来越 <em>便宜</em>，越来越 <em>贵</em></span><span>content · kpi</span></div>
   </section>
 
@@ -1344,7 +1350,7 @@ description: 对 AI 输出进行 4 道关卡验收
     <div class="chr-topline"></div>
     <div class="chr-topbar"><div class="chr-chip">今晚就可以做的三件事</div><div class="chr-page">07 / 08</div></div>
     <h2 class="chr-heading">别再追工具，开始练 <em>判断力</em></h2>
-    <div class="c-grid-3 v-fill">
+    <div class="c-grid-3 v-half">
             <div class="c-card purple">
         <div class="chr-card-label">Tonight</div>
         <div class="chr-card-main">写一份验收清单</div>
@@ -1361,6 +1367,7 @@ description: 对 AI 输出进行 4 道关卡验收
         <div class="chr-card-desc">60 秒内能撤销，你就敢把手放开</div>
       </div>
     </div>
+    
     <div class="chr-footer"><span>别再追工具，开始练 <em>判断力</em></span><span>content · 3x1</span></div>
   </section>
 

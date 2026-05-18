@@ -43,6 +43,14 @@ function chromeBottom(m: DesignManifest, s: SlideData, ctx: PageContext, right: 
   return renderFooter(m, left.slice(0, 30), right);
 }
 
+function renderBadges(s: SlideData): string {
+  const badges = s.badges || [];
+  if (!badges.length) return "";
+  return `<div class="c-badge-row" style="margin-top:1.5cqi">
+    ${badges.map(b => `<span class="c-badge">${esc(b)}</span>`).join("\n    ")}
+  </div>`;
+}
+
 // ─── Slide Renderers ──────────────────────────────────────────────────
 
 export function renderCover(m: DesignManifest, s: SlideData, ctx: PageContext): string {
@@ -82,9 +90,10 @@ export function renderCards(m: DesignManifest, s: SlideData, ctx: PageContext, c
   return `<section class="slide">
     ${chromeTop(m, s, ctx)}
     <h2 class="${m.classes.title === "chr-title" ? "chr-heading" : m.classes.title}">${s.title || ""}</h2>
-    <div class="${gridClass}${isPortrait ? " v-fill" : ""}">
+    <div class="${gridClass}${isPortrait ? " v-half" : ""}">
       ${cards.map((c) => "      " + renderCard(m, c)).join("\n")}
     </div>
+    ${renderBadges(s)}
     ${chromeBottom(m, s, ctx, `content · ${cols}x${Math.ceil(cards.length / cols)}`)}
   </section>`;
 }
@@ -178,7 +187,7 @@ export function renderKpi(m: DesignManifest, s: SlideData, ctx: PageContext): st
     ${chromeTop(m, s, ctx)}
     <h2 class="${m.classes.title === "chr-title" ? "chr-heading" : m.classes.title}">${s.title || ""}</h2>
     ${s.body ? `<p class="${m.classes.body}">${esc(s.body)}</p>` : ""}
-    <div class="c-row${isPortrait ? " v-fill" : ""}">
+    <div class="c-row${isPortrait ? " v-half" : ""}">
       ${kpis.map((k) => `
       <div class="c-kpi">
         <div class="c-kpi-value">${esc(k.value)}</div>
@@ -186,6 +195,7 @@ export function renderKpi(m: DesignManifest, s: SlideData, ctx: PageContext): st
         ${k.delta ? `<div class="c-kpi-delta ${k.deltaDir || "flat"}">${esc(k.delta)}</div>` : ""}
       </div>`).join("")}
     </div>
+    ${renderBadges(s)}
     ${chromeBottom(m, s, ctx, "content · kpi")}
   </section>`;
 }
