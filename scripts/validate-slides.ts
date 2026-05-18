@@ -62,7 +62,7 @@ const ACCENT_COLORS = new Set(["mint", "green", "blue", "purple", "sky", "lilac"
 
 const VALID_SLIDE_TYPES = [
   "cover", "section", "cards-2x2", "cards-3",
-  "quote", "steps", "code", "thanks", "bullets", "kpi", "html",
+  "quote", "steps", "code", "table", "thanks", "bullets", "kpi", "html",
 ] as const;
 
 const VALID_BLOBS = ["b1", "b2", "b3"];
