@@ -89,8 +89,8 @@
   background: var(--surface); border: 1.5px solid var(--border); color: var(--text-2);
 }
 
-/* ── Slide z-index for chrome children ── */
-.slide > * { position: relative; z-index: 2; }
+/* ── Slide z-index for content children (not chrome) ── */
+.slide > :not([class*="chr-"]) { position: relative; z-index: 2; }
 
 /* Chr-* sizing is handled by design CSS (pastel-card, white-editorial, etc.)
    or by the token system for free-form composition. */

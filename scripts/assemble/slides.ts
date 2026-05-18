@@ -109,6 +109,7 @@ export function renderSteps(m: DesignManifest, s: SlideData, ctx: PageContext): 
   return `<section class="slide">
     ${chromeTop(m, s, ctx)}
     <h2 class="${m.classes.title === "chr-title" ? "chr-heading" : m.classes.title}">${s.title || ""}</h2>
+    ${s.body ? `<p class="${m.classes.body}">${escBody(s.body)}</p>` : ""}
     <div class="c-steps${useDistribute ? " v-distribute" : ""}">
       ${steps.map((st) => "      " + renderStep(m, st)).join("\n")}
     </div>
@@ -121,6 +122,7 @@ export function renderCode(m: DesignManifest, s: SlideData, ctx: PageContext): s
   return `<section class="slide">
     ${chromeTop(m, s, ctx)}
     <h2 class="${m.classes.title === "chr-title" ? "chr-heading" : m.classes.title}">${s.title || ""}</h2>
+    ${s.body ? `<p class="${m.classes.body}">${esc(s.body)}</p>` : ""}
     <div class="${isPortrait ? "v-fill" : ""}" style="overflow:auto">
       ${renderDesignCode(m, s.code || "")}
     </div>
@@ -154,6 +156,7 @@ export function renderBullets(m: DesignManifest, s: SlideData, ctx: PageContext)
   return `<section class="slide">
     ${chromeTop(m, s, ctx)}
     <h2 class="${m.classes.title === "chr-title" ? "chr-heading" : m.classes.title}">${s.title || ""}</h2>
+    ${s.body ? `<p class="${m.classes.body}">${esc(s.body)}</p>` : ""}
     <div class="c-stack${isPortrait ? " v-fill" : ""}">
       ${items.map((item) => `
       <div class="c-icon-row">
@@ -174,6 +177,7 @@ export function renderKpi(m: DesignManifest, s: SlideData, ctx: PageContext): st
   return `<section class="slide">
     ${chromeTop(m, s, ctx)}
     <h2 class="${m.classes.title === "chr-title" ? "chr-heading" : m.classes.title}">${s.title || ""}</h2>
+    ${s.body ? `<p class="${m.classes.body}">${esc(s.body)}</p>` : ""}
     <div class="c-row${isPortrait ? " v-fill" : ""}">
       ${kpis.map((k) => `
       <div class="c-kpi">
@@ -235,6 +239,7 @@ export function renderTable(m: DesignManifest, s: SlideData, ctx: PageContext): 
   return `<section class="slide">
     ${chromeTop(m, s, ctx)}
     ${s.title ? `<h2 class="${headingClass}">${s.title}</h2>` : ""}
+    ${s.body ? `<p class="${m.classes.body}">${esc(s.body)}</p>` : ""}
     <div class="c-table-wrap">
       <table class="c-table c-table-striped"${dataRowsAttr}>
         <thead>${headerRow}</thead>
