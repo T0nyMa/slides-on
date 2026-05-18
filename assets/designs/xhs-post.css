@@ -169,3 +169,12 @@
 .d-xhs-post .chr-hero {
   box-shadow: .74cqi .74cqi 0 var(--text-1);
 }
+
+/* ══════════════════════════════════════════════════════
+   CARD/STEP INTERNALS — migrated from designs.ts inline style
+   ══════════════════════════════════════════════════════ */
+
+.d-xhs-post .c-card b { font-size: 2.72cqi; font-weight: 800; }
+.d-xhs-post .c-card p.dim { font-size: 1.98cqi; margin-top: 0.49cqi; }
+.d-xhs-post .c-card .chr-card-num { font-size: 2.72cqi; font-weight: 800; }
+.d-xhs-post .chr-codebox { font-size: 1.85cqi; line-height: 1.75; overflow: auto; }

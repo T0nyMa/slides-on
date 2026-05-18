@@ -86,7 +86,7 @@ function renderStep(m: DesignManifest, step: StepItem): string {
 
 function renderCode(m: DesignManifest, code: string): string {
   if (m.variants.code === "card-wrapped") {
-    return `<div class="c-card"><pre style="overflow:auto">${code}</pre></div>`;
+    return `<div class="c-card"><pre class="chr-codebox">${code}</pre></div>`;
   }
   return `<pre class="chr-codebox">${code}</pre>`;
 }
