@@ -7,13 +7,13 @@ description: >
   make a deck, generate a PPT, weekly report, pitch deck, 周报, 提案, 分享,
   or any document-to-slides task — even if they don't say "slides" explicitly
   (e.g. "帮我整理一下这个文档", "把这篇做成卡片"). One pipeline: content analysis
-  → style decision → review → HTML rendering → QA gate → export (PNG/PPTX/PDF).
-  Built-in 3-layer QA: BLOCKER (must fix) / WARN (should review) / INFO (suggestion).
+  → style decision → review → L0 validation → HTML rendering → L1 QA gate (18 groups) → repair loop → export.
+  QA at every gate: BLOCKER (must fix) / WARN (should review) / INFO (suggestion).
 ---
 
 # slides-on — 统一演示文稿制作
 
-流水线：**内容分析 → 风格决策 → Review 验证 → HTML 渲染 → QA 门禁 → 可视化微调 → 导出**。
+流水线：**内容分析 → 风格决策 → L0 验证 → HTML 渲染 → L1 QA 门禁 → 修复循环 → 可视化微调 → 导出**。QA 嵌入每一步，不只在最后一关。
 
 可视化编辑器是核心功能——生成的 HTML 自带编辑器，**直接浏览器打开**，按 **E** 所见即所得地调字号、颜色、间距、位置。保存通过 File System Access API 直接写文件，无需 server。
 
@@ -22,7 +22,7 @@ description: >
 1. Pipeline 严格按序执行，不可跳步。每步产出写入工作目录
 2. AI 图片生成使用 prompt 文件机制，保证可复现
 3. 所有视觉样式收归 Design CSS，页面 HTML 只负责结构和内容
-4. **QA 门禁**：Step 4 产出后自动运行，BLOCKER > 0 则阻塞，不得进入 Step 5
+4. **QA 门禁**：L0 在渲染前（validate-slides），L1 在渲染后（visual-qa 18项检测），BLOCKER > 0 阻塞，进入修复循环直到 0
 
 ## Pipeline 详细流程
 
@@ -42,7 +42,8 @@ description: >
 6. **Engagement 分析**（社交场景）：当目标场景为小红书/社交媒体/图文卡片时，加载 `references/engagement-analysis.md`，补充 engagement 指标到分析输出中（Hook 类型与评分、受众画像、滑动流设计、保存/分享/评论触发点）
 7. **Ghost Deck Test**：只读标题序列能否讲述完整论点？不能则重排
 
-**产出**：`outline.md`（slides 结构大纲），格式：
+**产出**：`outline.md`（slides 结构大纲）。每页必须包含**组件规划表**，先分析内容语义，再按 `references/content-planning.md` 查表选组件，最后填内容：
+
 ```markdown
 # Slides: <标题>
 
@@ -52,12 +53,23 @@ description: >
 - 作者: ...
 
 ## Section 1: <章节名>
+
 ### Slide 1.1: <页面标题>
-- 原型: 痛点页 | 核心概念页 | 流程页 | 对比页 | 金句页 | 数据页 | 分类页 | 速查页 | 行动页 | Thanks页
-- 锚点: c-card-warn | c-kpi | c-steps | c-glass | c-formula | ...
-- 组件: c-stack(c-card-warn × 2 + c-card-accent × 1) + c-formula
-- 字数: ~120 字
-- 内容: ...
+
+**核心信息**：一句话描述本页要传达的核心观点
+
+**内容语义**：痛点/数据/流程/对比/代码/金句/封面/章节/行动/结尾（10选1，查 `references/content-planning.md`）
+
+**组件规划**：
+| 位置 | 组件 | 作用 | 内容描述 | 字数 |
+|------|------|------|---------|------|
+| top | c-card-warn | 痛点1 | ... | ≤25字 |
+| mid | c-card-warn | 痛点2 | ... | ≤25字 |
+| mid | c-card-accent | 方案预告 | ... | ≤20字 |
+| bottom | c-badge-row | 关键词 | 3-5标签 | — |
+
+**排列模式**：堆叠（查 `content-planning.md` 对应 ASCII 图）
+**预检**：组件 N 个（3-6 ✓），总字数 ~XX（< 上限），预估填充率 OK
 ```
 
 > **页面原型和组件配方**：详见 `references/component-recipes.md`，覆盖 10 种页面原型 + 组件组合 + 密度预算。Step 1 使用此文档决定每页的页面原型和组件组合。
@@ -66,6 +78,7 @@ description: >
 - `references/analysis-framework.md` — 详细分析框架
 - `references/engagement-analysis.md` — Engagement 驱动分析框架（小红书/社交媒体场景）
 - `references/component-recipes.md` — 内容语义 → 页面原型 → 组件配方（含密度预算、溢出处理）
+- `references/content-planning.md` — **内容语义 → 组件组合 → 排列模式** 决策表（10种 × ASCII示意图 + 预检清单）
 - `references/content-rules.md` — 内容规范
 - `references/style-decision-matrix.md` — 信号→design 映射表
 
@@ -132,52 +145,50 @@ description: >
 - `references/diagram/` — 4 种架构图类型
 - `references/infographic/` — 信息图 layout + style
 
-### Step 3: Review 验证
+### Step 3: L0 验证（渲染前）
 
-**输入**：`outline.md` + `style-decision.md`
+**输入**：`slides.json`
 
-**处理**：在进入 HTML 渲染前，逐页检查三项，不通过则回 Step 1/2 调整：
+**处理**：在 HTML 渲染前，自动验证结构、预算和内容约束。**BLOCKER > 0 则阻塞，回 Step 1/2 调整，直到 0 才进入 Step 4。**
 
 1. **自动验证**（`bun scripts/validate-slides.ts --input slides.json`）：
    - Schema 检查：design 名、canvas、slide type 合法性 → **BLOCKER（必须修）**
-   - 密度预算：组件数 3-5、字数上限、卡片/步骤数量 → WARN（应该看）
-   - 锚点检查：每页是否有视觉重心 → WARN
-   - 色彩语义：warn 色卡片是否有对应 accent 色 → WARN
-   - Design 兼容：blob/color/chipColor 是否被目标 Design 支持 → INFO（仅供参考）
-   > 所有 BLOCKER 项必须 0 才能进入 Step 4。JSON 阶段无法检测 CSS 级联冲突，由 Step 4 的 `visual-qa.ts` 补检。
-2. **内容溢出检查** — 组件容量 < 内容量？
-   - c-card 正文 > 60 字 → 精简或拆为 2 卡片
-   - c-steps > 7 步 → 拆为两页
-   - c-icon-row > 10 项 → 拆页或分组
-   - c-quote > 40 字 → 只保留核心句
-   - 组件总数 > 6 → 拆页
-3. **留白过大检查** — 组件 < 3 个？
-   - 加 c-badge-row（3-4 标签）、c-note（关键提示）、c-card-soft（补充说明）
-   - 或合并到相邻页
-4. **风格匹配检查** — Design 的 mood/texture 与内容调性是否冲突？
-   - 严肃/学术内容 + 马卡龙/手绘风 → 换 Design 或降 mood
-   - 年轻/社交内容 + corporate → 换 Design
-   - 数据密集内容 + 极简 Design → 检查组件颜色变体是否够区分信息层级
+   - 密度预算：组件数 3-6（portrait）/ 2-6（landscape）→ WARN
+   - 字数上限：单卡片正文 ≤ 25字（portrait）/ ≤ 40字（landscape）→ WARN
+   - 锚点检查：每页是否有视觉重心 → INFO
+   - Design 兼容：blob/color/chipColor 是否被目标 Design 支持 → INFO
 
-> 验证标准详见 `references/quality-spec.md`。BLOCKER 项必须 0 才能进入 Step 4。
+2. **内容溢出检查**（参考 `references/content-planning.md` 预检清单）：
+   - 组件总数 > profile.componentMax → 拆页或精简
+   - 组件总数 < profile.componentMin → 加 c-badge-row/c-note/c-card-soft
+   - c-steps > 4 步（portrait）/ > 7 步（landscape）→ 拆为两页
+   - c-quote > 35字 → 只保留核心句
+   - 底部无填充组件 → 加 c-badge-row 或 c-note 兜底
 
-**产出**：`review.md`，记录每页判定（pass / adjust）和调整决策。
+3. **风格匹配检查**：Design 的 mood/texture 与内容调性是否冲突？
+   - 严肃/学术内容 + 马卡龙/手绘风 → 换 Design
+   - 数据密集内容 + 极简 Design → 检查颜色变体够不够
+
+**产出**：`review.md`，记录每页判定（pass / adjust）和调整决策。格式：
 
 ```
 # Review
 
 ## Slide 1.1: 封面
-- 溢出: pass
-- 留白: adjust — 加 c-section(c-icon-row × 3) 做目录预告
-- 风格: pass
-
-## Slide 1.2: 核心痛点
+- 组件数: pass (4)
 - 溢出: pass
 - 留白: pass
 - 风格: pass
 
+## Slide 1.2: 核心痛点
+- 组件数: pass (4)
+- 溢出: pass
+- 留白: adjust — 底部加 c-badge-row 兜底
+- 风格: pass
+
 ## Slide 2.3: 实施路径
-- 溢出: adjust — 7 步拆为两页（步骤 1-4 / 5-7）
+- 组件数: adjust — 5 步拆为两页（步骤 1-3 / 4-5）
+- 溢出: pass
 - 留白: pass
 - 风格: pass
 ```
@@ -194,54 +205,43 @@ description: >
 3. **HTML 组装**：`bun scripts/assemble-deck.ts --input slides.json --output index.html`。脚本自动完成 CSS 加载、Chrome 片段、c-* 组件拼装。`--asset-depth 2` 用于 `examples/` 输出路径
 4. **SVG 图**（如有）：直接内联到 slides.json 的 `html` 字段，或 `<img>` 引用
 5. 添加 `data-anim` 属性声明动画
-6. **QA 质量门禁**（自动）：`assemble-deck.ts` 自动调用 `scripts/visual-qa.ts`（Playwright 10 项检测：溢出、遮挡、留白、间距、对比度、字体层级、Chrome 位置/存在、CSS 变量健康、组件密度）。所有 BLOCKER 项必须为 0 才能进入 Step 5。用户也可随时手动运行：
+6. **L1 QA 质量门禁**（渲染后自动运行）：HTML 产出后，**必须**运行：
 
    ```bash
-   bash scripts/qa.sh <deck-name>           # L0 (JSON) + L1 (浏览器)
-   bash scripts/qa.sh --all                 # 全量，所有 deck
+   bun scripts/qa.ts --check --deck <deck-name>
    ```
 
-   **三级严重度** — 统一标识，看图标就知道要不要停：
+   **18 组检测**（`scripts/visual-qa.ts`），自动适配 portrait/landscape 画布：
+
+   | # | 检测组 | BLOCKER 触发条件 |
+   |---|--------|-----------------|
+   | 1 | text-overflow | scrollHeight > clientHeight |
+   | 2 | occlusion | 元素交叉 > 10% |
+   | 3 | whitespace | 填充率 < fillMin（portrait 45%, landscape 20%）|
+   | 4 | spacing | 同类型间距方差 > 50% |
+   | 5 | contrast | 文字色 vs 背景 < WCAG AA 阈值 |
+   | 6 | font-hierarchy | 字号层级倒挂或跨页不一致 |
+   | 7-8 | chrome-position/presence | 位置漂移 > 2px / 部分页缺失 |
+   | 9 | css-var-health | 关键 CSS 变量未定义 |
+   | 10 | density | 组件 < min 或 > max |
+   | 11 | chrome-content-boundary | chr-topbar/footer 与内容重叠 |
+   | 12 | canvas-fill | 底部空白 > 25%（仅 portrait）|
+   | 13 | font-unit | px 字号 < 最小 cqi（仅 portrait）|
+   | 14 | css-loading-integrity | body class 与 design CSS 不匹配 |
+   | 15 | grid-collapse | g3/g4 未 collapse（仅 portrait）|
+   | 16 | chrome-z-index | chr-* absolute 被全局规则覆盖 |
+   | 17 | font-container-ratio | 字体/容器宽度比低于组件类型舒适区 |
+   | 18 | inline-row-wrap | badge-row/icon-row 意外换行 |
+
+   **三级严重度**：
 
    | 图标 | 级别 | 含义 | 行动 |
    |------|------|------|------|
-   | ❌ | **BLOCKER** | 客观错误，渲染结果不对 | **必须修**，修到 0 才能往下走 |
-   | ⚠️ | **WARN** | 有客观标准，但可以接受 | 看一下，大部分应该修，少量可豁免 |
-   | ℹ️ | **INFO** | 主观审美建议 | 参考，觉得有道理就调 |
+   | ❌ | **BLOCKER** | 客观错误 | **必须修到 0**，否则阻塞导出 |
+   | ⚠️ | **WARN** | 有标准但可接受 | 大部分应修 |
+   | ℹ️ | **INFO** | 主观建议 | 酌情处理 |
 
-   **S/A/V 分类标签** — 看前缀知道问题性质：
-
-   | 分类 | 标签 | 说明 |
-   |------|------|------|
-   | **Structural（结构）** | S1-S5 | 写错了、漏了、冲突了——修 |
-   | **Aesthetic（美观）** | A1-A6 | 不好看、不统一、太挤——调整 |
-   | **Visual（建议）** | V1-V4 | 可以更好——酌情 |
-
-   完整规则映射表：
-
-   | Tag | 检查 | 级别 | 工具 |
-   |-----|------|------|------|
-   | S1 | JSON schema | BLOCKER | validate-slides |
-   | S2 | CSS cascade 冲突 | BLOCKER | visual-qa |
-   | S3 | 元素溢出 | BLOCKER | visual-qa |
-   | S4 | 内容完整性 | BLOCKER | visual-qa |
-   | S5 | 对比度 / CSS 变量缺失 | BLOCKER | visual-qa |
-   | A2 | 字体层级 | WARN | visual-qa |
-   | A3 | 组件密度 | WARN | visual-qa |
-   | A4 | 字号可读性 | WARN | visual-qa |
-   | A5 | Chrome 位置一致 | WARN | visual-qa |
-   | A6 | Chrome 存在一致 | WARN | visual-qa |
-   | V1 | 留白比例 | INFO | visual-qa |
-   | V2 | 视觉重心 | INFO | visual-qa |
-   | V3 | 间距均匀 | INFO | visual-qa |
-   | V4 | Design 匹配度 | INFO | validate-slides |
-
-   **QA 不通过时的排查流程**：
-   1. 看 tag 前缀：S → 代码写错了（修 CSS/JSON），A → 设计参数不对（调密度/字号），V → 主观审美（可酌情跳过）
-   2. S2（cascade 冲突）最常见：某个 `position: absolute` 被 `.slide > * { position: relative }` 覆盖 → 改选择器加 `.d-xxx .slide .` 前缀
-   3. A3（密度超标）：拆页（>6 组件 → 分两页）或使用 dense density 层（`"density": "dense"`）
-   4. 修复后 `bun scripts/assemble-deck.ts --input slides.json --output index.html` 重新生成 → 再跑 QA
-   5. 直到 BLOCKER = 0，进入可视化微调阶段
+   **BLOCKER > 0 → 进入 Step 6 修复循环。**
 
 QA 通过后，**直接在浏览器打开 `index.html`** 即可微调。页面顶部会显示 "按 E 进入可视化编辑模式" 提示（10 秒后自动消失）。按 **E** 进入编辑模式。
 
@@ -332,7 +332,8 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
 - `scripts/assemble/designs.ts` — Design 模板注册表（per-design 渲染函数）
 - `scripts/assemble/slides.ts` — 10 个渲染函数（覆盖 11 种 slide 类型）
 - `scripts/assemble/skeleton.ts` — Deck HTML 骨架生成（所有 CSS/JS 内联为自包含单文件）
-- `scripts/visual-qa.ts` — 统一视觉质量引擎（Playwright 10 项检测：溢出/遮挡/留白/间距/对比度/字体层级/Chrome 一致性/CSS 变量健康/组件密度）
+- `scripts/visual-qa.ts` — 统一视觉质量引擎（Playwright 18 项检测，dual profile）
+- `scripts/qa.ts` — 统一 QA CLI（--plan / --check / --regress / --baseline）
 - `scripts/imagine/prompt-assembler.ts` — 三层结构化 prompt 组装引擎
 - `scripts/imagine/main.ts` — AI 图片生成入口
 - `scripts/imagine/config.ts` — Provider 注册表 + 环境变量默认值
@@ -354,6 +355,33 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
 - `references/ai-visuals.md` — AI 视觉内容生成
 - `references/prompt-construction.md` — AI 图片结构化 prompt 组装（三层结构 + Image-1 Anchor Chain）
 - `references/components.md` — 组件调色板（3:4 自由拼装）
+
+### Step 6: 修复循环
+
+QA 报告有 BLOCKER 或需要处理的 WARN 时，进入结构化修复循环。
+
+**修复分类**：
+
+| 问题类型 | 典型检测组 | 修复方法 |
+|---------|-----------|---------|
+| **结构错误** | occlusion, chrome-content-boundary, chrome-z-index | 增 --slide-pad-bottom、调 footer bottom、改 chr-* z-index |
+| **内容溢出** | text-overflow, whitespace(BLOCKER) | 精简文字、拆分 slide、减小组件数 |
+| **对比度不足** | contrast | 改 --text-3 色值、调 badge 配色（good/warn/bad） |
+| **字体问题** | font-unit, font-container-ratio, font-hierarchy | 移除内联 px、改用 --c-* token、提升 cqi 值 |
+| **密度问题** | density | 组件太多→拆页（> profile.componentMax → 两页）；组件太少→加 c-badge-row/c-note/c-card-soft |
+| **填充不足** | whitespace(BLOCKER), canvas-fill | 加底部组件、改用 v-distribute、增加内容 |
+| **布局异常** | grid-collapse, inline-row-wrap | 减小 badge 字号、加 nowrap、减 g3/g4 列数 |
+
+**修复循环流程**：
+
+1. **分类**：读 QA 报告，按上表分类每个 ❌/⚠️
+2. **修复**：改 slides.json（内容/结构）或 style.css（样式/覆盖）
+3. **重新组装**：`bun scripts/assemble-deck.ts -i slides.json -o index.html`
+4. **重新 QA**：`bun scripts/qa.ts --check --deck <name>`
+5. **确认**：BLOCKER 数量 ≤ 修复前，目标 → 0
+6. **重复**：直到 BLOCKER = 0，进入 Step 7 微调
+
+> **关键原则**：修一个问题 → reassemble → re-QA。不要批量修完再 QA，否则不知道哪个修改引入新问题。
 
 ### Step 4 后续：可视化微调
 
