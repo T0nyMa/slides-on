@@ -63,7 +63,7 @@ Input format (slides.json):
   }
 
 Slide types: cover | section | cards-2x2 | cards-3 | quote | steps | code | thanks | bullets | kpi | html
-Designs: pastel-card | white-editorial | xhs-post
+Designs: base | pastel-card | white-editorial | xhs-post | hermes-cyber-terminal
 Canvas: 3:4 | 16:9
 `);
         process.exit(0);

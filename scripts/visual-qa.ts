@@ -167,9 +167,9 @@ function isPortrait(html: string): boolean {
 
 const registry = buildSelectorRegistry();
 const DECORATIVE_CLASSES = registry.decorative;
-const CHROME_SELECTORS = registry.chrome;
-const TEXT_SELECTORS = registry.text;
-const CONTENT_SELECTORS = registry.content;
+const CHROME_SELECTORS = registry.chrome.join(", ");
+const TEXT_SELECTORS = registry.text.join(", ");
+const CONTENT_SELECTORS = registry.content.join(", ");
 
 // ─── Group 1: Text overflow ─────────────────────────────────────────────
 

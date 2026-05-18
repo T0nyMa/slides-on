@@ -18,7 +18,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { getAllDecks } from "./utils.ts";
+import { getAllDecks, isPortraitDeck } from "./utils.ts";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -221,13 +221,12 @@ export function analyzeChanges(files: string[]): ChangeImpact {
   const deckList = allDeckMode ? allDecks : [...affectedSet];
 
   // Focus decks: prioritize portrait for portrait-related changes
-  const portraitDecks = deckList.filter(
-    (d) =>
-      d.startsWith("xhs-") ||
-      d.includes("3x4") ||
-      d.includes("portrait") ||
-      d === "component-showcase",
-  );
+  const portraitDecks = deckList.filter((d) => {
+    try {
+      const html = fs.readFileSync(path.join(FULL_DECKS_DIR, d, "index.html"), "utf-8");
+      return isPortraitDeck(html);
+    } catch { return false; }
+  });
   const focusDecks =
     portraitDecks.length > 0
       ? portraitDecks.slice(0, 4)

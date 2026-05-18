@@ -67,13 +67,7 @@ function getKnownDesigns(): string[] {
 
 /** Build body class from design name */
 function getDesignBodyClass(name: string): string {
-  const bodyClasses: Record<string, string> = {
-    "pastel-card": "d-pastel-card",
-    "white-editorial": "d-white-editorial",
-    "xhs-post": "d-xhs-post",
-    "hermes-cyber-terminal": "d-hermes-cyber-terminal",
-  };
-  return bodyClasses[name] || `d-${name}`;
+  return `d-${name}`;
 }
 
 export { loadManifest, loadAllManifests, getKnownDesigns, getDesignBodyClass };

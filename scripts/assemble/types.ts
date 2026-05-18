@@ -84,6 +84,7 @@ export interface SlideData {
   bullets?: BulletItem[];
   kpis?: KpiItem[];
   badges?: string[];
+  layout?: string;
   slots?: Record<string, string>;
   html?: string;
   // Table type

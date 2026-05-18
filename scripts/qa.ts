@@ -11,7 +11,7 @@
 
 import * as path from "node:path";
 import * as fs from "node:fs";
-import { getAllDecks } from "./qa/utils.ts";
+import { getAllDecks, isPortraitDeck } from "./qa/utils.ts";
 
 const ROOT = path.resolve(import.meta.dir, "..");
 
@@ -145,7 +145,12 @@ Detection: 18 groups (text-overflow, occlusion, whitespace, spacing, contrast,
 
     // L2: Screenshot regression for sample decks
     console.log(`\n━━━ L2: Screenshot Regression ━━━`);
-    const portraitDecks = decks.filter(d => d.startsWith("xhs-") || d.includes("3x4"));
+    const portraitDecks = decks.filter(d => {
+      try {
+        const html = fs.readFileSync(path.join(ROOT, "templates", "full-decks", d, "index.html"), "utf-8");
+        return isPortraitDeck(html);
+      } catch { return false; }
+    });
     const landscapeDecks = decks.filter(d => !portraitDecks.includes(d));
     const sample = [...portraitDecks.slice(0, 3), ...landscapeDecks.slice(0, 2)];
 

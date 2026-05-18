@@ -193,7 +193,7 @@ export function renderHtml(_m: DesignManifest, s: SlideData, _ctx: PageContext):
 }
 
 function renderLayout(_m: DesignManifest, s: SlideData, _ctx: PageContext): string {
-  const layoutName = (s as any).layout || "blank";
+  const layoutName = s.layout || "blank";
   const layoutPath = path.join(ROOT, "templates", "single-page", `${layoutName}.html`);
   let inner: string;
   try {

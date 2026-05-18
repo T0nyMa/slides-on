@@ -126,12 +126,7 @@ function renderDecorations(m: DesignManifest, blobs?: string[]): string {
   if (blobs && blobs.length > 0 && decorations.includes("chr-blob")) {
     return blobs.map(b => `<div class="chr-blob ${b}"></div>`).join("\n    ");
   }
-  return decorations.map(d => {
-    if (d === "chr-topline") return `<div class="chr-topline"></div>`;
-    if (d === "chr-hc-grid") return `<div class="chr-hc-grid"></div>`;
-    if (d === "chr-hc-scanlines") return `<div class="chr-hc-scanlines"></div>`;
-    return "";
-  }).filter(Boolean).join("\n    ");
+  return decorations.map(d => `<div class="${d}"></div>`).join("\n    ");
 }
 
 function renderDivider(m: DesignManifest): string {

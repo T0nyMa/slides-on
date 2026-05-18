@@ -23,9 +23,9 @@ const BASE_CONTENT = [
 
 export interface SelectorRegistry {
   decorative: string[];
-  chrome: string;
-  text: string;
-  content: string;
+  chrome: string[];
+  text: string[];
+  content: string[];
 }
 
 let _cached: SelectorRegistry | null = null;
@@ -39,9 +39,9 @@ export function buildSelectorRegistry(): SelectorRegistry {
 
   _cached = {
     decorative: [...new Set([...BASE_DECORATIVE, ...extraDeco])],
-    chrome: [...new Set([...BASE_CHROME, ...extraChrome])].join(", "),
-    text: BASE_TEXT.join(", "),
-    content: BASE_CONTENT.join(", "),
+    chrome: [...new Set([...BASE_CHROME, ...extraChrome])],
+    text: [...BASE_TEXT],
+    content: [...BASE_CONTENT],
   };
   return _cached;
 }
