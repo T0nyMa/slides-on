@@ -29,6 +29,7 @@
 | 大数字 + 指标说明 | 数据页 | `c-kpi` | 效果展示、关键指标 |
 | 5-10 项列表/清单 | 速查页 | `c-icon-row` × N | 要点清单、语法速查 |
 | 行动号召/步骤/示例 | 行动页 | `c-formula` | CTA、操作指南 |
+| 干货文字 + 多维度解释 + 标签 | 干货分享页 | `c-article`（异构混合）| 小红书知识帖、深度解读 |
 | 致谢 + 要点回顾 | Thanks 页 | `c-glass` | 任何 deck 尾页 |
 
 ## 组件配方
@@ -152,6 +153,30 @@ h2 → c-formula → c-steps（3 步）→ c-example（完整示例）→ c-card
 - **组件数**：5-6 个
 - **关键约束**：c-example 必须放可直接复制的完整示例，不是抽象描述
 - **c-steps 降级**：只 2 步 → 用 c-row(c-card × 2) 代替
+
+### 干货分享页（article）
+
+```
+type: "article"
+h2 → blocks: [ badge-para, icon-card, quote-bar, numbered-list, pill-tags 自由混合 ]
+```
+
+- **锚点**：`c-article` 异构块堆叠（同一页混合不同块类型）
+- **适用**：小红书知识帖、深度解读、干货总结——一个页面需要 badge 段落 + 图标卡片 + 引述条 + 编号列表等不同形式的混合内容
+- **block 选择**：
+  - `badge-para`：标签 + 段落（适合"核心观点""注意事项"等带标签的要点）
+  - `icon-card`：图标 + 标题 + 描述（适合功能列举、方法卡片）
+  - `quote-bar`：左边框引述条（适合引用、金句、关键洞察）
+  - `numbered-list`：编号 + 关键词 + 正文（适合步骤、要点排列）
+  - `pill-tags`：胶囊标签组（适合总结标签、关键词列表）
+
+**填充哲学**：页面留白时多组合 block（badge-para + icon-card + quote-bar），禁止放大字号/拉伸间距/居中来撑满。
+
+**密度控制**：按块高度预估总高（badge-para ~10cqi, icon-card ~12cqi, numbered-list items×6cqi），≥65cqi 合格。不用硬性最少块数——有些大块单个就能撑满。
+
+- **字数预算**：badge-para label ≤6 字, body ≤80 字; icon-card title ≤12 字, body ≤50 字; quote-bar text ≤60 字; numbered-list items ≤5
+- **block 数量**：3-5 个（< 3 WARN, > 5 需拆页）
+- **Design CSS 要求**：article 组件在 Design CSS 下才有完整视觉效果。Theme only 模式下显示 base 样式（白底细线框）
 
 ### Thanks 页
 
