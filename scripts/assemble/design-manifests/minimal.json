@@ -3,7 +3,7 @@
   "css": "assets/designs/minimal.css",
   "classes": { "title": "chr-title", "subtitle": "chr-sub", "kicker": "chr-kicker", "body": "chr-sub", "titleTag": "h1" },
   "chrome": { "topbar": "standard", "footer": true, "footerTag": "span", "divider": true, "decorations": [], "pageFormat": "slash" },
-  "variants": { "card": "clean", "step": "clean", "code": "c-codebox" },
+  "variants": { "card": "standard", "step": "standard", "code": "c-codebox" },
   "image": { "radius": "0", "shadow": "none", "border": "none" },
   "qa": { "decorativeClasses": [], "chromeSelectors": [], "cardColors": [] }
 }

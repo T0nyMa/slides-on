@@ -1,5 +1,5 @@
 /* course-module — academic but friendly Design CSS */
-/* Usage: body.d-course-module activates */
+/* Usage: body.d-course-module.portrait for 3:4, .landscape for 16:9 */
 
 .d-course-module {
   --bg: #fbfaf6;
@@ -14,8 +14,8 @@
   --accent-2: #d88a3a;
   --accent-3: #c4593f;
   --grad: linear-gradient(135deg, #2d7d6e, #4ea893);
-  --radius: 14px;
-  --radius-lg: 20px;
+  --radius: 1.6cqi;
+  --radius-lg: 2.3cqi;
   --shadow: 0 12px 30px rgba(60,45,20,.07);
   --font-display: 'Playfair Display', Georgia, serif;
   --font-sans: 'Inter', 'Noto Sans SC', sans-serif;
@@ -25,12 +25,12 @@
 }
 
 /* ── Chrome ── */
-.d-course-module .chr-kicker { color: var(--accent-2); font-size: 12px; font-weight: 700; letter-spacing: .14em; }
+.d-course-module .chr-kicker { color: var(--accent-2); font-size: 1.5cqi; font-weight: 700; letter-spacing: .14em; }
 
 /* ── Typography ── */
-.d-course-module .chr-title { font-family: var(--font-display); font-size: 72px; line-height: 1.02; font-weight: 800; letter-spacing: -.02em; }
-.d-course-module .chr-heading { font-family: var(--font-display); font-size: 48px; line-height: 1.1; font-weight: 700; letter-spacing: -.015em; }
-.d-course-module .chr-sub { font-size: 20px; color: var(--text-2); line-height: 1.7; }
+.d-course-module .chr-title { font-family: var(--font-display); font-size: 8.5cqi; line-height: 1.02; font-weight: 800; letter-spacing: -.02em; }
+.d-course-module .chr-heading { font-family: var(--font-display); font-size: 6cqi; line-height: 1.1; font-weight: 700; letter-spacing: -.015em; }
+.d-course-module .chr-sub { font-size: 2.5cqi; color: var(--text-2); line-height: 1.7; }
 
 /* ── c-* Extensions ── */
 .d-course-module .c-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }

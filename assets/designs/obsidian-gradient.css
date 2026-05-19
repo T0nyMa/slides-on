@@ -1,5 +1,5 @@
 /* obsidian-claude-gradient — 紫色暗底 + GitHub-ish 渐变卡 Design CSS */
-/* Usage: body.d-obsidian-gradient activates */
+/* Usage: body.d-obsidian-gradient.portrait for 3:4, .landscape for 16:9 */
 
 .d-obsidian-gradient {
   --bg: #0d1117;
@@ -17,8 +17,8 @@
   --warn: #f97316;
   --bad: #f87171;
   --grad: linear-gradient(135deg, #a855f7 0%, #60a5fa 55%, #34d399 100%);
-  --radius: 14px;
-  --radius-lg: 20px;
+  --radius: 1.6cqi;
+  --radius-lg: 2.3cqi;
   --shadow: 0 20px 60px rgba(0,0,0,.5);
   --shadow-lg: 0 20px 60px rgba(0,0,0,.5);
   --font-display: 'Inter', 'Noto Sans SC', 'PingFang SC', -apple-system, sans-serif;
@@ -47,25 +47,25 @@
   background-image:
     linear-gradient(rgba(48,54,61,.4) 1px, transparent 1px),
     linear-gradient(90deg, rgba(48,54,61,.4) 1px, transparent 1px);
-  background-size: 60px 60px;
+  background-size: 7cqi 7cqi;
   mask-image: radial-gradient(ellipse at center, black 35%, transparent 80%);
 }
 .d-obsidian-gradient .slide > * { position: relative; z-index: 2; }
 
 /* ── Chrome ── */
-.d-obsidian-gradient .chr-chip { background: rgba(124,58,237,.14); border: 1px solid rgba(168,85,247,.3); color: var(--accent-3); border-radius: 999px; padding: 5px 16px; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.d-obsidian-gradient .chr-chip { background: rgba(124,58,237,.14); border: 1px solid rgba(168,85,247,.3); color: var(--accent-3); border-radius: 999px; padding: 0.6cqi 2cqi; font-size: 1.3cqi; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
 
 /* ── Typography ── */
-.d-obsidian-gradient .chr-title { font-size: 72px; font-weight: 800; line-height: 1.08; letter-spacing: -.02em; }
-.d-obsidian-gradient .chr-heading { font-size: 44px; font-weight: 700; line-height: 1.18; letter-spacing: -.015em; }
-.d-obsidian-gradient .chr-sub { font-size: 19px; color: var(--text-2); line-height: 1.65; max-width: 720px; }
+.d-obsidian-gradient .chr-title { font-size: 8.5cqi; font-weight: 800; line-height: 1.08; letter-spacing: -.02em; }
+.d-obsidian-gradient .chr-heading { font-size: 5.5cqi; font-weight: 700; line-height: 1.18; letter-spacing: -.015em; }
+.d-obsidian-gradient .chr-sub { font-size: 2.4cqi; color: var(--text-2); line-height: 1.65; }
 
 /* ── Gradient text ── */
 .d-obsidian-gradient .c-grad { background: linear-gradient(135deg, #a855f7 0%, #60a5fa 55%, #34d399 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 
 /* ── c-* Extensions ── */
-.d-obsidian-gradient .c-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; position: relative; overflow: hidden; }
+.d-obsidian-gradient .c-card { background: var(--surface); border: 1px solid var(--border); border-radius: 1.6cqi; position: relative; overflow: hidden; }
 .d-obsidian-gradient .c-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(168,85,247,.4), transparent); }
 .d-obsidian-gradient .c-step-num { background: linear-gradient(135deg, var(--oc-accent), var(--oc-blue)); color: #fff; }
-.d-obsidian-gradient .c-codebox { background: #010409; border: 1px solid var(--border); border-radius: 12px; color: #e6edf3; }
-.d-obsidian-gradient .c-hero-num { font-size: 140px; font-weight: 900; line-height: .95; letter-spacing: -.04em; }
+.d-obsidian-gradient .c-codebox { background: #010409; border: 1px solid var(--border); border-radius: 1.5cqi; color: #e6edf3; }
+.d-obsidian-gradient .c-hero-num { font-size: 15cqi; font-weight: 900; line-height: .95; letter-spacing: -.04em; }
