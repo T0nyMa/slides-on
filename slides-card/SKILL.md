@@ -30,7 +30,7 @@ description: >
 
 **页数**：< 500 字 3-5 页，500-1500 字 5-8 页，> 1500 字 8-12 页。
 
-**产出**：`outline.md`，每页含组件规划表（先分析语义，再查 `../../references/component-recipes.md` 选组件）。
+**产出**：`outline.md`，每页含组件规划表（先分析语义，再查 `../references/component-recipes.md` 选组件）。
 
 ### Step 2: 风格决策
 
@@ -40,7 +40,7 @@ description: >
 - **typography**：`geometric` | `editorial` | `humanist` | `handwritten` | `technical`
 - **texture**：`clean` | `paper` | `grid` | `organic` | `pixel`
 - **density**：`minimal` | `balanced` | `dense`
-- **theme**：36 个颜色主题（`../../assets/themes/`）
+- **theme**：36 个颜色主题（`../assets/themes/`）
 
 **品牌路线**（Design CSS）— 完整视觉皮肤（Chrome + 卡片背景 + 阴影 + 装饰 + 组件覆盖）：
 - **3:4 原生**：`pastel-card` | `white-editorial` | `xhs-post`
@@ -62,7 +62,7 @@ description: >
 ### Step 3: L0 验证
 
 ```bash
-bun ../../scripts/validate-slides.ts --input slides.json
+bun ../scripts/validate-slides.ts --input slides.json
 ```
 
 检查 Schema、密度预算（3-6 组件）、字数上限（卡片 ≤ 25 字）、Design 兼容。BLOCKER > 0 阻塞。
@@ -72,7 +72,7 @@ bun ../../scripts/validate-slides.ts --input slides.json
 整理 `slides.json`（见格式示例），然后：
 
 ```bash
-bun ../../scripts/assemble-deck.ts --input slides.json --output index.html
+bun ../scripts/assemble-deck.ts --input slides.json --output index.html
 ```
 
 脚本自动完成 CSS 内联、Chrome 片段、c-* 组件拼装。Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps` | `code` | `thanks` | `bullets` | `kpi` | `table` | `html` | `layout` | `article`
@@ -82,7 +82,7 @@ bun ../../scripts/assemble-deck.ts --input slides.json --output index.html
 渲染后必须运行 L1 QA：
 
 ```bash
-bun ../../scripts/qa.ts --check --deck <name>
+bun ../scripts/qa.ts --check --deck <name>
 ```
 
 BLOCKER > 0 → Step 5 修复循环。
@@ -119,7 +119,7 @@ BLOCKER > 0 → Step 5 修复循环。
 ### Step 7: 导出
 
 ```bash
-bun ../../scripts/render-precise.ts index.html --canvas 3:4 --slides auto --output ./png-out/
+bun ../scripts/render-precise.ts index.html --canvas 3:4 --slides auto --output ./png-out/
 ```
 
 @2x Retina 输出 1620×2160 PNG。
@@ -132,10 +132,10 @@ bun ../../scripts/render-precise.ts index.html --canvas 3:4 --slides auto --outp
 
 ## 核心参考
 
-- `../../references/content-rules-portrait.md` — 3:4 内容规范（组件大小、字数、密度）
-- `../../references/portrait-user-guide.md` — 竖版制作指南
-- `../../references/component-recipes.md` — 10 种页面原型 + 组件配方 + 内容语义 → 组件查表
-- `../../references/components.md` — 组件库参考
-- `../../references/ai-visuals.md` — AI 图片生成 → 用 slides-imagine
-- `../../references/design-guidelines.md` — 设计指南
-- `../../references/glossary.md` — 术语表
+- `../references/content-rules-portrait.md` — 3:4 内容规范（组件大小、字数、密度）
+- `../references/portrait-user-guide.md` — 竖版制作指南
+- `../references/component-recipes.md` — 10 种页面原型 + 组件配方 + 内容语义 → 组件查表
+- `../references/components.md` — 组件库参考
+- `../references/ai-visuals.md` — AI 图片生成 → 用 slides-imagine
+- `../references/design-guidelines.md` — 设计指南
+- `../references/glossary.md` — 术语表

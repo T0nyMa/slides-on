@@ -40,7 +40,7 @@ description: >
 - **typography**：`geometric` | `editorial` | `humanist` | `handwritten` | `technical`
 - **texture**：`clean` | `paper` | `grid` | `organic` | `pixel`
 - **density**：`minimal` | `balanced` | `dense`
-- **theme**：36 个颜色主题（`../../assets/themes/`）
+- **theme**：36 个颜色主题（`../assets/themes/`）
 
 常用预设：`white-editorial`（白底杂志）、`hermes-cyber-terminal`（终端）、自由组合。
 
@@ -59,7 +59,7 @@ description: >
 ### Step 3: L0 验证
 
 ```bash
-bun ../../scripts/validate-slides.ts --input slides.json
+bun ../scripts/validate-slides.ts --input slides.json
 ```
 
 检查 Schema、密度预算（2-6 组件）、字数上限（卡片 ≤ 40 字）。BLOCKER > 0 阻塞。
@@ -69,7 +69,7 @@ bun ../../scripts/validate-slides.ts --input slides.json
 整理 `slides.json`，然后：
 
 ```bash
-bun ../../scripts/assemble-deck.ts --input slides.json --output index.html
+bun ../scripts/assemble-deck.ts --input slides.json --output index.html
 ```
 
 Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps` | `code` | `thanks` | `bullets` | `kpi` | `table` | `html` | `layout`
@@ -81,7 +81,7 @@ Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps`
 渲染后运行 L1 QA：
 
 ```bash
-bun ../../scripts/qa.ts --check --deck <name>
+bun ../scripts/qa.ts --check --deck <name>
 ```
 
 BLOCKER > 0 → Step 5 修复循环。
@@ -110,13 +110,13 @@ BLOCKER > 0 → Step 5 修复循环。
 
 ```bash
 # PNG 截图（@2x Retina）
-bun ../../scripts/render-precise.ts index.html --canvas 16:9 --slides auto --output ./png-out/
+bun ../scripts/render-precise.ts index.html --canvas 16:9 --slides auto --output ./png-out/
 
 # PPTX 可编辑
-bun ../../scripts/html-to-pptx.ts index.html --output deck.pptx
+bun ../scripts/html-to-pptx.ts index.html --output deck.pptx
 
 # PDF 拼合
-bun ../../scripts/merge-to-pdf.ts png-out/ --output deck.pdf
+bun ../scripts/merge-to-pdf.ts png-out/ --output deck.pdf
 ```
 
 ## 快速参考：Layout → 用途
@@ -138,14 +138,14 @@ bun ../../scripts/merge-to-pdf.ts png-out/ --output deck.pdf
 
 ## 核心参考
 
-- `../../references/content-rules.md` — 16:9 内容规范
-- `../../references/layouts.md` — 31 种布局参考
-- `../../references/themes.md` — 36 主题
-- `../../references/designs/` — 18 个 design 概念
-- `../../references/dimensions/` — 4 维调整指南
-- `../../references/analysis-framework.md` — 内容分析框架
-- `../../references/component-recipes.md` — 页面原型 + 组件配方
-- `../../references/content-planning.md` — 内容语义 → 组件查表
-- `../../references/ai-visuals.md` — AI 图片生成 → 用 slides-imagine
-- `../../references/diagram/` — SVG 架构图 → 用 slides-diagram
-- `../../references/glossary.md` — 术语表
+- `../references/content-rules.md` — 16:9 内容规范
+- `../references/layouts.md` — 31 种布局参考
+- `../references/themes.md` — 36 主题
+- `../references/designs/` — 18 个 design 概念
+- `../references/dimensions/` — 4 维调整指南
+- `../references/analysis-framework.md` — 内容分析框架
+- `../references/component-recipes.md` — 页面原型 + 组件配方
+- `../references/content-planning.md` — 内容语义 → 组件查表
+- `../references/ai-visuals.md` — AI 图片生成 → 用 slides-imagine
+- `../references/diagram/` — SVG 架构图 → 用 slides-diagram
+- `../references/glossary.md` — 术语表

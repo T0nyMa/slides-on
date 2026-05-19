@@ -15,10 +15,10 @@
       "source": "./",
       "strict": false,
       "skills": [
-        "./skills/slides-card",
-        "./skills/slides-ppt",
-        "./skills/slides-imagine",
-        "./skills/slides-diagram"
+        "./slides-card",
+        "./slides-ppt",
+        "./slides-imagine",
+        "./slides-diagram"
       ]
     }
   ]
