@@ -403,12 +403,16 @@ async function checkWhitespace(page: any, slideIndex: number, profile: CanvasPro
     const issues: any[] = [];
 
     // ── Fill percent ──
+    const slideType = slide.getAttribute("data-type") || "";
+    const isStructural = ["section", "cover", "thanks"].includes(slideType);
+    const isCompact = ["table", "steps", "code", "kpi"].includes(slideType);
+    const effectiveThresholdLow = isCompact ? Math.max(args.profile.fillMin * 100 - 30, 10) : args.profile.fillMin * 100;
     const thresholdLow = args.profile.fillMin * 100;
     const thresholdWarn = Math.min(args.profile.fillMin + 0.15, 0.50) * 100;
-    if (fillPercent < thresholdLow) {
+    if (fillPercent < effectiveThresholdLow && !isStructural) {
       issues.push({ group: "whitespace", severity: "BLOCKER", slide: args.idx + 1,
-        element: ".slide", message: `填充率仅 ${fillPercent}%（< ${thresholdLow}%），内容严重不足` });
-    } else if (fillPercent < thresholdWarn) {
+        element: ".slide", message: `填充率仅 ${fillPercent}%（< ${effectiveThresholdLow}%），内容严重不足` });
+    } else if (fillPercent < thresholdWarn && !isStructural) {
       issues.push({ group: "whitespace", severity: "WARN", slide: args.idx + 1,
         element: ".slide", message: `填充率 ${fillPercent}%（< ${thresholdWarn}%），内容稀疏` });
     } else if (fillPercent > 85) {
@@ -1146,10 +1150,14 @@ async function checkCanvasFill(page: any, slideIndex: number, profile: CanvasPro
     }
 
     const bottomEmpty = 1 - lowestBottom;
-    if (bottomEmpty > args.bottomEmptyMaxRatio) {
+    const slideType = active.getAttribute("data-type") || "";
+    const isStructural = ["section", "cover", "thanks"].includes(slideType);
+    const isCompact = ["table", "steps", "code", "kpi"].includes(slideType);
+    if (bottomEmpty > args.bottomEmptyMaxRatio && !isStructural) {
+      const effectiveSeverity = isCompact ? "WARN" : ((bottomEmpty > args.bottomEmptyMaxRatio * 1.5) ? "BLOCKER" : "WARN");
       issues.push({
         group: "canvas-fill",
-        severity: (bottomEmpty > args.bottomEmptyMaxRatio * 1.5) ? "BLOCKER" : "WARN",
+        severity: effectiveSeverity,
         slide: args.idx + 1,
         element: ".slide",
         message: `底部 ${(bottomEmpty * 100).toFixed(0)}% 空白（阈值 ${(args.bottomEmptyMaxRatio * 100).toFixed(0)}%），建议增加组件或使用 .v-distribute`,
