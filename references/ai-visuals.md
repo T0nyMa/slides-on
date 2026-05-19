@@ -13,12 +13,12 @@ slides-on 内建 AI 视觉内容生成能力，涵盖设计系统、架构图、
 ### 使用方式
 
 **Design 选择**：
-1. 读取 `references/designs/<design>.md` 了解各 design 特征
-2. 根据内容信号匹配（参考 `references/style-decision-matrix.md`）
+1. 读取 `designs/<design>.md` 了解各 design 特征
+2. 根据内容信号匹配 design
 3. 将 design 推荐写入 `style-decision.md`
 
 **4 维调整**：
-参考 `references/dimensions/` 中的 texture.md、mood.md、typography.md、density.md
+参考 `dimensions/` 中的 texture.md、mood.md、typography.md、density.md
 
 ## SVG 架构图
 
@@ -33,7 +33,7 @@ slides-on 内建 AI 视觉内容生成能力，涵盖设计系统、架构图、
 当 deck 中需要架构图/流程图时：
 
 1. 描述架构/流程的结构（节点、连接、层级）
-2. 参考 `references/diagram/<type>.md` 选择合适的图类型
+2. 参考 `../slides-diagram/<type>.md` 选择合适的图类型
 3. 生成 SVG 代码（遵循 z-order 规则）
 
 **SVG z-order 规则**（必须严格遵守）：
@@ -170,7 +170,7 @@ export IMAGINE_DESIGN="sketch-notes"
 当 deck 中需要信息图时：
 
 1. 确定信息类型（对比、流程、层级、数据等）
-2. 选择 layout + style 组合（参考 `references/style-decision-matrix.md` 中的推荐）
+2. 选择 layout + style 组合（参考 `../slides-imagine/infographic/` 中的布局和风格文件）
 3. 编写信息图 prompt
 4. 生成图片并嵌入 HTML
 

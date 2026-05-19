@@ -102,5 +102,6 @@ blueprint, bold-editorial, chalkboard, corporate, dark-atmospheric, editorial-in
 - `prompt-construction.md` — 三层 Prompt 组装规范
 - `archetypes.md` — 10 种构图模板
 - `style-definitions/` — 17 个 Style Lock 定义
+- `infographic/` — 21 种信息图布局 × 22 种视觉风格
 - `../../references/ai-visuals.md` — AI 视觉总览
 - `providers/` — 5 个 Provider 详情

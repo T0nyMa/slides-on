@@ -122,7 +122,7 @@ Use the grid classes (`g2` through `g6`) for multi-column content. Never manuall
 - 启用 Container Query（`container-type: inline-size`），`cqi` 单位等比缩放
 - Slide 默认 `padding: 4.5cqi; justify-content: flex-start`
 
-内容策略：使用 Component Palette（`assets/components.css`）自由拼装，不推荐 16:9 的 single-page layout。详见 `references/components.md`。
+内容策略：使用 Component Palette（`assets/components.css`）自由拼装，不推荐 16:9 的 single-page layout。详见 `../slides-card/components.md`。
 
 导出：`bun scripts/render-precise.ts --canvas 3:4` → 810×1080 @2x。
 

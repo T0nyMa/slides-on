@@ -1,6 +1,16 @@
 # AI Image Prompt Construction
 
-结构化 prompt 组装指南。替代 `base-prompt.md` 中遗留的扁平 style token 方式。
+结构化 prompt 组装指南。
+
+## 目录
+
+- [核心原则](#核心原则)
+- [Image Role: illustration](#image-role-illustration)
+- [Image Role: content-page](#image-role-content-page)
+- [Image-1 Anchor Chain](#image-1-anchor-chain)
+- [Style Definition 选择规则](#style-definition-选择规则)
+- [Provider-Specific 适配](#provider-specific-适配)
+- [Assembly Checklist](#assembly-checklist)
 
 ## 核心原则
 
@@ -9,7 +19,7 @@
 ```
 Layer 1: Image Specs & Universal Constraints  ← Image Role 决定
 Layer 2: Style Lock                           ← Design 决定 (style-definitions/*.md 的 style_lock)
-Layer 3: Archetype Composition + Content      ← Archetype 决定 (references/archetypes.md)
+Layer 3: Archetype Composition + Content      ← Archetype 决定 (archetypes.md)
 ```
 
 **Universal × Design-specific 正交**：
@@ -42,7 +52,7 @@ Quality: high quality, 2k, detailed, professional, clean composition.
 
 ### Layer 2 组装
 
-**单页生成**：从 `references/style-definitions/{design}.md` 加载完整 Visual DNA。
+**单页生成**：从 `style-definitions/{design}.md` 加载完整 Visual DNA。
 
 **多页生成**：使用该文件的 `style_lock`（浓缩 8–12 行段落），**原样粘贴**到每页 prompt 中，保证跨页一致性。仅在首张图 prompt 中附带完整 Color Palette 供初次锚定。
 
@@ -56,7 +66,7 @@ This style lock is identical across all pages. Only the central diagram layout c
 
 ### Layer 3 组装
 
-从 `references/archetypes.md` 选择匹配的语义 Archetype，加载其通用构图模板，替换其中的占位符。
+从 `archetypes.md` 选择匹配的语义 Archetype，加载其通用构图模板，替换其中的占位符。
 
 ```text
 ## Archetype: {archetype name}
@@ -157,7 +167,7 @@ Quality: 2k, detailed, professional, clean composition.
 
 ### Layer 3 组装
 
-与 illustration role 相同：从 `references/archetypes.md` 选择 Archetype，但额外加入中文文字列表。
+与 illustration role 相同：从 `archetypes.md` 选择 Archetype，但额外加入中文文字列表。
 
 ```text
 ## Page Content
@@ -282,7 +292,7 @@ bun scripts/imagine/main.ts \
 根据 pipeline Step 2 选定的 design，加载对应的 style-definition：
 
 ```
-design → references/style-definitions/{design}.md
+design → style-definitions/{design}.md
 
 如果 style-definition 不存在 → 使用 base-prompt.md 中的 legacy style token（降级）
 如果 style-definition 存在 → 使用结构化 prompt 组装（升级路径）
@@ -357,7 +367,7 @@ Provider 注册表和自动选择逻辑在 `scripts/imagine/config.ts`。以下�
 生成图片前检查：
 
 - [ ] Image role 确定（illustration or content-page）
-- [ ] Archetype 已从 `references/archetypes.md` 选择，匹配内容语义
+- [ ] Archetype 已从 `archetypes.md` 选择，匹配内容语义
 - [ ] Style-definition 文件已加载，`style_lock` 已提取
 - [ ] Layer 1 包含正确的 aspect ratio 和质量 token
 - [ ] Layer 2 粘贴了完整的 style_lock（多页时原样复用，不修改）
@@ -367,10 +377,4 @@ Provider 注册表和自动选择逻辑在 `scripts/imagine/config.ts`。以下�
 - [ ] Image-1 Anchor Chain 已考虑：首图无 ref，后续有 ref 或文本锚定
 - [ ] 多页生成时：style_lock 跨页完全一致，只改变 central diagram 区域的内容
 
-## 与 Legacy base-prompt.md 的关系
-
-`base-prompt.md` 中的 style token 表（一行一句描述）标记为 **legacy**。在以下场景仍可使用：
-- 对应的 style-definition 文件尚未创建（P2 及以后的 9 个 design）
-- 需要快速原型，不需要精确视觉控制
-
-对于有 style-definition 文件的 17 个 design，**必须**使用本文档的结构化 prompt 组装方式。
+对于所有 17 个 design，使用本文档的结构化 prompt 组装方式。

@@ -67,8 +67,8 @@ bun ../../scripts/svg-to-png.ts diagram.svg
 
 ## 核心参考
 
-- `../../references/diagram/architecture.md` — 架构图规范
-- `../../references/diagram/flowchart.md` — 流程图规范
-- `../../references/diagram/sequence.md` — 时序图规范
-- `../../references/diagram/structural.md` — 结构图规范
+- `architecture.md` — 架构图规范
+- `flowchart.md` — 流程图规范
+- `sequence.md` — 时序图规范
+- `structural.md` — 结构图规范
 - `../../references/ai-visuals.md` — SVG 图集成到 slides 的方式

@@ -227,7 +227,7 @@ bash scripts/new-deck.sh <deck-name>
 
 ### 3:4 Portrait
 
-通过 `<body class="portrait">` 一键切换。采用 Design CSS 架构：加载 `assets/components.css` + `assets/designs/{name}.css`，页面用 Chrome 片段（`chr-*`）+ `c-*` 组件拼装。详见 `references/portrait-user-guide.md` 和 `references/content-rules-portrait.md`。
+通过 `<body class="portrait">` 一键切换。采用 Design CSS 架构：加载 `assets/components.css` + `assets/designs/{name}.css`，页面用 Chrome 片段（`chr-*`）+ `c-*` 组件拼装。详见 `../slides-card/portrait-user-guide.md` 和 `../slides-card/content-rules-portrait.md`。
 
 ### 窄视口兜底
 

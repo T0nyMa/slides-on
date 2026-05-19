@@ -34,7 +34,7 @@ Content     = c-* 组件（assets/components.css），通过 var(--accent) 等�
 
 **已有 Design CSS**：`pastel-card`（马卡龙色块）、`white-editorial`（白底杂志）、`xhs-post`（手绘涂鸦）。完整实现见 `templates/full-decks/xhs-*/`。
 
-**制作指南**：`references/portrait-user-guide.md` — Design CSS 用法、组件搭配模式、填满画面技巧。
+**制作指南**：`portrait-user-guide.md` — Design CSS 用法、组件搭配模式、填满画面技巧。
 
 ## 一页一观点（同 16:9，但更严格）
 

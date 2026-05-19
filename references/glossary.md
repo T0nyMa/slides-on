@@ -72,7 +72,7 @@ Design 包含：
 - **Density**：信息密度（minimal / balanced / dense）
 - **Animation**：动画风格偏好（fade / slide / none）
 
-**文件位置**: `references/designs/<name>.md`（定义文档）+ 对应的 CSS 覆盖文件
+**文件位置**: `designs/<name>.md`（定义文档）+ 对应的 CSS 覆盖文件
 
 **Scope**: Slides 级。一个 Slides 应用一个 Design。Design 与 Template 正交——同一个 Design 可以套到不同 Template 上。
 

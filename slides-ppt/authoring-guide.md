@@ -19,7 +19,7 @@ CSS, already handled in `base.css`).
 
 ## 2. Pick a visual skin
 
-**16:9 landscape**: Pick a theme from `references/themes.md`. When in doubt:
+**16:9 landscape**: Pick a theme from `themes.md`. When in doubt:
 
 - **Engineers** → `catppuccin-mocha` / `tokyo-night` / `dracula`.
 - **Designers / product** → `editorial-serif` / `aurora` / `soft-pastel`.
@@ -40,7 +40,7 @@ and list alternatives in `data-themes` so the user can press T to audition.
 <link rel="stylesheet" href="assets/designs/{name}.css">
 <body class="d-{name} portrait">
 ```
-Available designs: `pastel-card` (马卡龙色块), `white-editorial` (白底杂志), `xhs-post` (手绘涂鸦). See `references/portrait-user-guide.md`.
+Available designs: `pastel-card` (马卡龙色块), `white-editorial` (白底杂志), `xhs-post` (手绘涂鸦), plus 12 more. See `../slides-card/portrait-user-guide.md`.
 
 ## 3. Outline the deck
 
@@ -52,7 +52,7 @@ section-divider #2 → [2-4 body pages] → section-divider #3 →
 [2-4 body pages] → cta → thanks
 ```
 
-Pick 1 layout per page from `references/layouts.md`. Don't repeat the same
+Pick 1 layout per page from `layouts.md`. Don't repeat the same
 layout twice in a row.
 
 ## 4. Scaffold the deck
@@ -77,7 +77,7 @@ outline.
 **3:4 portrait**: Use Chrome fragments (`chr-*`) + `c-*` components to build each slide:
 1. Add chrome shell: `chr-topbar`, `chr-blob`, `chr-footer` etc. (see the Design's template for which chrome elements to include).
 2. Fill with `c-*` components: `c-card`, `c-grid-2/3`, `c-quote`, `c-steps`, `c-kpi`, `c-badge` etc.
-3. Follow the component patterns in `references/portrait-user-guide.md` for each page type (cover, pain page, concept page, steps, CTA, thanks).
+3. Follow the component patterns in `../slides-card/portrait-user-guide.md` for each page type (cover, pain page, concept page, steps, CTA, thanks).
 
 ## 6. Add animations sparingly
 
@@ -124,7 +124,7 @@ bun scripts/render-precise.ts examples/my-talk/index.html --canvas 3:4 --slides 
 bun scripts/render-precise.ts examples/my-talk/index.html --slides 12 --dsf 2 --output out/
 ```
 
-See `references/export.md` for PPTX and PDF export options.
+See `export.md` for PPTX and PDF export options.
 
 ## 10. What to NOT do
 

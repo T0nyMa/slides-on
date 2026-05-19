@@ -2,6 +2,16 @@
 
 共享组件库，与 design/theme 无关，16:9 和 3:4 通用。通过 CSS Variables 自动适配任意 theme。
 
+## 目录
+
+- [使用方式](#使用方式)
+- [Chrome 片段（chr-*）](#chrome-片段chr-)
+- [核心理念](#核心理念)
+- [组件目录](#组件目录)
+- [HTML 结构参考](#html-结构参考)
+- [HTML 结构参考（Article）](#html-结构参考article)
+- [典型组合模式](#典型组合模式)
+
 ## 使用方式
 
 在 HTML 中加载 `components.css`（在 base.css 和 theme 之后）：

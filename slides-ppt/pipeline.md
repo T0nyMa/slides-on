@@ -134,7 +134,7 @@ Step 4: 导出 ──────── 产出 PNG / PPTX / PDF
 
 根据内容类型匹配 html-ppt layout（31 种）：
 
-详见 `references/layouts.md`
+详见 `layouts.md`
 
 ### 2.4 混合渲染策略
 
@@ -212,8 +212,8 @@ Deck
 </section>
 ```
 
-详见 `references/animations.md`
+详见 `animations.md`
 
 ## Step 4: 导出
 
-详见 `references/export.md`
+详见 `export.md`

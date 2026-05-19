@@ -114,4 +114,4 @@ social media cards), use Design CSS instead. Design CSS files
 (`assets/designs/{name}.css`) additionally define Chrome element styles
 (`chr-*`) and c-* component extensions, scoped to a body class (`.d-{name}`).
 
-See `references/portrait-user-guide.md` for the full 3:4 Design CSS workflow.
+See `../slides-card/portrait-user-guide.md` for the full 3:4 Design CSS workflow.

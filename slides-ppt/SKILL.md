@@ -141,11 +141,20 @@ bun ../../scripts/merge-to-pdf.ts png-out/ --output deck.pdf
 - `content-rules.md` — 16:9 内容规范
 - `layouts.md` — 31 种布局参考
 - `themes.md` — 36 主题
+- `pipeline.md` — 四步流水线详解
+- `analysis-framework.md` — 内容分析框架
 - `../../references/designs/` — 18 个 design 概念
 - `../../references/dimensions/` — 4 维调整指南
-- `analysis-framework.md` — 内容分析框架
 - `../../references/component-recipes.md` — 页面原型 + 组件配方
 - `../../references/content-planning.md` — 内容语义 → 组件查表
-- `../../references/ai-visuals.md` — AI 图片生成 → 用 slides-imagine
-- `../../references/diagram/` — SVG 架构图 → 用 slides-diagram
 - `../../references/glossary.md` — 术语表
+- `../../references/ai-visuals.md` — AI 图片生成 → 用 slides-imagine
+- `../slides-diagram/` — SVG 架构图 → 用 slides-diagram
+- `animations.md` — 27 CSS 动画 + 20 Canvas FX
+- `export.md` — PNG/PPTX/PDF 导出指南
+- `html-engine.md` — HTML 渲染引擎详解
+- `full-decks.md` — 15 个 deck 模板参考
+- `authoring-guide.md` — 手写 HTML 编写指南
+- `presenter-mode.md` — 演示者模式指南
+- `keyboard-shortcuts.md` — 交互快捷键
+- `engagement-analysis.md` — Engagement 驱动分析
