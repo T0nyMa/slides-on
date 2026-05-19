@@ -30,7 +30,7 @@ description: >
 
 **页数**：< 500 字 3-5 页，500-1500 字 5-8 页，> 1500 字 8-12 页。
 
-**产出**：`outline.md`，每页含组件规划表（先分析语义，再查 `../../references/content-planning.md` 选组件）。
+**产出**：`outline.md`，每页含组件规划表（先分析语义，再查 `../../references/component-recipes.md` 选组件）。
 
 ### Step 2: 风格决策
 
@@ -133,8 +133,7 @@ bun ../../scripts/render-precise.ts index.html --canvas 3:4 --slides auto --outp
 
 - `../../references/content-rules-portrait.md` — 3:4 内容规范（组件大小、字数、密度）
 - `../../references/portrait-user-guide.md` — 竖版制作指南
-- `../../references/component-recipes.md` — 10 种页面原型 + 组件配方
-- `../../references/content-planning.md` — 内容语义 → 组件查表
+- `../../references/component-recipes.md` — 10 种页面原型 + 组件配方 + 内容语义 → 组件查表
 - `../../references/components.md` — 组件库参考
 - `../../references/ai-visuals.md` — AI 图片生成 → 用 slides-imagine
 - `../../references/design-guidelines.md` — 设计指南

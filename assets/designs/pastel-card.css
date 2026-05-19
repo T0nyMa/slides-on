@@ -259,8 +259,6 @@
   padding: 3cqi 3.5cqi;
   box-shadow: var(--shadow);
 }
-.d-pastel-card .c-icon-card:nth-child(odd)  { background: var(--pc-peach); }
-.d-pastel-card .c-icon-card:nth-child(even) { background: var(--pc-sky); }
 .d-pastel-card .c-article > .c-icon-card:nth-child(4n+1) { background: var(--pc-peach); }
 .d-pastel-card .c-article > .c-icon-card:nth-child(4n+2) { background: var(--pc-sky); }
 .d-pastel-card .c-article > .c-icon-card:nth-child(4n+3) { background: var(--pc-mint); }
