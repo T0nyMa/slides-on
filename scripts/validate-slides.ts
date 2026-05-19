@@ -67,7 +67,7 @@ const ACCENT_COLORS = new Set(["mint", "green", "blue", "purple", "sky", "lilac"
 
 const VALID_SLIDE_TYPES = [
   "cover", "section", "cards-2x2", "cards-3",
-  "quote", "steps", "code", "table", "thanks", "bullets", "kpi", "html", "layout",
+  "quote", "steps", "code", "table", "thanks", "bullets", "kpi", "article", "html", "layout",
 ] as const;
 
 const VALID_BLOBS = ["b1", "b2", "b3"];
@@ -203,6 +203,7 @@ function checkBudget(slide: any, design: string): CheckResult[] {
   if (slide.kpis) componentCount++; // c-row counts as 1
   if (slide.quote) componentCount++;
   if (slide.badges?.length) componentCount++;
+  if (slide.blocks) componentCount += slide.blocks.length >= 4 ? 2 : 1;
   if (slide.html) componentCount += 3; // assume custom HTML fills the page
 
   if (slide.type === "html") {
@@ -321,6 +322,43 @@ function checkBudget(slide: any, design: string): CheckResult[] {
     results.push(warn("budget.badges-count", `${slide.badges.length} badges (max 4)`));
   }
 
+  // Article block checks
+  if (slide.blocks) {
+    if (slide.blocks.length < 3) {
+      results.push(warn("budget.blocks-count", `Only ${slide.blocks.length} blocks (min 3 for article)`));
+    } else if (slide.blocks.length > 5) {
+      results.push(fail("budget.blocks-count", `${slide.blocks.length} blocks (max 5). Split into two article pages`));
+    } else {
+      results.push(pass("budget.blocks-count", `${slide.blocks.length} blocks (3-5 OK)`));
+    }
+    for (let i = 0; i < slide.blocks.length; i++) {
+      const block = slide.blocks[i];
+      if (block.type === "badge-para") {
+        if (block.label && charCount(block.label) > 6) {
+          results.push(warn("budget.block-label", `Block[${i}] badge label too long: ${charCount(block.label)} chars (max 6)`));
+        }
+        if (block.body && charCount(block.body) > 80) {
+          results.push(warn("budget.block-body", `Block[${i}] badge-para body too long: ${charCount(block.body)} chars (max 80)`));
+        }
+      } else if (block.type === "icon-card") {
+        if (block.title && charCount(block.title) > 12) {
+          results.push(warn("budget.block-title", `Block[${i}] icon-card title too long: ${charCount(block.title)} chars (max 12)`));
+        }
+        if (block.body && charCount(block.body) > 50) {
+          results.push(warn("budget.block-body", `Block[${i}] icon-card body too long: ${charCount(block.body)} chars (max 50)`));
+        }
+      } else if (block.type === "quote-bar") {
+        if (block.text && charCount(block.text) > 60) {
+          results.push(warn("budget.block-text", `Block[${i}] quote-bar text too long: ${charCount(block.text)} chars (max 60)`));
+        }
+      } else if (block.type === "numbered-list") {
+        if (block.items && block.items.length > 5) {
+          results.push(warn("budget.block-items", `Block[${i}] numbered-list has ${block.items.length} items (max 5)`));
+        }
+      }
+    }
+  }
+
   return results;
 }
 
@@ -337,18 +375,19 @@ function checkPortraitBudget(config: any, slides: any[]): CheckResult[] {
       results.push(fail(prefix, `Title too long for 3:4: "${s.title.slice(0, 20)}..." (${charCount(s.title)} chars, max 15)`));
     }
 
-    // H2 titles (cards, steps, code, kpi, bullets, table): max 10 chars
-    const headingTypes = ["cards-2x2", "cards-3", "steps", "code", "kpi", "bullets", "table"];
+    // H2 titles (cards, steps, code, kpi, bullets, table, article): max 10 chars
+    const headingTypes = ["cards-2x2", "cards-3", "steps", "code", "kpi", "bullets", "table", "article"];
     if (headingTypes.includes(s.type) && s.title && charCount(s.title) > 10) {
       results.push(fail(prefix, `H2 title too long for 3:4: "${s.title.slice(0, 20)}..." (${charCount(s.title)} chars, max 10)`));
     }
 
-    // Count total components (cards + steps + kpis + bullets)
+    // Count total components (cards + steps + kpis + bullets + blocks)
     let componentCount = 0;
     if (s.cards) componentCount += s.cards.length;
     if (s.steps) componentCount += s.steps.length;
     if (s.kpis) componentCount += s.kpis.length;
     if (s.bullets) componentCount += s.bullets.length;
+    if (s.blocks) componentCount += s.blocks.length;
     if (componentCount > 6) {
       results.push(fail(prefix, `Too many components for 3:4: ${componentCount} (max 6)`));
     }
@@ -433,6 +472,14 @@ function checkAnchor(slide: any): CheckResult[] {
     case "thanks":
       if (!slide.title) results.push(warn("anchor.missing", "Thanks page has no title"));
       else results.push(pass("anchor.present", "Anchor: h1 thanks title"));
+      break;
+
+    case "article":
+      if (!slide.blocks?.length) {
+        results.push(warn("anchor.missing", "Article page has no blocks defined"));
+      } else {
+        results.push(pass("anchor.present", `Anchor: ${slide.blocks.length} article blocks`));
+      }
       break;
 
     case "code":
