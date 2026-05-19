@@ -89,6 +89,12 @@
   background: var(--surface); border: 1.5px solid var(--border); color: var(--text-2);
 }
 
+/* ── Slide padding: clear chrome elements in composed mode ── */
+.d-composed .slide {
+  --slide-pad-y: 9cqi;
+  --slide-pad-bottom: 7cqi;
+}
+
 /* ── Slide z-index for content children (not chrome) ── */
 .slide > :not([class*="chr-"]) { position: relative; z-index: 2; }
 
