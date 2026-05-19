@@ -26,6 +26,7 @@ export type SlideType =
   | "bullets"
   | "kpi"
   | "table"
+  | "article"
   | "html"
   | "layout";
 
@@ -70,6 +71,36 @@ export interface TableColumn {
   width?: string;  // e.g. "40%", "120px"
 }
 
+// ─── Article Block Types ─────────────────────────────────────────────
+
+export interface BadgeParaBlock {
+  type: "badge-para";
+  label: string;
+  labelColor?: "accent" | "warn" | "good" | "bad";
+  body: string;
+}
+export interface IconCardBlock {
+  type: "icon-card";
+  icon: string;
+  title: string;
+  body: string;
+}
+export interface QuoteBarBlock {
+  type: "quote-bar";
+  text: string;
+}
+export interface NumberedListBlock {
+  type: "numbered-list";
+  items: Array<{ keyword: string; body: string }>;
+}
+export interface PillTagsBlock {
+  type: "pill-tags";
+  tags: string[];
+}
+export type ArticleBlock = BadgeParaBlock | IconCardBlock | QuoteBarBlock | NumberedListBlock | PillTagsBlock;
+
+// ─── Slide Data ─────────────────────────────────────────────────────
+
 export interface SlideData {
   type: SlideType;
   // Content
@@ -93,6 +124,7 @@ export interface SlideData {
   bullets?: BulletItem[];
   kpis?: KpiItem[];
   badges?: string[];
+  blocks?: ArticleBlock[];
   layout?: string;
   slots?: Record<string, string>;
   html?: string;
