@@ -142,6 +142,8 @@ async function loadPage(htmlPath: string, viewport?: { width: number; height: nu
   const page = await browser.newPage(viewport ? { viewport } : {});
   await page.goto(`file://${htmlPath}`, { waitUntil: "networkidle" });
   await page.waitForSelector(".slide", { timeout: 5000 });
+  // Hide editor UI so it doesn't interfere with QA measurements
+  await page.addStyleTag({ content: '.editor-entry-badge,.editor-toolbar,.editor-canvas-label,.editor-float-toolbar{display:none!important}' });
   await page.evaluate("window.__name = function(t) { return t; }");
   return { browser, page };
 }

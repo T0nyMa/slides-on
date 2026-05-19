@@ -110,6 +110,10 @@ async function renderDeck(
   });
   const page = await context.newPage();
 
+  // Hide editor UI elements so they don't appear in screenshots
+  // (editor.js injects entry badge, toolbar, canvas label into body)
+  await page.addStyleTag({ content: '.editor-entry-badge,.editor-toolbar,.editor-canvas-label,.editor-float-toolbar{display:none!important}' });
+
   const startN = opts.slide ?? 1;
   const endN = opts.slide ?? slideCount;
 
