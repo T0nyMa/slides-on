@@ -18,7 +18,7 @@ description: >
 ## 核心约束
 
 1. canvas 固定 `3:4`（portrait），body class `portrait`
-2. 使用 assemble-deck 的 13 种 slide type（`cover`/`section`/`cards-2x2`/`cards-3`/`quote`/`steps`/`code`/`thanks`/`bullets`/`kpi`/`table`/`html`/`layout`），`code`/`steps`/`table` 等在 3:4 下均可正常渲染。**禁止直接复制 `templates/single-page/` 下的 HTML 文件**（two-column、chart-bar、gantt、timeline 等是 16:9 宽屏布局，放到 3:4 会变形）
+2. 使用 assemble-deck 的 14 种 slide type（`cover`/`section`/`cards-2x2`/`cards-3`/`quote`/`steps`/`code`/`thanks`/`bullets`/`kpi`/`table`/`html`/`layout`/`article`），`code`/`steps`/`table` 等在 3:4 下均可正常渲染。`article` 是异构垂直堆叠（badge-para + icon-card + quote-bar + numbered-list + pill-tags 自由混合）。**禁止直接复制 `templates/single-page/` 下的 HTML 文件**（two-column、chart-bar、gantt、timeline 等是 16:9 宽屏布局，放到 3:4 会变形）
 3. 所有视觉样式收归 Design CSS，页面 HTML 只负责结构和内容
 4. QA 门禁：L0 渲染前（validate-slides），L1 渲染后（visual-qa 18 项），BLOCKER > 0 阻塞
 
@@ -34,15 +34,27 @@ description: >
 
 ### Step 2: 风格决策
 
-**Slides 级**：`config.design` 必须是对象。通过 4 维自由组合：
+**Slides 级**：`config.design` 必须是对象。两种路线：
 
+**轻装路线**（Theme only）— 4 维自由组合，只换颜色不加 Chrome 壳层：
 - **typography**：`geometric` | `editorial` | `humanist` | `handwritten` | `technical`
 - **texture**：`clean` | `paper` | `grid` | `organic` | `pixel`
 - **density**：`minimal` | `balanced` | `dense`
 - **theme**：36 个颜色主题（`../../assets/themes/`）
 
+**品牌路线**（Design CSS）— 完整视觉皮肤（Chrome + 卡片背景 + 阴影 + 装饰 + 组件覆盖）：
+- **design**：`pastel-card` | `white-editorial` | `xhs-post` | `news-broadcast`
+- JSON 中必须有 `"design": "xxx"` 键才能加载 Design CSS。只写 `"theme"` 会 fallback 到基础样式
 
-**Slide 级**：使用 `c-*` 组件拼装（c-card、c-steps、c-kpi、c-icon-row、c-badge-row、c-warn 等）。
+```json
+// ✅ 品牌路线 — 激活 Design CSS
+{ "design": "pastel-card", "typography": "geometric", "density": "balanced" }
+
+// ❌ 错误 — 只有 theme，不会加载 Design CSS
+{ "theme": "pastel-card", "typography": "geometric" }
+```
+
+**Slide 级**：使用 `c-*` 组件拼装（c-card、c-steps、c-kpi、c-icon-row、c-badge-row、c-warn 等）。`article` 类型使用 5 种异构块（badge-para、icon-card、quote-bar、numbered-list、pill-tags）。
 
 **产出**：`style-decision.md`。
 
@@ -62,7 +74,7 @@ bun ../../scripts/validate-slides.ts --input slides.json
 bun ../../scripts/assemble-deck.ts --input slides.json --output index.html
 ```
 
-脚本自动完成 CSS 内联、Chrome 片段、c-* 组件拼装。Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps` | `code` | `thanks` | `bullets` | `kpi` | `table` | `html` | `layout`
+脚本自动完成 CSS 内联、Chrome 片段、c-* 组件拼装。Slide 类型：`cover` | `section` | `cards-2x2` | `cards-3` | `quote` | `steps` | `code` | `thanks` | `bullets` | `kpi` | `table` | `html` | `layout` | `article`
 
 **图片支持**：SlideData 原生 `image` 字段，支持 hero/background/inline 三种模式。
 
@@ -81,7 +93,14 @@ BLOCKER > 0 → Step 5 修复循环。
   "slides": [
     { "type": "cover", "title": "标题", "subtitle": "副标题", "image": { "src": "imgs/hero.png" }, "imageMode": "hero" },
     { "type": "cards-2x2", "title": "核心观点", "cards": [{ "num": "01", "title": "卡片", "body": "内容", "color": "peach", "image": "imgs/card.png" }] },
-    { "type": "steps", "title": "步骤", "steps": [{ "num": "1", "title": "第一步", "body": "描述", "image": "imgs/step.png" }] }
+    { "type": "steps", "title": "步骤", "steps": [{ "num": "1", "title": "第一步", "body": "描述", "image": "imgs/step.png" }] },
+    { "type": "article", "title": "干货分享", "blocks": [
+      { "type": "badge-para", "label": "核心观点", "body": "一段详细的解释文字..." },
+      { "type": "icon-card", "icon": "🔍", "title": "调研方法", "body": "描述文字" },
+      { "type": "quote-bar", "text": "引述一段重要观点" },
+      { "type": "numbered-list", "items": [{ "keyword": "第一", "body": "要点" }] },
+      { "type": "pill-tags", "tags": ["标签1", "标签2", "标签3"] }
+    ] }
   ]
 }
 ```
