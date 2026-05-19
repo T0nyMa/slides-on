@@ -235,3 +235,64 @@
   color: var(--accent);
   opacity: .7;
 }
+
+/* ══════════════════════════════════════════════════════
+   ARTICLE BLOCKS — pastel backgrounds + color cycling
+   ══════════════════════════════════════════════════════ */
+
+.d-pastel-card .c-article { gap: 3cqi; }
+
+/* Badge-para: larger label with rounded pill + pastel tint background */
+.d-pastel-card .c-badge-para-label {
+  padding: 0.6cqi 2cqi; border-radius: 999px;
+  font-size: 2.8cqi; font-weight: 800;
+  background: var(--pc-peach); color: var(--pc-peach-d);
+  border: none;
+}
+.d-pastel-card .c-badge-para-label.warn { background: var(--pc-lemon); color: var(--pc-lemon-d); }
+.d-pastel-card .c-badge-para-label.good { background: var(--pc-mint); color: var(--pc-mint-d); }
+.d-pastel-card .c-badge-para-label.bad  { background: var(--pc-rose); color: var(--pc-rose-d); }
+
+/* Icon-card: pastel card backgrounds, no border, cycle colors */
+.d-pastel-card .c-icon-card {
+  border: none; border-radius: var(--radius-lg);
+  padding: 3cqi 3.5cqi;
+  box-shadow: var(--shadow);
+}
+.d-pastel-card .c-icon-card:nth-child(odd)  { background: var(--pc-peach); }
+.d-pastel-card .c-icon-card:nth-child(even) { background: var(--pc-sky); }
+.d-pastel-card .c-article > .c-icon-card:nth-child(4n+1) { background: var(--pc-peach); }
+.d-pastel-card .c-article > .c-icon-card:nth-child(4n+2) { background: var(--pc-sky); }
+.d-pastel-card .c-article > .c-icon-card:nth-child(4n+3) { background: var(--pc-mint); }
+.d-pastel-card .c-article > .c-icon-card:nth-child(4n)   { background: var(--pc-lilac); }
+.d-pastel-card .c-icon-card-icon { font-size: 6cqi; }
+
+/* Quote-bar: warm gradient background, thicker accent bar */
+.d-pastel-card .c-quote-bar {
+  border-left-width: 0.8cqi;
+  border-left-color: var(--accent);
+  background: linear-gradient(135deg, var(--pc-peach) 0%, var(--pc-lemon) 100%);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--text-1); font-weight: 700;
+  padding: 2.5cqi 3.5cqi;
+}
+
+/* Numbered-list: accent circle numbers */
+.d-pastel-card .c-numbered-item-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 5cqi; height: 5cqi; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-size: 2.5cqi; font-weight: 900;
+  flex: none;
+}
+.d-pastel-card .c-numbered-item-keyword { color: var(--accent); }
+
+/* Pill-tags: pastel backgrounds */
+.d-pastel-card .c-pill-tags .c-badge {
+  border: none; font-weight: 700;
+  box-shadow: var(--shadow);
+}
+.d-pastel-card .c-pill-tags .c-badge:nth-child(4n+1) { background: var(--pc-peach); color: var(--pc-peach-d); }
+.d-pastel-card .c-pill-tags .c-badge:nth-child(4n+2) { background: var(--pc-sky); color: var(--pc-sky-d); }
+.d-pastel-card .c-pill-tags .c-badge:nth-child(4n+3) { background: var(--pc-mint); color: var(--pc-mint-d); }
+.d-pastel-card .c-pill-tags .c-badge:nth-child(4n)   { background: var(--pc-lilac); color: var(--pc-lilac-d); }
