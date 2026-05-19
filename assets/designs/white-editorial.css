@@ -207,6 +207,60 @@
 .d-white-editorial .chr-codebox .st { color: #a8c292; }
 .d-white-editorial .chr-codebox .hl { color: #e9c58a; font-weight: 600; }
 
+/* ══════════════════════════════════════════════════════
+   ARTICLE BLOCKS — clean modern + subtle color tints
+   ══════════════════════════════════════════════════════ */
+
+.d-white-editorial .c-article { gap: 3cqi; }
+
+/* Badge-para: strong colored pill label */
+.d-white-editorial .c-badge-para-label {
+  padding: 0.6cqi 2cqi; border-radius: 999px;
+  font-size: 2.5cqi; font-weight: 800;
+  background: var(--text-1); color: #fff;
+}
+.d-white-editorial .c-badge-para-label.warn { background: var(--we-soft-orange); color: #b54708; }
+.d-white-editorial .c-badge-para-label.good { background: var(--we-soft-green); color: #067647; }
+.d-white-editorial .c-badge-para-label.bad  { background: var(--we-soft-pink); color: #c11574; }
+
+/* Icon-card: soft tinted backgrounds, clean borders, cycle colors */
+.d-white-editorial .c-icon-card {
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 3cqi 3.5cqi;
+}
+.d-white-editorial .c-article > .c-icon-card:nth-child(4n+1) { background: var(--we-soft-purple); }
+.d-white-editorial .c-article > .c-icon-card:nth-child(4n+2) { background: var(--we-soft-blue); }
+.d-white-editorial .c-article > .c-icon-card:nth-child(4n+3) { background: var(--we-soft-green); }
+.d-white-editorial .c-article > .c-icon-card:nth-child(4n)   { background: var(--we-soft-pink); }
+.d-white-editorial .c-icon-card-icon { font-size: 6cqi; }
+
+/* Quote-bar: rainbow gradient left border */
+.d-white-editorial .c-quote-bar {
+  border-left: 0.8cqi solid transparent;
+  border-image: var(--grad) 1;
+  background: var(--we-soft-purple);
+  color: var(--text-1); font-weight: 700;
+  padding: 2.5cqi 3.5cqi;
+}
+
+/* Numbered-list: dark circle numbers */
+.d-white-editorial .c-numbered-item-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 5cqi; height: 5cqi; border-radius: 50%;
+  background: var(--text-1); color: #fff;
+  font-size: 2.2cqi; font-weight: 900;
+  flex: none;
+}
+
+/* Pill-tags: soft tinted backgrounds */
+.d-white-editorial .c-pill-tags .c-badge {
+  border: none; font-weight: 700;
+}
+.d-white-editorial .c-pill-tags .c-badge:nth-child(4n+1) { background: var(--we-soft-purple); color: var(--we-purple); }
+.d-white-editorial .c-pill-tags .c-badge:nth-child(4n+2) { background: var(--we-soft-blue); color: #174ea6; }
+.d-white-editorial .c-pill-tags .c-badge:nth-child(4n+3) { background: var(--we-soft-green); color: #067647; }
+.d-white-editorial .c-pill-tags .c-badge:nth-child(4n)   { background: var(--we-soft-pink); color: #c11574; }
+
 .d-white-editorial.portrait {
   --grid-cols-2: repeat(2, 1fr);
   --grid-cols-3: repeat(3, 1fr);
