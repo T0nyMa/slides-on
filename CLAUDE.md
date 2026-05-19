@@ -215,7 +215,8 @@ slides-on/
 │   ├── fonts.css                   #   系统字体栈
 │   ├── components.css              #   共享组件库（cqi + CSS vars, 3:4 自适应）
 │   ├── runtime.js                  #   交互引擎 960 行
-│   ├── designs/                    #   3 个 Design CSS（可移植视觉皮肤）
+│   ├── designs/                    #   4 个 Design CSS（可移植视觉皮肤）
+│   │   ├── news-broadcast.css       #     新闻播报风
 │   │   ├── pastel-card.css         #     马卡龙色块风
 │   │   ├── white-editorial.css     #     白底杂志风
 │   │   └── xhs-post.css            #     手绘涂鸦风
@@ -328,7 +329,7 @@ Slides（最终产物 = index.html）
 ### Step 2: 风格决策
 
 两级决策（36 主题系统 + 4 维风格 + 信息图视觉风格）：
-- **Slides 级**：选择 design（18 个 design 概念，其中 3 个有完整 Design CSS：pastel-card, white-editorial, xhs-post）。现有 36 个 HTML theme，支持 4 维自定义（Texture × Mood × Typography × Density）
+- **Slides 级**：选择 design（18 个 design 概念，其中 4 个有完整 Design CSS：pastel-card, white-editorial, xhs-post, news-broadcast）。现有 36 个 HTML theme，支持 4 维自定义（Texture × Mood × Typography × Density）
 - **Slide 级**：根据每页内容类型匹配
   - HTML layout（31 种 single-page 布局）用于文字、代码、图表等
   - Infographic layout（21 种信息图布局）+ visual style（22 种视觉风格）用于信息图页
