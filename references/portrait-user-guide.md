@@ -56,7 +56,7 @@ CSS 变量 + Chrome 样式 + c-* 扩展。适合需要品牌辨识度、社交�
 
 包含：`chr-topbar`（顶栏）、`chr-chip`（标签）、`chr-footer`（底栏）、`chr-blob`（装饰背景）、卡片颜色变体、排版专属类等。
 
-已有完整 Design：`pastel-card`（马卡龙色块）、`white-editorial`（白底杂志）、`xhs-post`（手绘涂鸦）。实现见 `templates/full-decks/xhs-*/` 和 `assets/designs/`。
+已有完整 Design：`pastel-card`（马卡龙色块）、`white-editorial`（白底杂志）、`xhs-post`（手绘涂鸦）、`news-broadcast`（新闻播报）。实现见 `templates/full-decks/xhs-*/` 和 `assets/designs/`。
 
 **极简和完整之间是渐进式的**——从极简 Design 开始，需要什么 Chrome 就加什么，逐步丰富。
 
@@ -188,6 +188,15 @@ h2 → c-formula → c-steps（3 步）→ c-example（完整示例）→ c-card
 
 锚点：`c-formula` 核心行动。`c-example` 给一个可直接复制的完整示例。
 
+#### 干货分享页（article）
+
+```
+type: "article"
+h2 → c-article（badge-para + icon-card + quote-bar + numbered-list + pill-tags 自由混合）
+```
+
+锚点：`c-article` 异构块堆叠。填充留白时多组合不同块类型（badge-para + icon-card + quote-bar），禁止放大字号或拉伸间距。密度按块高度预估（badge-para ~10cqi, icon-card ~12cqi, numbered-list items×6cqi），总高 ≥65cqi 合格。
+
 #### Thanks 页
 
 ```
@@ -195,6 +204,32 @@ c-glass（h1 + c-quote + c-quote-attr）→ c-section（回顾要点 → c-icon-
 ```
 
 锚点：`c-glass` 大标题。`c-section` 做要点回顾让 Thanks 页有信息量。
+
+---
+
+## 新增组件的 Design CSS 规则
+
+新增 `c-*` 组件时，必须在**每个** Design CSS（`assets/designs/*.css`）里加对应的样式覆盖。不加的话，任何 Design 下新组件都是白底细线框。
+
+### 必做清单
+
+1. **Base 样式**（`assets/components.css`）— 组件的默认结构和视觉，不依赖 Design CSS 就能工作
+2. **Design 覆盖**（`assets/designs/*.css`）— 每个 Design 对新组件的视觉定制（边框、阴影、背景色、圆角、字体）
+3. **QA 选择器**（`scripts/qa/selectors.ts`）— BASE_CONTENT 和 BASE_TEXT 必须包含新组件选择器，否则 visual-qa 误报填充率
+
+### nth-child 自动配色
+
+Design CSS 里用 `nth-child(4n+1/2/3/4)` 给重复组件循环配色，不需要 slides.json 手动指定颜色：
+
+```css
+/* 示例：xhs-post 的 icon-card 四色循环 */
+.d-xhs-post .c-article > .c-icon-card:nth-child(4n+1) { background: #fff; }
+.d-xhs-post .c-article > .c-icon-card:nth-child(4n+2) { background: #ffd3e0; }
+.d-xhs-post .c-article > .c-icon-card:nth-child(4n+3) { background: #cfeaff; }
+.d-xhs-post .c-article > .c-icon-card:nth-child(4n)   { background: #d4f2c8; }
+```
+
+所有支持多实例的组件（icon-card、pill-tags）都应在 Design CSS 中加 nth-child 配色。
 
 ---
 
