@@ -185,7 +185,7 @@ export function renderBullets(m: DesignManifest, s: SlideData, ctx: PageContext)
     <div class="c-stack${isPortrait ? " v-fill" : ""}">
       ${items.map((item) => {
         const iconHtml = item.image
-          ? renderInlineImage(m, item.image)
+          ? `<div class="c-icon-row-icon">${renderInlineImage(m, item.image)}</div>`
           : `<div class="c-icon-row-icon">${esc(item.icon)}</div>`;
         return `
       <div class="c-icon-row">
@@ -250,6 +250,7 @@ export function renderTable(m: DesignManifest, s: SlideData, ctx: PageContext): 
   const cols = s.tableColumns || [];
   const rows = s.tableRows || [];
   const rowCount = rows.length;
+  const isPortrait = ctx.canvas === "3:4";
   // Enable adaptive sizing at 10/12/15 rows
   const dataRowsAttr = rowCount >= 10 ? ` data-rows="${Math.min(rowCount, 15)}"` : "";
 
@@ -267,13 +268,15 @@ export function renderTable(m: DesignManifest, s: SlideData, ctx: PageContext): 
   ).join("\n        ");
 
   const headingClass = m.classes.title === "chr-title" ? "chr-heading" : m.classes.title;
+  // Portrait: limit table to avoid footer overlap + horizontal scroll
+  const wrapClass = isPortrait ? "c-table-wrap v-fill" : "c-table-wrap";
 
   return `<section class="slide">
     ${renderSlideImage(m, s)}
     ${chromeTop(m, s, ctx)}
     ${s.title ? `<h2 class="${headingClass}">${s.title}</h2>` : ""}
     ${s.body ? `<p class="${m.classes.body}">${esc(s.body)}</p>` : ""}
-    <div class="c-table-wrap">
+    <div class="${wrapClass}">
       <table class="c-table c-table-striped"${dataRowsAttr}>
         <thead>${headerRow}</thead>
         <tbody>

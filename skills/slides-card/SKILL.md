@@ -18,7 +18,7 @@ description: >
 ## 核心约束
 
 1. canvas 固定 `3:4`（portrait），body class `portrait`
-2. 使用 Component Palette（`c-*` 自由拼装），不用 single-page layout
+2. 使用 assemble-deck 的 13 种 slide type（`cover`/`section`/`cards-2x2`/`cards-3`/`quote`/`steps`/`code`/`thanks`/`bullets`/`kpi`/`table`/`html`/`layout`），`code`/`steps`/`table` 等在 3:4 下均可正常渲染。**禁止直接复制 `templates/single-page/` 下的 HTML 文件**（two-column、chart-bar、gantt、timeline 等是 16:9 宽屏布局，放到 3:4 会变形）
 3. 所有视觉样式收归 Design CSS，页面 HTML 只负责结构和内容
 4. QA 门禁：L0 渲染前（validate-slides），L1 渲染后（visual-qa 18 项），BLOCKER > 0 阻塞
 
@@ -41,7 +41,6 @@ description: >
 - **density**：`minimal` | `balanced` | `dense`
 - **theme**：36 个颜色主题（`../../assets/themes/`）
 
-常用预设：`pastel-card`（马卡龙）、`xhs-post`（手绘）、自由组合。
 
 **Slide 级**：使用 `c-*` 组件拼装（c-card、c-steps、c-kpi、c-icon-row、c-badge-row、c-warn 等）。
 
