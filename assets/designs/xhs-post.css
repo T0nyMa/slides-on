@@ -178,3 +178,67 @@
 .d-xhs-post .c-card p.dim { font-size: 1.98cqi; margin-top: 0.49cqi; }
 .d-xhs-post .c-card .chr-card-num { font-size: 2.72cqi; font-weight: 800; }
 .d-xhs-post .chr-codebox { font-size: 1.85cqi; line-height: 1.75; overflow: auto; }
+
+/* ══════════════════════════════════════════════════════
+   ARTICLE BLOCKS — hand-drawn aesthetic
+   ══════════════════════════════════════════════════════ */
+
+.d-xhs-post .c-article { gap: 3cqi; }
+
+/* Badge-para: sticker-like dashed border label */
+.d-xhs-post .c-badge-para-label {
+  padding: 0.8cqi 2cqi; border-radius: 1.5cqi;
+  font-size: 2.8cqi; font-weight: 800;
+  background: #ffe788; color: var(--text-1);
+  border: .25cqi dashed var(--text-1);
+  box-shadow: .37cqi .37cqi 0 var(--text-1);
+}
+.d-xhs-post .c-badge-para-label.warn { background: #ffd3e0; }
+.d-xhs-post .c-badge-para-label.good { background: #d4f2c8; }
+.d-xhs-post .c-badge-para-label.bad  { background: #ffb3b3; }
+
+/* Icon-card: hand-drawn box with offset shadow */
+.d-xhs-post .c-icon-card {
+  border: .31cqi solid var(--text-1);
+  box-shadow: .62cqi .62cqi 0 var(--text-1);
+  border-radius: 2.72cqi;
+  padding: 3cqi 3.5cqi;
+}
+.d-xhs-post .c-article > .c-icon-card:nth-child(4n+1) { background: #fff; }
+.d-xhs-post .c-article > .c-icon-card:nth-child(4n+2) { background: #ffd3e0; }
+.d-xhs-post .c-article > .c-icon-card:nth-child(4n+3) { background: #cfeaff; }
+.d-xhs-post .c-article > .c-icon-card:nth-child(4n)   { background: #d4f2c8; }
+.d-xhs-post .c-icon-card-icon { font-size: 6cqi; }
+
+/* Quote-bar: dashed left border, warm background */
+.d-xhs-post .c-quote-bar {
+  border-left: .5cqi dashed var(--accent);
+  background: #fff5ef;
+  border-radius: 0 2cqi 2cqi 0;
+  color: var(--text-1); font-weight: 700;
+  padding: 2.5cqi 3.5cqi;
+  box-shadow: .37cqi .37cqi 0 rgba(90, 40, 30, 0.1);
+}
+
+/* Numbered-list: hand-drawn circle numbers */
+.d-xhs-post .c-numbered-item-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 5.5cqi; height: 5.5cqi; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-size: 2.5cqi; font-weight: 900;
+  flex: none;
+  border: .25cqi solid var(--text-1);
+  box-shadow: .37cqi .37cqi 0 var(--text-1);
+}
+.d-xhs-post .c-numbered-item-keyword { color: var(--accent); }
+
+/* Pill-tags: hand-drawn badges */
+.d-xhs-post .c-pill-tags .c-badge {
+  border: .25cqi solid var(--text-1);
+  box-shadow: .37cqi .37cqi 0 var(--text-1);
+  font-weight: 700;
+}
+.d-xhs-post .c-pill-tags .c-badge:nth-child(4n+1) { background: #ffe788; }
+.d-xhs-post .c-pill-tags .c-badge:nth-child(4n+2) { background: #ffd3e0; }
+.d-xhs-post .c-pill-tags .c-badge:nth-child(4n+3) { background: #cfeaff; }
+.d-xhs-post .c-pill-tags .c-badge:nth-child(4n)   { background: #d4f2c8; }
