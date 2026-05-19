@@ -1,0 +1,71 @@
+/* tech-sharing — dark terminal themed Design CSS (portfolio/tech talk) */
+/* Usage: body.d-tech-sharing.portrait for 3:4, .landscape for 16:9 */
+
+.d-tech-sharing {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface-2: #1c2230;
+  --border: rgba(139,148,158,.22);
+  --border-strong: rgba(139,148,158,.4);
+  --text-1: #e6edf3;
+  --text-2: #8b949e;
+  --text-3: #6e7681;
+  --accent: #7ee787;
+  --accent-2: #79c0ff;
+  --accent-3: #d2a8ff;
+  --good: #7ee787;
+  --bad: #ff7b72;
+  --warn: #ffbd2e;
+  --grad: linear-gradient(120deg, #7ee787 0%, #79c0ff 60%, #d2a8ff 100%);
+  --radius: 1.6cqi;
+  --radius-sm: 1.2cqi;
+  --radius-lg: 2.3cqi;
+  --shadow: 0 20px 60px rgba(0,0,0,.5);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,.5);
+  --font-display: 'Inter', 'Noto Sans SC', sans-serif;
+  --font-sans: 'Inter', 'Noto Sans SC', sans-serif;
+  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+  background: #0d1117;
+  color: var(--text-1);
+  font-family: var(--font-sans);
+}
+
+/* ── Slide backdrop gradient ── */
+.d-tech-sharing .slide { background: #0d1117; }
+.d-tech-sharing .slide::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(60% 50% at 90% 10%, rgba(121,192,255,.12), transparent 60%),
+    radial-gradient(50% 50% at 10% 90%, rgba(126,231,135,.08), transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+.d-tech-sharing .slide > * { position: relative; z-index: 1; }
+
+/* ── Chrome ── */
+.d-tech-sharing .chr-kicker { color: var(--accent); font-family: var(--font-mono); font-size: 1.6cqi; font-weight: 600; text-transform: none; letter-spacing: .02em; }
+.d-tech-sharing .chr-kicker::before { content: '> '; }
+
+/* ── Typography ── */
+.d-tech-sharing .chr-title { font-size: 9cqi; line-height: 1.03; font-weight: 800; letter-spacing: -.03em; color: #fff; }
+.d-tech-sharing .chr-heading { font-size: 6.5cqi; line-height: 1.1; font-weight: 700; letter-spacing: -.025em; color: #fff; }
+.d-tech-sharing .chr-sub { color: var(--text-2); }
+.d-tech-sharing h3, .d-tech-sharing h4 { color: #fff; }
+
+/* ── Syntax tokens ── */
+.d-tech-sharing .kw  { color: #ff7b72; }
+.d-tech-sharing .fn  { color: #d2a8ff; }
+.d-tech-sharing .str { color: #a5d6ff; }
+.d-tech-sharing .cmt { color: #8b949e; font-style: italic; }
+.d-tech-sharing .num { color: #79c0ff; }
+
+/* ── c-* Extensions ── */
+.d-tech-sharing .c-card,
+.d-tech-sharing .c-card-accent { box-shadow: none; }
+.d-tech-sharing .c-badge.accent { background: rgba(126,231,135,.12); color: var(--accent); border-color: rgba(126,231,135,.35); }
+.d-tech-sharing .c-terminal { background: #010409; border: 1px solid var(--border); border-radius: var(--radius); box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.d-tech-sharing .c-terminal-topbar { background: #161b22; border-bottom: 1px solid var(--border); }
+.d-tech-sharing .c-terminal-dot { width: 1.5cqi; height: 1.5cqi; }
+.d-tech-sharing .c-terminal-dot.red    { background: #ff5f56; }
+.d-tech-sharing .c-terminal-dot.yellow { background: #ffbd2e; }
+.d-tech-sharing .c-terminal-dot.green  { background: #27c93f; }
+.d-tech-sharing .c-terminal-body { padding: 3cqi 3.5cqi; }

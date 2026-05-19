@@ -1,0 +1,78 @@
+/* knowledge-arch-blueprint — cream paper + architectural blueprint Design CSS */
+/* Usage: body.d-blueprint activates */
+
+.d-blueprint {
+  --bg: #F0EAE0;
+  --surface: #ffffff;
+  --surface-2: #eae4d8;
+  --border: rgba(26,26,26,.12);
+  --border-strong: rgba(26,26,26,.28);
+  --text-1: #111111;
+  --text-2: #555555;
+  --text-3: #aaaaaa;
+  --accent: #B5392A;
+  --accent-2: #0a0a0a;
+  --accent-3: #cec8be;
+  --good: #2d7d6e;
+  --warn: #d88a3a;
+  --bad: #B5392A;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 18px;
+  --shadow: 0 8px 24px rgba(181,57,42,.12);
+  --shadow-lg: 0 10px 32px rgba(181,57,42,.22);
+  --font-display: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+  --font-sans: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, 'Noto Serif SC', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --bp-rust: #B5392A;
+  --bp-rust-soft: rgba(181,57,42,.08);
+  --bp-line: #cec8be;
+  --bp-ink: #1a1a1a;
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-sans);
+}
+
+/* ── Chrome ── */
+.d-blueprint .slide { background: var(--bg); }
+.d-blueprint .slide::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: .35;
+  background-image:
+    linear-gradient(rgba(26,26,26,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,26,26,.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+}
+.d-blueprint .slide > * { position: relative; z-index: 2; }
+.d-blueprint .chr-kicker { font-size: 13px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; color: var(--bp-rust); margin-bottom: 12px; }
+.d-blueprint .chr-title { font-size: 66px; font-weight: 900; line-height: 1.08; letter-spacing: -.02em; }
+.d-blueprint .chr-title em { font-style: normal; color: var(--bp-rust); }
+.d-blueprint .chr-heading { font-size: 46px; font-weight: 800; letter-spacing: -.015em; }
+.d-blueprint .chr-sub { font-size: 18px; color: var(--text-2); line-height: 1.55; max-width: 780px; }
+.d-blueprint .chr-footer { border-top: 1px solid var(--bp-line); }
+.d-blueprint .chr-divider { width: 60px; height: 3px; background: var(--bp-rust); }
+
+/* ── c-* Extensions ── */
+.d-blueprint .c-card { background: #fff; border: 2px solid var(--bp-ink); border-radius: 12px; box-shadow: none; }
+.d-blueprint .c-card h4 { font-size: 20px; font-weight: 900; }
+.d-blueprint .c-card p { font-size: 14px; color: var(--text-2); line-height: 1.55; }
+.d-blueprint .c-step { border: 2px solid var(--bp-ink); border-radius: 12px; padding: 22px 18px; background: #fff; }
+.d-blueprint .c-step.hero { background: var(--bp-rust); border-color: var(--bp-rust); color: #fff; box-shadow: 0 10px 32px rgba(181,57,42,.28); }
+.d-blueprint .c-step.hero .c-step-title,
+.d-blueprint .c-step.hero .c-step-body { color: #fff; }
+.d-blueprint .c-step.hero .c-step-body { color: rgba(255,255,255,.88); }
+.d-blueprint .c-step-num { font-size: 10px; font-weight: 800; letter-spacing: 2.5px; color: var(--text-3); background: transparent; width: auto; height: auto; border-radius: 0; }
+.d-blueprint .c-step.hero .c-step-num { color: rgba(255,255,255,.6); }
+.d-blueprint .c-step-title { font-size: 22px; font-weight: 900; color: var(--bp-ink); }
+.d-blueprint .c-step-body { font-size: 13px; color: var(--text-2); }
+.d-blueprint .c-codebox {
+  background: var(--bp-ink); color: var(--bg);
+  border: 2px solid var(--bp-ink); border-radius: 12px;
+  font-size: 14px; line-height: 1.8;
+}
+.d-blueprint .c-codebox .cm { color: #7a766c; }
+.d-blueprint .c-codebox .kw { color: #e8a87c; }
+.d-blueprint .c-codebox .st { color: #b3d1bc; }
+.d-blueprint .c-codebox .hl { color: var(--bp-rust); background: rgba(255,255,255,.08); padding: 0 4px; border-radius: 3px; }
+.d-blueprint .c-hero-num { font-family: var(--font-serif); color: var(--bp-rust); }

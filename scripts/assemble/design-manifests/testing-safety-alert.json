@@ -1,0 +1,9 @@
+{
+  "name": "testing-safety-alert",
+  "css": "assets/designs/testing-safety-alert.css",
+  "classes": { "title": "chr-title", "subtitle": "chr-sub", "kicker": "chr-kicker", "body": "chr-sub", "titleTag": "h1" },
+  "chrome": { "topbar": "standard", "footer": true, "footerTag": "span", "divider": true, "decorations": ["chr-stripe", "chr-stripe-b"], "pageFormat": "slash" },
+  "variants": { "card": "standard", "step": "standard", "code": "chr-codebox" },
+  "image": { "radius": "var(--radius-sm)", "shadow": "var(--shadow)", "border": "1px solid var(--border)" },
+  "qa": { "decorativeClasses": ["chr-stripe", "chr-stripe-b"], "chromeSelectors": [], "cardColors": [] }
+}

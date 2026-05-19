@@ -1,0 +1,49 @@
+/* product-launch — modern announcement Design CSS */
+/* Usage: body.d-product-launch.portrait for 3:4, .landscape for 16:9 */
+
+.d-product-launch {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f2f2f6;
+  --border: rgba(10,10,18,.08);
+  --border-strong: rgba(10,10,18,.18);
+  --text-1: #0a0a12;
+  --text-2: #4a4a58;
+  --text-3: #8a8a96;
+  --accent: #ff5a36;
+  --accent-2: #ff8c5a;
+  --accent-3: #ffb36b;
+  --grad: linear-gradient(120deg, #ff5a36 0%, #ff8c5a 60%, #ffb36b 100%);
+  --radius: 2.5cqi;
+  --radius-lg: 3.5cqi;
+  --shadow: 0 20px 60px rgba(10,10,18,.1);
+  --shadow-lg: 0 30px 80px rgba(255,90,54,.25);
+  --font-display: 'Inter', 'Noto Sans SC', sans-serif;
+  --font-sans: 'Inter', 'Noto Sans SC', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, 'Noto Serif SC', serif;
+  --letter-tight: -0.045em;
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-sans);
+}
+
+/* ── Dark slide variant ── */
+.d-product-launch .slide.dark { background: #0a0a12; color: #f5f5f7; }
+.d-product-launch .slide.dark .chr-title,
+.d-product-launch .slide.dark .chr-heading,
+.d-product-launch .slide.dark h3,
+.d-product-launch .slide.dark h4 { color: #fff; }
+.d-product-launch .slide.dark .chr-sub { color: rgba(245,245,247,.72); }
+.d-product-launch .slide.dark .chr-kicker { color: var(--accent-2); }
+.d-product-launch .slide.dark .c-card { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.12); box-shadow: none; backdrop-filter: blur(20px); }
+
+/* ── Typography ── */
+.d-product-launch .chr-title { font-size: 10.5cqi; line-height: .98; font-weight: 900; letter-spacing: -.045em; }
+.d-product-launch .chr-heading { font-size: 7.5cqi; font-weight: 800; letter-spacing: -.035em; }
+.d-product-launch .chr-sub { font-size: 2.5cqi; color: var(--text-2); }
+
+/* ── c-* Extensions ── */
+.d-product-launch .c-card { border-radius: var(--radius-lg); }
+.d-product-launch .c-step-num { width: 6cqi; height: 6cqi; border-radius: 50%; background: var(--grad); color: #fff; font-weight: 900; font-size: 2.8cqi; }
+.d-product-launch .c-quote { font-family: var(--font-serif); font-size: 5.5cqi; line-height: 1.25; font-weight: 500; letter-spacing: -.01em; }
+.d-product-launch .c-kpi-value { font-weight: 900; letter-spacing: -.035em; }

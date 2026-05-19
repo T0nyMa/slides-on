@@ -1,0 +1,9 @@
+{
+  "name": "tech-sharing",
+  "css": "assets/designs/tech-sharing.css",
+  "classes": { "title": "chr-title", "subtitle": "chr-sub", "kicker": "chr-kicker", "body": "chr-sub", "titleTag": "h1" },
+  "chrome": { "topbar": "standard", "footer": true, "footerTag": "span", "divider": true, "decorations": [], "pageFormat": "slash" },
+  "variants": { "card": "standard", "step": "standard", "code": "chr-codebox" },
+  "image": { "radius": "var(--radius)", "shadow": "0 20px 60px rgba(0,0,0,.5)", "border": "1px solid var(--border)" },
+  "qa": { "decorativeClasses": [], "chromeSelectors": [], "cardColors": [] }
+}

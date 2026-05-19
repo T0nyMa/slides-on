@@ -1,0 +1,59 @@
+/* graphify-dark-graph — 暗底玻璃 + 力导向知识图谱 Design CSS */
+/* Usage: body.d-graphify.portrait for 3:4, .landscape for 16:9 */
+
+.d-graphify {
+  --bg: #06060c;
+  --surface: rgba(255,255,255,.03);
+  --surface-2: rgba(255,255,255,.06);
+  --border: rgba(255,255,255,.1);
+  --border-strong: rgba(255,255,255,.2);
+  --text-1: #f0ece4;
+  --text-2: #b0a99e;
+  --text-3: #7a746c;
+  --accent: #e8a87c;
+  --accent-2: #7eb8da;
+  --accent-3: #b8a4d6;
+  --good: #7ed3a4;
+  --warn: #e07070;
+  --bad: #e07070;
+  --grad: linear-gradient(135deg, var(--accent), #d4a0b9, var(--accent-3));
+  --radius: 2.2cqi;
+  --radius-lg: 2.6cqi;
+  --shadow: 0 8px 32px rgba(0,0,0,.3);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.3);
+  --font-display: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+  --font-sans: 'Inter', 'Noto Sans SC', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --gd-warm: #e8a87c;
+  --gd-blue: #7eb8da;
+  --gd-green: #7ed3a4;
+  --gd-rose: #d4a0b9;
+  --gd-purple: #b8a4d6;
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+/* ── Ambient orbs ── */
+.d-graphify .slide { background: linear-gradient(160deg, #08080f, #0e1020 50%, #08080f); overflow: hidden; }
+
+/* ── Chrome ── */
+.d-graphify .chr-kicker { font-size: 1.6cqi; letter-spacing: .2em; text-transform: uppercase; color: var(--text-3); font-weight: 500; }
+
+/* ── Typography ── */
+.d-graphify .chr-title { font-size: 8.5cqi; font-weight: 800; line-height: 1.08; letter-spacing: -.02em; }
+.d-graphify .chr-heading { font-size: 6cqi; font-weight: 700; line-height: 1.12; }
+.d-graphify .chr-sub { font-size: 2.8cqi; line-height: 1.65; font-weight: 300; color: var(--text-2); }
+
+/* ── Glass card ── */
+.d-graphify .c-glass { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(20px) saturate(160%); box-shadow: 0 8px 32px rgba(0,0,0,.3); }
+.d-graphify .c-card { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); border-radius: 2.2cqi; }
+
+/* ── c-* Extensions ── */
+.d-graphify .c-codebox { background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.08); border-radius: 1.6cqi; color: #d8d4c8; }
+.d-graphify .c-codebox .cm { color: #6b6a62; }
+.d-graphify .c-codebox .kw { color: var(--gd-warm); }
+.d-graphify .c-codebox .st { color: var(--gd-green); }
+.d-graphify .c-codebox .fn { color: var(--gd-blue); }
+.d-graphify .c-hero-num { font-size: 13cqi; font-weight: 900; letter-spacing: -.04em; }

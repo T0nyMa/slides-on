@@ -43,7 +43,8 @@ description: >
 - **theme**：36 个颜色主题（`../../assets/themes/`）
 
 **品牌路线**（Design CSS）— 完整视觉皮肤（Chrome + 卡片背景 + 阴影 + 装饰 + 组件覆盖）：
-- **design**：`pastel-card` | `white-editorial` | `xhs-post` | `news-broadcast`
+- **3:4 原生**：`pastel-card` | `white-editorial` | `xhs-post`
+- **通用**：`news-broadcast` | `testing-safety-alert` | `blueprint` | `course-module` | `weekly-report` | `obsidian-gradient` | `hermes-cyber-terminal` | `tech-sharing` | `pitch-deck` | `product-launch` | `graphify` | `minimal`
 - JSON 中必须有 `"design": "xxx"` 键才能加载 Design CSS。只写 `"theme"` 会 fallback 到基础样式
 
 ```json

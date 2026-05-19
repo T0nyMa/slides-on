@@ -1,0 +1,63 @@
+/* dir-key-nav-minimal — 方向键极简 · 8 种 mono-background Design CSS */
+/* Usage: body.d-minimal activates. Slide-level theme variants: .t-indigo/.t-cream/.t-crimson/.t-emerald/.t-slate/.t-violet/.t-white/.t-charcoal */
+
+.d-minimal {
+  --bg: #000;
+  --surface: #111111;
+  --surface-2: #1a1a1a;
+  --border: rgba(255,255,255,.12);
+  --border-strong: rgba(255,255,255,.24);
+  --text-1: #ffffff;
+  --text-2: rgba(255,255,255,.72);
+  --text-3: rgba(255,255,255,.38);
+  --accent: #a5b4fc;
+  --accent-2: #7dd3fc;
+  --accent-3: #c4b5fd;
+  --radius: 1.2cqi;
+  --radius-lg: 1.8cqi;
+  --shadow: none;
+  --shadow-lg: none;
+  --font-display: 'Inter', 'Noto Sans SC', 'PingFang SC', -apple-system, sans-serif;
+  --font-sans: 'Inter', 'Noto Sans SC', 'PingFang SC', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-sans);
+}
+
+/* ── 8 background themes ── */
+.d-minimal .t-indigo   { background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: #fff; }
+.d-minimal .t-cream    { background: #F5F0E8; color: #1a1a1a; }
+.d-minimal .t-crimson  { background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%); color: #fff; }
+.d-minimal .t-emerald  { background: linear-gradient(135deg, #052e16 0%, #064e3b 100%); color: #ecfdf5; }
+.d-minimal .t-slate    { background: linear-gradient(135deg, #0f1923 0%, #1a2942 100%); color: #e6edf3; }
+.d-minimal .t-violet   { background: linear-gradient(135deg, #1e0a2e 0%, #2e1065 100%); color: #f5f3ff; }
+.d-minimal .t-white    { background: #ffffff; color: #111216; }
+.d-minimal .t-charcoal { background: linear-gradient(135deg, #111827 0%, #1f2937 100%); color: #f3f4f6; }
+
+/* ── Accent colors per theme ── */
+.d-minimal .t-indigo .dk-accent   { color: #a5b4fc; }
+.d-minimal .t-cream .dk-accent    { color: #B5392A; }
+.d-minimal .t-crimson .dk-accent  { color: #fecaca; }
+.d-minimal .t-emerald .dk-accent  { color: #6ee7b7; }
+.d-minimal .t-slate .dk-accent    { color: #7dd3fc; }
+.d-minimal .t-violet .dk-accent   { color: #c4b5fd; }
+.d-minimal .t-white .dk-accent    { color: #6366f1; }
+.d-minimal .t-charcoal .dk-accent { color: #fbbf24; }
+
+/* ── Chrome ── */
+.d-minimal .chr-kicker { font-size: 1.5cqi; font-weight: 700; letter-spacing: 0.4cqi; text-transform: uppercase; opacity: .55; }
+.d-minimal .chr-kicker::after { content: ''; display: inline-block; width: 9cqi; height: 1px; background: currentColor; opacity: .3; margin-left: 1.8cqi; vertical-align: middle; }
+.d-minimal .chr-page { font-family: var(--font-mono); font-size: 1.3cqi; font-weight: 700; letter-spacing: 0.35cqi; text-transform: uppercase; }
+
+/* ── Typography ── */
+.d-minimal .chr-title { font-size: 11cqi; font-weight: 900; line-height: .98; letter-spacing: -0.35cqi; }
+.d-minimal .chr-heading { font-size: 8cqi; font-weight: 800; line-height: 1.05; letter-spacing: -0.25cqi; }
+.d-minimal .chr-sub { font-size: 3cqi; line-height: 1.45; opacity: .72; font-weight: 300; }
+.d-minimal .chr-divider { width: 10cqi; height: 0.5cqi; background: currentColor; opacity: .85; }
+
+/* ── c-* Extensions ── */
+.d-minimal .c-codebox { font-family: var(--font-mono); font-size: 2cqi; line-height: 1.9; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 1.2cqi; }
+.d-minimal .t-cream .c-codebox,
+.d-minimal .t-white .c-codebox { background: rgba(0,0,0,.05); border-color: rgba(0,0,0,.1); }
+.d-minimal .c-hero-num { font-family: var(--font-mono); font-size: 20cqi; font-weight: 800; line-height: .9; letter-spacing: -1cqi; }
