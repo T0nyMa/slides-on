@@ -22,7 +22,7 @@ description: >
 bun ../../scripts/imagine/main.ts --design sketch-notes --archetype "horizontal process" --aspect 3:4 --content "推荐系统三阶段流程"
 ```
 
-三层自动组装：Image Role → Style Lock（从 `../../references/style-definitions/{design}.md` 加载）→ Archetype 构图 + 用户内容。
+三层自动组装：Image Role → Style Lock（从 `../../references/imagine/style-definitions/{design}.md` 加载）→ Archetype 构图 + 用户内容。
 
 ### 直接 Prompt 模式
 
@@ -85,13 +85,13 @@ export IMAGINE_DESIGN="sketch-notes"
 | 抽象系统隐喻 | Main metaphor diagram |
 | 总结/结论/行动号召 | Takeaway |
 
-详见 `../../references/archetypes.md`。
+详见 `../../references/imagine/archetypes.md`。
 
 ## 17 个 Style Definition
 
 blueprint, bold-editorial, chalkboard, corporate, dark-atmospheric, editorial-infographic, fantasy-animation, hand-drawn-edu, intuition-machine, minimal, notion, pixel-art, scientific, sketch-notes, vector-illustration, vintage, watercolor
 
-每个定义包含精确 hex 色值、视觉元素、排版指令。详见 `../../references/style-definitions/`。
+每个定义包含精确 hex 色值、视觉元素、排版指令。详见 `../../references/imagine/style-definitions/`。
 
 ## 配置
 
@@ -99,8 +99,8 @@ blueprint, bold-editorial, chalkboard, corporate, dark-atmospheric, editorial-in
 
 ## 核心参考
 
-- `../../references/prompt-construction.md` — 三层 Prompt 组装规范
-- `../../references/archetypes.md` — 10 种构图模板
-- `../../references/style-definitions/` — 17 个 Style Lock 定义
+- `../../references/imagine/prompt-construction.md` — 三层 Prompt 组装规范
+- `../../references/imagine/archetypes.md` — 10 种构图模板
+- `../../references/imagine/style-definitions/` — 17 个 Style Lock 定义
 - `../../references/ai-visuals.md` — AI 视觉总览
 - `../../references/imagine/providers/` — 5 个 Provider 详情
