@@ -19,22 +19,22 @@ description: >
 ### 结构化 Prompt 模式（推荐）
 
 ```bash
-bun ../scripts/imagine/main.ts --design sketch-notes --archetype "horizontal process" --aspect 3:4 --content "推荐系统三阶段流程"
+bun ../../scripts/imagine/main.ts --design sketch-notes --archetype "horizontal process" --aspect 3:4 --content "推荐系统三阶段流程"
 ```
 
-三层自动组装：Image Role → Style Lock（从 `../references/style-definitions/{design}.md` 加载）→ Archetype 构图 + 用户内容。
+三层自动组装：Image Role → Style Lock（从 `../../references/style-definitions/{design}.md` 加载）→ Archetype 构图 + 用户内容。
 
 ### 直接 Prompt 模式
 
 ```bash
-bun ../scripts/imagine/main.ts --prompt "a futuristic city skyline at night" --aspect 16:9
+bun ../../scripts/imagine/main.ts --prompt "a futuristic city skyline at night" --aspect 16:9
 ```
 
 ### 批量生成
 
 ```bash
-bun ../scripts/imagine/build-batch.ts --dir prompts/ --design sketch-notes --jobs 3
-bun ../scripts/imagine/build-batch.ts --batchfile prompts.txt --anchor --jobs 1
+bun ../../scripts/imagine/build-batch.ts --dir prompts/ --design sketch-notes --jobs 3
+bun ../../scripts/imagine/build-batch.ts --batchfile prompts.txt --anchor --jobs 1
 ```
 
 `--anchor` 模式：第一张建立视觉锚点，后续图片参考第一张保持跨页一致性。
@@ -85,22 +85,22 @@ export IMAGINE_DESIGN="sketch-notes"
 | 抽象系统隐喻 | Main metaphor diagram |
 | 总结/结论/行动号召 | Takeaway |
 
-详见 `../references/archetypes.md`。
+详见 `../../references/archetypes.md`。
 
 ## 17 个 Style Definition
 
 blueprint, bold-editorial, chalkboard, corporate, dark-atmospheric, editorial-infographic, fantasy-animation, hand-drawn-edu, intuition-machine, minimal, notion, pixel-art, scientific, sketch-notes, vector-illustration, vintage, watercolor
 
-每个定义包含精确 hex 色值、视觉元素、排版指令。详见 `../references/style-definitions/`。
+每个定义包含精确 hex 色值、视觉元素、排版指令。详见 `../../references/style-definitions/`。
 
 ## 配置
 
-`../EXTEND.md` 中 `ai_image` 节可配置默认 Provider、Model、Quality、Aspect 等。环境变量可覆盖。详见 `../scripts/imagine/config.ts`。
+`../EXTEND.md` 中 `ai_image` 节可配置默认 Provider、Model、Quality、Aspect 等。环境变量可覆盖。详见 `../../scripts/imagine/config.ts`。
 
 ## 核心参考
 
-- `../references/prompt-construction.md` — 三层 Prompt 组装规范
-- `../references/archetypes.md` — 10 种构图模板
-- `../references/style-definitions/` — 17 个 Style Lock 定义
-- `../references/ai-visuals.md` — AI 视觉总览
-- `../references/imagine/providers/` — 5 个 Provider 详情
+- `../../references/prompt-construction.md` — 三层 Prompt 组装规范
+- `../../references/archetypes.md` — 10 种构图模板
+- `../../references/style-definitions/` — 17 个 Style Lock 定义
+- `../../references/ai-visuals.md` — AI 视觉总览
+- `../../references/imagine/providers/` — 5 个 Provider 详情

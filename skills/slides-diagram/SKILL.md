@@ -62,13 +62,13 @@ Highlight:  #fbbf24 (黄)    — 高亮标注
 ## SVG → PNG 转换
 
 ```bash
-bun ../scripts/svg-to-png.ts diagram.svg
+bun ../../scripts/svg-to-png.ts diagram.svg
 ```
 
 ## 核心参考
 
-- `../references/diagram/architecture.md` — 架构图规范
-- `../references/diagram/flowchart.md` — 流程图规范
-- `../references/diagram/sequence.md` — 时序图规范
-- `../references/diagram/structural.md` — 结构图规范
-- `../references/ai-visuals.md` — SVG 图集成到 slides 的方式
+- `../../references/diagram/architecture.md` — 架构图规范
+- `../../references/diagram/flowchart.md` — 流程图规范
+- `../../references/diagram/sequence.md` — 时序图规范
+- `../../references/diagram/structural.md` — 结构图规范
+- `../../references/ai-visuals.md` — SVG 图集成到 slides 的方式
