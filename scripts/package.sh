@@ -23,10 +23,12 @@ rsync -a \
   --exclude='slides-on.skill' \
   --exclude='SKILL.md.bak' \
   --exclude='CLAUDE.md' \
+  --exclude='.qa' \
   "$ROOT/" "$TMP/slides-on/"
 
 echo "📦 Creating slides-on.skill..."
 cd "$TMP"
+rm -f "$ROOT/slides-on.skill"
 zip -r "$ROOT/slides-on.skill" slides-on/
 
 rm -rf "$TMP"
