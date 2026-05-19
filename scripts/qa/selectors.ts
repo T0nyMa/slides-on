@@ -10,6 +10,9 @@ const BASE_CHROME = [".chr-topbar", ".chr-footer", ".chr-page", ".chr-chip", ".c
 const BASE_TEXT = [
   "h1", "h2", "h3", "h4", "p", "li", "span",
   ".c-body", ".c-step-body", ".c-note-body", ".c-small",
+  ".c-badge-para-label", ".c-badge-para-body",
+  ".c-icon-card-title", ".c-icon-card-body",
+  ".c-quote-bar", ".c-numbered-item-content",
   ".chr-title", ".chr-heading", ".chr-sub",
 ];
 
@@ -18,6 +21,8 @@ const BASE_CONTENT = [
   ".c-card", ".c-card-soft", ".c-step", ".c-kpi", ".c-row", ".c-grid",
   ".c-note", ".c-quote", ".c-badge", ".c-badge-row",
   ".c-stack", ".c-steps", ".c-divider",
+  ".c-article", ".c-badge-para", ".c-icon-card", ".c-quote-bar",
+  ".c-numbered-list", ".c-numbered-item", ".c-pill-tags",
   ".chr-title", ".chr-heading", ".chr-sub",
 ];
 
