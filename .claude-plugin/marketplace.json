@@ -1,0 +1,25 @@
+{
+  "name": "slides-on",
+  "owner": {
+    "name": "Ma Jiang",
+    "email": ""
+  },
+  "metadata": {
+    "description": "Presentation and visual content creation toolkit — 4 skills covering slide decks, social cards, AI images, and SVG diagrams",
+    "version": "2.0.0"
+  },
+  "plugins": [
+    {
+      "name": "slides-on",
+      "description": "Unified presentation and visual content creation toolkit",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/slides-card",
+        "./skills/slides-ppt",
+        "./skills/slides-imagine",
+        "./skills/slides-diagram"
+      ]
+    }
+  ]
+}

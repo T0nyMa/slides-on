@@ -1,17 +1,15 @@
 #!/bin/bash
-# package.sh — Release a clean slides-on.skill
+# package.sh — Package slides-on plugin bundle
 # Usage: bash scripts/package.sh
 
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-TMP="/tmp/slides-on"
+TMP="/tmp/slides-on-pkg"
 
-# 1. Clean copy with explicit exclusions
 echo "📦 Copying project..."
 rm -rf "$TMP"
 rsync -a \
   --exclude='.git' \
-  --exclude='.claude' \
   --exclude='node_modules' \
   --exclude='bun.lock' \
   --exclude='.gitignore' \
@@ -21,17 +19,16 @@ rsync -a \
   --exclude='docs' \
   --exclude='testcases' \
   --exclude='examples' \
-  --exclude='tests' \
   --exclude='evals' \
   --exclude='slides-on.skill' \
+  --exclude='SKILL.md.bak' \
   --exclude='CLAUDE.md' \
-  "$ROOT/" "$TMP/"
+  "$ROOT/" "$TMP/slides-on/"
 
-# 2. Package with skill-creator tool
-echo "📦 Packaging..."
-SKILL_CREATOR="$HOME/.claude/skills/skill-creator"
-cd "$SKILL_CREATOR" && python -m scripts.package_skill "$TMP" "$ROOT"
+echo "📦 Creating slides-on.skill..."
+cd "$TMP"
+zip -r "$ROOT/slides-on.skill" slides-on/
 
-# 3. Cleanup
 rm -rf "$TMP"
 echo "✅ Done — $ROOT/slides-on.skill"
+ls -lh "$ROOT/slides-on.skill"
