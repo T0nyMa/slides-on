@@ -511,7 +511,7 @@ bash scripts/package.sh  # 一键打包 slides-on.skill（自动排除 .git / do
 
 Container Query 自动启用，`cqi` 单位等比缩放。所有 3:4 模板（xhs-*、component-showcase）均使用 `.portrait`，不再各自复制 canvas CSS。
 
-内容策略：3:4 使用 `assets/components.css` 的 `c-*` 组件自由拼装，而非 16:9 的 single-page layout。详见 `references/card/components.md`。
+内容策略：3:4 使用 `assets/components.css` 的 `c-*` 组件自由拼装，而非 16:9 的 single-page layout。详见 `skills/slides-card/references/components.md`。
 
 ### 窄视口兜底
 

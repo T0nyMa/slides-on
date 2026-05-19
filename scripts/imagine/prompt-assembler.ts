@@ -65,8 +65,8 @@ interface ArchetypeTemplate {
 // ─── Path Resolution ───────────────────────────────────────────────────
 
 const REPO_ROOT = path.resolve(import.meta.dir, "../..");
-const STYLE_DEFS_DIR = path.join(REPO_ROOT, "references/imagine/style-definitions");
-const ARCHETYPES_FILE = path.join(REPO_ROOT, "references/imagine/archetypes.md");
+const STYLE_DEFS_DIR = path.join(REPO_ROOT, "skills/slides-imagine/references/style-definitions");
+const ARCHETYPES_FILE = path.join(REPO_ROOT, "skills/slides-imagine/references/archetypes.md");
 
 // ─── Layer 1: Role Templates ───────────────────────────────────────────
 
