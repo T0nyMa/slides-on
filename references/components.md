@@ -262,6 +262,105 @@ Chrome 元素不是通用组件——每个 Design CSS 可以选择性地定义�
 </div>
 ```
 
+### Article 组件（异构垂直堆叠）
+
+用于 `type: "article"` 页面，同一页内混合不同块类型。与其他组件不同，article 块专为"干货分享"场景设计——一个页面需要多种信息表达形式的混合。
+
+| 组件 | 类名 | 说明 |
+|------|------|------|
+| Article 容器 | `.c-article` | 纵向堆叠容器，控制块间距 |
+| Badge-Para | `.c-badge-para` | 标签 + 段落（"核心观点""注意事项"） |
+| Icon-Card | `.c-icon-card` | 图标 + 标题 + 描述（功能列举） |
+| Quote-Bar | `.c-quote-bar` | 左边框引述条（引用、金句） |
+| Numbered-List | `.c-numbered-list` | 编号 + 关键词 + 正文（步骤、要点） |
+| Pill-Tags | `.c-pill-tags` | 胶囊标签组（关键词标签） |
+
+Article 组件由 `assemble-deck.ts` 根据 `slides.json` 的 `blocks` 数组自动渲染，不需要手写 HTML。
+
+## HTML 结构参考（Article）
+
+### Badge-Para
+
+```html
+<div class="c-badge-para">
+  <span class="c-badge-para-label">核心观点</span>
+  <p class="c-badge-para-body">一段详细的解释文字...</p>
+</div>
+```
+
+标签颜色变体：默认 accent，`.warn` 橙色，`.good` 绿色，`.bad` 红色。
+
+### Icon-Card
+
+```html
+<div class="c-icon-card">
+  <div class="c-icon-card-icon">🔍</div>
+  <div class="c-icon-card-content">
+    <div class="c-icon-card-title">调研方法</div>
+    <div class="c-icon-card-body">描述文字</div>
+  </div>
+</div>
+```
+
+Design CSS 通过 `nth-child(4n+1/2/3/4)` 自动给多个 icon-card 循环配色。
+
+### Quote-Bar
+
+```html
+<div class="c-quote-bar">引述一段重要观点</div>
+```
+
+### Numbered-List
+
+```html
+<div class="c-numbered-list">
+  <div class="c-numbered-item">
+    <div class="c-numbered-item-num">1</div>
+    <div class="c-numbered-item-content">
+      <span class="c-numbered-item-keyword">关键词</span> — 正文描述
+    </div>
+  </div>
+</div>
+```
+
+### Pill-Tags
+
+```html
+<div class="c-pill-tags">
+  <span class="c-badge">标签1</span>
+  <span class="c-badge">标签2</span>
+  <span class="c-badge">标签3</span>
+</div>
+```
+
+Design CSS 通过 `nth-child` 自动给标签循环配色。
+
+### Article 整页组合
+
+```html
+<section class="slide">
+  <h2 class="chr-heading">干货分享标题</h2>
+  <div class="c-article">
+    <div class="c-badge-para">
+      <span class="c-badge-para-label">核心观点</span>
+      <p class="c-badge-para-body">详细解释...</p>
+    </div>
+    <div class="c-icon-card">
+      <div class="c-icon-card-icon">🔍</div>
+      <div class="c-icon-card-content">
+        <div class="c-icon-card-title">标题</div>
+        <div class="c-icon-card-body">描述</div>
+      </div>
+    </div>
+    <div class="c-quote-bar">一段引述</div>
+    <div class="c-pill-tags">
+      <span class="c-badge">标签1</span>
+      <span class="c-badge">标签2</span>
+    </div>
+  </div>
+</section>
+```
+
 ## 典型组合模式
 
 ### 模式 1：标题 + 要点卡片（适合 3:4 开屏）
