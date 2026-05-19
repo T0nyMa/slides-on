@@ -136,6 +136,7 @@ export function renderSteps(m: DesignManifest, s: SlideData, ctx: PageContext): 
     <div class="c-steps${useDistribute ? " v-distribute" : ""}">
       ${steps.map((st) => "      " + renderStep(m, st)).join("\n")}
     </div>
+    ${s.body ? `<p class="chr-sub" style="margin-top:1.5cqi">${esc(s.body)}</p>` : ""}
     ${chromeBottom(m, s, ctx, "content · steps")}
   </section>`;
 }
@@ -284,28 +285,82 @@ export function renderTable(m: DesignManifest, s: SlideData, ctx: PageContext): 
         </tbody>
       </table>
     </div>
-    ${s.subtitle ? `<p class="${m.classes.subtitle}" style="margin-top:1cqi">${esc(s.subtitle)}</p>` : ""}
+    ${(s.body || s.subtitle) ? `<p class="chr-sub" style="margin-top:1.5cqi">${esc(s.body || s.subtitle || "")}</p>` : ""}
     ${chromeBottom(m, s, ctx, `data · ${rows.length} rows`)}
+  </section>`;
+}
+
+export function renderArticle(m: DesignManifest, s: SlideData, ctx: PageContext): string {
+  const blocks = s.blocks || [];
+  const isPortrait = ctx.canvas === "3:4";
+
+  const renderedBlocks = blocks.map((block, i) => {
+    switch (block.type) {
+      case "badge-para": {
+        const colorClass = block.labelColor && block.labelColor !== "accent" ? ` ${block.labelColor}` : "";
+        return `<div class="c-badge-para">
+        <span class="c-badge-para-label${colorClass}">${esc(block.label)}</span>
+        <div class="c-badge-para-body">${esc(block.body)}</div>
+      </div>`;
+      }
+      case "icon-card":
+        return `<div class="c-icon-card">
+        <div class="c-icon-card-icon">${esc(block.icon)}</div>
+        <div class="c-icon-card-content">
+          <div class="c-icon-card-title">${esc(block.title)}</div>
+          <div class="c-icon-card-body">${esc(block.body)}</div>
+        </div>
+      </div>`;
+      case "quote-bar":
+        return `<div class="c-quote-bar">${esc(block.text)}</div>`;
+      case "numbered-list":
+        return `<div class="c-numbered-list">
+        ${block.items.map((item, idx) => `<div class="c-numbered-item">
+          <span class="c-numbered-item-num">${idx + 1}.</span>
+          <span class="c-numbered-item-content"><span class="c-numbered-item-keyword">${esc(item.keyword)}</span> ${esc(item.body)}</span>
+        </div>`).join("\n        ")}
+      </div>`;
+      case "pill-tags":
+        return `<div class="c-pill-tags">
+        ${block.tags.map((t) => `<span class="c-badge">${esc(t)}</span>`).join("\n        ")}
+      </div>`;
+      default:
+        return `<!-- unknown block type -->`;
+    }
+  }).join("\n      ");
+
+  const headingClass = m.classes.title === "chr-title" ? "chr-heading" : m.classes.title;
+
+  return `<section class="slide">
+    ${chromeTop(m, s, ctx)}
+    ${s.title ? `<h2 class="${headingClass}">${s.title}</h2>` : ""}
+    <div class="c-article${isPortrait ? " v-fill" : ""}">
+      ${renderedBlocks}
+    </div>
+    ${chromeBottom(m, s, ctx, "content · article")}
   </section>`;
 }
 
 // ─── Router ───────────────────────────────────────────────────────────
 
 export function renderSlide(m: DesignManifest, s: SlideData, ctx: PageContext): string {
+  let html: string;
   switch (s.type) {
-    case "cover":     return renderCover(m, s, ctx);
-    case "section":   return renderSection(m, s, ctx);
-    case "cards-2x2": return renderCards(m, s, ctx, 2);
-    case "cards-3":   return renderCards(m, s, ctx, 3);
-    case "quote":     return renderQuote(m, s, ctx);
-    case "steps":     return renderSteps(m, s, ctx);
-    case "code":      return renderCode(m, s, ctx);
-    case "thanks":    return renderThanks(m, s, ctx);
-    case "bullets":   return renderBullets(m, s, ctx);
-    case "kpi":       return renderKpi(m, s, ctx);
-    case "table":     return renderTable(m, s, ctx);
-    case "html":      return renderHtml(m, s, ctx);
-    case "layout":    return renderLayout(m, s, ctx);
+    case "cover":     html = renderCover(m, s, ctx); break;
+    case "section":   html = renderSection(m, s, ctx); break;
+    case "cards-2x2": html = renderCards(m, s, ctx, 2); break;
+    case "cards-3":   html = renderCards(m, s, ctx, 3); break;
+    case "quote":     html = renderQuote(m, s, ctx); break;
+    case "steps":     html = renderSteps(m, s, ctx); break;
+    case "code":      html = renderCode(m, s, ctx); break;
+    case "thanks":    html = renderThanks(m, s, ctx); break;
+    case "bullets":   html = renderBullets(m, s, ctx); break;
+    case "kpi":       html = renderKpi(m, s, ctx); break;
+    case "table":     html = renderTable(m, s, ctx); break;
+    case "article":   html = renderArticle(m, s, ctx); break;
+    case "html":      html = renderHtml(m, s, ctx); break;
+    case "layout":    html = renderLayout(m, s, ctx); break;
     default:          return `<!-- Unknown slide type: ${(s as any).type} -->`;
   }
+  return html.replace('<section class="slide"', `<section class="slide" data-type="${s.type}"`);
 }
