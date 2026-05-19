@@ -132,10 +132,10 @@ bun ../../scripts/render-precise.ts index.html --canvas 3:4 --slides auto --outp
 
 ## 核心参考
 
-- `references/content-rules-portrait.md` — 3:4 内容规范（组件大小、字数、密度）
-- `references/portrait-user-guide.md` — 竖版制作指南
+- `content-rules-portrait.md` — 3:4 内容规范（组件大小、字数、密度）
+- `portrait-user-guide.md` — 竖版制作指南
 - `../../references/component-recipes.md` — 10 种页面原型 + 组件配方 + 内容语义 → 组件查表
-- `references/components.md` — 组件库参考
+- `components.md` — 组件库参考
 - `../../references/ai-visuals.md` — AI 图片生成 → 用 slides-imagine
 - `../../references/design-guidelines.md` — 设计指南
 - `../../references/glossary.md` — 术语表
