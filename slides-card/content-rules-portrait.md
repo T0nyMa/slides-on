@@ -32,7 +32,7 @@ Content     = c-* 组件（assets/components.css），通过 var(--accent) 等�
 
 **Template 提供 Chrome HTML + c-* 组件实例，Design CSS 决定它们长什么样。** 同一个 Chrome 结构（`chr-topbar` + `chr-blob`）在不同 Design CSS 下可以呈现完全不同的视觉效果。
 
-**已有 Design CSS**：`pastel-card`（马卡龙色块）、`white-editorial`（白底杂志）、`xhs-post`（手绘涂鸦）。完整实现见 `templates/full-decks/xhs-*/`。
+**已有 15 个 Design CSS**（如 `pastel-card`、`white-editorial`、`xhs-post` 等），完整列表见 `assets/designs/`。
 
 **制作指南**：`portrait-user-guide.md` — Design CSS 用法、组件搭配模式、填满画面技巧。
 

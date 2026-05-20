@@ -294,8 +294,7 @@ bun scripts/imagine/main.ts \
 ```
 design → style-definitions/{design}.md
 
-如果 style-definition 不存在 → 使用 base-prompt.md 中的 legacy style token（降级）
-如果 style-definition 存在 → 使用结构化 prompt 组装（升级路径）
+每个 design 必须有对应的 style-definition，Layer 2 的 style_lock 从中提取
 ```
 
 **当前可用的 style-definition（17 个）**：
