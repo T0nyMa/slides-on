@@ -205,6 +205,9 @@ async function renderSlide(
     }
   }
 
+  // Re-inject editor UI hide CSS after navigation (page.goto clears prior style tags)
+  await page.addStyleTag({ content: '.editor-entry-badge,.editor-toolbar,.editor-canvas-label,.editor-float-toolbar{display:none!important}' });
+
   // Wait for fonts to load
   await page.evaluate(() => document.fonts.ready).catch(() => {
     // Font loading timeout is non-fatal; continue with fallback fonts

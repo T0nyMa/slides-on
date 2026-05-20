@@ -35,7 +35,7 @@ export const PROVIDERS: Record<string, ProviderInfo> = {
     module: "./providers/dashscope",
     envKey: "DASHSCOPE_API_KEY",
     description: "DashScope / Tongyi Wanxiang (通义万象) — Alibaba Cloud",
-    supportsReference: false,
+    supportsReference: true,
   },
   google: {
     module: "./providers/google",
@@ -92,7 +92,7 @@ export const PROVIDER_ORDER_PLAIN: string[] = [
   "zai", "openrouter", "azure", "google", "jimeng", "seedream",
 ];
 
-export const PROVIDER_ORDER_REFERENCE: string[] = ["google", "openai", "azure"];
+export const PROVIDER_ORDER_REFERENCE: string[] = ["google", "openai", "azure", "dashscope"];
 
 // ─── Default Configuration ─────────────────────────────────────────────
 
@@ -103,11 +103,12 @@ export interface ImagineConfig {
   quality?: "normal" | "2k";
   aspect?: string;
   design?: string;
-  role?: "illustration" | "content-page";
+  role?: "illustration" | "content-page" | "infographic" | "cover" | "image-card" | "comic-page";
   textSafe?: boolean;
   negative?: string;
   style?: string;
   reference?: string;
+  seed?: number;
 }
 
 /** Read defaults from IMAGINE_* environment variables.
@@ -174,8 +175,9 @@ export interface CommonCliArgs {
   style?: string;
   design?: string;
   archetype?: string;
-  role?: "illustration" | "content-page";
+  role?: "illustration" | "content-page" | "infographic" | "cover" | "image-card" | "comic-page";
   textSafe?: boolean;
+  seed?: number;
   jobs?: number;
   help?: boolean;
   listProviders?: boolean;
@@ -188,7 +190,7 @@ const COMMON_FLAGS = new Set([
   "--reference", "-r", "--negative", "-n",
   "--output", "-o", "--style", "-s",
   "--design", "-d", "--archetype",
-  "--role", "--text-safe",
+  "--role", "--text-safe", "--seed",
   "--jobs", "-j",
   "--list-providers", "--help", "-h",
 ]);
@@ -247,6 +249,11 @@ export function parseCommonCliArgs(args: string[]): { opts: CommonCliArgs; remai
         opts.role = args[++i] as "illustration" | "content-page"; break;
       case "--text-safe":
         opts.textSafe = true; break;
+      case "--seed": {
+        const s = parseInt(args[++i]!, 10);
+        opts.seed = isNaN(s) ? undefined : s;
+        break;
+      }
       case "--jobs": case "-j": {
         const n = parseInt(args[++i]!, 10);
         opts.jobs = isNaN(n) || n < 1 ? 3 : n;
@@ -276,6 +283,7 @@ export function resolveConfig(defaults: ImagineConfig, cli: CommonCliArgs): Imag
     negative: cli.negative || defaults.negative,
     style: cli.style || defaults.style,
     reference: cli.reference || defaults.reference,
+    seed: cli.seed ?? defaults.seed,
   };
 }
 

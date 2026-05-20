@@ -14,6 +14,8 @@ export interface ImagineOptions {
   negative?: string; // negative prompt
   output?: string; // output file path
   style?: string; // preset style name
+  seed?: number; // seed for reproducibility
+  referenceImages?: string[]; // multiple reference images
 }
 
 // ─── Provider Configuration ──────────────────────────────────────────

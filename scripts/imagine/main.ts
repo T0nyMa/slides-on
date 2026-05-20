@@ -16,6 +16,7 @@ import * as path from "path";
 import * as fs from "fs";
 import type { ImagineOptions } from "./types";
 import { assemblePrompt } from "./prompt-assembler";
+import type { PromptRole } from "./prompt-assembler";
 import {
   PROVIDERS,
   getDefaultConfig,
@@ -40,7 +41,7 @@ interface MainCliArgs {
   style?: string;
   design?: string;
   archetype?: string;
-  role?: "illustration" | "content-page";
+  role?: PromptRole;
   textSafe?: boolean;
   // Main-specific
   prompt?: string;
@@ -200,6 +201,7 @@ async function main(): Promise<void> {
       negative: config.negative,
       output: outputPath,
       style: config.style,
+      seed: config.seed,
     };
 
     // Write assembled prompt to .prompt.txt for reproducibility

@@ -43,7 +43,7 @@ bun ../../scripts/imagine/build-batch.ts --batchfile prompts.txt --anchor --jobs
 
 **无参考图优先级**：DashScope → OpenAI → MiniMax → Replicate → Z.AI → OpenRouter → Azure → Google → Jimeng → Seedream
 
-**有参考图**（仅 3 家支持）：Google → OpenAI → Azure
+**有参考图**（4 家支持）：Google → OpenAI → Azure → DashScope
 
 默认 Provider 通过环境变量设置：
 
@@ -70,6 +70,17 @@ export IMAGINE_DESIGN="sketch-notes"
 { "type": "cards-2x2", "cards": [{ "title": "...", "body": "...", "image": "imgs/card.png" }] }
 ```
 
+## 6 种生成角色
+
+| Role | 用途 | 触发词 |
+|------|------|--------|
+| `illustration` | 幻灯片背景/插图（无文字） | 默认 |
+| `content-page` | 含烘焙文字的独立内容页 | 文字烘焙 |
+| `infographic` | 结构化信息图 | 信息图/infographic |
+| `cover` | 文章/演示封面图 | 封面图/cover image |
+| `image-card` | 社交媒体图片卡片 | AI图片卡片/手绘风 |
+| `comic-page` | 知识漫画页面 | 漫画/comic |
+
 ## 10 种构图原型（Archetype）
 
 | 内容语义 | Archetype |
@@ -87,11 +98,17 @@ export IMAGINE_DESIGN="sketch-notes"
 
 详见 `archetypes.md`。
 
-## 17 个 Style Definition
+## 23 个 Style Definition + 12 个 Palette
 
-blueprint, bold-editorial, chalkboard, corporate, dark-atmospheric, editorial-infographic, fantasy-animation, hand-drawn-edu, intuition-machine, minimal, notion, pixel-art, scientific, sketch-notes, vector-illustration, vintage, watercolor
+Style definitions（23 个）：blueprint, bold-editorial, chalkboard, corporate, dark-atmospheric, editorial-infographic, fantasy-animation, flat-doodle, hand-drawn-edu, ink-notes, minimal, nature, notion, pixel-art, playful, retro, scientific, screen-print, sketch-notes, vector-illustration, vintage, watercolor, xiaohongshu-white
 
-每个定义包含精确 hex 色值、视觉元素、排版指令。详见 `style-definitions/`。
+Palettes（12 个）：macaron, warm, neon, mono-ink, elegant, cool, dark, earth, vivid, pastel, retro, duotone
+
+Palette 可在 Layer 2 覆盖 Style Lock 颜色。详见 `style-definitions/` 和 `palettes/`。
+
+## Preset 系统
+
+`presets.json` 提供 26 个快捷预设，`--preset hand-drawn-edu` 展开为 `--design sketch-notes --palette macaron --archetype horizontal-process`。
 
 ## 配置
 
@@ -101,7 +118,12 @@ blueprint, bold-editorial, chalkboard, corporate, dark-atmospheric, editorial-in
 
 - `prompt-construction.md` — 三层 Prompt 组装规范
 - `archetypes.md` — 10 种构图模板
-- `style-definitions/` — 17 个 Style Lock 定义
+- `style-definitions/` — 23 个 Style Lock 定义
+- `palettes/` — 12 个调色板定义
+- `presets.json` — 26 个快捷预设
 - `infographic/` — 21 种信息图布局 × 22 种视觉风格
+- `cover/` — 封面图：6 种类型 × 7 种渲染 × 维度配置
+- `image-cards/` — 图片卡片：12 种风格 × 8 种布局 × 元素系统
+- `text-fidelity.md` — 文字保真策略
 - `../../references/ai-visuals.md` — AI 视觉总览
 - `providers/` — 5 个 Provider 详情
