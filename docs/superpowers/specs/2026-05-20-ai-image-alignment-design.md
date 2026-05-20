@@ -2,6 +2,17 @@
 
 Align slides-on's image generation capabilities with 5 baoyu-skills consumer skills: article-illustrator, comic, cover-image, image-cards, and infographic. Provider scope limited to DashScope + OpenAI.
 
+## Upstream Source
+
+Upstream repo: `https://github.com/JimLiu/baoyu-skills`
+
+Clone before implementation:
+```bash
+git clone https://github.com/JimLiu/baoyu-skills /tmp/baoyu-skills
+```
+
+All "Port from baoyu" references below use paths relative to `/tmp/baoyu-skills/skills/`.
+
 ## Context
 
 slides-on generates interactive HTML presentations with optional AI illustrations. The upstream project baoyu-skills has 5 mature consumer-level image generation skills that slides-on should align with. The core strategy is injecting baoyu's content layer (Type templates, Palette dimension, Consumer prompt modes, preset system) into slides-on's existing engine layer (prompt-assembler.ts, Style Lock, Role separation).
@@ -390,3 +401,141 @@ Phase 4: Image-card mode (needs anchor chain)
 Phase 5: Comic sub-skill (largest scope, new sub-skill)
   └── Full slides-comic/ directory + character system + storyboard + ref chain + PDF merge
 ```
+
+## Source File Mapping (baoyu → slides-on)
+
+All baoyu paths relative to `/tmp/baoyu-skills/skills/`. Action column: **port** = copy and adapt to slides-on conventions; **reference** = read for implementation guidance, don't copy verbatim.
+
+### Palettes
+
+| slides-on target | baoyu source | action |
+|-----------------|-------------|--------|
+| `slides-imagine/palettes/macaron.md` | `baoyu-article-illustrator/references/palettes/macaron.md` | port |
+| `slides-imagine/palettes/warm.md` | `baoyu-article-illustrator/references/palettes/warm.md` | port |
+| `slides-imagine/palettes/neon.md` | `baoyu-article-illustrator/references/palettes/neon.md` | port |
+| `slides-imagine/palettes/mono-ink.md` | `baoyu-article-illustrator/references/palettes/mono-ink.md` | port |
+| `slides-imagine/palettes/elegant.md` | `baoyu-cover-image/references/palettes/elegant.md` | port |
+| `slides-imagine/palettes/cool.md` | `baoyu-cover-image/references/palettes/cool.md` | port |
+| `slides-imagine/palettes/dark.md` | `baoyu-cover-image/references/palettes/dark.md` | port |
+| `slides-imagine/palettes/earth.md` | `baoyu-cover-image/references/palettes/earth.md` | port |
+| `slides-imagine/palettes/vivid.md` | `baoyu-cover-image/references/palettes/vivid.md` | port |
+| `slides-imagine/palettes/pastel.md` | `baoyu-cover-image/references/palettes/pastel.md` | port |
+| `slides-imagine/palettes/retro.md` | `baoyu-cover-image/references/palettes/retro.md` | port |
+| `slides-imagine/palettes/duotone.md` | `baoyu-cover-image/references/palettes/duotone.md` | port |
+
+### Infographic Pipeline
+
+| slides-on target | baoyu source | action |
+|-----------------|-------------|--------|
+| `slides-imagine/infographic/base-prompt.md` | `baoyu-infographic/references/base-prompt.md` | port |
+| `slides-imagine/infographic/analysis-framework.md` | `baoyu-infographic/references/analysis-framework.md` | port |
+| `slides-imagine/infographic/structured-content-template.md` | `baoyu-infographic/references/structured-content-template.md` | port |
+| `slides-imagine/infographic/layouts/` (21 files) | already present, originally from `baoyu-infographic/references/layouts/` | verify |
+| `slides-imagine/infographic/styles/` (22 files) | already present, originally from `baoyu-infographic/references/styles/` | verify |
+
+### Cover Mode
+
+| slides-on target | baoyu source | action |
+|-----------------|-------------|--------|
+| `slides-imagine/cover/types.md` | `baoyu-cover-image/references/types.md` | port |
+| `slides-imagine/cover/renderings/flat-vector.md` | `baoyu-cover-image/references/renderings/flat-vector.md` | port |
+| `slides-imagine/cover/renderings/hand-drawn.md` | `baoyu-cover-image/references/renderings/hand-drawn.md` | port |
+| `slides-imagine/cover/renderings/painterly.md` | `baoyu-cover-image/references/renderings/painterly.md` | port |
+| `slides-imagine/cover/renderings/digital.md` | `baoyu-cover-image/references/renderings/digital.md` | port |
+| `slides-imagine/cover/renderings/pixel.md` | `baoyu-cover-image/references/renderings/pixel.md` | port |
+| `slides-imagine/cover/renderings/chalk.md` | `baoyu-cover-image/references/renderings/chalk.md` | port |
+| `slides-imagine/cover/renderings/screen-print.md` | `baoyu-cover-image/references/renderings/screen-print.md` | port |
+| `slides-imagine/cover/dimensions.md` | `baoyu-cover-image/references/dimensions/text.md` + `mood.md` + `font.md` | merge 3 files |
+| `slides-imagine/cover/auto-selection.md` | `baoyu-cover-image/references/auto-selection.md` | port |
+
+### Image-Card Mode
+
+| slides-on target | baoyu source | action |
+|-----------------|-------------|--------|
+| `slides-imagine/image-cards/styles/cute.md` | `baoyu-image-cards/references/presets/cute.md` | port |
+| `slides-imagine/image-cards/styles/fresh.md` | `baoyu-image-cards/references/presets/fresh.md` | port |
+| `slides-imagine/image-cards/styles/warm.md` | `baoyu-image-cards/references/presets/warm.md` | port |
+| `slides-imagine/image-cards/styles/bold.md` | `baoyu-image-cards/references/presets/bold.md` | port |
+| `slides-imagine/image-cards/styles/minimal.md` | `baoyu-image-cards/references/presets/minimal.md` | port |
+| `slides-imagine/image-cards/styles/retro.md` | `baoyu-image-cards/references/presets/retro.md` | port |
+| `slides-imagine/image-cards/styles/pop.md` | `baoyu-image-cards/references/presets/pop.md` | port |
+| `slides-imagine/image-cards/styles/notion.md` | `baoyu-image-cards/references/presets/notion.md` | port |
+| `slides-imagine/image-cards/styles/chalkboard.md` | `baoyu-image-cards/references/presets/chalkboard.md` | port |
+| `slides-imagine/image-cards/styles/study-notes.md` | `baoyu-image-cards/references/presets/study-notes.md` | port |
+| `slides-imagine/image-cards/styles/screen-print.md` | `baoyu-image-cards/references/presets/screen-print.md` | port |
+| `slides-imagine/image-cards/styles/sketch-notes.md` | `baoyu-image-cards/references/presets/sketch-notes.md` | port |
+| `slides-imagine/image-cards/elements/canvas.md` | `baoyu-image-cards/references/elements/canvas.md` | port |
+| `slides-imagine/image-cards/elements/decorations.md` | `baoyu-image-cards/references/elements/decorations.md` | port |
+| `slides-imagine/image-cards/elements/image-effects.md` | `baoyu-image-cards/references/elements/image-effects.md` | port |
+| `slides-imagine/image-cards/elements/typography.md` | `baoyu-image-cards/references/elements/typography.md` | port |
+| `slides-imagine/image-cards/prompt-assembly.md` | `baoyu-image-cards/references/workflows/prompt-assembly.md` | port |
+
+### Comic Sub-Skill
+
+| slides-on target | baoyu source | action |
+|-----------------|-------------|--------|
+| `slides-comic/SKILL.md` | `baoyu-comic/SKILL.md` | reference (rewrite for slides-on conventions) |
+| `slides-comic/workflow.md` | `baoyu-comic/references/workflow.md` | port |
+| `slides-comic/art-styles/ligne-claire.md` | `baoyu-comic/references/art-styles/ligne-claire.md` | port |
+| `slides-comic/art-styles/manga.md` | `baoyu-comic/references/art-styles/manga.md` | port |
+| `slides-comic/art-styles/realistic.md` | `baoyu-comic/references/art-styles/realistic.md` | port |
+| `slides-comic/art-styles/ink-brush.md` | `baoyu-comic/references/art-styles/ink-brush.md` | port |
+| `slides-comic/art-styles/chalk.md` | `baoyu-comic/references/art-styles/chalk.md` | port |
+| `slides-comic/art-styles/minimalist.md` | `baoyu-comic/references/art-styles/minimalist.md` | port |
+| `slides-comic/tones/neutral.md` | `baoyu-comic/references/tones/neutral.md` | port |
+| `slides-comic/tones/warm.md` | `baoyu-comic/references/tones/warm.md` | port |
+| `slides-comic/tones/dramatic.md` | `baoyu-comic/references/tones/dramatic.md` | port |
+| `slides-comic/tones/romantic.md` | `baoyu-comic/references/tones/romantic.md` | port |
+| `slides-comic/tones/energetic.md` | `baoyu-comic/references/tones/energetic.md` | port |
+| `slides-comic/tones/vintage.md` | `baoyu-comic/references/tones/vintage.md` | port |
+| `slides-comic/tones/action.md` | `baoyu-comic/references/tones/action.md` | port |
+| `slides-comic/layouts/standard.md` | `baoyu-comic/references/layouts/standard.md` | port |
+| `slides-comic/layouts/cinematic.md` | `baoyu-comic/references/layouts/cinematic.md` | port |
+| `slides-comic/layouts/dense.md` | `baoyu-comic/references/layouts/dense.md` | port |
+| `slides-comic/layouts/splash.md` | `baoyu-comic/references/layouts/splash.md` | port |
+| `slides-comic/layouts/mixed.md` | `baoyu-comic/references/layouts/mixed.md` | port |
+| `slides-comic/layouts/webtoon.md` | `baoyu-comic/references/layouts/webtoon.md` | port |
+| `slides-comic/layouts/four-panel.md` | `baoyu-comic/references/layouts/four-panel.md` | port |
+| `slides-comic/presets/ohmsha.md` | `baoyu-comic/references/presets/ohmsha.md` | port |
+| `slides-comic/presets/wuxia.md` | `baoyu-comic/references/presets/wuxia.md` | port |
+| `slides-comic/presets/shoujo.md` | `baoyu-comic/references/presets/shoujo.md` | port |
+| `slides-comic/presets/concept-story.md` | `baoyu-comic/references/presets/concept-story.md` | port |
+| `slides-comic/presets/four-panel.md` | `baoyu-comic/references/presets/four-panel.md` | port |
+| `slides-comic/character-template.md` | `baoyu-comic/references/character-template.md` | port |
+| `slides-comic/storyboard-template.md` | `baoyu-comic/references/storyboard-template.md` | port |
+| `slides-comic/base-prompt.md` | `baoyu-comic/references/base-prompt.md` | port |
+| `slides-comic/auto-selection.md` | `baoyu-comic/references/auto-selection.md` | port |
+
+### Style Definitions (补建 6 个)
+
+| slides-on target | baoyu source | action |
+|-----------------|-------------|--------|
+| `slides-imagine/style-definitions/ink-notes.md` | `baoyu-article-illustrator/references/styles/ink-notes.md` | reference (rewrite with Style Lock + Role Fragment format) |
+| `slides-imagine/style-definitions/screen-print.md` | `baoyu-article-illustrator/references/styles/screen-print.md` | reference (rewrite) |
+| `slides-imagine/style-definitions/flat-doodle.md` | `baoyu-article-illustrator/references/styles/flat-doodle.md` | reference (rewrite) |
+| `slides-imagine/style-definitions/nature.md` | `baoyu-article-illustrator/references/styles/nature.md` | reference (rewrite) |
+| `slides-imagine/style-definitions/playful.md` | `baoyu-article-illustrator/references/styles/playful.md` | reference (rewrite) |
+| `slides-imagine/style-definitions/retro.md` | `baoyu-article-illustrator/references/styles/retro.md` | reference (rewrite) |
+
+### Article-Illustrator Prompt Templates
+
+| slides-on target | baoyu source | action |
+|-----------------|-------------|--------|
+| `slides-imagine/presets.json` | `baoyu-article-illustrator/references/style-presets.md` | reference (convert 26 presets to JSON format) |
+| prompt-assembler.ts type templates | `baoyu-article-illustrator/references/prompt-construction.md` | reference (embed type-specific prompt skeletons into assembler Layer 3 logic) |
+
+### Provider Upgrades
+
+| slides-on target | baoyu source | action |
+|-----------------|-------------|--------|
+| `scripts/imagine/providers/openai.ts` | `baoyu-imagine/scripts/providers/openai.ts` | reference (gpt-image-2 model, dual API dialect, /images/edits ref support) |
+| `scripts/imagine/providers/dashscope.ts` | `baoyu-imagine/scripts/providers/dashscope.ts` | reference (qwen-image-2.0-pro default, qwen model detection) |
+| `slides-imagine/text-fidelity.md` | `baoyu-imagine/references/text-fidelity.md` (deleted from slides-on earlier) | port |
+
+### Shared Infrastructure
+
+| slides-on target | baoyu source | action |
+|-----------------|-------------|--------|
+| retry logic in providers | `baoyu-imagine/scripts/main.ts` (MAX_ATTEMPTS=3 pattern) | reference |
+| batch rate limiting | `baoyu-imagine/scripts/main.ts` (per-provider throttle) | reference |
+| `scripts/imagine/merge-to-pdf.ts` | `baoyu-comic/scripts/merge-to-pdf.ts` | port (for comic mode) |
