@@ -6,6 +6,16 @@
  *   Layer 2: Style Lock (from style-definitions/{design}.md) + Palette override
  *   Layer 3: Composition + Content (archetype / layout-guideline / type-composition)
  *
+ * STATUS: The "illustration" role is the primary supported path for
+ * deterministic assembly (simple background images without text).
+ *
+ * The infographic / cover / image-card / comic-page / content-page roles
+ * are EXPERIMENTAL. They use template concatenation which produces
+ * generic prompts. For these roles, the recommended workflow is AI-driven:
+ * Claude reads the reference files (style-definitions, palettes, layouts,
+ * archetypes), analyzes the content, and writes a tailored prompt.
+ * See slides-imagine/SKILL.md for the AI-driven workflow.
+ *
  * Usage:
  *   const result = assemblePrompt({
  *     design: "sketch-notes",

@@ -46,6 +46,7 @@ interface MainCliArgs {
   // Main-specific
   prompt?: string;
   file?: string;
+  promptfile?: string;
   content?: string;
   title?: string;
   subtitle?: string;
@@ -55,28 +56,45 @@ interface MainCliArgs {
 }
 
 function parseArgs(args: string[]): MainCliArgs {
-  const { opts: common, remaining } = parseCommonCliArgs(args);
+  // Phase 1: consume main-specific flags first, collect remaining
+  const mainFlags = new Set(["--prompt", "-p", "--file", "-f", "--promptfile",
+    "--content", "-c", "--title", "--subtitle", "--labels", "--anchor-ref", "--list-providers"]);
+  const cli: MainCliArgs = {};
+  const passThrough: string[] = [];
 
-  const cli: MainCliArgs = { ...common };
-  for (let i = 0; i < remaining.length; i++) {
-    switch (remaining[i]) {
-      case "--prompt": case "-p":
-        cli.prompt = remaining[++i]; break;
-      case "--file": case "-f":
-        cli.file = remaining[++i]; break;
-      case "--content": case "-c":
-        cli.content = remaining[++i]; break;
-      case "--title":
-        cli.title = remaining[++i]; break;
-      case "--subtitle":
-        cli.subtitle = remaining[++i]; break;
-      case "--labels":
-        cli.labels = remaining[++i]; break;
-      case "--anchor-ref":
-        cli.anchorRef = remaining[++i]; break;
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i]!;
+    if (mainFlags.has(arg)) {
+      switch (arg) {
+        case "--prompt": case "-p":
+          cli.prompt = args[++i]; break;
+        case "--file": case "-f":
+          cli.file = args[++i]; break;
+        case "--promptfile":
+          cli.promptfile = args[++i]; break;
+        case "--content": case "-c":
+          cli.content = args[++i]; break;
+        case "--title":
+          cli.title = args[++i]; break;
+        case "--subtitle":
+          cli.subtitle = args[++i]; break;
+        case "--labels":
+          cli.labels = args[++i]; break;
+        case "--anchor-ref":
+          cli.anchorRef = args[++i]; break;
+        case "--list-providers":
+          cli.listProviders = true; break;
+      }
+    } else {
+      passThrough.push(arg);
     }
   }
-  return cli;
+
+  // Phase 2: run common CLI parser on remaining args
+  const { opts: common } = parseCommonCliArgs(passThrough);
+
+  // Merge: common provides defaults, main-specific overrides
+  return { ...common, ...cli };
 }
 
 function printUsage(): void {
@@ -93,8 +111,9 @@ Structured prompt mode (--design required):
   --text-safe      Leave blank label spaces, no text baked in
 
 Legacy flat prompt mode:
-  --prompt,    -p   Image generation prompt (required unless --file)
-  --file,      -f   Read prompt from .md prompt file
+  --prompt,    -p   Image generation prompt (required unless --file/--promptfile)
+  --file,      -f   Read prompt from .md prompt file (strips markdown)
+  --promptfile      Read prompt from .md file as-is (AI-driven workflow)
 
 External anchor reference:
   --anchor-ref      Path to external anchor reference image`);
@@ -106,6 +125,16 @@ External anchor reference:
 function loadPrompt(cliArgs: MainCliArgs): string {
   if (cliArgs.prompt) return cliArgs.prompt.trim();
 
+  // --promptfile: read file as-is (no markdown stripping) — for AI-driven workflow
+  if (cliArgs.promptfile) {
+    const filePath = path.resolve(cliArgs.promptfile);
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Prompt file not found: ${filePath}`);
+    }
+    return fs.readFileSync(filePath, "utf-8").trim() || "";
+  }
+
+  // --file: legacy mode, strips markdown formatting
   if (cliArgs.file) {
     const filePath = path.resolve(cliArgs.file);
     if (!fs.existsSync(filePath)) {
@@ -123,7 +152,7 @@ function loadPrompt(cliArgs: MainCliArgs): string {
     return content || "";
   }
 
-  throw new Error("Either --prompt, --file, or --design is required");
+  throw new Error("Either --prompt, --promptfile, --file, or --design is required");
 }
 
 // ─── Main ────────────────────────────────────────────────────────────

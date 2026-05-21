@@ -5,32 +5,145 @@ description: >
   infographics, concept art. Use whenever the user asks to generate images
   for slides, AI 生图, 插图, 封面图, 信息图, 配图, make an illustration,
   create a cover image, generate visual content for a presentation. Features
-  10 providers, 3-layer structured prompt assembly, 10 archetype composition
-  templates, and 17 style definitions. Outputs PNG files that can be embedded
-  into slides-card or slides-ppt via the SlideData image field.
+  10 providers, AI-driven prompt writing with content analysis, 23 style
+  definitions, 12 palettes, and 6 content roles. Outputs PNG files that can
+  be embedded into slides-card or slides-ppt via the SlideData image field.
 ---
 
 # slides-imagine — AI 图片生成
 
-10 个 Provider，三层结构化 prompt 组装，17 个 style definition，10 种构图原型。
+10 个 Provider，AI-driven prompt writing，23 个 style definition，12 个 palette，6 种内容角色。
 
-## 生成方式
+## 核心理念
 
-### 结构化 Prompt 模式（推荐）
+Prompt 由 AI（Claude）分析内容后写出，不是模板拼接。每个 prompt 写入文件后再生图，文件即复现记录。
 
-```bash
-bun ../../scripts/imagine/main.ts --design sketch-notes --archetype "horizontal process" --aspect 3:4 --content "推荐系统三阶段流程"
+Reference 文件（style-definitions、palettes、archetypes、infographic/、cover/、image-cards/）提供知识库，Claude 阅读后根据具体内容定制化写 prompt。
+
+## 6 步 AI-Driven Workflow
+
+### Step 0: 读取偏好 (EXTEND.md) ⛔ BLOCKING
+
+检查 `EXTEND.md` 中的 `ai_image` 配置节（provider、model、quality、aspect、design 等默认值）。
+
+### Step 1: 分析内容
+
+根据用户输入确定：
+- **Role**: illustration / content-page / infographic / cover / image-card / comic-page
+- **推荐 Design**: 根据内容风格推荐 style-definition（见下方角色表）
+- **推荐 Palette**（可选）
+- **语言**：与用户输入一致
+
+| Role | 用途 | 触发词 | 推荐 Design |
+|------|------|--------|-------------|
+| `illustration` | 幻灯片背景/插图（无文字） | 默认 | sketch-notes |
+| `content-page` | 含烘焙文字的独立内容页 | 文字烘焙 | notion / blueprint |
+| `infographic` | 结构化信息图 | 信息图/infographic | sketch-notes |
+| `cover` | 文章/演示封面图 | 封面图/cover image | dark-atmospheric / minimal |
+| `image-card` | 社交媒体图片卡片 | AI图片卡片/小红书 | xiaohongshu-white |
+| `comic-page` | 知识漫画页面 | 漫画/comic | (用 art-style + tone) |
+
+### Step 2: 读 Reference 文件
+
+根据 role 读取对应的 reference 文件作为 prompt 写作的知识库：
+
+**所有 role 共用**：
+- `style-definitions/{design}.md` — 选定 style 的 Style Lock、Typography、Negative Constraints
+- `archetypes.md` — 10 种构图原型（illustration/content-page 时必读）
+- `palettes/{palette}.md` — 调色板 hex 值和语义约束
+
+**按 role**：
+- `infographic`: 读 `infographic/structured-content-template.md` + `infographic/analysis-framework.md`
+- `cover`: 读 `cover/types.md` + `cover/dimensions.md` + `cover/renderings/`
+- `image-card`: 读 `image-cards/prompt-assembly.md` + `image-cards/styles/` + `image-cards/elements/`
+- `comic-page`: 读 `../slides-comic/art-styles/{style}.md` + `../slides-comic/tones/{tone}.md` + `../slides-comic/layouts/{layout}.md`
+
+### Step 3: 确认选项 ⚠️
+
+**默认确认后再生图**。用 AskUserQuestion 一次性确认：
+
+| 优先级 | 问题 | 何时问 |
+|--------|------|--------|
+| 1 | Role + Design + Palette 推荐 | 始终 |
+| 2 | Aspect ratio | 始终 |
+| 3 | Image backend | 多个可用时 |
+
+跳过确认需用户明确说 "直接生成" / "不用确认" / `--quick`。跳过时声明最终选项。
+
+### Step 4: 写 Prompt → `prompts/NN-{type}-{slug}.md`
+
+**⛔ HARD REQUIREMENT**: 必须在生图前写入文件。文件是复现记录。
+
+**Prompt 写作要求**：
+
+1. **英译所有中文文本内容**（prompt 本身用英文写，但明确所有烘焙文字的语言）
+2. **包含 YAML frontmatter**（type, style, palette, aspect, language）
+3. **使用 style-definition 中的视觉描述**，但用贴合具体内容的方式重写——不要照抄 Style Lock
+4. **结构化内容**：标题 → 模块 → 数据指标 → 视觉元素建议
+5. **颜色约束**：hex 值是渲染指导，不要作为可见文字显示在图中
+6. **text-fidelity.md 规则**：永远不要用代码修补位图文字错误，重新生成
+
+**Prompt 结构模板**：
+
+```markdown
+---
+type: {role}
+style: {design}
+palette: {palette}
+aspect: {ratio}
+language: {zh|en}
+---
+
+# Image Role
+{从 role 表派生的角色说明}
+
+## Visual Style
+{从 style-definition 解读后重写的视觉描述 — 贴合当前内容}
+
+## Palette
+{从 palette 文件提取的颜色映射 — hex + 语义角色}
+
+## Content Structure
+{根据内容定制的结构化描述 — 标题、分区、数据指标、视觉隐喻}
+
+## Composition
+{从 archetype 或 layout 参考文件解读的构图指引}
+
+## Technical Specs
+- Aspect ratio, quality, text language
+- Negative constraints from style-definition
 ```
 
-三层自动组装：Image Role → Style Lock（从 `style-definitions/{design}.md` 加载）→ Archetype 构图 + 用户内容。
+### Step 5: 生成图片
 
-### 直接 Prompt 模式
+```bash
+bun ../../scripts/imagine/main.ts --file prompts/NN-{type}-{slug}.md --aspect {ratio} --quality 2k
+```
+
+或指定 provider：
+```bash
+bun ../../scripts/imagine/main.ts --file prompts/NN-{type}-{slug}.md --provider dashscope --model qwen-image-2.0-pro
+```
+
+**参考图**：如有 reference image，先复制到 `refs/` 目录，生图时加 `--ref` 参数。
+
+**失败重试**：自动重试一次。如需修正文字：写新 prompt 文件 + 新输出路径，保留失败版本对照。
+
+### Step 6: 输出摘要
+
+报告：role、design、palette、aspect、backend、输出路径、文件列表。
+
+---
+
+## 直接 Prompt 模式（简单场景）
+
+简单生图不需要结构化 prompt 时：
 
 ```bash
 bun ../../scripts/imagine/main.ts --prompt "a futuristic city skyline at night" --aspect 16:9
 ```
 
-### 批量生成
+## 批量生成
 
 ```bash
 bun ../../scripts/imagine/build-batch.ts --dir prompts/ --design sketch-notes --jobs 3
@@ -70,17 +183,6 @@ export IMAGINE_DESIGN="sketch-notes"
 { "type": "cards-2x2", "cards": [{ "title": "...", "body": "...", "image": "imgs/card.png" }] }
 ```
 
-## 6 种生成角色
-
-| Role | 用途 | 触发词 |
-|------|------|--------|
-| `illustration` | 幻灯片背景/插图（无文字） | 默认 |
-| `content-page` | 含烘焙文字的独立内容页 | 文字烘焙 |
-| `infographic` | 结构化信息图 | 信息图/infographic |
-| `cover` | 文章/演示封面图 | 封面图/cover image |
-| `image-card` | 社交媒体图片卡片 | AI图片卡片/手绘风 |
-| `comic-page` | 知识漫画页面 | 漫画/comic |
-
 ## 10 种构图原型（Archetype）
 
 | 内容语义 | Archetype |
@@ -104,26 +206,26 @@ Style definitions（23 个）：blueprint, bold-editorial, chalkboard, corporate
 
 Palettes（12 个）：macaron, warm, neon, mono-ink, elegant, cool, dark, earth, vivid, pastel, retro, duotone
 
-Palette 可在 Layer 2 覆盖 Style Lock 颜色。详见 `style-definitions/` 和 `palettes/`。
+详见 `style-definitions/` 和 `palettes/`。
 
 ## Preset 系统
 
-`presets.json` 提供 26 个快捷预设，`--preset hand-drawn-edu` 展开为 `--design sketch-notes --palette macaron --archetype horizontal-process`。
+`presets.json` 提供 26 个快捷预设。用作推荐的起点，不是硬性约束。
 
 ## 配置
 
-`../EXTEND.md` 中 `ai_image` 节可配置默认 Provider、Model、Quality、Aspect 等。环境变量可覆盖。详见 `../../scripts/imagine/config.ts`。
+`../EXTEND.md` 中 `ai_image` 节可配置默认 Provider、Model、Quality、Aspect 等。详见 `../../scripts/imagine/config.ts`。
 
 ## 核心参考
 
-- `prompt-construction.md` — 三层 Prompt 组装规范
+- `prompt-construction.md` — Prompt 写作规范
 - `archetypes.md` — 10 种构图模板
+- `text-fidelity.md` — 文字保真策略
 - `style-definitions/` — 23 个 Style Lock 定义
 - `palettes/` — 12 个调色板定义
 - `presets.json` — 26 个快捷预设
-- `infographic/` — 21 种信息图布局 × 22 种视觉风格
+- `infographic/` — 信息图：分析框架、内容模板、结构化指南
 - `cover/` — 封面图：6 种类型 × 7 种渲染 × 维度配置
 - `image-cards/` — 图片卡片：12 种风格 × 8 种布局 × 元素系统
-- `text-fidelity.md` — 文字保真策略
 - `../../references/ai-visuals.md` — AI 视觉总览
 - `providers/` — 5 个 Provider 详情

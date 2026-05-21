@@ -109,6 +109,7 @@ export interface ImagineConfig {
   style?: string;
   reference?: string;
   seed?: number;
+  output?: string;
 }
 
 /** Read defaults from IMAGINE_* environment variables.
@@ -284,6 +285,7 @@ export function resolveConfig(defaults: ImagineConfig, cli: CommonCliArgs): Imag
     style: cli.style || defaults.style,
     reference: cli.reference || defaults.reference,
     seed: cli.seed ?? defaults.seed,
+    output: cli.output || defaults.output,
   };
 }
 
