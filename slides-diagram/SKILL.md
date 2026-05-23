@@ -55,8 +55,8 @@ Highlight:  #fbbf24 (黄)    — 高亮标注
 <!-- 方式 1：内联 SVG（推荐，保持矢量质量）-->
 <div class="slide"><svg viewBox="0 0 800 600">...</svg></div>
 
-<!-- 方式 2：img 引用（先在 slides.json html 字段中引用）-->
-{ "type": "html", "html": "<section class=\"slide\"><img src=\"diagram.svg\"></section>" }
+<!-- 方式 2：img 引用 -->
+<img src="diagram.svg" alt="架构图">
 ```
 
 ## SVG → PNG 转换

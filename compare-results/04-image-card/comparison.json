@@ -1,0 +1,23 @@
+{
+  "id": "04-image-card",
+  "label": "Image Card — 小红书推荐系统科普卡片",
+  "description": "Generate a 3:4 social media card for Xiaohongshu about recommendation systems",
+  "baoyuSkill": "baoyu-image-cards",
+  "slidesOn": {
+    "role": "image-card",
+    "design": "xiaohongshu-white",
+    "metadata": {
+      "design": "xiaohongshu-white",
+      "archetype": "none",
+      "role": "image-card",
+      "aspect": "3:4"
+    },
+    "promptLength": 3532,
+    "promptLines": 60,
+    "error": null
+  },
+  "baoyu": {
+    "promptLength": 2401,
+    "promptLines": 82
+  }
+}

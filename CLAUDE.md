@@ -4,26 +4,27 @@ slides-on — Claude Code skill，从原始文档生成交互 HTML 演示 + 导�
 
 ## Skill 分工
 
-项目采用 **root dispatcher + 4 子技能** 架构。Root SKILL.md 是纯路由层，不含业务逻辑。分工边界：
+项目采用 **root dispatcher + 5 子技能** 架构。Root SKILL.md 是纯路由层，不含业务逻辑。分工边界：
 
 | 子技能 | 画布 | 核心职责 | 不做什么 |
 |--------|------|---------|---------|
-| **slides-card** | 3:4 portrait | 小红书图文、社交卡片，c-* 组件拼装 | 不直接用 single-page layout（那是 16:9 的） |
-| **slides-ppt** | 16:9 landscape | 演示文稿、技术分享、周报、路演，single-page layout + c-* 混合 | 不处理 3:4 竖版内容 |
-| **slides-imagine** | 任意 | AI 生图（插图/封面/信息图），10 个 Provider，三层 prompt 组装 | 不生成 HTML 页面 |
+| **slides-card** | 3:4 portrait | 独立知识卡片、小红书图文，c-* 组件拼装，Claude 直接写 HTML | 不直接用 single-page layout（那是 16:9 的） |
+| **slides-ppt** | 16:9 landscape | 演讲辅助、技术分享、周报、路演，single-page layout + c-* 混合，Claude 直接写 HTML | 不处理 3:4 竖版内容 |
+| **slides-imagine** | 任意 | AI 生图（插图/封面/信息图），10 个 Provider，AI-driven prompt 写作 | 不生成 HTML 页面 |
 | **slides-diagram** | 任意 | SVG 架构图/流程图/时序图/结构图，8 层 z-order | 不生成像素图 |
+| **slides-comic** | 任意 | 知识漫画创作，6 种画风 × 7 种色调 × 7 种版式 | — |
 
-**跨技能协作**：slides-card 和 slides-ppt 通过 SlideData 的 `image` 字段引用 slides-imagine 生成的 PNG。slides-diagram 生成的 SVG 可嵌入 slides-ppt 的 HTML。
+**跨技能协作**：slides-card 和 slides-ppt 通过 HTML `<img>` 标签引用 slides-imagine 生成的 PNG。slides-diagram 生成的 SVG 可内联到 slides-ppt 的 HTML。
 
 ## 设计理念
 
-### 核心公式：Slides = Template × Design × Content
+### 核心公式：Slides = Content × Design (× Export)
 
-三者正交——换 Design 不改结构，换 Content 不改皮肤。
+Claude 直接编写完整单文件 HTML（Content），Design CSS / Theme CSS 提供视觉皮肤（Design），render-precise.ts 等脚本导出最终产物（Export）。
 
 ### Design CSS 可移植性
 
-Design 是纯 CSS 变量覆盖层（`.d-{name}` 命名空间），不碰 HTML 结构。同一个 Design CSS 可以套到不同 Template 上。每个 Design CSS 必须成对维护一个 DesignManifest JSON（定义类名、chrome 配置、QA 选择器）。改一个就要改另一个。
+Design 是纯 CSS 变量覆盖层（`.d-{name}` 命名空间），不碰 HTML 结构。同一个 Design CSS 可以套到不同内容上。
 
 ### Chrome 与 Content 正交
 
@@ -31,16 +32,16 @@ Design 是纯 CSS 变量覆盖层（`.d-{name}` 命名空间），不碰 HTML �
 
 ### 双画布策略
 
-- **16:9 landscape**：默认，用 `templates/single-page/` 的 31 种 layout
+- **16:9 landscape**：默认，用 `templates/single-page/` 的 31 种 layout 作为写作参考
 - **3:4 portrait**：body class `.portrait` 触发，用 Container Query + cqi 单位等比缩放。严格禁止 px 字号
 
 ### 渐进式加载
 
 SKILL.md < 500 行，核心指令内联，详细参考按需 Read。子技能自己的文档放在自己目录里，跨技能共享的放在 `references/`。
 
-### QA 门禁
+### 自检
 
-每一步都有 L0 validate → L1 visual-qa → repair loop。0 BLOCKER 才能提交。
+生成 HTML 后对照 `references/self-check-checklist.md` 逐项自检。不通过则修改 HTML 重新生成。
 
 ### 产物自包含
 
@@ -59,16 +60,13 @@ SKILL.md < 500 行，核心指令内联，详细参考按需 Read。子技能自
 ### 脚本
 
 ```bash
-bun scripts/assemble-deck.ts --input slides.json --output index.html
-bun scripts/qa.ts --check                    # L0+L1，0 BLOCKER 才能提交
-bun scripts/qa.ts --check --deck xxx         # 单 deck
-bun scripts/render-precise.ts index.html --slides auto --canvas 16:9
-bash scripts/package.sh                      # 打包（不用 package_skill.py）
+bun scripts/render-precise.ts index.html --canvas 3:4 --selector .slide
+bun scripts/html-to-pptx.ts index.html --output deck.pptx
+bun scripts/merge-to-pdf.ts png-out/ --output deck.pdf
+bash scripts/package.sh                      # 打包 → slides-on.zip
 ```
 
 ### 常见错误
 
-- DesignManifest 写了不存在的 variant 名（合法的只有 standard/editorial/terminal/handdrawn/card-as-step/card-wrapped）
-- 文件移动后 `references/` 前缀在 doc 内部过期
-- 3:4 下用了 px 字号 → visual-qa Group 13 会拦
-- 渲染截图中出现 editor UI 元素 → render-precise.ts / visual-qa.ts 已注入隐藏 CSS，新增 UI 需要追加
+- 3:4 下用了 px 字号 → 自检查清单会拦
+- HTML 中引用外部 CSS/JS 文件 → 必须内联，产物自包含

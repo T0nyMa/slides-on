@@ -1,0 +1,23 @@
+{
+  "id": "02-cover",
+  "label": "Cover Image — 分布式系统技术博客封面",
+  "description": "Generate a hero cover image for a tech blog about distributed systems",
+  "baoyuSkill": "baoyu-cover-image",
+  "slidesOn": {
+    "role": "cover",
+    "design": "dark-atmospheric",
+    "metadata": {
+      "design": "dark-atmospheric",
+      "archetype": "none",
+      "role": "cover",
+      "aspect": "16:9"
+    },
+    "promptLength": 2171,
+    "promptLines": 38,
+    "error": null
+  },
+  "baoyu": {
+    "promptLength": 2626,
+    "promptLines": 59
+  }
+}

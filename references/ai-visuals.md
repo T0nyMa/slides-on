@@ -80,22 +80,22 @@ bun scripts/svg-to-png.ts <input.svg>
 </div>
 ```
 
-### 图片嵌入 slides.json（推荐）
+### 图片嵌入 HTML（推荐）
 
-AI 生成的 PNG 图片可通过 SlideData 的 `image` 字段直接引用，无需手写 HTML。支持三种模式：
+AI 生成的 PNG 图片通过 HTML `<img>` 标签直接引用。支持三种模式：
 
-```json
-// Slide 级 — hero 图（封面/章节页大图）
-{ "type": "cover", "title": "...", "image": { "src": "imgs/hero.png", "alt": "..." }, "imageMode": "hero" }
+```html
+<!-- Hero 图（封面/章节页大图） -->
+<section class="slide"><img src="imgs/hero.png" alt="..." class="chr-hero"></section>
 
-// Slide 级 — 背景图（全页背景）
-{ "type": "quote", "quote": "...", "image": { "src": "imgs/bg.png", "fit": "cover" }, "imageMode": "background" }
+<!-- 背景图（全页背景） -->
+<section class="slide" style="background-image: url('imgs/bg.png')"></section>
 
-// Card/Step/Bullet 级 — 内联图
-{ "type": "steps", "steps": [{ "num": "1", "title": "...", "image": "imgs/step1.png" }] }
+<!-- 卡片内联图 -->
+<div class="c-card"><img src="imgs/card.png" alt="..."><h4>标题</h4></div>
 ```
 
-图片样式由 DesignManifest 的 `image` variant 自动控制（圆角、阴影、边框），保持与 design 一致。
+图片样式由 Design CSS 自动控制（圆角、阴影、边框），保持与 design 一致。
 
 ## AI 图片生成（Imagine）
 

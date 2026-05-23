@@ -51,26 +51,9 @@ timeline.html        toc.html             todo-checklist.html
 two-column.html
 ```
 
-### Deck 模板（15 个）
-
-全部位于 `templates/full-decks/`：
-
-```
-course-module/              dir-key-nav-minimal/
-graphify-dark-graph/        hermes-cyber-terminal/
-knowledge-arch-blueprint/   obsidian-claude-gradient/
-pitch-deck/                 presenter-mode-reveal/
-product-launch/             tech-sharing/
-testing-safety-alert/       weekly-report/
-xhs-pastel-card/            xhs-post/
-xhs-white-editorial/
-```
-
-每个 deck 模板包含 `index.html` + `style.css` + `README.md`。
-
 ### Deck 骨架
 
-`templates/deck.html` — 新建 deck 的起始 HTML 骨架。
+`templates/deck.html` — 新建 deck 的参考 HTML 骨架。
 
 ## 使用方式
 
@@ -94,17 +77,24 @@ xhs-white-editorial/
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="assets/base.css">
-  <link rel="stylesheet" href="assets/fonts.css">
-  <link rel="stylesheet" href="assets/themes/blueprint.css">
-  <link rel="stylesheet" href="assets/animations/animations.css">
+  <title>Deck Title</title>
+  <style>
+    /* assets/fonts.css 内容内联在此 */
+    /* assets/base.css 内容内联在此 */
+    /* assets/themes/blueprint.css 内容内联在此 */
+    /* assets/animations/animations.css 内容内联在此（如需） */
+  </style>
 </head>
-<body>
-  <div class="slide is-active" data-anim="fade-in">
-    <!-- 使用 single-page/cover.html 的内容结构 -->
+<body class="landscape">
+  <div class="deck">
+    <section class="slide is-active" data-anim="fade-in">
+      <!-- 参考 single-page/cover.html 的结构 -->
+    </section>
+    <!-- ... more slides ... -->
   </div>
-  <!-- ... more slides ... -->
-  <script src="assets/runtime.js"></script>
+  <script>
+    /* assets/runtime.js 内容内联在此 */
+  </script>
 </body>
 </html>
 ```
@@ -115,20 +105,26 @@ xhs-white-editorial/
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="assets/fonts.css">
-  <link rel="stylesheet" href="assets/base.css">
-  <link rel="stylesheet" href="assets/components.css">
-  <link rel="stylesheet" href="assets/designs/pastel-card.css">
+  <title>Card Title</title>
+  <style>
+    /* assets/fonts.css 内容内联在此 */
+    /* assets/base.css 内容内联在此 */
+    /* assets/components.css 内容内联在此 */
+    /* assets/designs/pastel-card.css 内容内联在此 */
+  </style>
 </head>
 <body class="d-pastel-card portrait">
-  <div class="slide is-active">
-    <div class="chr-blob b1"></div>
-    <div class="chr-topbar">...</div>
-    <!-- c-* 组件填充内容 -->
-    <div class="chr-footer">...</div>
+  <div class="deck">
+    <section class="slide is-active">
+      <div class="chr-blob b1"></div>
+      <div class="chr-topbar">...</div>
+      <!-- c-* 组件填充内容 -->
+      <div class="chr-footer">...</div>
+    </section>
   </div>
-  <!-- ... more slides ... -->
-  <script src="assets/runtime.js"></script>
+  <script>
+    /* assets/runtime.js 内容内联在此 */
+  </script>
 </body>
 </html>
 ```

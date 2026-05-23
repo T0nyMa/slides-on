@@ -5,7 +5,7 @@
     "email": ""
   },
   "metadata": {
-    "description": "Presentation and visual content creation toolkit — 4 skills covering slide decks, social cards, AI images, and SVG diagrams",
+    "description": "Presentation and visual content creation toolkit — 5 skills covering slide decks, social cards, AI images, SVG diagrams, and knowledge comics",
     "version": "2.0.0"
   },
   "plugins": [
@@ -18,7 +18,8 @@
         "./slides-card",
         "./slides-ppt",
         "./slides-imagine",
-        "./slides-diagram"
+        "./slides-diagram",
+        "./slides-comic"
       ]
     }
   ]

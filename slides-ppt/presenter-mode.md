@@ -16,13 +16,11 @@
 
 ## 两种做法
 
-### ✅ 推荐做法：直接用 `presenter-mode-reveal` 模板
+### ✅ 推荐做法：参考 `templates/deck.html` 骨架
 
-```bash
-cp -r templates/full-decks/presenter-mode-reveal examples/my-talk
-```
+Presenter 模式由 `runtime.js` 自动提供（按 S 键），无需特殊 HTML 结构。从骨架开始即可：
 
-这个模板已经预设好所有必需元素：
+这个样例已经预设好所有必需元素：
 - 支持 S 键切换演讲者视图
 - 5 个主题可用 T 键循环（tokyo-night / dracula / catppuccin-mocha / nord / corporate-clean）
 - 左右键翻页
@@ -93,17 +91,18 @@ html-ppt 的 **S 键演讲者视图是 `runtime.js` 内置的，所有 full-deck
 
 ```html
 <!DOCTYPE html>
-<html lang="zh-CN" data-themes="tokyo-night,dracula,corporate-clean">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <title>...</title>
-  <link rel="stylesheet" href="../../../assets/fonts.css">
-  <link rel="stylesheet" href="../../../assets/base.css">
-  <link rel="stylesheet" id="theme-link" href="../../../assets/themes/tokyo-night.css">
-  <link rel="stylesheet" href="../../../assets/animations/animations.css">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* assets/fonts.css 内容内联在此 */
+    /* assets/base.css 内容内联在此 */
+    /* assets/themes/tokyo-night.css 内容内联在此 */
+    /* assets/animations/animations.css 内容内联在此（如需） */
+  </style>
 </head>
-<body>
+<body class="landscape">
 <div class="deck">
 
   <section class="slide" data-title="Cover">

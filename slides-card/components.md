@@ -14,22 +14,26 @@
 
 ## 使用方式
 
-在 HTML 中加载 `components.css`（在 base.css 和 theme 之后）：
+使用 c-* 组件时，按以下顺序将 CSS 内联到 `<style>` 标签中：
 
 ```html
-<link rel="stylesheet" href="assets/base.css">
-<link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="assets/themes/tokyo-night.css">
-<link rel="stylesheet" href="assets/components.css">
+<style>
+  /* assets/base.css 内容 */
+  /* assets/fonts.css 内容 */
+  /* assets/themes/tokyo-night.css 内容 */
+  /* assets/components.css 内容 */
+</style>
 ```
 
 3:4 画布推荐使用 Design CSS 替代 theme，提供完整视觉皮肤：
 
 ```html
-<link rel="stylesheet" href="assets/base.css">
-<link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="assets/components.css">
-<link rel="stylesheet" href="assets/designs/pastel-card.css">
+<style>
+  /* assets/base.css 内容 */
+  /* assets/fonts.css 内容 */
+  /* assets/components.css 内容 */
+  /* assets/designs/pastel-card.css 内容 */
+</style>
 <body class="d-pastel-card portrait">
 ```
 
@@ -285,7 +289,7 @@ Chrome 元素不是通用组件——每个 Design CSS 可以选择性地定义�
 | Numbered-List | `.c-numbered-list` | 编号 + 关键词 + 正文（步骤、要点） |
 | Pill-Tags | `.c-pill-tags` | 胶囊标签组（关键词标签） |
 
-Article 组件由 `assemble-deck.ts` 根据 `slides.json` 的 `blocks` 数组自动渲染，不需要手写 HTML。
+Article 组件由 Claude 直接写 HTML，使用 c-article + c-badge-para / c-icon-card / c-quote-bar / c-numbered-list / c-pill-tags 组合。
 
 ## HTML 结构参考（Article）
 

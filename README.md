@@ -15,7 +15,7 @@
 
 ## 快速开始
 
-安装 `slides-on.skill` 到 Claude Code 后，直接说：
+安装 `slides-on.zip` 到 Claude Code 后，直接说：
 
 - "帮我把这个文档做成小红书图文"
 - "写一份技术分享的 PPT，主题是推荐系统架构"

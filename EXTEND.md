@@ -135,7 +135,7 @@ Design CSS 结构：
 }
 ```
 
-详见 `assets/designs/` 中的实现（pastel-card.css, white-editorial.css, xhs-post.css, hermes-cyber-terminal.css）和 `scripts/assemble/design-manifests/` 中的 DesignManifest JSON 定义。
+详见 `assets/designs/` 中的实现（pastel-card.css, white-editorial.css, xhs-post.css, hermes-cyber-terminal.css）。
 
 ## custom_layouts
 
@@ -207,15 +207,14 @@ ai_image:
 
 **优先级**：CLI 参数 > 环境变量 > 脚本内置默认值。详见 `scripts/imagine/config.ts`。
 
-## assemble
+## render
 
-HTML 组装脚本默认配置。
+HTML 编写和渲染默认配置。
 
 ```yaml
-assemble:
+render:
   default_design: pastel-card       # 默认 Design CSS
   default_canvas: "3:4"             # 默认画布
-  default_asset_depth: 3            # asset 路径深度（templates/ 为 3，examples/ 为 2）
   output_dir: ""                    # 默认输出目录
 ```
 

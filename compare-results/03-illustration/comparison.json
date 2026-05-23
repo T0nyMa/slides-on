@@ -1,0 +1,23 @@
+{
+  "id": "03-illustration",
+  "label": "Illustration — 未来城市天际线（无文字背景图）",
+  "description": "Generate a futuristic city skyline illustration for a slide background",
+  "baoyuSkill": "baoyu-article-illustrator",
+  "slidesOn": {
+    "role": "illustration",
+    "design": "sketch-notes",
+    "metadata": {
+      "design": "sketch-notes",
+      "archetype": "Cover Metaphor（封面隐喻）",
+      "role": "illustration",
+      "aspect": "16:9"
+    },
+    "promptLength": 2270,
+    "promptLines": 44,
+    "error": null
+  },
+  "baoyu": {
+    "promptLength": 1672,
+    "promptLines": 42
+  }
+}

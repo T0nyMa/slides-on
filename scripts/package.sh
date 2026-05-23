@@ -21,16 +21,19 @@ rsync -a \
   --exclude='examples' \
   --exclude='evals' \
   --exclude='slides-on.skill' \
+  --exclude='slides-on.zip' \
   --exclude='SKILL.md.bak' \
   --exclude='CLAUDE.md' \
   --exclude='.qa' \
+  --exclude='*.png' \
+  --exclude='templates/full-decks' \
   "$ROOT/" "$TMP/slides-on/"
 
-echo "📦 Creating slides-on.skill..."
+echo "📦 Creating slides-on.zip..."
 cd "$TMP"
-rm -f "$ROOT/slides-on.skill"
-zip -r "$ROOT/slides-on.skill" slides-on/
+rm -f "$ROOT/slides-on.zip"
+zip -r "$ROOT/slides-on.zip" slides-on/
 
 rm -rf "$TMP"
-echo "✅ Done — $ROOT/slides-on.skill"
-ls -lh "$ROOT/slides-on.skill"
+echo "✅ Done — $ROOT/slides-on.zip"
+ls -lh "$ROOT/slides-on.zip"

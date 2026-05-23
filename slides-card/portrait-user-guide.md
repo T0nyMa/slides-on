@@ -12,21 +12,17 @@ Design      = assets/designs/{name}.css（CSS 变量 + chrome 样式 + c-* 扩�
 Content     = c-* 组件（assets/components.css），通过 var(--accent) 等自动染上 Design 色
 ```
 
-**脚本化组装**：Claude 产出 `slides.json`，脚本机械拼装 HTML：
+**直接写 HTML**：Claude 根据 outline.md + component-recipes 直接编写完整 HTML，所有 CSS/JS 内联。详见 `SKILL.md` Step 3。
 
-```bash
-bun scripts/assemble-deck.ts --input slides.json --output index.html
-```
-
-详见 `scripts/assemble/` 目录和 `SKILL.md` Step 3。
-
-**加载顺序**（不可颠倒）：
+**加载顺序**（不可颠倒，将各文件内容内联到 `<style>` 标签中）：
 
 ```html
-<link rel="stylesheet" href="assets/fonts.css">
-<link rel="stylesheet" href="assets/base.css">
-<link rel="stylesheet" href="assets/components.css">
-<link rel="stylesheet" href="assets/designs/{design}.css">
+<style>
+  /* 1. assets/fonts.css 内容 */
+  /* 2. assets/base.css 内容 */
+  /* 3. assets/components.css 内容 */
+  /* 4. assets/designs/{design}.css 内容 */
+</style>
 <body class="d-{design} portrait">
 ```
 
@@ -56,7 +52,7 @@ CSS 变量 + Chrome 样式 + c-* 扩展。适合需要品牌辨识度、社交�
 
 包含：`chr-topbar`（顶栏）、`chr-chip`（标签）、`chr-footer`（底栏）、`chr-blob`（装饰背景）、卡片颜色变体、排版专属类等。
 
-已有完整 Design：`pastel-card`（马卡龙色块）、`white-editorial`（白底杂志）、`xhs-post`（手绘涂鸦）、`news-broadcast`（新闻播报）。实现见 `templates/full-decks/xhs-*/` 和 `assets/designs/`。
+已有完整 Design：`pastel-card`（马卡龙色块）、`white-editorial`（白底杂志）、`xhs-post`（手绘涂鸦）、`news-broadcast`（新闻播报）。实现见 `assets/designs/`。
 
 **极简和完整之间是渐进式的**——从极简 Design 开始，需要什么 Chrome 就加什么，逐步丰富。
 
@@ -215,11 +211,11 @@ c-glass（h1 + c-quote + c-quote-attr）→ c-section（回顾要点 → c-icon-
 
 1. **Base 样式**（`assets/components.css`）— 组件的默认结构和视觉，不依赖 Design CSS 就能工作
 2. **Design 覆盖**（`assets/designs/*.css`）— 每个 Design 对新组件的视觉定制（边框、阴影、背景色、圆角、字体）
-3. **QA 选择器**（`scripts/qa/selectors.ts`）— BASE_CONTENT 和 BASE_TEXT 必须包含新组件选择器，否则 visual-qa 误报填充率
+3. **自检**（`references/self-check-checklist.md`）— 新组件需确保填充率、字号、对比度通过自检
 
 ### nth-child 自动配色
 
-Design CSS 里用 `nth-child(4n+1/2/3/4)` 给重复组件循环配色，不需要 slides.json 手动指定颜色：
+Design CSS 里用 `nth-child(4n+1/2/3/4)` 给重复组件循环配色，Claude 写 HTML 时不用手动指定每个组件的颜色：
 
 ```css
 /* 示例：xhs-post 的 icon-card 四色循环 */

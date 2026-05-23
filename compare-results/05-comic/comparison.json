@@ -1,0 +1,23 @@
+{
+  "id": "05-comic",
+  "label": "Comic Page — 神经网络工作原理（日式漫画风）",
+  "description": "Generate a manga-style educational comic explaining how neural networks work",
+  "baoyuSkill": "baoyu-comic",
+  "slidesOn": {
+    "role": "comic-page",
+    "design": "sketch-notes",
+    "metadata": {
+      "design": "sketch-notes",
+      "archetype": "none",
+      "role": "comic-page",
+      "aspect": "3:4"
+    },
+    "promptLength": 2874,
+    "promptLines": 129,
+    "error": null
+  },
+  "baoyu": {
+    "promptLength": 4647,
+    "promptLines": 93
+  }
+}

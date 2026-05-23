@@ -1,0 +1,23 @@
+{
+  "id": "01-infographic",
+  "label": "Infographic — 推荐系统三阶段流程",
+  "description": "Generate an infographic explaining a 3-stage recommendation system pipeline",
+  "baoyuSkill": "baoyu-infographic",
+  "slidesOn": {
+    "role": "infographic",
+    "design": "sketch-notes",
+    "metadata": {
+      "design": "sketch-notes",
+      "archetype": "none",
+      "role": "infographic",
+      "aspect": "3:4"
+    },
+    "promptLength": 4925,
+    "promptLines": 102,
+    "error": null
+  },
+  "baoyu": {
+    "promptLength": 2896,
+    "promptLines": 94
+  }
+}

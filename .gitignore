@@ -12,3 +12,4 @@ bun.lock
 .qa/baselines/*/
 .qa/reports/
 slides-on.skill
+slides-on.zip

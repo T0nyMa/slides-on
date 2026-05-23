@@ -1,0 +1,23 @@
+{
+  "id": "06-content-page",
+  "label": "Content Page — 技术架构图（含烘焙文字）",
+  "description": "Generate a text-rich content page explaining an AI inference architecture",
+  "baoyuSkill": "baoyu-article-illustrator + baoyu-infographic",
+  "slidesOn": {
+    "role": "content-page",
+    "design": "blueprint",
+    "metadata": {
+      "design": "blueprint",
+      "archetype": "Horizontal Process（水平流程）",
+      "role": "content-page",
+      "aspect": "16:9"
+    },
+    "promptLength": 2474,
+    "promptLines": 51,
+    "error": null
+  },
+  "baoyu": {
+    "promptLength": 3115,
+    "promptLines": 96
+  }
+}

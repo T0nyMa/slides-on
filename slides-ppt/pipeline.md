@@ -155,13 +155,16 @@ Deck
 
 ### 3.1 组装流程
 
-1. 选择 deck 模板骨架（从 `templates/full-decks/` 或 `templates/deck.html`）
-2. 选择 theme CSS（`assets/themes/<theme>.css`）
-3. 为每个 slide 选择 layout HTML（`templates/single-page/<layout>.html`）
-4. 将实际内容填入 layout 模板的占位区域
-5. 对于 AI 图片/SVG 页面：插入 `<img>` 标签引用生成的文件
-6. 添加 `data-anim` / `data-fx` 属性声明动画
-7. 确保 `base.css` + theme CSS + `runtime.js` + `fonts.css` 正确引用
+### 3.1 HTML 编写流程
+
+1. 用 Read 工具读取资产文件（`assets/fonts.css`、`base.css`、theme CSS 等），内联到 HTML
+2. 参照 `templates/single-page/<layout>.html` 的结构编写每页内容
+3. 每页一个 `<section class="slide">`，置于 `<body class="landscape"><div class="deck">` 中
+4. 对于 AI 图片/SVG 页面：插入 `<img>` 标签或内联 SVG
+5. 添加 `data-anim` / `data-fx` 属性声明动画
+6. 所有 CSS/JS 内联到单一 HTML 文件中
+
+> 单页 layout 结构参考见 `templates/single-page/` 目录。
 
 ### 3.2 关键 CSS Variables
 

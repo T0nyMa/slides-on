@@ -1,0 +1,205 @@
+# Infographic — 推荐系统三阶段流程
+
+## slides-on (deterministic TypeScript)
+
+Create a professional infographic.
+Type: infographic — structured information visualization with clear hierarchy.
+Aspect ratio: 3:4.
+high quality, 2k, detailed, professional.
+Language: zh.
+
+Requirements:
+- Clear visual hierarchy with distinct sections
+- Data points must be EXACT and VERBATIM — no rounding or paraphrasing
+- Labels and callouts must be readable
+- Professional, publication-ready quality
+
+Apply this exact visual style:
+
+Refined Chinese handdrawn educational illustration on warm cream paper (near #F5F0E8) with extremely subtle grain.
+No full-page border. Fine brown-black ink (#3D2B1F) linework — stable but slightly irregular, hand-drawn wobble on all lines.
+Thin ink pen weight (0.3–0.5mm visual). Pencil hatching on diagrams for depth.
+Muted pastel marker fills: macaron blue #A8D8EA, lavender #D5C6E0, mint #B5E5CF, peach #F8D5C4.
+Small coral red #E8655A star marks for emphasis. Sparse corner construction marks: faint grey dots and ruler ticks.
+Generous negative space (40–50%). Central diagram compact: 50–60% page width, 35–45% page height.
+Rounded-rect content blocks with single-weight ink outlines and light pastel fills.
+Curved hand-drawn arrows between nodes — slim, quiet, with small arrowheads.
+At most one tiny stick-figure character, far corner. Props blank or with simple line marks only.
+No full-page border, no yellow/beige paper, no photorealistic, no 3D, no gradients, no shadows, no neon, no thick marker strokes, no crowded composition.
+
+Palette override:
+  - Background: #F5F0E8
+  - Primary Text: #2D2D2D
+  - Macaron Blue: #A8D8EA
+  - Macaron Mint: #B5E5CF
+  - Macaron Lavender: #D5C6E0
+  - Macaron Peach: #FFD5C2
+  - Accent: #E8655A
+  - Muted Text: #6B6B6B
+  - Background: #F5F0E8
+  - Constraint: Soft pastel macaron color palette. Use block colors as rounded card backgrounds for distinct information sections. Accent coral red sparingly for emphasis on key terms only. Do NOT render color names, hex codes, or role labels as visible text in the image.
+
+Role-specific instruction:
+This is a infographic page. Text rendering rules: - ALL text hand-drawn / handwritten style — natural hand-lettering feel
+- Main titles: medium weight, prominent, hand-drawn Chinese, with one pale blue hand-drawn underline
+- Keywords: bold + enlarged + pastel marker highlighter block behind text
+- Labels and annotations: small, readable, hand-drawn, inside small pastel marker labels
+- NO realistic or computer-generated fonts
+- NO calligraphic brush style, NO dramatic flyaway strokes
+- NO childish doodle fonts, NO heavy advertising type
+- Title: 5–12 Chinese characters preferred
+- Subtitle: 3–12 Chinese characters or three terms separated by ·
+- Main labels: 2–5 per page, 2–6 characters each
+
+## Layout Guidelines (linear-progression)
+# Linear Progression
+
+**Best for**: Timelines, roadmaps, sequential processes, and step-by-step workflows
+**Structure**: A horizontal line (or vertical for narrow layouts) with nodes at intervals, each representing a step or milestone. Directional arrows connect the nodes to show progression
+**Elements**: Timeline line, milestone nodes (dots, circles, or icons), step labels, descriptions, directional arrows, optional date/time markers
+
+## Content Requirements
+- 3-10 steps or milestones in a clear sequential order
+- Each step: a name/phase label and a brief description
+- Optional: dates, durations, or dependencies between steps
+- A clear start point and end point
+
+## When to Use
+- Project timelines and roadmaps
+- Step-by-step process documentation
+- Historical sequences or evolution narratives
+- Onboarding or getting-started flows
+
+## When NOT to Use
+- Cyclic or repeating processes — use circular-flow
+- Non-sequential groupings — use bento-grid
+- Branching paths (choose your own adventure) — use tree-branching
+- Processes with parallel/concurrent steps
+
+
+## Style Guidelines (craft-handmade)
+# Craft Handmade
+
+**Look**: Handmade craft aesthetic with paper cutouts, collage textures, and artisanal details
+**Palette**: Kraft paper browns, muted craft paper colors, natural fiber tones, washi tape accents
+**Mood**: Artisanal, warm, personal, tactile, DIY spirit
+
+## Characteristics
+- Texture: Paper fiber, torn edges, layered paper shadows, fabric textures, string/twine elements
+- Lines: Irregular torn paper edges, stitched lines, hand-drawn borders, visible glue marks
+- Typography: Stamped lettering, handwritten labels, mixed font collage, label-maker text
+
+## When to Use
+- Creative workshop or maker content
+- Personal brand or portfolio presentations
+- Sustainability or handcrafted product stories
+- When authenticity and personal touch are key messages
+
+
+## Content
+推荐系统三阶段流程：召回（从亿级商品池粗筛数千候选）→ 粗排（轻量模型打分，截断至数百）→ 精排（深度模型精准排序，输出Top50）
+
+## Composition Check
+- Subject clarity: clear, centered or slightly offset
+- Slide fit: suitable for presentation, not too busy
+- Same visual style as other images in this deck (style lock applied)
+
+
+---
+
+## baoyu (LLM-generated via skill instructions)
+
+---
+layout: linear-progression
+style: craft-handmade
+aspect: 3:4
+language: zh
+---
+
+Create a professional infographic following these specifications:
+
+## Image Specifications
+
+- **Type**: Infographic
+- **Layout**: linear-progression
+- **Style**: craft-handmade
+- **Aspect Ratio**: 3:4
+- **Language**: Chinese (zh)
+
+## Core Principles
+
+- Follow the layout structure precisely for information architecture
+- Apply style aesthetics consistently throughout
+- Hand-drawn quality throughout — paper texture, organic lines, craft aesthetic
+- Keep information concise, highlight keywords and core concepts
+- Use ample whitespace for visual clarity
+- Maintain clear visual hierarchy
+
+## Text Requirements
+
+- All text must match the craft-handmade style — hand-drawn lettering feel
+- Main titles should be prominent and readable
+- Key concepts should be visually emphasized with highlighter or underline effects
+- Labels should be clear and appropriately sized
+- All text in Chinese
+
+## Layout: linear-progression
+
+Linear-progression presents information as a sequential flow from left to right (or top to bottom for portrait). Each stage connects to the next with directional cues (arrows, dotted lines, stepped elements).
+
+**Structure**:
+- Header zone: title spanning full width at top
+- Flow zone: 3 connected stages arranged in vertical progression (portrait 3:4)
+- Each stage: numbered step marker → stage name → key details (1-2 bullet points) → data metric
+- Footer zone: source/citation line
+
+**Visual Elements**:
+- Numbered circular badges (01, 02, 03) as step markers
+- Connecting arrows or dashed lines between stages
+- Icon per stage representing the concept (filter funnel, scoring gauge, target/pinpoint)
+
+## Style: craft-handmade
+
+**Color Palette** (Macaron override):
+- Background: warm cream #FFF8F0
+- Primary text: dark brown #4A3728
+- Accent 1: soft coral #FF8C7A
+- Accent 2: mint green #7EC8A0
+- Accent 3: butter yellow #FFD93D
+- Accent 4: lavender #C3B1E1
+
+**Visual Elements**:
+- Paper texture background with subtle grain
+- Hand-drawn wobbly borders and dividers
+- Torn paper edge effects on content cards
+- Hand-drawn icons with irregular strokes
+- Dotted or dashed connecting lines
+
+**Typography**: Warm hand-lettered style — rounded, slightly irregular characters with organic stroke weight variation
+
+**Style Rules**:
+- No perfect geometric shapes — everything looks hand-crafted
+- Slight wobble in lines and borders
+- Color fills slightly outside the lines
+
+## Content
+
+**Title**: 推荐系统三阶段流程
+
+**Stage 1 — 召回 (Recall)**:
+- 从亿级商品池粗筛数千候选
+- Key metric: 亿级 → 数千
+- Icon: filter/funnel
+
+**Stage 2 — 粗排 (Pre-Ranking)**:
+- 轻量模型打分，截断至数百
+- Key metric: 数千 → 数百
+- Icon: gauge/scale
+
+**Stage 3 — 精排 (Ranking)**:
+- 深度模型精准排序，输出Top50
+- Key metric: 数百 → Top50
+- Icon: target/bullseye
+
+## Aspect Ratio Note
+Portrait 3:4 — vertical flow, stages stacked top to bottom with generous inter-stage spacing.

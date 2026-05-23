@@ -35,9 +35,9 @@ Slides（最终产物 = index.html）
 ### Slides
 **最终产物**——一个完整的演示文稿。Template × Design × Content 三者的结合体。渲染为一个包含多个 `.slide` 元素的独立 HTML 文件。
 
-**File**: `index.html`，链接 `runtime.js`、`base.css`、Design CSS。
+**File**: `index.html`，所有 CSS/JS 内联，自包含单文件，无外部依赖。
 
-**产物路径**: `examples/<name>/index.html`
+**产物路径**: 用户指定的工作目录中的 `index.html`
 
 ### Template
 **结构容器**——定义页面上有什么元素、元素如何排列、页面之间的序列关系。Template 自带默认的视觉（CSS 变量默认值），但这些默认值可以被 Design 覆盖。
@@ -49,7 +49,7 @@ Template 包含：
 - **画布格式**：16:9（1920×1080）或 3:4（810×1080）或其他
 - **页面序列模式**：典型页面顺序（cover → toc → sections → cta → thanks）
 
-**文件位置**: `templates/full-decks/<name>/`，含 `index.html` + `style.css` + `README.md`
+**文件位置**: Claude 直接编写的自包含 `index.html`，所有 CSS/JS 内联
 
 **Scope**: Slides 级。一个 Slides 使用一个 Template。
 

@@ -1,9 +1,0 @@
-{
-  "name": "weekly-report",
-  "css": "assets/designs/weekly-report.css",
-  "classes": { "title": "chr-title", "subtitle": "chr-sub", "kicker": "chr-kicker", "body": "chr-sub", "titleTag": "h1" },
-  "chrome": { "topbar": "standard", "footer": true, "footerTag": "span", "divider": true, "decorations": [], "pageFormat": "slash" },
-  "variants": { "card": "standard", "step": "standard", "code": "c-codebox" },
-  "image": { "radius": "var(--radius)", "shadow": "var(--shadow)", "border": "1px solid var(--border)" },
-  "qa": { "decorativeClasses": [], "chromeSelectors": [], "cardColors": [] }
-}

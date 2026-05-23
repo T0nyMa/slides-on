@@ -19,10 +19,10 @@ description: >
 
 | 用户说 | 路由到 | 做什么 |
 |--------|--------|--------|
-| 小红书、图文、卡片、3:4、portrait、social card、海报、poster | `slides-card/SKILL.md` | 3:4 竖版图文卡片（14 种 slide type） |
-| PPT、slides、演示、16:9、汇报、周报、提案、路演、技术分享、keynote、pitch、简报 | `slides-ppt/SKILL.md` | 16:9 横版演示文稿（31 种布局） |
+| 小红书、图文、知识卡片、3:4、portrait、social card、海报、poster、干货分享 | `slides-card/SKILL.md` | 3:4 竖版独立知识卡片（完整原文保留，Claude 直接写 HTML） |
+| PPT、slides、演示、16:9、汇报、周报、提案、路演、技术分享、keynote、pitch、简报 | `slides-ppt/SKILL.md` | 16:9 横版演讲辅助（论点提炼、Ghost Deck Test，Claude 直接写 HTML） |
 | 生图、AI 图片、配图、插画、封面图、信息图、infographic、illustration | `slides-imagine/SKILL.md` | AI 图片生成（10 个 Provider） |
 | 架构图、流程图、时序图、SVG、diagram、architecture、flowchart | `slides-diagram/SKILL.md` | SVG 架构图（4 种图示） |
 | 漫画、comic、manga、教育漫画、知识漫画 | `slides-comic/SKILL.md` | 知识漫画创作（6种画风 × 7种色调 × 7种版式） |
 
-先判断用户任务属于哪个场景 → 立即 Read 对应子技能的 SKILL.md → 严格按照子技能的 pipeline 执行。不要跳过子技能文档直接操作。
+先判断用户任务属于哪个场景 → 立即 Read 对应子技能的 SKILL.md → 按照子技能的 pipeline 执行。所有场景均由 Claude 直接编写完整 HTML。

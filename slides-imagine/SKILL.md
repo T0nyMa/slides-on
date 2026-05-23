@@ -7,7 +7,7 @@ description: >
   create a cover image, generate visual content for a presentation. Features
   10 providers, AI-driven prompt writing with content analysis, 23 style
   definitions, 12 palettes, and 6 content roles. Outputs PNG files that can
-  be embedded into slides-card or slides-ppt via the SlideData image field.
+  be embedded into slides-card or slides-ppt via HTML <img> tags.
 ---
 
 # slides-imagine — AI 图片生成
@@ -170,17 +170,17 @@ export IMAGINE_DESIGN="sketch-notes"
 
 ## 嵌入 slides
 
-生成的 PNG 通过 SlideData 的 `image` 字段引用到 slides-card 或 slides-ppt：
+生成的 PNG 通过 HTML `<img>` 标签引用到 slides-card 或 slides-ppt：
 
-```json
-// Hero 图（封面大图）
-{ "type": "cover", "title": "...", "image": { "src": "imgs/hero.png" }, "imageMode": "hero" }
+```html
+<!-- Hero 图（封面大图） -->
+<section class="slide"><img src="imgs/hero.png" class="chr-hero"></section>
 
-// 背景图
-{ "type": "quote", "quote": "...", "image": { "src": "imgs/bg.png" }, "imageMode": "background" }
+<!-- 背景图 -->
+<section class="slide" style="background-image: url('imgs/bg.png')">
 
-// 卡片内联图
-{ "type": "cards-2x2", "cards": [{ "title": "...", "body": "...", "image": "imgs/card.png" }] }
+<!-- 卡片内联图 -->
+<div class="c-card"><img src="imgs/card.png"><h4>标题</h4></div>
 ```
 
 ## 10 种构图原型（Archetype）

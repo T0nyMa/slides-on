@@ -1,6 +1,6 @@
 # Component Recipes — 内容语义 → 组件组合
 
-从 Step 1 内容分析的结果，到 Step 4 组装 slides.json 的桥梁。Claude 依据此文档决定每页用什么组件、怎么组合。
+从 Step 1 内容分析的结果，到 Step 3 编写 HTML 的桥梁。Claude 依据此文档决定每页用什么组件、怎么组合。
 
 ## 决策流程
 
