@@ -1,0 +1,326 @@
+/* tech-fresh — 科技清新 Design CSS */
+/* Usage: body.d-tech-fresh.portrait activates 3:4 canvas */
+/* Clean white canvas, deep blue primary, coral accent — magazine-meets-tech */
+
+.d-tech-fresh {
+  /* ── Token overrides ── */
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f6f8fc;
+  --border: rgba(0, 0, 0, 0.07);
+  --border-strong: rgba(0, 0, 0, 0.12);
+  --text-1: #0d111c;
+  --text-2: #4a5268;
+  --text-3: #8a92a6;
+  --accent: #2b6ff2;
+  --accent-2: #ff6b55;
+  --accent-3: #22c997;
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-lg: 24px;
+  --shadow: 0 8px 24px rgba(13, 17, 28, 0.06), 0 2px 4px rgba(13, 17, 28, 0.03);
+  --shadow-lg: 0 16px 48px rgba(13, 17, 28, 0.10), 0 4px 12px rgba(13, 17, 28, 0.04);
+  --letter-tight: -0.02em;
+  --font-display: 'Iowan Old Style', 'Charter', 'Noto Serif CJK SC', 'Songti SC', Georgia, serif;
+  --font-serif: 'Iowan Old Style', 'Charter', 'Noto Serif CJK SC', 'Songti SC', Georgia, serif;
+  --font-sans: 'PingFang SC', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', Consolas, monospace;
+  --grad: linear-gradient(90deg, #2b6ff2, #22c997);
+  --warn: #f5a524;
+  --good: #22c997;
+  --bad: #dc2626;
+
+  /* Design-specific tokens */
+  --tf-blue: #2b6ff2;
+  --tf-coral: #ff6b55;
+  --tf-cyan: #22c997;
+  --tf-amber: #f5a524;
+  --tf-purple: #7a5cff;
+  --tf-green: #00a86b;
+  --tf-soft-blue: #eef4ff;
+  --tf-soft-coral: #fff0ed;
+  --tf-soft-cyan: #e1f7ef;
+  --tf-soft-amber: #fef2db;
+  --tf-soft-purple: #ede8ff;
+  --tf-code-bg: #0d111c;
+
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-sans);
+}
+
+.d-tech-fresh .slide { background: #fff; }
+
+/* ══════════════════════════════════════════════════════
+   CHROME — shared page shell elements
+   ══════════════════════════════════════════════════════ */
+
+/* Topbar — chip tag + page indicator (fixed position) */
+.d-tech-fresh .slide > .chr-topbar {
+  position: absolute; top: 4.94cqi; left: 11.11cqi; right: 11.11cqi; z-index: 3;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-sans);
+}
+.d-tech-fresh.portrait { --slide-pad-y: 10cqi; }
+.d-tech-fresh.landscape { --slide-pad-y: 9cqi; }
+.d-tech-fresh .chr-chip {
+  display: inline-flex; align-items: center; gap: 1.23cqi;
+  padding: 0.99cqi 2.22cqi; border-radius: 999px;
+  background: #fff; border: 1.5px solid var(--border);
+  font-size: 1.6cqi; font-weight: 600; letter-spacing: .08em;
+  color: var(--text-2); text-transform: uppercase;
+}
+.d-tech-fresh .chr-chip::before {
+  content: ''; width: 1.11cqi; height: 1.11cqi; border-radius: 50%;
+  background: var(--accent);
+}
+.d-tech-fresh .chr-chip.coral::before { background: var(--tf-coral); }
+.d-tech-fresh .chr-chip.cyan::before  { background: var(--tf-cyan); }
+.d-tech-fresh .chr-chip.amber::before { background: var(--tf-amber); }
+.d-tech-fresh .chr-chip.purple::before { background: var(--tf-purple); }
+
+.d-tech-fresh .chr-page {
+  font-family: 'Inter', sans-serif; font-size: 1.6cqi;
+  color: var(--text-3); letter-spacing: .12em; font-weight: 600;
+}
+
+/* Kicker — small label above title */
+.d-tech-fresh .chr-kicker {
+  font-family: var(--font-sans); font-size: 1.73cqi; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase; color: var(--accent);
+  margin-bottom: 1.73cqi;
+}
+
+/* Footer — bottom metadata bar */
+.d-tech-fresh .chr-footer {
+  position: absolute; left: 11.11cqi; right: 11.11cqi; bottom: 4.94cqi;
+  display: flex; justify-content: space-between;
+  font-family: 'Inter', sans-serif; font-size: 1.48cqi;
+  color: var(--text-3); letter-spacing: .1em;
+}
+
+/* Divider — short accent line */
+.d-tech-fresh .chr-divider {
+  width: 11.11cqi; height: 0.49cqi;
+  background: var(--grad);
+  border-radius: .25cqi; margin: 2.47cqi 0;
+}
+
+/* Dot navigation — bottom-centered progress dots */
+.d-tech-fresh .chr-dots {
+  position: absolute; bottom: 3.7cqi; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 1.23cqi; align-items: center; z-index: 3;
+}
+.d-tech-fresh .chr-dot {
+  width: 0.99cqi; height: 0.99cqi; border-radius: 999px;
+  background: rgba(43, 111, 242, 0.2);
+  transition: all .25s ease;
+}
+.d-tech-fresh .chr-dot.active {
+  width: 2.96cqi;
+  background: var(--accent);
+}
+
+/* ══════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ══════════════════════════════════════════════════════ */
+
+.d-tech-fresh .chr-title {
+  font-size: 11.85cqi; font-weight: 900; line-height: 1.05;
+  letter-spacing: -0.25cqi; margin: 0 0 2.22cqi; color: var(--text-1);
+  font-family: var(--font-display);
+}
+.d-tech-fresh .chr-title em { font-style: italic; color: var(--accent); }
+.d-tech-fresh .chr-title .coral { color: var(--accent-2); font-style: italic; }
+
+.d-tech-fresh .chr-heading {
+  font-size: 7.41cqi; font-weight: 800; line-height: 1.1;
+  letter-spacing: -0.12cqi; margin: 0 0 1.73cqi;
+  font-family: var(--font-display);
+}
+.d-tech-fresh .chr-heading em { font-style: italic; color: var(--accent); }
+.d-tech-fresh .chr-heading .coral { color: var(--accent-2); }
+
+.d-tech-fresh .chr-sub {
+  font-family: var(--font-sans); font-size: 2.59cqi; line-height: 1.6;
+  color: var(--text-2); max-width: 98.77cqi; font-weight: 400;
+}
+
+/* Gradient text — blue-to-cyan */
+.d-tech-fresh .chr-grad {
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+
+/* KPI hero number */
+.d-tech-fresh .chr-kpi {
+  font-family: var(--font-display); font-size: 9.88cqi; font-weight: 900;
+  line-height: 1; letter-spacing: -0.37cqi; color: var(--accent);
+}
+.d-tech-fresh .chr-kpi.coral { color: var(--accent-2); }
+.d-tech-fresh .chr-kpi-label {
+  font-family: var(--font-sans); font-size: 1.73cqi;
+  color: var(--text-3); margin-top: 0.74cqi;
+}
+
+/* ══════════════════════════════════════════════════════
+   c-* EXTENSIONS
+   ══════════════════════════════════════════════════════ */
+
+/* Card — clean white, 2-layer soft shadow */
+.d-tech-fresh .c-card {
+  border: 1px solid var(--border);
+  padding: 3.7cqi 4.2cqi;
+}
+
+/* Grid gaps */
+.d-tech-fresh .c-grid-2 { gap: 2.47cqi; margin-top: 3.21cqi; }
+.d-tech-fresh .c-grid-3 { gap: 2.22cqi; margin-top: 3.21cqi; }
+
+/* Card color variants — soft tinted backgrounds */
+.d-tech-fresh .c-card.blue   { background: var(--tf-soft-blue); border-color: color-mix(in srgb, var(--tf-blue) 15%, transparent); }
+.d-tech-fresh .c-card.coral  { background: var(--tf-soft-coral); border-color: color-mix(in srgb, var(--tf-coral) 15%, transparent); }
+.d-tech-fresh .c-card.cyan   { background: var(--tf-soft-cyan); border-color: color-mix(in srgb, var(--tf-cyan) 15%, transparent); }
+.d-tech-fresh .c-card.amber  { background: var(--tf-soft-amber); border-color: color-mix(in srgb, var(--tf-amber) 15%, transparent); }
+.d-tech-fresh .c-card.purple { background: var(--tf-soft-purple); border-color: color-mix(in srgb, var(--tf-purple) 15%, transparent); }
+
+.d-tech-fresh .c-card h4 {
+  font-size: 2.72cqi; font-weight: 800; margin: .99cqi 0;
+  font-family: var(--font-sans);
+}
+.d-tech-fresh .c-card p {
+  font-family: var(--font-sans); font-size: 1.85cqi;
+  line-height: 1.55; color: var(--text-2);
+}
+
+/* Accent card — 4px left colored border (core insight block) */
+.d-tech-fresh .c-card-accent {
+  border-left: .49cqi solid var(--accent);
+}
+.d-tech-fresh .c-card-accent.coral  { border-left-color: var(--tf-coral); }
+.d-tech-fresh .c-card-accent.cyan   { border-left-color: var(--tf-cyan); }
+.d-tech-fresh .c-card-accent.amber  { border-left-color: var(--tf-amber); }
+.d-tech-fresh .c-card-accent.purple { border-left-color: var(--tf-purple); }
+
+/* Card accent number — big italic number on colored cards */
+.d-tech-fresh .chr-card-num {
+  font-family: var(--font-display); font-size: 8.4cqi; font-weight: 900;
+  font-style: italic; line-height: 1; opacity: .85;
+}
+
+/* Steps */
+.d-tech-fresh .c-steps { gap: 1.98cqi; margin-top: 2.22cqi; }
+.d-tech-fresh .c-step-num {
+  width: 5.93cqi; height: 5.93cqi; background: var(--accent);
+  font-size: 2.47cqi; font-weight: 900;
+}
+.d-tech-fresh .c-step-title { font-size: 2.72cqi; font-weight: 700; }
+
+/* Quote — serif italic, larger accent mark */
+.d-tech-fresh .c-quote {
+  font-size: 4.94cqi;
+  padding-left: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+.d-tech-fresh .c-quote::before {
+  position: static;
+  display: block;
+  font-size: 12.35cqi;
+  line-height: .8;
+  color: var(--accent);
+  opacity: .35;
+}
+
+/* ══════════════════════════════════════════════════════
+   CODE BLOCK
+   ══════════════════════════════════════════════════════ */
+
+.d-tech-fresh .chr-codebox {
+  background: var(--tf-code-bg); color: #e4e2d8;
+  border-radius: 2.96cqi; padding: 3.21cqi 3.7cqi;
+  font-family: 'JetBrains Mono', monospace; font-size: 1.73cqi;
+  line-height: 1.85; margin-top: 2.72cqi;
+}
+.d-tech-fresh .chr-codebox .cm { color: #6b6a62; }
+.d-tech-fresh .chr-codebox .kw { color: #c88f64; }
+.d-tech-fresh .chr-codebox .st { color: #a8c292; }
+.d-tech-fresh .chr-codebox .hl { color: #e9c58a; font-weight: 600; }
+
+.d-tech-fresh.portrait {
+  --grid-cols-2: repeat(2, 1fr);
+  --grid-cols-3: repeat(3, 1fr);
+}
+
+/* Pill tag — used in thanks page badges */
+.d-tech-fresh .chr-pill {
+  display: inline-block; padding: .99cqi 2.22cqi; border-radius: 999px;
+  font-size: 1.73cqi; font-weight: 600; margin: 0 .74cqi .74cqi 0;
+  background: #fff; border: 1.5px solid var(--border); color: var(--text-2);
+}
+
+/* Hero card — emphasized card variant */
+.d-tech-fresh .chr-hero {
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+}
+
+/* ══════════════════════════════════════════════════════
+   ARTICLE BLOCKS — clean modern + semantic color tints
+   ══════════════════════════════════════════════════════ */
+
+.d-tech-fresh .c-article { gap: 3cqi; }
+
+/* Badge-para: strong colored pill label */
+.d-tech-fresh .c-badge-para-label {
+  padding: 0.6cqi 2cqi; border-radius: 999px;
+  font-size: 2.8cqi; font-weight: 800;
+  background: var(--tf-soft-blue); color: var(--tf-blue);
+  border: none;
+}
+.d-tech-fresh .c-badge-para-label.warn { background: var(--tf-soft-amber); color: var(--tf-amber); }
+.d-tech-fresh .c-badge-para-label.good { background: var(--tf-soft-cyan); color: var(--tf-cyan); }
+.d-tech-fresh .c-badge-para-label.bad  { background: var(--tf-soft-coral); color: var(--tf-coral); }
+
+/* Icon-card: soft tinted backgrounds, semantic color cycling */
+.d-tech-fresh .c-icon-card {
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 3cqi 3.5cqi;
+  box-shadow: var(--shadow);
+}
+.d-tech-fresh .c-article > .c-icon-card:nth-child(4n+1) { background: var(--tf-soft-blue); }
+.d-tech-fresh .c-article > .c-icon-card:nth-child(4n+2) { background: var(--tf-soft-coral); }
+.d-tech-fresh .c-article > .c-icon-card:nth-child(4n+3) { background: var(--tf-soft-cyan); }
+.d-tech-fresh .c-article > .c-icon-card:nth-child(4n)   { background: var(--tf-soft-purple); }
+.d-tech-fresh .c-icon-card-icon { font-size: 6cqi; }
+
+/* Quote-bar: blue left border, soft blue background */
+.d-tech-fresh .c-quote-bar {
+  border-left-width: 0.8cqi;
+  border-left-color: var(--accent);
+  background: var(--tf-soft-blue);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--text-1); font-weight: 700;
+  padding: 2.5cqi 3.5cqi;
+}
+
+/* Numbered-list: accent circle numbers */
+.d-tech-fresh .c-numbered-item-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 5cqi; height: 5cqi; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-size: 2.5cqi; font-weight: 900;
+  flex: none;
+}
+.d-tech-fresh .c-numbered-item-keyword { color: var(--accent); }
+
+/* Pill-tags: semantic color cycling */
+.d-tech-fresh .c-pill-tags .c-badge {
+  border: none; font-weight: 700;
+  box-shadow: var(--shadow);
+}
+.d-tech-fresh .c-pill-tags .c-badge:nth-child(4n+1) { background: var(--tf-soft-blue); color: var(--tf-blue); }
+.d-tech-fresh .c-pill-tags .c-badge:nth-child(4n+2) { background: var(--tf-soft-coral); color: var(--tf-coral); }
+.d-tech-fresh .c-pill-tags .c-badge:nth-child(4n+3) { background: var(--tf-soft-cyan); color: var(--tf-cyan); }
+.d-tech-fresh .c-pill-tags .c-badge:nth-child(4n)   { background: var(--tf-soft-purple); color: var(--tf-purple); }
