@@ -13,6 +13,7 @@
 3. **锚点组件**：每页一个视觉重心
 4. **配套组件**：围绕锚点的支撑组件（3-5 个总组件）
 5. **密度预算**：字数、组件数量上限，超限触发拆页
+6. **像素预算**：加总组件 px 高度 + 间隙(20px/个)，对比可用高度（无 chrome 1000px / 有 chrome 920px），填充率 70-95% 合格
 
 ## 内容信号 → 页面原型映射
 
@@ -45,6 +46,7 @@ kicker → h1 → lede → c-divider-accent → c-card-soft（摘要）→ c-sec
 - **最少组件**：kicker + h1 + lede（3 个，留白风险高）
 - **留白对策**：加 c-section 嵌套 c-icon-row × 3 做目录预告
 - **Design 适配**：pastel-card 用 chr-blob，white-editorial 用 chr-topline，xhs-post 用 chr-sticker
+- **像素预算**（无 chrome）：kicker(32) + h1(46) + lede(50) + divider(2) + card-soft(93) + section-2cards(400) + badge-row(35) + 6×gap(120) = **778px / 78%** ✅
 
 ### Section（章节分隔页）
 
@@ -56,6 +58,7 @@ chr-kicker → h1（章节名）→ chr-divider
 - **字数预算**：kicker ≤10 字, 标题 ≤8 字
 - **最少组件**：kicker + h1（2 个，留白风险高）
 - **留白对策**：加 c-card-soft 放章节简介（≤40 字）
+- **像素预算**：Section 页用 center 布局，留白撑气场，允许低于 70%。加 c-card-soft(93) 后：kicker(32) + h1(46) + divider(2) + card-soft(93) + 3×gap(60) = **233px / 23%** → 仍然偏低，但章节分隔页的功能是节奏控制，不需要填满
 
 ### 痛点页
 
@@ -69,6 +72,8 @@ h2 → lede → c-stack（c-card-warn × 2 + c-card-accent × 1）→ c-formula
 - **关键约束**：最后必须有一个 accent 色卡片（反转，给出答案/解法）
 - **溢出处理**：卡片 > 4 个 → 拆为两页（问题页 + 解法页）
 - **留白对策**：加 c-badge-row（3-4 个标签）
+- **像素预算**（无 chrome）：h2(46) + lede(50) + 2×card-warn-60字(488) + card-accent-60字(244) + formula(82) + badge-row(35) + 6×gap(120) = **1065px / 107%** 🔴 → 缩减卡片到30字或去formula
+- **像素预算**（精简版）：h2(46) + lede(50) + 2×card-warn-30字(282) + card-accent-60字(244) + 4×gap(80) = **702px / 70%** ✅
 
 ### 核心概念页
 
@@ -81,6 +86,7 @@ h2 → lede → c-row（c-card × 3）→ c-example → c-badge-row
 - **组件数**：5-6 个
 - **关键约束**：卡片内必须有居中大元素（emoji/数字/符号），否则视觉偏平
 - **卡片数偏差**：只有 2 个概念 → 降为 c-row(c-card × 2)；5+ 个概念 → 换分类页
+- **像素预算**（无 chrome）：h2(46) + lede(50) + 3×card-30字(423) + example(76) + badge-row(35) + 6×gap(120) = **750px / 75%** ✅
 
 ### 分类页
 
@@ -93,6 +99,7 @@ h2 → lede → c-grid-2（c-card × 4）
 - **组件数**：3 个（c-grid-2 算 1 个）
 - **关键约束**：4 个卡片正好填满 3:4 画布，3 个会失衡 → 用 c-row 代替
 - **卡片颜色**：accent 色优先（分类页是"展示选项"，偏正面）
+- **像素预算**（无 chrome）：h2(46) + lede(50) + grid2-4cards-60字(~560) + 2×gap(40) = **696px / 70%** ✅（卡片正文需≥60字才填满）
 
 ### 流程页
 
@@ -105,6 +112,7 @@ h2 → lede → c-steps（c-step + c-connector 交替）→ c-note
 - **组件数**：4-5 个
 - **步数约束**：3-7 步，3-4 步留白偏多 → 加 c-example；7+ 步 → 拆页
 - **c-connector 规则**：步与步之间插 c-connector，最后一步后可省略
+- **像素预算**（无 chrome）：h2(46) + lede(50) + 3×step-长(369) + 2×connector(38) + note(108) + 6×gap(120) = **731px / 73%** ✅（step body 需2行以上）
 
 ### 对比页
 
@@ -113,10 +121,11 @@ h2 → lede → c-grid-2（c-card-warn（反面/之前）+ c-card-accent（正�
 ```
 
 - **锚点**：`c-grid-2` 双卡对比
-- **字数预算**：h2 ≤10 字, 每卡片 ≤60 字
+- **字数预算**：h2 ≤10 字, 每卡片 ≤100 字
 - **组件数**：3-4 个
 - **关键约束**：必须 warn vs accent，颜色即立场，不需要文字说明
 - **扩展**：对比点较多时，每个卡片内用 c-icon-row × 2-3 代替纯文本
+- **像素预算**（无 chrome）：h2(46) + lede(50) + grid2(2×card-100字+gap = 704) + 2×gap(40) = **840px / 84%** ✅
 
 ### 金句页
 
@@ -129,6 +138,7 @@ c-glass（c-quote）→ c-divider-accent → c-card-soft（解释）→ c-grid-2
 - **组件数**：5-6 个
 - **关键约束**：金句必须有 c-card-soft 解释和 c-grid-2 对比，否则只是孤立的引用，缺乏信息量
 - **不适合**：quote < 10 字且无扩展解释 → 降为 c-card-accent 卡片
+- **像素预算**（无 chrome）：glass-quote(127) + divider(2) + card-soft-60字(244) + grid2(2×card-30字+gap = 302) + badge-row(35) + 4×gap(80) = **790px / 79%** ✅
 
 ### 数据页
 
@@ -141,6 +151,7 @@ h2 → lede → c-kpi → c-card-accent（代码/命令）→ c-icon-row（支�
 - **组件数**：5-6 个
 - **多 KPI**：2-3 个 KPI 用 c-row 并排；4+ 个 → 换 kpi-grid 或拆页
 - **c-card-accent 放什么**：可操作的代码命令、关键结论、下一步行动
+- **像素预算**（无 chrome）：h2(46) + lede(50) + kpi(137) + card-accent-60字(244) + note(108) + badge-row(35) + 5×gap(100) = **720px / 72%** ✅
 
 ### 行动页
 
@@ -153,6 +164,7 @@ h2 → c-formula → c-steps（3 步）→ c-example（完整示例）→ c-card
 - **组件数**：5-6 个
 - **关键约束**：c-example 必须放可直接复制的完整示例，不是抽象描述
 - **c-steps 降级**：只 2 步 → 用 c-row(c-card × 2) 代替
+- **像素预算**（无 chrome）：h2(46) + formula(82) + 3×step-短(258) + 2×connector(38) + example(76) + card-soft(93) + 7×gap(140) = **733px / 73%** ✅
 
 ### 干货分享页（article）
 
@@ -174,9 +186,11 @@ h2 → blocks: [ badge-para, icon-card, quote-bar, numbered-list, pill-tags 自�
 
 **密度控制**：按块高度预估总高（badge-para ~10cqi, icon-card ~12cqi, numbered-list items×6cqi），≥65cqi 合格。不用硬性最少块数——有些大块单个就能撑满。
 
-- **字数预算**：badge-para label ≤6 字, body ≤80 字; icon-card title ≤12 字, body ≤50 字; quote-bar text ≤60 字; numbered-list items ≤5
+- **字数预算**：badge-para label ≤6 字, body ≤120 字; icon-card title ≤12 字, body ≤80 字; quote-bar text ≤60 字; numbered-list items ≤5
 - **block 数量**：3-5 个（< 3 WARN, > 5 需拆页）
 - **Design CSS 要求**：article 组件在 Design CSS 下才有完整视觉效果。Theme only 模式下显示 base 样式（白底细线框）
+- **像素预算**（无 chrome，典型5 block）：h2(46) + badge-para-2行(214) + icon-card-中(134) + badge-para-1行(162) + quote-bar-1行(78) + pill-tags(45) + 5×gap(100) = **779px / 78%** ✅
+- **像素预算**（无 chrome，上限）：h2(46) + badge-para-3行(267) + icon-card-长(222) + quote-bar-2行(123) + numbered-3项(177) + 4×gap(80) = **915px / 92%** ✅
 
 ### Thanks 页
 
@@ -189,17 +203,17 @@ c-glass（h1 + c-quote + c-quote-attr）→ c-section（回顾要点 → c-icon-
 - **组件数**：4-5 个
 - **关键约束**：c-section 回顾要点让 Thanks 页有信息量，值得截图保存
 - **首尾呼应**：c-badge-row 使用与 Cover 相同的标签
+- **像素预算**：Thanks 页用 center 布局，留白撑气场，允许低于 70%
 
 ## 密度预算
 
-每页组件数 3-5 个（不含 chrome）。`c-grid-2`、`c-steps` 等容器算 1 个组件。
+组件数量由像素预算决定：加总组件 px 高度 + 间隙(20px/个)，对比可用高度（无 chrome 1000px / 有 chrome 920px），填充率 70-95% 合格。
 
-| 组件数 | 判定 | 处理 |
+| 填充率 | 判定 | 处理 |
 |--------|------|------|
-| < 3 | 留白过大 | 加 c-badge-row / c-note / c-card-soft，或合并到相邻页 |
-| 3-5 | 正常 | — |
-| > 5 | 密度偏高 | 检查每个组件字数是否超限；如都合规则允许 |
-| > 6 | 溢出 | 必须拆页 |
+| < 70% | 留白过大 | 加组件、增加正文字数、或换更大组件 |
+| 70-95% | 合格 | — |
+| > 95% | 溢出风险 | 减字数、精简组件、或拆页 |
 
 ### 字数预算速查
 
@@ -209,12 +223,13 @@ c-glass（h1 + c-quote + c-quote-attr）→ c-section（回顾要点 → c-icon-
 | h2 | 10 字 | 缩到 10 字以内 |
 | lede | 30 字 | 精简或拆为两句 |
 | c-card 标题 | 15 字 | 精简 |
-| c-card 正文 | 60 字 | 精简或拆成 2 卡片 |
+| c-card 正文 | 100 字 | 精简或拆成 2 卡片 |
 | c-quote | 40 字 | 只保留核心句 |
 | c-kpi value | 6 字 | 用缩写 |
 | c-example | 80 字 | 精简到核心示例 |
 | c-icon-row 标题 | 12 字 | 精简 |
-| c-icon-row 正文 | 40 字 | 精简 |
+| c-icon-row 正文 | 60 字 | 精简 |
+| 整页正文 | ≤ 200 字 | 知识卡片阅读感，3-4 个组件分摊 |
 
 ## 页面原型选择优先级
 
