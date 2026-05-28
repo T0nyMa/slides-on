@@ -196,6 +196,7 @@
 
 /* Accent card — 4px left colored border (core insight block) */
 .d-tech-fresh .c-card-accent {
+  border-top: none;
   border-left: .49cqi solid var(--accent);
 }
 .d-tech-fresh .c-card-accent.coral  { border-left-color: var(--tf-coral); }
