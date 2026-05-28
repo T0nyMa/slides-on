@@ -119,16 +119,33 @@ Claude 根据 outline.md + style-decision.md + component-recipes.md 直接编写
 > 查 c-card、c-steps、c-kpi、c-quote、c-article 等组件的 HTML 结构、
 > class 名、参数写法。它回答"每个组件具体怎么写"。
 
-### Step 4: 自检
+### Step 4: QA 循环
 
-对照 `../../references/self-check-checklist.md` 逐项自检。
-不通过则回到 Step 3 修改 HTML。
+写完 HTML 后，运行 QA 脚本自动检测三个致命问题，**最多 3 轮** loop 修到通过。
 
-> **像素预算验证**：逐页加总组件高度（查 `./content-rules-portrait.md` 速查表），
-> 对比可用高度，填充率 < 70% 则加组件或增加正文，> 95% 则精简或拆页。
-> Cover / Thanks 页允许低于 70%（center 布局，留白撑气场）。
+```bash
+npx tsx ../../scripts/qa-deck.ts index.html --canvas 3:4
+```
 
-### Step 5: 导出
+**只检测 3 个硬伤**：
+
+| 检测项 | 判定标准 | 修复方向 |
+|--------|---------|---------|
+| 溢出 | 任何元素超出 slide 底部 | 精简正文、减少组件、或拆页 |
+| Chrome 遮挡 | 绝对定位元素（topbar/footer）与内容重叠 | 去掉非必需 chrome，或加大 slide padding |
+| 填充异常 | 填充率 < 50% 或 > 98% | 过空加组件，过满减内容 |
+
+**Loop 流程**：
+1. 运行 `qa-deck.ts`，读取输出的 issue 列表
+2. 对每个 issue 直接修改 HTML
+3. 重新运行 `qa-deck.ts`，确认修复
+4. 直到 exit code 0（PASS），最多 3 轮
+
+### Step 5: 视觉自检
+
+打开浏览器逐页翻阅，确认封面居中、无断裂排版、颜色对比足够。如有设计问题直接改 HTML。
+
+### Step 6: 导出
 
 ```bash
 bun ../../scripts/render-precise.ts index.html --canvas 3:4 --selector .slide
