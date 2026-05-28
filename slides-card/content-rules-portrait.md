@@ -8,8 +8,120 @@
 
 与 16:9 的关键差异：
 - **不能多列并排**：`c-row` 在 3:4 下自动纵排，同一行最多 2 个小组件
-- **组件即页**：每页 3-5 个纵向组件块，超过拆页
+- **组件即页**：组件纵向堆叠，数量由像素预算决定（填充率 70-95%），超出拆页
 - **字更少、更大**：手机屏幕阅读距离更近，但画布更窄，标题和正文都需要更大字号占比
+
+## 像素预算
+
+3:4 画布高 1080px。Claude 在规划每页内容时，先用加法估算组件总高度，对比可用高度，确保填充率在 70%-95% 之间。
+
+### 可用内容高度
+
+| 档位 | 可用高度 | 适用 Design |
+|------|---------|-------------|
+| **A 档（无 chrome）** | **1000px / 123cqi** | no-design、blueprint、course-module、graphify、minimal、obsidian-gradient、pitch-deck、product-launch、tech-sharing、weekly-report |
+| **B 档（有 chrome）** | **920px / 114cqi** | pastel-card、news-broadcast、white-editorial、xhs-post、testing-safety-alert、hermes-cyber-terminal |
+
+### 组件高度速查表（实测值，基线无 Design CSS）
+
+**标题/排版**
+
+| 组件 | 内容 | 高度(px) |
+|------|------|---------|
+| h2 | ≤10字 | 46 |
+| lede | 1行 | 50 |
+| lede | 2行 | 100 |
+| kicker | 标签 | 32 |
+
+**卡片类**
+
+| 组件 | 正文字数 | 高度(px) |
+|------|---------|---------|
+| c-card / accent / warn | 仅标题 | 91 |
+| c-card / accent / warn | ~30字 | 141 |
+| c-card / accent / warn | ~60字 | 244 |
+| c-card / accent / warn | ~100字 | 342 |
+| c-card-soft | 1行 | 93 |
+
+**流程/步骤**
+
+| 组件 | 内容 | 高度(px) |
+|------|------|---------|
+| c-step | 标题+1行body | 86 |
+| c-step | 标题+2行body | 123 |
+| c-connector | 箭头 | 19 |
+
+**数据/强调**
+
+| 组件 | 内容 | 高度(px) |
+|------|------|---------|
+| c-kpi | value+label+delta | 137 |
+| c-formula | 1行 | 82 |
+| c-note | 标题+1-2行body | 108 |
+| c-note | 标题+3行body | 144 |
+| c-warn | 标题+body | 55 |
+| c-example | label+3行 | 76 |
+
+**容器**
+
+| 组件 | 内容 | 高度(px) |
+|------|------|---------|
+| c-glass(含quote) | quote+出处 | 127 |
+| c-section(2卡) | label+2×card-soft | 400 |
+| c-grid-2(4卡) | 3:4下变1列 | 303 |
+| c-quote | 1行 | 57 |
+| c-quote | 2行 | 113 |
+
+**辅助**
+
+| 组件 | 高度(px) |
+|------|---------|
+| c-badge-row | 35 |
+| c-icon-row(每行) | 57 |
+| c-small | 31 |
+
+**Article 组件**
+
+| 组件 | 内容 | 高度(px) |
+|------|------|---------|
+| badge-para | 1行body | 162 |
+| badge-para | 2行body | 214 |
+| badge-para | 3行body | 267 |
+| icon-card | 短body | 134 |
+| icon-card | 长body(3行) | 222 |
+| quote-bar | 1行 | 78 |
+| quote-bar | 2行 | 123 |
+| numbered-item | 每项 | 45 |
+| numbered-list(3项) | 含间隙 | 177 |
+| pill-tags(4个) | 1行 | 45 |
+| pill-tags(8个) | 2行 | 98 |
+
+**间隙**：c-stack / c-article gap = **20px** / 个
+
+### Design CSS 高度修正
+
+pastel-card / xhs-post / white-editorial 三个 3:4 原生 Design 会增大组件高度。使用这些 Design 时，每个组件额外加 **10-15px（1-2cqi）** 安全余量。
+
+### 填充率判定
+
+```
+填充率 = (组件高度之和 + 间隙之和) / 可用高度
+
+< 70%    ⚠️ 留白 → 加组件、增加正文字数、或换更大组件
+70-95%   ✅ 合格
+> 95%    🔴 溢出 → 减字数、减组件、或拆页
+```
+
+### 预算计算示例
+
+```
+页面：h2 + lede + 3×card(60字)
+可用高度：1000px（无 chrome）
+组件高度：46 + 50 + 244×3 = 828px
+间隙：4 × 20 = 80px
+总计：828 + 80 = 908px
+填充率：908 / 1000 = 91% ✅
+```
 
 ## Design CSS 体系
 
@@ -68,9 +180,9 @@ Content     = c-* 组件（assets/components.css），通过 var(--accent) 等�
 
 | 角色 | 组件 / 类名 | cqi 范围 | 实际 px | 字数上限 |
 |------|------------|---------|---------|---------|
-| 卡片正文 | `.c-body` | 1.5-2cqi | 12-16 | ≤ 60 字 |
+| 卡片正文 | `.c-body` | 1.5-2cqi | 12-16 | ≤ 100 字 |
 | 步骤正文 | `.c-step-body` | 1.5-2cqi | 12-16 | ≤ 50 字 |
-| 图标行正文 | `.c-icon-row-body` | 1.5-1.8cqi | 12-15 | ≤ 40 字 |
+| 图标行正文 | `.c-icon-row-body` | 1.5-1.8cqi | 12-15 | ≤ 60 字 |
 | 警告/提示正文 | `.c-warn-body` / `.c-note-body` | 1.5-1.8cqi | 12-15 | ≤ 50 字 |
 
 ### 小组件（占屏 20-40% 宽度）
@@ -102,17 +214,20 @@ Content     = c-* 组件（assets/components.css），通过 var(--accent) 等�
 | 图标行（c-icon-row） | 5 个 | 超过 5 个分两页 |
 | KPI（c-kpi） | 3 个 | `c-row` 横排 3 个或纵排 3 个 |
 | 特殊框（c-warn / c-note / c-example） | 2 个 | 框本身占空间大 |
-| 总组件块数 | 3-5 块 | 标题算 1 块，每个卡片/步骤/框各算 1 块 |
+| 总组件块数 | 由像素预算决定 | 加总组件高度 + 间隙，填充率 70-95% 为合格 |
 
 ### 字数预算
 
 | 内容元素 | 字数上限 | 为什么 |
 |---------|---------|--------|
-| 页面标题 | ≤ 10 字 | h2 @ 5-6cqi，1 行不换行 |
-| 卡片标题 | ≤ 15 字 | c-title @ 2.5-3.5cqi |
-| 卡片正文 | ≤ 60 字 | c-body @ 1.5-2cqi，约 3-4 行 |
+| 页面标题 | ≤ 10 字 | h2 @ 5.2cqi，1 行不换行 |
+| 卡片标题 | ≤ 15 字 | c-title @ 5cqi |
+| 卡片正文 | ≤ 100 字 | c-body @ 4cqi，约 4-5 行，342px |
 | 步骤标题 + 正文 | ≤ 50 字 | 标题 + 描述合计 |
-| 整页正文 | ≤ 120 字 | 等同于 3-4 个卡片的正文总和 |
+| 整页正文 | ≤ 200 字 | 知识卡片阅读感，3-4 个组件分摊 |
+| c-icon-row body | ≤ 60 字 | 2行空间 |
+| badge-para body | ≤ 120 字 | 3行 body 267px 填充效果好 |
+| icon-card body | ≤ 80 字 | 长 body 222px 是填充主力 |
 
 ## Article 页填充预估
 
@@ -122,21 +237,24 @@ Article 页（`type: "article"`）由异构 block 纵向堆叠。判断一页是
 
 3:4 画布内容区约 **80-85cqi**（总 133cqi 减去标题 ~8cqi + 上下 padding ~20cqi + chrome ~20cqi）。
 
-### 各 Block 高度预估
+### 各 Block 高度（实测值）
 
-| Block 类型 | 预估高度 | 说明 |
+| Block 类型 | 高度(px) | 说明 |
 |-----------|---------|------|
-| badge-para | ~10cqi | label 一行 + body 2-3 行 |
-| icon-card | ~12cqi | icon+title+body+padding |
-| quote-bar | ~9cqi | 左边框 + 大字 1-2 行 |
-| numbered-list | items × 6cqi | 每项：数字+keyword+body |
-| pill-tags | ~6cqi | 标签流一行或两行 |
+| badge-para | 162-267 | 1行body 162px, 2行 214px, 3行 267px |
+| icon-card | 134-222 | 短body 134px, 长body 222px |
+| quote-bar | 78-123 | 1行 78px, 2行 123px |
+| numbered-list(3项) | 177 | 每项 45px + 间隙 |
+| pill-tags | 45-98 | 4个 45px, 8个 98px |
+| article gap | 20/个 | block 之间的间隙 |
 
 ### 填充判断
 
-- **预估总高 ≥ 65cqi** → 大概率填满，可以生成
-- **预估总高 40-65cqi** → 可能留白，考虑补一个 block
-- **预估总高 < 40cqi** → 明显不够，必须补充内容
+用像素预算判定：加总 block 高度 + 间隙(20px/个)，对比可用高度（无 chrome 1000px / 有 chrome 920px），填充率 70-95% 合格。
+
+- **填充率 < 70%** → 留白过多，加 block 或增加 body 字数
+- **填充率 70-95%** → 合格
+- **填充率 > 95%** → 溢出风险，缩减 body 或拆页
 
 ### 补充策略（不够时）
 
@@ -219,8 +337,8 @@ Article 页（`type: "article"`）由异构 block 纵向堆叠。判断一页是
 | 违规 | 修复 |
 |------|------|
 | 标题超过 1 行 | 缩短到 ≤ 10 字 |
-| 一页 6+ 个组件块 | 拆成两页 |
-| 卡片正文超过 4 行 | 精简到 ≤ 60 字，多余内容拆到新卡片 |
+| 像素预算 > 95% | 精简组件或拆页 |
+| 卡片正文超过 5 行 | 精简到 ≤ 100 字，多余内容拆到新卡片 |
 | 用 h1 当 slide 标题 | h1 仅用于封面和分隔页；slide 标题用 h2 |
 | 3:4 下使用 g3/g4 网格 | 3:4 下 c-grid-3 降为 2 列，c-grid-2 降为 1 列；如需保留多列，在 Design CSS 中添加 `@container (max-width: 1000px) { .d-xxx .c-grid-2 { grid-template-columns: repeat(2, 1fr); } }` |
 | 组件太小看不清 | 检查 cqi 值是否低于上表下限；3:4 下正文不 < 1.5cqi |
