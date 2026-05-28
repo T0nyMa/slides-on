@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Component Height Measurement — tech-fresh</title>
+<style>
+/* fonts.css inline */
+:root {
+  --font-sans: "SF Pro Display", "SF Pro Text", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Segoe UI", "Noto Sans", "Noto Sans CJK SC",
+    -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC",
+    "SimSun", "Times New Roman", Georgia, "Liberation Serif", serif;
+  --font-mono: "SF Mono", "Cascadia Code", "Consolas", "Menlo",
+    "Noto Sans Mono CJK SC", "Source Code Pro", "Liberation Mono", monospace;
+  --font-display: var(--font-sans);
+}
+/* base.css inline */
+:root {
+  --bg: #ffffff; --bg-soft: #f7f7f8; --surface: #ffffff; --surface-2: #f2f2f4;
+  --border: rgba(0,0,0,.08); --border-strong: rgba(0,0,0,.16);
+  --text-1: #111216; --text-2: #55596a; --text-3: #8a8f9e;
+  --accent: #3b6cff; --accent-2: #7a5cff; --accent-3: #ff5c8a;
+  --good: #1aaf6c; --warn: #f5a524; --bad: #e0445a;
+  --radius: 18px; --radius-sm: 12px; --radius-lg: 26px;
+  --shadow: 0 10px 30px rgba(18,24,40,.08);
+  --shadow-lg: 0 24px 60px rgba(18,24,40,.14);
+  --letter-tight: -.03em; --letter-normal: -.01em;
+  --ease: cubic-bezier(.4,0,.2,1);
+  --h1-size: 72px; --h2-size: 54px; --h3-size: 32px; --h4-size: 22px;
+  --lede-size: 22px; --kicker-size: 14px; --eyebrow-size: 13px; --body-font-size: 16px;
+  --slide-pad-x: 96px; --slide-pad-y: 72px; --slide-pad-bottom: 72px;
+  --card-pad: 26px 28px;
+  --grid-cols-2: repeat(2, 1fr); --grid-cols-3: repeat(3, 1fr); --grid-cols-4: repeat(4, 1fr);
+  --slide-justify: center; --stack-gap-val: 14px;
+  --c-title-size: 2.2cqi; --c-subtitle-size: 1.5cqi; --c-body-size: 1.2cqi;
+  --c-small-size: 0.95cqi; --c-card-padding: 1.5cqi 1.8cqi; --c-row-gap: 1.5cqi;
+  --c-grid-gap: 1.5cqi; --c-section-padding: 1.8cqi; --c-section-label-size: 1.3cqi;
+  --c-glass-padding: 1.8cqi; --c-badge-size: 0.85cqi;
+  --c-kpi-value-size: 4.5cqi; --c-kpi-label-size: 1.1cqi; --c-kpi-delta-size: 1cqi;
+  --c-quote-size: 2.2cqi; --c-quote-mark-size: 5cqi; --c-quote-mark-top: -1cqi;
+  --c-step-num-size: 3cqi; --c-step-num-font: 1.3cqi; --c-step-title-size: 1.6cqi;
+  --c-step-gap: 1.5cqi; --c-step-body-size: 1.1cqi;
+  --c-note-title-size: 1.3cqi; --c-note-body-size: 1cqi;
+  --c-icon-row-title-size: 1.5cqi; --c-icon-row-gap: 1.5cqi;
+  --c-codebox-size: 1.4cqi; --c-codebox-padding: 2.5cqi 3cqi;
+  --c-formula-size: 1.8cqi; --c-stack-gap: 1.5cqi; --c-article-gap: 1.5cqi;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text-1);font-family:var(--font-sans);-webkit-font-smoothing:antialiased}
+.deck{position:relative;width:100vw;height:100vh;overflow:hidden;background:var(--bg);container-type:inline-size}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:var(--slide-justify);padding:var(--slide-pad-y) var(--slide-pad-x) var(--slide-pad-bottom);box-sizing:border-box;opacity:0;pointer-events:none;overflow:hidden}
+.slide.is-active{opacity:1;pointer-events:auto;z-index:2}
+.portrait .deck{width:min(100vw,calc(100vh * 3 / 4));height:min(100vh,calc(100vw * 4 / 3));margin:auto;overflow:hidden;container-type:inline-size}
+.portrait{--h1-size:7cqi;--h2-size:5.2cqi;--h3-size:5cqi;--h4-size:3.5cqi;--lede-size:4cqi;--kicker-size:2.5cqi;--eyebrow-size:2.2cqi;--body-font-size:4cqi;--body-size:4cqi;--slide-pad-x:6cqi;--slide-pad-y:5cqi;--slide-pad-bottom:4cqi;--card-pad:2.5cqi 3cqi;--grid-cols-2:1fr;--grid-cols-3:repeat(2,1fr);--grid-cols-4:repeat(2,1fr);--slide-justify:flex-start;--stack-gap-val:2cqi;--c-title-size:5cqi;--c-subtitle-size:4cqi;--c-body-size:4cqi;--c-small-size:2.6cqi;--c-card-padding:2.5cqi 3cqi;--c-row-gap:2.5cqi;--c-grid-gap:2.5cqi;--c-section-padding:3cqi;--c-section-label-size:3cqi;--c-glass-padding:3cqi;--c-badge-size:2.5cqi;--c-kpi-value-size:8cqi;--c-kpi-label-size:3cqi;--c-kpi-delta-size:2.2cqi;--c-quote-size:5cqi;--c-quote-mark-size:8cqi;--c-quote-mark-top:-1.5cqi;--c-step-num-size:5cqi;--c-step-num-font:3.5cqi;--c-step-title-size:4.5cqi;--c-step-gap:2.5cqi;--c-step-body-size:3cqi;--c-note-title-size:3.5cqi;--c-note-body-size:3cqi;--c-icon-row-title-size:4cqi;--c-icon-row-gap:2.5cqi;--c-codebox-size:3.5cqi;--c-codebox-padding:3cqi 3.5cqi;--c-formula-size:4.5cqi;--c-stack-gap:2.5cqi;--c-article-gap:2.5cqi}
+.landscape .deck{width:min(100vw,calc(100vh * 16 / 9));height:min(100vh,calc(100vw * 9 / 16));margin:auto;overflow:hidden;container-type:inline-size}
+/* components.css inline */
+.c-stack{display:flex;flex-direction:column}.c-stack>*+*{margin-top:var(--c-stack-gap,1.5cqi)}
+.c-row{display:flex;gap:var(--c-row-gap,1.5cqi);align-items:flex-start}.c-row>*{flex:1;min-width:0}
+.c-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--c-grid-gap,1.5cqi)}
+.c-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--c-grid-gap,1.5cqi)}
+.c-divider{height:1px;background:var(--border);width:100%}
+.c-divider-accent{height:2px;width:5cqi;background:var(--accent);border-radius:1px}
+.c-title{font-size:var(--c-title-size);font-weight:800;line-height:1.2;color:var(--text-1);margin:0}
+.c-subtitle{font-size:var(--c-subtitle-size);font-weight:600;line-height:1.3;color:var(--text-2);margin:0}
+.c-body{font-size:var(--c-body-size);line-height:1.55;color:var(--text-2)}
+.c-small{font-size:var(--c-small-size);line-height:1.45;color:var(--text-3)}
+.c-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:var(--c-card-padding);box-shadow:var(--shadow);position:relative;overflow:hidden}
+.c-card-accent{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--accent);border-radius:var(--radius);padding:var(--c-card-padding);box-shadow:var(--shadow)}
+.c-card-warn{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--warn);border-radius:var(--radius);padding:var(--c-card-padding);box-shadow:var(--shadow)}
+.c-card-soft{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:var(--c-card-padding)}
+.c-section{border:1.5px solid var(--border-strong);border-radius:var(--radius-lg);padding:var(--c-section-padding);position:relative}
+.c-section-label{font-size:var(--c-section-label-size);font-weight:800;color:var(--text-1);margin-bottom:1cqi}
+.c-badge{display:inline-block;padding:0.3cqi 0.9cqi;border-radius:999px;font-size:var(--c-badge-size);font-weight:600;background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
+.c-badge.accent{background:color-mix(in srgb,var(--accent) 15%,transparent);color:var(--accent)}
+.c-badge.good{background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--good)}
+.c-badge.warn{background:color-mix(in srgb,var(--warn) 15%,transparent);color:var(--warn)}
+.c-badge.bad{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad)}
+.c-badge-row{display:flex;flex-wrap:wrap;gap:0.6cqi;align-items:center}
+.c-kpi{text-align:center}.c-kpi-value{font-size:var(--c-kpi-value-size);font-weight:900;line-height:1;color:var(--text-1);letter-spacing:var(--letter-tight)}
+.c-kpi-label{font-size:var(--c-kpi-label-size);color:var(--text-2);margin-top:0.4cqi}
+.c-kpi-delta{font-size:var(--c-kpi-delta-size);font-weight:700;margin-top:0.2cqi}
+.c-kpi-delta.up{color:var(--good)}.c-kpi-delta.down{color:var(--bad)}.c-kpi-delta.flat{color:var(--text-3)}
+.c-quote{font-family:var(--font-serif);font-size:var(--c-quote-size);line-height:1.4;font-style:italic;color:var(--text-1);position:relative;padding:0 0 0 3cqi}
+.c-quote::before{content:"\201C";position:absolute;left:0;top:var(--c-quote-mark-top);font-size:var(--c-quote-mark-size);color:var(--accent);font-style:normal;font-family:var(--font-serif);line-height:1;opacity:.35}
+.c-quote-attr{font-size:1cqi;color:var(--text-3);font-style:normal;margin-top:0.8cqi;display:block}
+.c-steps{display:flex;flex-direction:column;gap:0}
+.c-step{display:flex;gap:var(--c-step-gap);align-items:flex-start}
+.c-step-num{flex:none;width:var(--c-step-num-size);height:var(--c-step-num-size);border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:var(--c-step-num-font);font-weight:800}
+.c-step-content{flex:1;min-width:0}
+.c-step-title{font-size:var(--c-step-title-size);font-weight:800;color:var(--text-1);line-height:1.3;margin-bottom:0.3cqi}
+.c-step-body{font-size:var(--c-step-body-size);line-height:1.5;color:var(--text-2)}
+.c-connector{display:flex;align-items:center;gap:0.8cqi;padding:0.4cqi 0 0.4cqi 1.5cqi}
+.c-connector-arrow{color:var(--accent);font-size:1.5cqi;font-weight:800;line-height:1}
+.c-icon-row{display:flex;gap:var(--c-icon-row-gap);align-items:flex-start}
+.c-icon-row-icon{flex:none;width:3cqi;height:3cqi;border-radius:var(--radius-sm);background:var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.4cqi;overflow:hidden}
+.c-icon-row-text{flex:1;min-width:0}
+.c-icon-row-title{font-size:var(--c-icon-row-title-size);font-weight:800;color:var(--text-1);line-height:1.3;margin-bottom:0.3cqi}
+.c-icon-row-body{font-size:1.05cqi;line-height:1.5;color:var(--text-2)}
+.c-formula{border:2px solid var(--border-strong);border-radius:var(--radius);padding:1.2cqi 1.8cqi;text-align:center;font-size:var(--c-formula-size);font-weight:800;color:var(--text-1);background:var(--surface-2)}
+.c-warn{border:2px solid var(--bad);border-radius:var(--radius);padding:1.2cqi 1.5cqi;display:flex;gap:1.2cqi;align-items:flex-start;background:color-mix(in srgb,var(--bad) 4%,transparent)}
+.c-warn-icon{flex:none;font-size:2cqi;line-height:1}
+.c-warn-content{flex:1;min-width:0}
+.c-warn-title{font-size:1.3cqi;font-weight:800;color:var(--bad);margin-bottom:0.3cqi}
+.c-warn-body{font-size:1cqi;line-height:1.5;color:var(--text-2)}
+.c-note{border:2px solid color-mix(in srgb,var(--accent) 30%,transparent);border-radius:var(--radius);padding:1.2cqi 1.5cqi;display:flex;gap:1.2cqi;align-items:flex-start;background:color-mix(in srgb,var(--accent) 6%,transparent)}
+.c-note-icon{flex:none;font-size:2cqi;line-height:1}
+.c-note-content{flex:1;min-width:0}
+.c-note-title{font-size:var(--c-note-title-size);font-weight:800;color:var(--accent);margin-bottom:0.3cqi}
+.c-note-body{font-size:var(--c-note-body-size);line-height:1.5;color:var(--text-2)}
+.c-article{display:flex;flex-direction:column;gap:var(--c-article-gap);min-height:0;overflow:hidden}
+.c-badge-para{display:flex;flex-direction:column;gap:1cqi}
+.c-badge-para-label{display:inline-flex;align-self:flex-start;padding:0.5cqi 1.5cqi;border-radius:0.8cqi;font-size:2.8cqi;font-weight:700;background:color-mix(in srgb,var(--accent) 15%,transparent);color:var(--accent)}
+.c-badge-para-label.warn{background:color-mix(in srgb,var(--warn) 15%,transparent);color:var(--warn)}
+.c-badge-para-label.good{background:color-mix(in srgb,var(--good) 15%,transparent);color:var(--good)}
+.c-badge-para-body{font-size:3.8cqi;line-height:1.7;color:var(--text-1)}
+.c-icon-card{display:flex;gap:2cqi;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.5cqi 3cqi}
+.c-icon-card-icon{flex:none;font-size:5.5cqi;line-height:1}
+.c-icon-card-content{flex:1;min-width:0}
+.c-icon-card-title{font-size:4.2cqi;font-weight:800;color:var(--text-1);line-height:1.3;margin-bottom:0.4cqi}
+.c-icon-card-body{font-size:3.4cqi;line-height:1.6;color:var(--text-2)}
+.c-quote-bar{border-left:0.6cqi solid var(--accent);padding:2cqi 3cqi;background:color-mix(in srgb,var(--accent) 6%,transparent);border-radius:0 1cqi 1cqi 0;font-size:3.5cqi;font-weight:600;line-height:1.6;color:var(--accent)}
+.c-numbered-list{display:flex;flex-direction:column;gap:2.5cqi}
+.c-numbered-item{display:flex;gap:1.5cqi;align-items:baseline}
+.c-numbered-item-num{flex:none;font-size:3.5cqi;font-weight:800;color:var(--accent)}
+.c-numbered-item-content{flex:1;font-size:3.5cqi;line-height:1.6;color:var(--text-1)}
+.c-numbered-item-keyword{font-weight:800;color:var(--accent)}
+.c-pill-tags{display:flex;flex-wrap:wrap;gap:1cqi}
+.c-pill-tags .c-badge{font-size:2.8cqi;padding:0.7cqi 2cqi;border-radius:999px;background:var(--surface);border:1px solid var(--border);color:var(--text-2);font-weight:600}
+
+/* tech-fresh.css inline */
+.d-tech-fresh{--bg:#ffffff;--surface:#ffffff;--surface-2:#f6f8fc;--border:rgba(0,0,0,0.07);--border-strong:rgba(0,0,0,0.12);--text-1:#0d111c;--text-2:#4a5268;--text-3:#8a92a6;--accent:#2b6ff2;--accent-2:#ff6b55;--accent-3:#22c997;--radius:18px;--radius-sm:12px;--radius-lg:24px;--shadow:0 8px 24px rgba(13,17,28,0.06),0 2px 4px rgba(13,17,28,0.03);--shadow-lg:0 16px 48px rgba(13,17,28,0.10),0 4px 12px rgba(13,17,28,0.04);--letter-tight:-0.02em;--font-display:'Iowan Old Style','Charter','Noto Serif CJK SC','Songti SC',Georgia,serif;--font-serif:'Iowan Old Style','Charter','Noto Serif CJK SC','Songti SC',Georgia,serif;--font-sans:'PingFang SC','Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;--font-mono:'SF Mono','JetBrains Mono',Consolas,monospace;--grad:linear-gradient(90deg,#2b6ff2,#22c997);--warn:#f5a524;--good:#22c997;--bad:#dc2626;--tf-blue:#2b6ff2;--tf-coral:#ff6b55;--tf-cyan:#22c997;--tf-amber:#f5a524;--tf-purple:#7a5cff;--tf-green:#00a86b;--tf-soft-blue:#eef4ff;--tf-soft-coral:#fff0ed;--tf-soft-cyan:#e1f7ef;--tf-soft-amber:#fef2db;--tf-soft-purple:#ede8ff;--tf-code-bg:#0d111c;background:var(--bg);color:var(--text-1);font-family:var(--font-sans)}
+.d-tech-fresh .slide{background:#fff}
+.d-tech-fresh.portrait{--slide-pad-y:10cqi;--grid-cols-2:repeat(2,1fr);--grid-cols-3:repeat(3,1fr)}
+.d-tech-fresh .c-card{border:1px solid var(--border);padding:3.7cqi 4.2cqi}
+.d-tech-fresh .c-card-accent{border-top:none;border-left:.49cqi solid var(--accent);padding:3.7cqi 4.2cqi}
+.d-tech-fresh .c-card-warn{padding:3.7cqi 4.2cqi}
+.d-tech-fresh .c-card-soft{padding:3.7cqi 4.2cqi}
+.d-tech-fresh .c-grid-2{gap:2.47cqi;margin-top:3.21cqi}
+.d-tech-fresh .c-steps{gap:1.98cqi;margin-top:2.22cqi}
+.d-tech-fresh .c-step-num{width:5.93cqi;height:5.93cqi;background:var(--accent);font-size:2.47cqi;font-weight:900}
+.d-tech-fresh .c-step-title{font-size:2.72cqi;font-weight:700}
+.d-tech-fresh .c-quote{font-size:4.94cqi;padding-left:0;font-family:var(--font-display);font-weight:800}
+.d-tech-fresh .c-quote::before{position:static;display:block;font-size:12.35cqi;line-height:.8;color:var(--accent);opacity:.35}
+.d-tech-fresh .c-article{gap:3cqi}
+.d-tech-fresh .c-icon-card{border:1px solid var(--border);border-radius:var(--radius-lg);padding:3cqi 3.5cqi;box-shadow:var(--shadow)}
+.d-tech-fresh .c-quote-bar{border-left-width:0.8cqi;border-left-color:var(--accent);background:var(--tf-soft-blue);border-radius:0 var(--radius) var(--radius) 0;color:var(--text-1);font-weight:700;padding:2.5cqi 3.5cqi}
+.d-tech-fresh .c-numbered-item-num{display:inline-flex;align-items:center;justify-content:center;width:5cqi;height:5cqi;border-radius:50%;background:var(--accent);color:#fff;font-size:2.5cqi;font-weight:900;flex:none}
+.d-tech-fresh .c-numbered-item-keyword{color:var(--accent)}
+.d-tech-fresh .c-badge-para-label{padding:0.6cqi 2cqi;border-radius:999px;font-size:2.8cqi;font-weight:800;background:var(--tf-soft-blue);color:var(--tf-blue);border:none}
+.d-tech-fresh .c-icon-card-icon{font-size:6cqi}
+.d-tech-fresh .c-pill-tags .c-badge{border:none;font-weight:700;box-shadow:var(--shadow)}
+.d-tech-fresh.landscape{--slide-pad-y:9cqi}
+</style>
+</head>
+<body class="d-tech-fresh portrait" style="margin:0">
+<div class="deck">
+
+<!-- Each slide = one component measurement. Label: data-label. -->
+
+<!-- TITLES -->
+<section class="slide is-active" data-label="chr-heading (≤10字)"><h2 class="chr-heading" style="margin-top:0">标题十个字</h2></section>
+<section class="slide" data-label="chr-sub (1行)"><div class="chr-sub">一行副标题约三十字左右的文字内容</div></section>
+<section class="slide" data-label="chr-sub (2行)"><div class="chr-sub">两行副标题约六十字左右的文字内容，用来测试更多文字的换行情况和高度变化效果</div></section>
+<section class="slide" data-label="chr-kicker"><div class="chr-kicker">SECTION LABEL</div></section>
+
+<!-- CARDS -->
+<section class="slide" data-label="c-card (仅标题)"><div class="c-card"><div class="c-title">卡片标题</div></div></section>
+<section class="slide" data-label="c-card (~30字)"><div class="c-card"><div class="c-title">卡片标题</div><div class="c-body">卡片正文约三十字，用于测试中等长度文本的卡片实际高度表现如何</div></div></section>
+<section class="slide" data-label="c-card (~60字)"><div class="c-card"><div class="c-title">卡片标题</div><div class="c-body">卡片正文约六十字左右的内容长度，在窄画布下会产生较多换行从而大幅增加卡片高度，这个测试非常关键</div></div></section>
+<section class="slide" data-label="c-card (~100字)"><div class="c-card"><div class="c-title">卡片标题</div><div class="c-body">卡片正文大约一百字的内容测试，这是知识卡片中较长的文本了，三比四画布下每行只能排八个中文字所以会换很多行最终高度会比较可观我们需要精确测量这个数值</div></div></section>
+<section class="slide" data-label="c-card-accent (~40字)"><div class="c-card-accent"><div class="c-title">强调卡片</div><div class="c-body">左侧蓝色边框强调的卡片，约四十字正文测试实际高度</div></div></section>
+<section class="slide" data-label="c-card-warn (~40字)"><div class="c-card-warn"><div class="c-title">警告卡片</div><div class="c-body">左侧橙色边框的警告卡片，约四十字正文测试实际高度</div></div></section>
+<section class="slide" data-label="c-card-soft (1行)"><div class="c-card-soft"><div class="c-title">柔和卡片</div><div class="c-body">浅灰背景，一行正文</div></div></section>
+
+<!-- KPI -->
+<section class="slide" data-label="c-kpi"><div class="c-kpi"><div class="c-kpi-value">99.9%</div><div class="c-kpi-label">Uptime</div><div class="c-kpi-delta up">+0.5%</div></div></section>
+
+<!-- FORMULA -->
+<section class="slide" data-label="c-formula (1行)"><div class="c-formula">Agent = Model + Harness</div></section>
+
+<!-- QUOTE -->
+<section class="slide" data-label="c-quote (2行)"><div class="c-quote">可以外包思考，不能外包理解。这是整个编程Agent行业需要回答的问题。</div></section>
+
+<!-- STEPS -->
+<section class="slide" data-label="c-step (标题+1行body)"><div class="c-step"><div class="c-step-num">1</div><div class="c-step-content"><div class="c-step-title">步骤标题</div><div class="c-step-body">一行步骤描述文字</div></div></div></section>
+<section class="slide" data-label="c-step (标题+2行body)"><div class="c-step"><div class="c-step-num">1</div><div class="c-step-content"><div class="c-step-title">步骤标题</div><div class="c-step-body">两行步骤描述文字内容，用于测试较长描述的步骤组件实际高度情况</div></div></div></section>
+<section class="slide" data-label="c-connector"><div class="c-connector"><span class="c-connector-arrow">↓</span><span class="c-connector-text">然后</span></div></section>
+
+<!-- WARN / NOTE -->
+<section class="slide" data-label="c-warn (1行body)"><div class="c-warn"><div class="c-warn-icon">⚠️</div><div class="c-warn-content"><div class="c-warn-title">警告标题</div><div class="c-warn-body">一行警告正文内容</div></div></div></section>
+<section class="slide" data-label="c-warn (2行body)"><div class="c-warn"><div class="c-warn-icon">⚠️</div><div class="c-warn-content"><div class="c-warn-title">警告标题</div><div class="c-warn-body">两行警告正文内容，用于测试较长警告信息在窄画布下的实际高度表现情况</div></div></div></section>
+<section class="slide" data-label="c-note (1-2行body)"><div class="c-note"><div class="c-note-icon">💡</div><div class="c-note-content"><div class="c-note-title">提示标题</div><div class="c-note-body">两行提示正文，用于测试带标题的标准提示框高度</div></div></div></section>
+<section class="slide" data-label="c-note (3行body)"><div class="c-note"><div class="c-note-icon">💡</div><div class="c-note-content"><div class="c-note-title">提示标题</div><div class="c-note-body">三行提示正文内容，测试较长提示信息在窄画布下换行后的实际高度，这个测量数据对页面规划很重要</div></div></div></section>
+
+<!-- ICON ROW -->
+<section class="slide" data-label="c-icon-row"><div class="c-icon-row"><div class="c-icon-row-icon">🔍</div><div class="c-icon-row-text"><div class="c-icon-row-title">图标行标题</div><div class="c-icon-row-body">图标行的正文描述文字内容</div></div></div></section>
+
+<!-- BADGE ROW -->
+<section class="slide" data-label="c-badge-row"><div class="c-badge-row"><span class="c-badge accent">标签一</span><span class="c-badge">标签二</span><span class="c-badge good">标签三</span></div></section>
+
+<!-- ARTICLE BLOCKS -->
+<section class="slide" data-label="badge-para (1行body)"><div class="c-badge-para"><span class="c-badge-para-label">核心观点</span><p class="c-badge-para-body">一行正文</p></div></section>
+<section class="slide" data-label="badge-para (2行body)"><div class="c-badge-para"><span class="c-badge-para-label">核心观点</span><p class="c-badge-para-body">两行正文内容，用来测试带标签段落组件在窄画布中的实际高度表现</p></div></section>
+<section class="slide" data-label="badge-para (3行body)"><div class="c-badge-para"><span class="c-badge-para-label">核心观点</span><p class="c-badge-para-body">三行正文内容测试，这个是较长的badge-para组件了在文章风格的页面中经常会使用这种长度的段落来展开论述观点</p></div></section>
+<section class="slide" data-label="icon-card (短body)"><div class="c-icon-card"><div class="c-icon-card-icon">🔍</div><div class="c-icon-card-content"><div class="c-icon-card-title">功能标题</div><div class="c-icon-card-body">一行简短描述</div></div></div></section>
+<section class="slide" data-label="icon-card (长body)"><div class="c-icon-card"><div class="c-icon-card-icon">🔍</div><div class="c-icon-card-content"><div class="c-icon-card-title">功能标题</div><div class="c-icon-card-body">较长的描述文字内容，需要三行左右来展示完整信息，这种组件在知识卡片中很常见</div></div></div></section>
+<section class="slide" data-label="quote-bar (1行)"><div class="c-quote-bar">一行引述文字</div></section>
+<section class="slide" data-label="quote-bar (2行)"><div class="c-quote-bar">两行引述文字内容，用于测试较长引述在窄画布下的实际高度表现</div></section>
+<section class="slide" data-label="numbered-list (3项)"><div class="c-numbered-list"><div class="c-numbered-item"><div class="c-numbered-item-num">1</div><div class="c-numbered-item-content"><span class="c-numbered-item-keyword">关键词</span> — 正文描述</div></div><div class="c-numbered-item"><div class="c-numbered-item-num">2</div><div class="c-numbered-item-content"><span class="c-numbered-item-keyword">关键词</span> — 正文描述</div></div><div class="c-numbered-item"><div class="c-numbered-item-num">3</div><div class="c-numbered-item-content"><span class="c-numbered-item-keyword">关键词</span> — 正文描述</div></div></div></section>
+<section class="slide" data-label="pill-tags (4个)"><div class="c-pill-tags"><span class="c-badge">标签一</span><span class="c-badge">标签二</span><span class="c-badge">标签三</span><span class="c-badge">标签四</span></div></section>
+
+<!-- c-section (2 soft cards) -->
+<section class="slide" data-label="c-section (2×card-soft)"><div class="c-section"><div class="c-section-label">分区标题</div><div class="c-card-soft"><div class="c-title">卡片一</div><div class="c-body">正文内容</div></div><div class="c-card-soft" style="margin-top:1.5cqi"><div class="c-title">卡片二</div><div class="c-body">正文内容</div></div></div></section>
+
+</div>
+</body>
+</html>

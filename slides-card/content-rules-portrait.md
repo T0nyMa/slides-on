@@ -22,7 +22,7 @@
 | **A 档（无 chrome）** | **1000px / 123cqi** | no-design、blueprint、course-module、graphify、minimal、obsidian-gradient、pitch-deck、product-launch、tech-sharing、weekly-report |
 | **B 档（有 chrome）** | **920px / 114cqi** | pastel-card、news-broadcast、white-editorial、xhs-post、testing-safety-alert、hermes-cyber-terminal |
 
-### 组件高度速查表（实测值，基线无 Design CSS）
+### 组件高度速查表（Playwright 实测，3:4 全宽 713px，无 Design CSS）
 
 **标题/排版**
 
@@ -100,7 +100,74 @@
 
 ### Design CSS 高度修正
 
-pastel-card / xhs-post / white-editorial 三个 3:4 原生 Design 会增大组件高度。使用这些 Design 时，每个组件额外加 **10-15px（1-2cqi）** 安全余量。
+pastel-card / xhs-post / white-editorial / **tech-fresh** 四个 3:4 原生 Design 会增大组件高度，原因有二：
+1. **卡片 padding 放大**：tech-fresh 的 c-card padding 为 `3.7cqi 4.2cqi`（~30px 34px），远大于基线 `1.5cqi 1.8cqi`（~12px 15px）
+2. **Grid-2 宽度缩减**：在 c-grid-2 中，卡片宽度从全宽 713px 缩到 ~347px，正文换行行数翻倍
+
+### tech-fresh 实测数据（Playwright, 810×1080, 全宽组件）
+
+> 以下数据通过 `scripts/measure-components.ts` 实测。每个组件独立渲染在 slide 中，宽度 713px。
+> **Grid-2 中的组件**：正文高度约需乘 1.8-2.5 倍（宽度从 713px 缩到 ~347px 导致换行增加）。
+
+| 组件 | 实测(px) | vs 基线 | 说明 |
+|------|---------|---------|------|
+| chr-heading | 33 | -13 | 衬线体略矮 |
+| chr-kicker | 22 | -10 | |
+| c-card (仅标题) | 111 | +20 | padding 放大 |
+| c-card (~30字) | 211 | +70 | 窄画布换行更多 |
+| c-card (~60字) | 261 | +17 | |
+| c-card (~100字) | 311 | -31 | tech-fresh body 字号无额外覆盖 |
+| c-card-accent (~40字) | 210 | — | |
+| c-kpi | 129 | -8 | |
+| c-formula | 74 | -8 | |
+| c-quote (2行) | 192 | — | tech-fresh 加大引号 |
+| c-step (标题+1行) | 68 | -18 | |
+| c-step (标题+2行) | 104 | -19 | |
+| c-connector | 28 | +9 | |
+| c-warn (标题+body) | 53 | -2 | |
+| c-note (1-2行body) | 102 | -6 | |
+| c-note (3行body) | 139 | -5 | |
+| c-badge-row | 35 | 0 | |
+| c-icon-row | 57 | 0 | |
+| badge-para (1行) | 164 | +2 | |
+| badge-para (2行) | 216 | +2 | |
+| badge-para (3行) | 268 | +1 | |
+| icon-card (短) | 142 | +8 | |
+| icon-card (长) | 186 | -36 | |
+| quote-bar (1行) | 86 | +8 | |
+| quote-bar (2行) | 131 | +8 | |
+| numbered-list (3项) | 177 | 0 | |
+| pill-tags (4个) | 43 | -2 | |
+| c-section (2×card-soft) | 426 | +26 | |
+
+### 预算计算步骤（重要）
+
+1. **查表取组件高度**（上表 tech-fresh 实测值或基线表）
+2. **Grid-2 修正**：如果组件在 c-grid-2 中（卡片宽度 ~347px），正文部分高度 × 1.8-2.5 倍
+3. **嵌套组件累加**：卡片内嵌 c-note 时，卡片总高 = 卡片自身 + 内嵌组件 + 嵌套间隙(20px)
+4. **间隙**：每两个组件之间 +20px
+5. **总计 vs 可用高度**：tech-fresh 有 chrome → 920px；70-95% 合格
+
+### 预算示例（tech-fresh，有 chrome）
+
+```
+页面：chr-heading + c-grid-2(2×c-card-accent~40字) + c-quote-bar(2行)
+1. chr-heading: 33px
+2. c-grid-2 row: c-card-accent(~40字) 全宽210px，Grid-2修正 ×1.8 ≈ 378px
+3. c-quote-bar(2行): 131px
+4. 间隙: c-grid-2 mt(26px) + grid→quote(16px) = 42px
+总计: 33 + 378 + 131 + 42 = 584px / 920 = 63% → 偏低，可加组件或增加正文字数
+```
+
+```
+页面：chr-heading + 3×c-warn + c-badge-row
+1. chr-heading: 33px
+2. 3×c-warn: 3×53 = 159px
+3. c-badge-row: 35px
+4. 间隙: 5×20 = 100px
+总计: 33 + 159 + 35 + 100 = 327px / 920 = 36% → 严重偏低，必须加内容！
+```
+
 
 ### 填充率判定
 
