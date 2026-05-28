@@ -22,7 +22,7 @@ Claude 直接编写完整的单文件 HTML，不依赖任何中间 JSON 格式�
 3. 使用 c-* 组件 class（c-card、c-steps、c-kpi、c-grid-2 等）+
    Design CSS（`.d-{name}` 命名空间覆盖视觉变量）
 4. 3:4 下字号使用 cqi 单位，严禁 px
-5. 每页组件数 3-5，卡片正文 ≤ 60 字
+5. 卡片正文 ≤ 100 字，整页正文 ≤ 200 字，组件数由像素预算决定
 
 ## Pipeline
 
@@ -33,6 +33,10 @@ Claude 直接编写完整的单文件 HTML，不依赖任何中间 JSON 格式�
 **页数**：< 500 字 3-5 页，500-1500 字 5-8 页，> 1500 字 8-12 页。
 
 **产出**：`outline.md`，每页含内容要点 + 推荐组件组合。
+
+> **像素预算**（读 `./content-rules-portrait.md` 的「像素预算」章节）：
+> 每页在 outline 中标注预估总高和填充率。可用高度：无 chrome 1000px / 有 chrome 920px。
+> 加总组件 px 高度 + 间隙(20px/个)，填充率 70-95% 合格。不合格则调整组件或字数。
 
 > **读 `../../references/component-recipes.md`**（内容语义 → 组件配方）：
 > 根据每页的内容语义（痛点/数据/流程/对比/概念/金句），查表匹配页面原型和组件组合。
@@ -119,6 +123,10 @@ Claude 根据 outline.md + style-decision.md + component-recipes.md 直接编写
 
 对照 `../../references/self-check-checklist.md` 逐项自检。
 不通过则回到 Step 3 修改 HTML。
+
+> **像素预算验证**：逐页加总组件高度（查 `./content-rules-portrait.md` 速查表），
+> 对比可用高度，填充率 < 70% 则加组件或增加正文，> 95% 则精简或拆页。
+> Cover / Thanks 页允许低于 70%（center 布局，留白撑气场）。
 
 ### Step 5: 导出
 
