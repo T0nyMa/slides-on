@@ -73,9 +73,9 @@ cover → 痛点 → 核心概念 → 速查/清单 → 金句 → 场景/分类
 
 每页只传达一个核心信息。3:4 画布比 16:9 更严格——窄画布没有横向空间分散注意力。
 
-### 3. 组件数量 3-5 个/页
+### 3. 组件数量由像素预算决定
 
-太少显空，太多显乱。语法速查页（9 个 `c-icon-row`）是密度上限。
+不再硬性 3-5 个/页，改用像素预算：加总组件 px 高度 + 间隙(20px/个)，对比可用高度（无 chrome 1000px / 有 chrome 920px），填充率 70-95% 合格。详见 `content-rules-portrait.md` 的「像素预算」章节。
 
 ### 4. 自定义 CSS = 0
 
@@ -191,7 +191,7 @@ type: "article"
 h2 → c-article（badge-para + icon-card + quote-bar + numbered-list + pill-tags 自由混合）
 ```
 
-锚点：`c-article` 异构块堆叠。填充留白时多组合不同块类型（badge-para + icon-card + quote-bar），禁止放大字号或拉伸间距。密度按块高度预估（badge-para ~10cqi, icon-card ~12cqi, numbered-list items×6cqi），总高 ≥65cqi 合格。
+锚点：`c-article` 异构块堆叠。填充留白时多组合不同块类型（badge-para + icon-card + quote-bar），禁止放大字号或拉伸间距。密度用像素预算验证：badge-para 162-267px, icon-card 134-222px, quote-bar 78-123px, numbered-list(3项) 177px, pill-tags 45-98px, 间隙 20px/个。总计对比可用高度，填充率 70-95% 合格。
 
 #### Thanks 页
 
@@ -230,6 +230,8 @@ Design CSS 里用 `nth-child(4n+1/2/3/4)` 给重复组件循环配色，Claude �
 ---
 
 ## 填满画面的技巧
+
+**原则**：不靠「感觉」填满，靠像素预算。加总组件 px 高度（查 `content-rules-portrait.md` 速查表），填充率 < 70% 就加组件，> 95% 就精简或拆页。以下技巧帮助调整到合格区间：
 
 ### Cover 不要只放标题
 
